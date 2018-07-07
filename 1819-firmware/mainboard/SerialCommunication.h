@@ -9,12 +9,12 @@
 */
 struct MESSAGE {
 	uint8_t command, length;
-	uint8_t dataBuffer[MAX_PACKET_LENGTH];
+	uint8_t data[MAX_PACKET_LENGTH];
 };
 
 uint8_t receiveProgress, index, calculatedChecksum;
 
-MESSAGE rx;
+MESSAGE rxData;
 
 /*
  Function to be called repeatedly in loop() that receives Serial messages
@@ -30,17 +30,17 @@ uint8_t receiveMessage() {
 			receiveProgress = 1;
 		}
 		else if (receiveProgress == 1) { //command byte
-			rx.command = c;
+			rxData.command = c;
 			receiveProgress = 2;
 		}
 		else if (receiveProgress == 2) { //length bytes
-			rx.length = c;
-			calculatedChecksum = rx.length; //checksum begins with length in it
+			rxData.length = c;
+			calculatedChecksum = rxData.length; //checksum begins with length in it
 			receiveProgress = 3;
 			index = 0;
 		}
 		else if (receiveProgress == 3) { //data bytes
-			rx.dataBuffer[index] = c;
+			rxData.data[index] = c;
 			calculatedChecksum ^= c; //XOR checksum with all data bytes
 			index++;
 			if (index >= MAX_PACKET_LENGTH) {

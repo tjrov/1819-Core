@@ -24,6 +24,8 @@ Import libraries
 #include "PinDefinitions.h"
 #include "SerialCommunication.h" //Our functions for serial comms
 
+MESSAGE txData;
+
 // the setup function runs once when you press reset or power the board
 void setup() {
 	pinMode(TX_EN, OUTPUT);
@@ -32,7 +34,10 @@ void setup() {
 
 // the loop function runs over and over again until power down or reset
 void loop() {
-	while (!Serial.available());
-
+	if (receiveMessage()) {
+		sendMessage(rxData); //reply back with same data
+		//blink();
+	}
+	//handleDataDirection();
 }
 

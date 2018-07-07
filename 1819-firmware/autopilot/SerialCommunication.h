@@ -7,51 +7,102 @@
  Data
  Checksum (XOR of length and all data bytes)
 */
+
+
+void blink() {
+	digitalWrite(13, HIGH);
+	delay(50);
+	digitalWrite(13, LOW);
+	delay(50);
+}
+
 struct MESSAGE {
 	uint8_t command, length;
-	uint8_t dataBuffer[MAX_PACKET_LENGTH];
+	uint8_t data[MAX_PACKET_LENGTH];
 };
 
 uint8_t receiveProgress, index, calculatedChecksum;
 
-MESSAGE rx;
+MESSAGE rxData;
 
 /*
  Function to be called repeatedly in loop() that receives Serial messages
  return values:
- -1: error receiving
- 1<->4: various stages of progress
- 5: received succesfully
+false: no message received
+true: valid message received
 */
-uint8_t receiveMessage() {
+bool receiveMessage() {
 	if (Serial.available()) {
 		uint8_t c = Serial.read();
 		if (c == 0x42) { //new message starting
 			receiveProgress = 1;
 		}
 		else if (receiveProgress == 1) { //command byte
-			rx.command = c;
+			rxData.command = c;
 			receiveProgress = 2;
 		}
 		else if (receiveProgress == 2) { //length bytes
-			rx.length = c;
-			calculatedChecksum = rx.length; //checksum begins with length in it
+			rxData.length = c;
+			calculatedChecksum = rxData.length; //checksum begins with length in it
 			receiveProgress = 3;
 			index = 0;
 		}
 		else if (receiveProgress == 3) { //data bytes
-			rx.dataBuffer[index] = c;
+			rxData.data[index] = c;
 			calculatedChecksum ^= c; //XOR checksum with all data bytes
 			index++;
-			if (index >= MAX_PACKET_LENGTH) {
+			if (index >= rxData.length) {
 				receiveProgress = 4;
 			}
 		} else if (receiveProgress == 4 && c == calculatedChecksum) { //checksum
-			receiveProgress = 5;
+			receiveProgress = 0;
+			return true;
 		}
 		else {
 			receiveProgress = -1;
 		}
 	}
-	return receiveProgress;
+	return false;
+}
+
+/*
+ sends the MESSAGE struct msg
+*/
+void sendMessage(MESSAGE msg) {
+	Serial.write(0x42); //header
+	Serial.write(msg.command); //command
+	Serial.write(msg.length); //length
+	calculatedChecksum = msg.length;
+	for (int i = 0; i < msg.length; i++) { //all data
+		Serial.write(msg.data[i]);
+		//calc checksum as we go with XOR
+		calculatedChecksum ^= msg.data[i];
+	}
+	Serial.write(calculatedChecksum); //checksum
+}
+
+/*
+ to be called repeatedly in loop and ensure 
+ RS-485 data direction pin is correctly set
+ TX_EN goes high when there is data in the buffer
+ to transmit, or low when there is none and we are 
+ ready to receive data
+*/
+void handleDataDirection() {
+	/*
+	 UCSR0A is the USART control/status register 0A
+	 and TXC0 is the bit of ths register that is turned
+	 on when all data has been shifted out onto the serial
+	 lines.
+	*/
+	if ((UCSR0A & _BV(TXC0)) == 0) { //data remains in tx buffer (TXC0 bit off)
+		if (!digitalRead(TX_EN)) { //if not already on
+			digitalWrite(TX_EN, HIGH); //turn on transmit
+		}
+	}
+	else {
+		if (digitalRead(TX_EN)) {
+			digitalWrite(TX_EN, LOW);
+		}
+	}
 }
