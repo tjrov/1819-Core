@@ -69,6 +69,7 @@ bool receiveMessage() {
  sends the MESSAGE struct msg
 */
 void sendMessage(MESSAGE msg) {
+	digitalWrite(TX_EN, HIGH); //turn on transmit mode
 	Serial.write(0x42); //header
 	Serial.write(msg.command); //command
 	Serial.write(msg.length); //length
@@ -95,14 +96,10 @@ void handleDataDirection() {
 	 on when all data has been shifted out onto the serial
 	 lines.
 	*/
-	if ((UCSR0A & _BV(TXC0)) == 0) { //data remains in tx buffer (TXC0 bit off)
-		if (!digitalRead(TX_EN)) { //if not already on
-			digitalWrite(TX_EN, HIGH); //turn on transmit
-		}
-	}
-	else {
-		if (digitalRead(TX_EN)) {
-			digitalWrite(TX_EN, LOW);
+	if (UCSR0A & _BV(TXC0)) { //tx buffer done emptying (TXC0 bit off)
+		if (digitalRead(TX_EN)) { //if not already off
+			digitalWrite(TX_EN, LOW); //turn off transmit
+			delay(100);
 		}
 	}
 }

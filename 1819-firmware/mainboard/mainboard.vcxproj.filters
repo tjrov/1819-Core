@@ -17,5 +17,44 @@
   <ItemGroup>
     <None Include="mainboard.ino" />
   </ItemGroup>
- 
+  <ItemGroup>
+    <ClInclude Include="..\autopilot\Configuration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\autopilot\SerialCommunication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="__vm\.mainboard.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\autopilot\PinDefinitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Arduino_I2C_ESC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SparkFun_MS5803_I2C.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SparkFunLSM9DS1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LSM9DS1_Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LSM9DS1_Registers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Arduino_I2C_ESC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SparkFun_MS5803_I2C.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SparkFunLSM9DS1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>

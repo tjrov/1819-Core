@@ -38,6 +38,6 @@ void loop() {
 		sendMessage(rxData); //reply back with same data
 		//blink();
 	}
-	//handleDataDirection();
+	handleDataDirection();
 }
 
