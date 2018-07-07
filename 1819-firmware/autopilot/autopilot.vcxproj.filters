@@ -27,23 +27,20 @@
     <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\BlueRobotics_Arduino_I2C_ESC_Library\Arduino_I2C_ESC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SparkFun_MS5803-14BA_Pressure_Sensor\src\SparkFun_MS5803_I2C.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\SparkFun_LSM9DS1_Arduino_Library-master (1)\SparkFun_LSM9DS1_Arduino_Library-master\src\LSM9DS1_Registers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\SparkFun_LSM9DS1_Arduino_Library-master (1)\SparkFun_LSM9DS1_Arduino_Library-master\src\LSM9DS1_Types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\SparkFun_LSM9DS1_Arduino_Library-master (1)\SparkFun_LSM9DS1_Arduino_Library-master\src\SparkFunLSM9DS1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SerialCommunication.h" />
     <ClInclude Include="PinDefinitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Configuration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Downloads\SparkFun_LSM9DS1_Arduino_Library-master (1)\SparkFun_LSM9DS1_Arduino_Library-master\src\LSM9DS1_Registers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Downloads\SparkFun_LSM9DS1_Arduino_Library-master (1)\SparkFun_LSM9DS1_Arduino_Library-master\src\LSM9DS1_Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Downloads\SparkFun_LSM9DS1_Arduino_Library-master (1)\SparkFun_LSM9DS1_Arduino_Library-master\src\SparkFunLSM9DS1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -60,6 +57,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Downloads\SparkFun_LSM9DS1_Arduino_Library-master (1)\SparkFun_LSM9DS1_Arduino_Library-master\src\SparkFunLSM9DS1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Downloads\SparkFun_LSM9DS1_Arduino_Library-master (1)\SparkFun_LSM9DS1_Arduino_Library-master\src\SparkFunLSM9DS1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
