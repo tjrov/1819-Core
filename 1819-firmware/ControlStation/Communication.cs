@@ -19,14 +19,14 @@ namespace ControlStation
     {
         private SerialPort port;
         private Queue<MessageStruct> txQueue;
-        private List<ROVInput> inputs;
+        private List<ROVInput<Int16>> inputs; //I assumed that the data is int16, change if necessary  -kwu
         private List<ROVOutput> outputs;
-        public SerialCommunication(SerialPort port, List<ROVInput> inputs, List<ROVOutput> outputs)
+        public SerialCommunication(SerialPort port, List<ROVInput<Int16>> inputs, List<ROVOutput> outputs) //more assumptions
         {
             this.port = port;
             txQueue = new Queue<MessageStruct>();
         }
-        public void RequestUpdate(ROVInput input)
+        public void RequestUpdate(ROVInput<Int16> input)//More assumptions
         {
             MessageStruct msg = new MessageStruct();
             msg.command = input.MessageCommand;
@@ -35,10 +35,10 @@ namespace ControlStation
         }
         public void ProcessMessage(MessageStruct msg)
         {
-            foreach (ROVInput input in inputs) {
+            foreach (ROVInput<Int16> input in inputs) { //more assumptions
                 if(input.MessageCommand == msg.command)
                 {
-                    input.Value = msg.
+                    //input.Value = msg.; ERROR!!!!!!!!
                 }
             }
         }

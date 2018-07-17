@@ -6,3 +6,13 @@ C:\Users\Henry\source\repos\1819-Core\1819-firmware\ControlStation\obj\Debug\Con
 C:\Users\Henry\source\repos\1819-Core\1819-firmware\ControlStation\obj\Debug\ControlStation.csproj.CoreCompileInputs.cache
 C:\Users\Henry\source\repos\1819-Core\1819-firmware\ControlStation\obj\Debug\ControlStation.exe
 C:\Users\Henry\source\repos\1819-Core\1819-firmware\ControlStation\obj\Debug\ControlStation.pdb
+C:\rov\1819-Core\1819-firmware\ControlStation\obj\Debug\ControlStation.ControlStationInterface.resources
+C:\rov\1819-Core\1819-firmware\ControlStation\obj\Debug\ControlStation.Properties.Resources.resources
+C:\rov\1819-Core\1819-firmware\ControlStation\obj\Debug\ControlStation.csproj.GenerateResource.Cache
+C:\rov\1819-Core\1819-firmware\ControlStation\obj\Debug\ControlStation.csproj.CoreCompileInputs.cache
+C:\rov\1819-Core\1819-firmware\ControlStation\obj\Debug\ControlStation.exe
+C:\rov\1819-Core\1819-firmware\ControlStation\obj\Debug\ControlStation.pdb
+C:\rov\1819-Core\1819-firmware\ControlStation\obj\Debug\ControlStation.csprojAssemblyReference.cache
+C:\rov\1819-Core\1819-firmware\ControlStation\bin\Debug\ControlStation.exe.config
+C:\rov\1819-Core\1819-firmware\ControlStation\bin\Debug\ControlStation.exe
+C:\rov\1819-Core\1819-firmware\ControlStation\bin\Debug\ControlStation.pdb

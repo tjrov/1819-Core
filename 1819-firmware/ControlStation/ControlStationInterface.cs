@@ -16,5 +16,11 @@ namespace ControlStation
         {
             InitializeComponent();
         }
+
+        private void ControlStationInterface_Load(object sender, EventArgs e)
+        {
+            FormBorderStyle = FormBorderStyle.None;
+            WindowState = FormWindowState.Maximized;//For maximum memes
+        }
     }
 }

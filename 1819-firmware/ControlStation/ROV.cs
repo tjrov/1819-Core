@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ControlStation
 {
+    
     public class Test
     {
         static void Main()
@@ -22,7 +23,7 @@ namespace ControlStation
         public ROV(SerialPort port)
         {
             this.port = port;
-            txQueue = new Queue<MessageStruct>();
+            Queue<MessageStruct> txQueue = new Queue<MessageStruct>();
         }
     }
     public abstract class Sensor<T> : INotifyPropertyChanged
@@ -46,10 +47,10 @@ namespace ControlStation
         }
         public abstract void UpdateHelper(MessageStruct dataMessage);
     }
-    public class IMU : Sensor<Orientation>
+    /*public class IMU : Sensor<Orientation>
     {
-
-    }
+        Don't know wtf this is
+    }*/
     public class Avionics : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
