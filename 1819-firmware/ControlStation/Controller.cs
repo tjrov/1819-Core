@@ -2,6 +2,10 @@
 
 public class Controller
 {
+    public Controller()
+    {
+
+    }
     public virtual IList<Controller> Available()
     {
         IList<Controller> result = new List<Controller>();
