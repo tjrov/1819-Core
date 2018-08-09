@@ -110,7 +110,7 @@ namespace ControlStation
             }
         }
     }
-    public class ROVStatus : Sensor<Status>
+    public class StatusSensor : Sensor<ROVStatus>
     {
         /*
          * Message format:
@@ -119,7 +119,7 @@ namespace ControlStation
          * [0] one's bit signals connection state. two's bit signals arming state
          * [1] error code
          */
-        public ROVStatus(SerialCommunication comms) : base(comms, 0x05, 2)
+        public StatusSensor(SerialCommunication comms) : base(comms, 0x05, 2)
         {
 
         }
@@ -129,7 +129,7 @@ namespace ControlStation
             throw new NotImplementedException();
         }
 
-        protected override void Convert(byte[] data, ref Status result)
+        protected override void Convert(byte[] data, ref ROVStatus result)
         {
             if ((data[0] & 0x01) != 0)
                 result.Connected = true;

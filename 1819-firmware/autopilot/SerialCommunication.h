@@ -9,7 +9,7 @@
 */
 
 
-void blink() {
+void blink(int pin) {
 	digitalWrite(13, HIGH);
 	delay(50);
 	digitalWrite(13, LOW);

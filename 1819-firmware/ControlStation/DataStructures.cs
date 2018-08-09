@@ -15,7 +15,7 @@
             this.Roll = Roll;
         }
     }
-    public struct Status
+    public struct ROVStatus
     {
         public bool Connected, Armed;
         public int ErrorCode, LoopCounter;

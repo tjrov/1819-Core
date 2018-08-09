@@ -16,7 +16,8 @@ namespace ControlStation
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ControlStationInterface());
+            Application.Run(new GUI());
+            //Application.Run(new ControlStationInterface());
         }
     }
 
