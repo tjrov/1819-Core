@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\1819-firmware",
-    "\\1819-firmware\\ControlStation"
+    "\\1819-firmware\\ControlStation",
+    "\\1819-firmware\\mainboard"
   ],
-  "SelectedNode": "\\1819-firmware\\ControlStation",
+  "SelectedNode": "\\1819-firmware\\mainboard\\mainboard.ino",
   "PreviewInSolutionExplorer": false
 }

@@ -21,7 +21,7 @@ namespace ControlStation
         public SerialCommunication(string portName, int baudRate)
         {
             port = new SerialPort(portName, baudRate, Parity.None, 8, StopBits.One);
-            //port.Open();
+            port.Open();
         }
         public void SendMessage(MessageStruct msg)
         {
@@ -46,6 +46,8 @@ namespace ControlStation
         {
             //after sending a request for sensor data, the ROV replies with info
             //only allow 10 ms for this to occur
+            return ReceiveMessageHelper();
+
             var task = Task.Run(() => ReceiveMessageHelper());
             if (task.Wait(TimeSpan.FromMilliseconds(10)))
                 return task.Result;

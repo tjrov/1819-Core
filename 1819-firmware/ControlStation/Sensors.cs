@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace ControlStation
 {
     //All ROV devices that generate information extend from this class
-    public abstract class Sensor<T> : Panel
+    public abstract class Sensor<T> : Panel where T : new()
     {
         private byte messageCommand, messageLength;
         private SerialCommunication comms;
@@ -26,13 +26,14 @@ namespace ControlStation
             this.messageCommand = messageCommand;
             this.messageLength = messageLength;
             this.comms = comms;
+            value = new T();
         }
         public new void Update()
         {
             //send an empty message with the command byte to request data from this sensor
             comms.SendMessage(new MessageStruct(messageCommand, 0));
             //wait for a response
-            MessageStruct dataMessage = comms.ReceiveMessage();
+            /*MessageStruct dataMessage = comms.ReceiveMessage();
             //check if it matches this type of sensor
             if (dataMessage.data.Length == messageLength
                 && dataMessage.command == messageCommand)
@@ -44,7 +45,7 @@ namespace ControlStation
             else
             {
                 throw new Exception("Attempted to update with invalid data message");
-            }
+            }*/
         }
         public abstract void Draw();
         protected abstract void Convert(byte[] data, ref T result);
@@ -110,6 +111,28 @@ namespace ControlStation
             }
         }
     }
+    public class DepthSensor : Sensor<Double>
+    {
+        /*
+         * Message format:
+         * CMD: 0x02
+         * LEN: 2
+         * [0][2] Vehicle depth (0 to 30 meters)
+         */
+        public DepthSensor(SerialCommunication comms) : base(comms, 0x02, 2)
+        {
+        }
+
+        public override void Draw()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void Convert(byte[] data, ref double result)
+        {
+            result = ConvertUtils.BytesToDouble(data[0], data[1], 0, 30);
+        }
+    }
     public class StatusSensor : Sensor<ROVStatus>
     {
         /*
@@ -118,8 +141,9 @@ namespace ControlStation
          * LEN: 2
          * [0] one's bit signals connection state. two's bit signals arming state
          * [1] error code
+         * [2] voltage available at ROV (0 to 20 volts)
          */
-        public StatusSensor(SerialCommunication comms) : base(comms, 0x05, 2)
+        public StatusSensor(SerialCommunication comms) : base(comms, 0x05, 3)
         {
 
         }
@@ -140,6 +164,7 @@ namespace ControlStation
             else
                 result.Armed = false;
             result.ErrorCode = data[1];
+            result.Voltage = ConvertUtils.ByteToDouble(data[2], 0, 20);
         }
     }
 }

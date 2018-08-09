@@ -4,6 +4,13 @@
     {
         public double Temperature, Speed;
         public int RPM;
+        public bool IsOvertemp
+        {
+            get
+            {
+                return Temperature > 45;
+            }
+        }
     }
     public struct Orientation
     {
@@ -19,6 +26,7 @@
     {
         public bool Connected, Armed;
         public int ErrorCode, LoopCounter;
+        public double Voltage;
         public string ErrorString
         {
             get
@@ -34,10 +42,17 @@
                     case 3:
                         return "ESC failure";
                     case 4:
-                        return "Depth meter failure";
+                        return "Pressure sensor failure";
                     default:
                         return "Welllllllll, s&*t. Unknown error " + ErrorCode;
                 }
+            }
+        }
+        public bool IsUndervolt
+        {
+            get
+            {
+                return (Voltage < 7);
             }
         }
     }

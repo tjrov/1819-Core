@@ -1,4 +1,4 @@
 /*
  Pin definitions for autopilot board
 */
-#define TX_EN 13
+#define TX_EN 2

@@ -21,12 +21,12 @@ namespace ControlStation
 
         public GUI() : base()
         {
-            TopMost = true; //forefront
+            //TopMost = true; //forefront
             //FormBorderStyle = FormBorderStyle.None; //fullscreen
-            WindowState = FormWindowState.Maximized; //maximize window
+            //WindowState = FormWindowState.Maximized; //maximize window
 
             //start serial comms
-            comms = new SerialCommunication("COM1", 250000);
+            comms = new SerialCommunication("COM1", 115200);
 
             //construct sensor and actuator display objects
             imu = new IMU(comms);
@@ -43,8 +43,9 @@ namespace ControlStation
 
         private void Tick2Hz()
         {
-            escs.Update();
+            //escs.Update();
             status.Update();
+            //thrusters.Update();
         }
 
         private void Tick100Hz(object sender, EventArgs e)
@@ -55,8 +56,8 @@ namespace ControlStation
                 Tick2Hz();
                 tickCount = 0;
             }
-            thrusters.Update();
-            imu.Update();
+            //thrusters.Update();
+            //imu.Update();
             tickCount++;
         }
     }
