@@ -16,7 +16,7 @@ void Arduino_I2C_ESC::readBuffer(uint8_t address, uint8_t buffer[]) {
 	Wire.write(0x02); // Data start register
 	Wire.endTransmission();
 
-	Wire.requestFrom(address, uint8_t(9));
+	Wire.requestFrom(address, uint8_t(9)); //Can be CHANGED FROM 9 to 6 to save on i2c bandwidth
 	uint8_t i = 0;
 	while (Wire.available()) {
 		buffer[i] = Wire.read();

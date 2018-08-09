@@ -50,7 +50,7 @@ namespace ControlStation
         public abstract void Draw();
         protected abstract void Convert(byte[] data, ref T result);
     }
-    public class IMU : Sensor<Orientation>
+    public class OrientationSensor : Sensor<Orientation>
     {
         /*
          * Message format:
@@ -61,7 +61,7 @@ namespace ControlStation
          * [4][5] Roll ...
          */
 
-        public IMU(SerialCommunication comms) : base(comms, (byte)0x01, (byte)8)
+        public OrientationSensor(SerialCommunication comms) : base(comms, (byte)0x01, (byte)8)
         {
         }
         protected override void Convert(byte[] data, ref Orientation result)

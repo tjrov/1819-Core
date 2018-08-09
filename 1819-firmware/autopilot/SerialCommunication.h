@@ -8,16 +8,7 @@
  Checksum (XOR of length and all data bytes)
 */
 
-void blink(int pin) {
-	digitalWrite(pin, HIGH);
-	delay(50);
-	digitalWrite(pin, LOW);
-	delay(50);
-}
-
-void toggle(int pin) {
-	digitalWrite(pin, !digitalRead(pin));
-}
+uint8_t isArmed = 0, isConnected = 0, errorCode = ALL_SYSTEMS_GO;
 
 struct MESSAGE {
 	uint8_t command, length;
@@ -65,36 +56,10 @@ void receiveMessage() {
 		}
 		else {
 			receiveProgress = -1;
+			errorCode = COMMUNICATION_FAILURE;
 		}
 	}
 }
-
-/*bool receiveMessage() {
-	while (Serial.available() == 0); //wait for data
-	while (Serial.read() != 0x42); //wait for header byte
-	while (Serial.available() == 0);
-	blink(13);
-	/*rxData.command = Serial.read(); //command
-	if (rxData.command == -1) { //-1 signals no bytes available
-		return false;
-	}
-	rxData.length = Serial.read(); //length
-	if (rxData.length == -1) {
-		return false;
-	}
-	uint8_t checksum = rxData.length;
-	for (int i = 0; i < rxData.length; i++) { //data
-		rxData.data[i] = Serial.read();
-		if (rxData.data[i] == -1) {
-			return false;
-		}
-		checksum ^= rxData.data[i]; //calc checksum
-	}
-	if (Serial.read() != checksum) { //verify checksum
-		return false;
-	}
-	return true;
-}*/
 
 /*
  sends txData

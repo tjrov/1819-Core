@@ -1,9 +1,17 @@
 /*
  Configuration for autopilot board 
 */
-
 #define SERIAL_BAUD 115200 //Max tested on tether so far. 500 kbaud possible in theory
 #define MAX_PACKET_LENGTH 64 //maximum possible message is 255 bytes, increase to that if needed
+#define IMU_ADDRESS 0x00 //TODO: find these address out!!
+#define ESC_ADDRESSES {0x31, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F}
+#define DEPTH_ADDRESS 0x00
+
+/*
+ "Universal" constants that vary based on geographic location & weather if we want more sig figs
+*/
+#define BAROMETRIC_PRESSURE 101300 //in Pascals
+#define GRAVITATIONAL_ACCELERATION 9.81 //m/s^2 of course
 
 /*
  Message command code definitions 

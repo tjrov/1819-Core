@@ -14,10 +14,12 @@ namespace ControlStation
         private Timer timer100Hz;
         private int tickCount = 0;
 
-        private IMU imu;
+        private OrientationSensor imu;
+        private DepthSensor depth;
         private PropulsionActuator thrusters;
         private PropulsionSensor escs;
         private StatusSensor status;
+        private ToolsActuator tools;
 
         public GUI() : base()
         {
@@ -29,7 +31,7 @@ namespace ControlStation
             comms = new SerialCommunication("COM1", 115200);
 
             //construct sensor and actuator display objects
-            imu = new IMU(comms);
+            imu = new OrientationSensor(comms);
             thrusters = new PropulsionActuator(comms);
             escs = new PropulsionSensor(comms);
             status = new StatusSensor(comms);

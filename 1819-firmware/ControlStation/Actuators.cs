@@ -73,9 +73,9 @@ namespace ControlStation
             throw new NotImplementedException();
         }
     }
-    public class Tools : Actuator<Dictionary<string, double>>
+    public class ToolsActuator : Actuator<Dictionary<string, double>>
     {
-        public Tools(SerialCommunication comms) : base(comms, 0x82)
+        public ToolsActuator(SerialCommunication comms) : base(comms, 0x82)
         {
         }
 
