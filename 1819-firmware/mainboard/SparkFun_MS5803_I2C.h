@@ -91,7 +91,7 @@ private:
 	ms5803_addr _address; 		// Variable used to store I2C device address.
 	uint16_t coefficient[8];// Coefficients;
 
-	void getMeasurements(precision _precision);
+	void getMeasurements(precision _precision, bool _pressureOnly);
 
 	void sendCommand(uint8_t command);	// General I2C send command function
 	uint32_t getADCconversion(measurement _measurement, precision _precision);	// Retrieve ADC result

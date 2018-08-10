@@ -23,101 +23,71 @@ namespace ControlStation
         private PropulsionSensor escs;
         private StatusSensor status;
         private ToolsActuator tools;
-
-        private ConnectionPanel connection;
+        private StatusActuator system;
 
         public GUI()
         {
-            //TopMost = true; //forefront
-            //FormBorderStyle = FormBorderStyle.None; //fullscreen
-            WindowState = FormWindowState.Maximized; //maximize window
-
+            InitializeComponent();
             //start serial comms
             comms = new SerialCommunication("COM1", 115200);
 
-            connection = new ConnectionPanel(comms);
-            Controls.Add(connection);
-
             //construct sensor and actuator display objects
+            depth = new DepthSensor(comms);
             imu = new OrientationSensor(comms);
             thrusters = new PropulsionActuator(comms);
+            tools = new ToolsActuator(comms);
             escs = new PropulsionSensor(comms);
             status = new StatusSensor(comms);
+            system = new StatusActuator(comms);
 
             //start timer
             timer100Hz = new Timer();
             timer100Hz.Interval = 10;
             timer100Hz.Tick += new EventHandler(Tick100Hz);
             //timer100Hz.Enabled = true;
-
-            void Tick2Hz()
-            {
-                //escs.Update();
-                status.Update();
-                //thrusters.Update();
-            }
-
-            void Tick100Hz(object sender, EventArgs e)
-            {
-                //Handle running Tick2Hz on same thread at proper interval
-                if (tickCount > 50)
-                {
-                    Tick2Hz();
-                    tickCount = 0;
-                }
-                //thrusters.Update();
-                //imu.Update();
-                tickCount++;
-            }
         }
-        public class ConnectionPanel : FlowLayoutPanel
+
+        void Tick4Hz()
         {
-            private SerialCommunication comms;
-            Button toggle;
-            public ConnectionPanel(SerialCommunication comms)
+            escs.Update();
+            tools.Update();
+            system.Update();
+
+            status.Update();
+            depth.Update();
+        }
+
+        void Tick100Hz(object sender, EventArgs e)
+        {
+            //Handle running Tick4Hz on same thread at proper interval
+            if (tickCount > 25)
             {
-                this.comms = comms;
-
-                BackColor = Color.Azure;
-                Size = new Size(100, 200);
-                
-                toggle = new Button()
-                {
-                    Text = "Disconnected",
-                    BackColor = Color.Red,
-                };
-                toggle.Click += new EventHandler(ToggleClicked);
-                comms.PropertyChanged += UpdateButton;
-
-                Controls.Add(toggle);
+                Tick4Hz();
+                tickCount = 0;
             }
+            thrusters.Update();
+            imu.Update();
+            tickCount++;
+        }
 
-            private void UpdateButton(object sender, PropertyChangedEventArgs e)
-            {
-                if (comms.IsOpen)
-                {
-                    toggle.BackColor = Color.Green;
-                    toggle.Text = "Connected";
-                }
-                else
-                {
-                    toggle.BackColor = Color.Red;
-                    toggle.Text = "Disconnected";
-                }
-            }
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // GUI
+            // 
+            this.ClientSize = new System.Drawing.Size(1280, 1024);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Name = "GUI";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.TopMost = true;
+            this.Load += new System.EventHandler(this.GUI_Load);
+            this.ResumeLayout(false);
 
-            private void ToggleClicked(object sender, EventArgs e)
-            {
-                if (!comms.IsOpen)
-                {
-                    comms.Open();
-                }
-                else
-                {
-                    comms.Close();
-                }
-                UpdateButton(null, null);
-            }
+        }
+
+        private void GUI_Load(object sender, EventArgs e)
+        {
         }
     }
 }

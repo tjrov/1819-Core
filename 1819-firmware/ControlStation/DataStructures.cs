@@ -22,29 +22,71 @@
             this.Roll = Roll;
         }
     }
-    public struct ROVStatus
+    public enum ROVStatus
     {
-        public bool Connected, Armed;
-        public int ErrorCode, LoopCounter;
+        DISCONNECTED = 0,
+        DISARMED = 1,
+        ARMED = 2,
+        REBOOT = 3
+    }
+    public enum ROVError
+    {
+        ALL_SYSTEMS_GO = 0,
+        IMU_FAILURE = 1,
+        COMMUNICATION_FAILURE = 2,
+        ESC_FAILURE = 3,
+        PRESSURE_SENSOR_FAILURE = 4
+    }
+    public struct SystemStatus
+    {
+        public ROVStatus Status;
+        public ROVError Error;
         public double Voltage;
         public string ErrorString
         {
             get
             {
-                switch(ErrorCode)
+                string temp;
+                switch (Error)
                 {
-                    case 0:
-                        return "All systems go";
-                    case 1:
-                        return "IMU failure";
-                    case 2:
-                        return "Communication failure";
-                    case 3:
-                        return "ESC failure";
-                    case 4:
-                        return "Pressure sensor failure";
+                    case ROVError.ALL_SYSTEMS_GO:
+                        temp = "All systems go";
+                        break;
+                    case ROVError.IMU_FAILURE:
+                        temp = "IMU failure";
+                        break;
+                    case ROVError.COMMUNICATION_FAILURE:
+                        temp = "Communication failure";
+                        break;
+                    case ROVError.ESC_FAILURE:
+                        temp = "ESC failure";
+                        break;
+                    case ROVError.PRESSURE_SENSOR_FAILURE:
+                        temp = "Pressure sensor failure";
+                        break;
                     default:
-                        return "Welllllllll, s&*t. Unknown error " + ErrorCode;
+                        temp = "Unknown. Welllllllll, s&*t.";
+                        break;
+                }
+                return "Error " + (int)Error + ": " + temp;
+            }
+        }
+        public string StatusString
+        {
+            get
+            {
+                switch (Status)
+                {
+                    case ROVStatus.DISARMED:
+                        return "Disarmed";
+                    case ROVStatus.ARMED:
+                        return "Armed";
+                    case ROVStatus.DISCONNECTED:
+                        return "Disconnected";
+                    case ROVStatus.REBOOT:
+                        return "Reboot";
+                    default:
+                        return "Unknown status, hijo de puta.";
                 }
             }
         }

@@ -18,16 +18,7 @@
     <None Include="mainboard.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\autopilot\Configuration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\autopilot\SerialCommunication.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="__vm\.mainboard.vsarduino.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\autopilot\PinDefinitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Arduino_I2C_ESC.h">
@@ -45,7 +36,16 @@
     <ClInclude Include="LSM9DS1_Registers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\autopilot\PinDefinitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Sensors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\autopilot\SerialCommunication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\autopilot\Configuration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Actuators.h">

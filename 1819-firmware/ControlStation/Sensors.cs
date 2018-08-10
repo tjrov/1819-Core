@@ -133,13 +133,13 @@ namespace ControlStation
             result = ConvertUtils.BytesToDouble(data[0], data[1], 0, 30);
         }
     }
-    public class StatusSensor : Sensor<ROVStatus>
+    public class StatusSensor : Sensor<SystemStatus>
     {
         /*
          * Message format:
          * CMD: 0x05
          * LEN: 2
-         * [0] one's bit signals connection state. two's bit signals arming state
+         * [0] system status
          * [1] error code
          * [2] voltage available at ROV (0 to 20 volts)
          */
@@ -153,17 +153,10 @@ namespace ControlStation
             throw new NotImplementedException();
         }
 
-        protected override void Convert(byte[] data, ref ROVStatus result)
+        protected override void Convert(byte[] data, ref SystemStatus result)
         {
-            if ((data[0] & 0x01) != 0)
-                result.Connected = true;
-            else
-                result.Connected = false;
-            if ((data[0] & 0x02) != 0)
-                result.Armed = true;
-            else
-                result.Armed = false;
-            result.ErrorCode = data[1];
+            result.Status = (ROVStatus)data[0];
+            result.Error = (ROVError)data[1];
             result.Voltage = ConvertUtils.ByteToDouble(data[2], 0, 20);
         }
     }

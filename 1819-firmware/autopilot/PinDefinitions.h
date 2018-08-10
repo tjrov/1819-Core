@@ -23,21 +23,8 @@
 //Now, 255 is stopped and 0 is full reverse
 //Set MOTX_DIR2 to HIGH by digitalWrite
 
-//MOTOR 1
-#define MOT1_DIR1 3
-#define MOT1_DIR2 A1
-
-//MOTOR 2
-#define MOT2_DIR1 5
-#define MOT2_DIR2 A2
-
-//MOTOR 3
-#define MOT3_DIR1 6
-#define MOT3_DIR2 8
-
-//MOTOR 4
-#define MOT4_DIR1 9
-#define MOT4_DIR2 4
+#define DIR1_PINS {3, 5, 6, 9}
+#define DIR2_PINS {A1, A2, 8, 4}
 
 //=====RELAYS====================================================================================================
 //Set HIGH to turn on

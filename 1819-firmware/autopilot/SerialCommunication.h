@@ -8,14 +8,14 @@
  Checksum (XOR of length and all data bytes)
 */
 
-uint8_t isArmed = 0, isConnected = 0, errorCode = ALL_SYSTEMS_GO;
-
 struct MESSAGE {
-	uint8_t command, length;
+	COMMAND command;
+	uint8_t length;
 	uint8_t data[MAX_PACKET_LENGTH];
 };
 
 uint8_t receiveProgress, index, calculatedChecksum;
+uint32_t lastComms = 0;
 
 MESSAGE rxData, txData;
 
@@ -26,7 +26,7 @@ MESSAGE rxData, txData;
 void receiveMessage() {
 	if (Serial.available()) {
 		uint8_t c = Serial.read();
-		if (c == 0x42) { //new message starting
+		if (c == HEADER_BYTE) { //new message starting
 			receiveProgress = 1;
 		}
 		else if (receiveProgress == 1) { //command byte
@@ -53,10 +53,11 @@ void receiveMessage() {
 			}
 		} else if (receiveProgress == 4 && c == calculatedChecksum) { //checksum
 			receiveProgress = 5;
+			lastComms = millis(); //update time of most recent message
 		}
 		else {
 			receiveProgress = -1;
-			errorCode = COMMUNICATION_FAILURE;
+			error = COMMUNICATION_FAILURE;
 		}
 	}
 }
@@ -98,4 +99,11 @@ void handleDataDirection() {
 			delay(100);
 		}
 	}
+}
+
+/*
+ Returns true if a message has not been received within SERIAL_TIMEOUT ms
+*/
+bool isTimeout() {
+	return (millis() - lastComms) > SERIAL_TIMEOUT;
 }
