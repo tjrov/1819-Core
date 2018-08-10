@@ -5,6 +5,6 @@
     "\\1819-firmware\\ControlStation",
     "\\1819-firmware\\mainboard"
   ],
-  "SelectedNode": "\\1819-firmware\\mainboard\\mainboard.ino",
+  "SelectedNode": "\\1819-firmware\\ControlStation\\App.config",
   "PreviewInSolutionExplorer": false
 }

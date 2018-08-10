@@ -64,3 +64,8 @@
 //Analog pin to measure voltage
 //The actual value is scaled down proportionally by a voltage divider
 #define VOLT_MONITOR A0
+
+//IMU CHIP SELECT PINS
+//Controls which device is spoken to over SPI
+#define LSM9DS1_M_CS	10 // Can be any digital pin
+#define LSM9DS1_AG_CS	9  // Can be any other digital pin

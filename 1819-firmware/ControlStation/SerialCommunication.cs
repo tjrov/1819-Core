@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using System.Threading.Tasks;
 
 namespace ControlStation
@@ -15,14 +17,34 @@ namespace ControlStation
      Data
      Checksum(XOR of length and all data bytes)
     */
-    public class SerialCommunication
+    public class SerialCommunication : SerialPort, INotifyPropertyChanged
     {
-        private SerialPort port;
-        public SerialCommunication(string portName, int baudRate)
+        private Timer checkTimer;
+        private bool wasOpen;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public SerialCommunication(string portName, int baudRate) : base(portName, baudRate, Parity.None, 8, StopBits.One)
         {
-            port = new SerialPort(portName, baudRate, Parity.None, 8, StopBits.One);
-            port.Open();
+            //checks for a change in connection status at 10Hz
+            checkTimer = new Timer()
+            {
+                Interval = 100,
+                Enabled = true
+            };
+            checkTimer.Tick += new EventHandler(OnCheckTimer);
         }
+        
+        //fires when connection lost or regained
+        private void OnCheckTimer(object sender, EventArgs e)
+        {
+            if(IsOpen != wasOpen)
+            {
+                PropertyChanged(this, null);
+            }
+            wasOpen = IsOpen;
+        }
+
         public void SendMessage(MessageStruct msg)
         {
             //assemble header, command, length bytes at front of message
@@ -40,14 +62,12 @@ namespace ControlStation
             }
             //add checksum and send off
             temp[temp.Length - 1] = calculatedChecksum;
-            port.Write(temp, 0, temp.Length);
+            Write(temp, 0, temp.Length);
         }
         public MessageStruct ReceiveMessage()
         {
             //after sending a request for sensor data, the ROV replies with info
             //only allow 10 ms for this to occur
-            return ReceiveMessageHelper();
-
             var task = Task.Run(() => ReceiveMessageHelper());
             if (task.Wait(TimeSpan.FromMilliseconds(10)))
                 return task.Result;
@@ -57,17 +77,17 @@ namespace ControlStation
         private MessageStruct ReceiveMessageHelper()
         {
             MessageStruct msg = new MessageStruct();
-            while (port.ReadByte() != 0x42) ; //read in until header byte reached
-            msg.command = (byte)port.ReadByte();
-            msg.data = new byte[port.ReadByte()];
+            while (ReadByte() != 0x42) ; //read in until header byte reached
+            msg.command = (byte)ReadByte();
+            msg.data = new byte[ReadByte()];
             byte calculatedChecksum = (byte)msg.data.Length; //start calculating a checksum
             for (int i = 0; i < msg.data.Length; i++)
             {
                 //read in all the data bytes
-                msg.data[i] = (byte)port.ReadByte();
+                msg.data[i] = (byte)ReadByte();
                 calculatedChecksum ^= msg.data[i];
             }
-            if (calculatedChecksum != port.ReadByte()) //see if received checksum matches calculated one
+            if (calculatedChecksum != ReadByte()) //see if received checksum matches calculated one
             {
                 throw new Exception("Received corrupted data (Checksums did not match)");
             }

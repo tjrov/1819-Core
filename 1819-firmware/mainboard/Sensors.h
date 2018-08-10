@@ -10,8 +10,8 @@ void initIMU() {
 	
 	//general device config
 	imu.settings.device.commInterface = IMU_MODE_SPI; // Set mode to SPI
-	imu.settings.device.mAddress = 9; // Mag CS pin connected to D9
-	imu.settings.device.agAddress = 10; // AG CS pin connected to D10
+	imu.settings.device.mAddress = LSM9DS1_M_CS;
+	imu.settings.device.agAddress = LSM9DS1_AG_CS;
 
 	//accel config
 	imu.settings.accel.scale = 4; // Set accel range to +/-4g

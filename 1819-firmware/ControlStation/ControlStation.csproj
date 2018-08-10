@@ -71,7 +71,9 @@
     <Compile Include="Sensors.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SerialCommunication.cs" />
+    <Compile Include="SerialCommunication.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="ControlStationInterface.resx">
       <DependentUpon>ControlStationInterface.cs</DependentUpon>
     </EmbeddedResource>
@@ -98,6 +100,10 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="broken-plug.png" />
+    <Content Include="connected-plug.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
