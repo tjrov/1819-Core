@@ -8,13 +8,7 @@
  Checksum (XOR of length and all data bytes)
 */
 
-
-void blink() {
-	digitalWrite(13, HIGH);
-	delay(50);
-	digitalWrite(13, LOW);
-	delay(50);
-}
+uint8_t isArmed = 0, isConnected = 0, errorCode = ALL_SYSTEMS_GO;
 
 struct MESSAGE {
 	uint8_t command, length;
@@ -23,15 +17,13 @@ struct MESSAGE {
 
 uint8_t receiveProgress, index, calculatedChecksum;
 
-MESSAGE rxData;
+MESSAGE rxData, txData;
 
 /*
  Function to be called repeatedly in loop() that receives Serial messages
- return values:
-false: no message received
-true: valid message received
+ After execution, rxData holds the latest message received
 */
-bool receiveMessage() {
+void receiveMessage() {
 	if (Serial.available()) {
 		uint8_t c = Serial.read();
 		if (c == 0x42) { //new message starting
@@ -44,8 +36,13 @@ bool receiveMessage() {
 		else if (receiveProgress == 2) { //length bytes
 			rxData.length = c;
 			calculatedChecksum = rxData.length; //checksum begins with length in it
-			receiveProgress = 3;
-			index = 0;
+			if (rxData.length > 0) {
+				receiveProgress = 3;
+				index = 0;
+			}
+			else { //skip data section for messages that have none
+				receiveProgress = 4;
+			}
 		}
 		else if (receiveProgress == 3) { //data bytes
 			rxData.data[index] = c;
@@ -55,29 +52,28 @@ bool receiveMessage() {
 				receiveProgress = 4;
 			}
 		} else if (receiveProgress == 4 && c == calculatedChecksum) { //checksum
-			receiveProgress = 0;
-			return true;
+			receiveProgress = 5;
 		}
 		else {
 			receiveProgress = -1;
+			errorCode = COMMUNICATION_FAILURE;
 		}
 	}
-	return false;
 }
 
 /*
- sends the MESSAGE struct msg
+ sends txData
 */
-void sendMessage(MESSAGE msg) {
+void sendMessage() {
 	digitalWrite(TX_EN, HIGH); //turn on transmit mode
 	Serial.write(0x42); //header
-	Serial.write(msg.command); //command
-	Serial.write(msg.length); //length
-	calculatedChecksum = msg.length;
-	for (int i = 0; i < msg.length; i++) { //all data
-		Serial.write(msg.data[i]);
+	Serial.write(txData.command); //command
+	Serial.write(txData.length); //length
+	calculatedChecksum = txData.length;
+	for (int i = 0; i < txData.length; i++) { //all data
+		Serial.write(txData.data[i]);
 		//calc checksum as we go with XOR
-		calculatedChecksum ^= msg.data[i];
+		calculatedChecksum ^= txData.data[i];
 	}
 	Serial.write(calculatedChecksum); //checksum
 }

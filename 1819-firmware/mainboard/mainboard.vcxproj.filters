@@ -45,6 +45,12 @@
     <ClInclude Include="LSM9DS1_Registers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sensors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Actuators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arduino_I2C_ESC.cpp">
