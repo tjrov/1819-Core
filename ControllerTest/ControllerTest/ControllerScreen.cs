@@ -47,7 +47,7 @@ namespace ControllerTest
                 {
                     stick = new SlimDX.DirectInput.Joystick(Input, device.InstanceGuid);
                     stick.Acquire();
-                    foreach (DeviceObjectInstance deviceObject in sticks.GetObjects())
+                    foreach (DeviceObjectInstance deviceObject in stick.GetObjects())
                     {
                         if ((deviceObject.ObjectType & ObjectDeviceType.Axis) != 0)
                         {
