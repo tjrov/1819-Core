@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using SlimDX.DirectInput;
+using System.Runtime.InteropServices;
 
 /// <summary>
 /// https://www.youtube.com/watch?v=rtnLGfAj7W0
@@ -21,7 +22,7 @@ namespace ControllerTest
             InitializeComponent();
             GetSticks();
             Sticks = GetSticks();
-            timer1.Enabled = true;
+            ControllerTimer.Enabled = true;
         }
         DirectInput Input = new DirectInput();
         SlimDX.DirectInput.Joystick stick;
@@ -32,7 +33,7 @@ namespace ControllerTest
         int yValue = 0;
         int zValue = 0;
 
-        [DllImport("user32.dll", Charset = CharSet.Auto)]
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern void mouse_event(uint flag, uint _x, uint _y, uint btn, uint exInfo);
         private const int MOUSEEVENT_LEFTDOWN = 0x02;
         private const int MOUSEEVENT_LEFTUP = 0x04;
@@ -78,18 +79,18 @@ namespace ControllerTest
             {
                 if (buttons[0])
                 {
-                    if (mouseClicked = false)
+                    if (MouseClicked = false)
                     {
                         mouse_event(MOUSEEVENT_LEFTDOWN, 0, 0, 0, 0);
-                        mouseClicked = true;
+                        MouseClicked = true;
                     }
                 }
                 else
                 {
-                    if (mouseClicked == true)
+                    if (MouseClicked == true)
                     {
                         mouse_event(MOUSEEVENT_LEFTUP, 0, 0, 0, 0);
-                        mouseClicked = false;
+                        MouseClicked = false;
                     }
                 }
             }
