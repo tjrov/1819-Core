@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,47 +23,71 @@ namespace ControlStation
         private PropulsionSensor escs;
         private StatusSensor status;
         private ToolsActuator tools;
+        private StatusActuator system;
 
-        public GUI() : base()
+        public GUI()
         {
-            //TopMost = true; //forefront
-            //FormBorderStyle = FormBorderStyle.None; //fullscreen
-            //WindowState = FormWindowState.Maximized; //maximize window
-
+            InitializeComponent();
             //start serial comms
             comms = new SerialCommunication("COM1", 115200);
 
             //construct sensor and actuator display objects
+            depth = new DepthSensor(comms);
             imu = new OrientationSensor(comms);
             thrusters = new PropulsionActuator(comms);
+            tools = new ToolsActuator(comms);
             escs = new PropulsionSensor(comms);
             status = new StatusSensor(comms);
+            system = new StatusActuator(comms);
 
             //start timer
             timer100Hz = new Timer();
             timer100Hz.Interval = 10;
             timer100Hz.Tick += new EventHandler(Tick100Hz);
-            timer100Hz.Enabled = true;
+            //timer100Hz.Enabled = true;
         }
 
-        private void Tick2Hz()
+        void Tick4Hz()
         {
-            //escs.Update();
+            escs.Update();
+            tools.Update();
+            system.Update();
+
             status.Update();
-            //thrusters.Update();
+            depth.Update();
         }
 
-        private void Tick100Hz(object sender, EventArgs e)
+        void Tick100Hz(object sender, EventArgs e)
         {
-            //Handle running Tick2Hz on same thread at proper interval
-            if(tickCount > 50)
+            //Handle running Tick4Hz on same thread at proper interval
+            if (tickCount > 25)
             {
-                Tick2Hz();
+                Tick4Hz();
                 tickCount = 0;
             }
-            //thrusters.Update();
-            //imu.Update();
+            thrusters.Update();
+            imu.Update();
             tickCount++;
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // GUI
+            // 
+            this.ClientSize = new System.Drawing.Size(1280, 1024);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Name = "GUI";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.TopMost = true;
+            this.Load += new System.EventHandler(this.GUI_Load);
+            this.ResumeLayout(false);
+
+        }
+
+        private void GUI_Load(object sender, EventArgs e)
+        {
         }
     }
 }

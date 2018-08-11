@@ -23,21 +23,8 @@
 //Now, 255 is stopped and 0 is full reverse
 //Set MOTX_DIR2 to HIGH by digitalWrite
 
-//MOTOR 1
-#define MOT1_DIR1 3
-#define MOT1_DIR2 A1
-
-//MOTOR 2
-#define MOT2_DIR1 5
-#define MOT2_DIR2 A2
-
-//MOTOR 3
-#define MOT3_DIR1 6
-#define MOT3_DIR2 8
-
-//MOTOR 4
-#define MOT4_DIR1 9
-#define MOT4_DIR2 4
+#define DIR1_PINS {3, 5, 6, 9}
+#define DIR2_PINS {A1, A2, 8, 4}
 
 //=====RELAYS====================================================================================================
 //Set HIGH to turn on
@@ -64,3 +51,8 @@
 //Analog pin to measure voltage
 //The actual value is scaled down proportionally by a voltage divider
 #define VOLT_MONITOR A0
+
+//IMU CHIP SELECT PINS
+//Controls which device is spoken to over SPI
+#define LSM9DS1_M_CS	10 // Can be any digital pin
+#define LSM9DS1_AG_CS	9  // Can be any other digital pin

@@ -1,35 +1,80 @@
 /*
- Configuration for autopilot board 
+ Configuration for autopilot board
+*/
+
+/*
+ Serial config
 */
 #define SERIAL_BAUD 115200 //Max tested on tether so far. 500 kbaud possible in theory
 #define MAX_PACKET_LENGTH 64 //maximum possible message is 255 bytes, increase to that if needed
-#define IMU_ADDRESS 0x00 //TODO: find these address out!!
-#define ESC_ADDRESSES {0x31, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F}
-#define DEPTH_ADDRESS 0x00
+#define SERIAL_TIMEOUT 500 //if a message is not received in this time, board goes disconnected
+#define HEADER_BYTE 0x42 //all messages begin with 0x42 (of course :D)
 
 /*
- "Universal" constants that vary based on geographic location & weather if we want more sig figs
+ I2C config
 */
+#define I2C_CLOCK 400000 //400kHz. Lower options available if i2c does not work at this speed
+
+/*
+ ESC config
+*/
+#define NUM_ESCS 6
+#define NUM_POLES 6 //affects RPM. magnetic poles per motor (T100 has 6 or 12 uncertain of which)
+#define ESC_ADDRESSES {0x31, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F} //range is 0x2A to 0x38 for ESCs number 0 to 15
+
+/*
+ Manipulator config
+*/
+#define NUM_TOOLS 4
+
+/*
+ Depth sensor config
+*/
+#define DEPTH_ADDRESS 0x76 //default jumper position
 #define BAROMETRIC_PRESSURE 101300 //in Pascals
 #define GRAVITATIONAL_ACCELERATION 9.81 //m/s^2 of course
+#define DEPTH_PRECISION ADC_256 //lowest precision reading for highest speed
 
 /*
- Message command code definitions 
+ Status LED config. 
+ Give an expression based on millis() to determine how LED flashes in each state
 */
-//sensor data request codes
-#define IMU_REQ 0x01
-#define ESC_REQ 0x02
-#define DEPTH_REQ 0x03
-#define STATUS_REQ 0x05
-//actuator command codes
-#define ESC_CMD 0x81
-#define TOOLS_CMD 0x82
+#define DISCONNECTED_FLASH (millis() % 1000) < 100
+#define DISARMED_FLASH 1
+#define ARMED_FLASH (millis() % 1000) < 500
+
+/*
+ Message command code definitions
+*/
+enum COMMAND {
+	IMU_REQ = 0x01,
+	ESC_REQ = 0x02,
+	DEPTH_REQ = 0x03,
+	STATUS_REQ = 0x05,
+	ESC_CMD = 0x81,
+	TOOLS_CMD = 0x82,
+	STATUS_CMD = 0x83
+};
 
 /*
  Error code definitions
 */
-#define ALL_SYSTEMS_GO 0
-#define IMU_FAILURE 1
-#define COMMUNICATION_FAILURE 2
-#define ESC_FAILURE 3
-#define PRESSURE_SENSOR_FAILURE 4
+enum ERROR {
+	ALL_SYSTEMS_GO = 0,
+	IMU_FAILURE = 1,
+	COMMUNICATION_FAILURE = 2,
+	ESC_FAILURE = 3,
+	PRESSURE_SENSOR_FAILURE = 4
+};
+ERROR error;
+
+/*
+ System status definitions
+*/
+enum STATUS {
+	DISCONNECTED = 0 ,
+	DISARMED = 1,
+	ARMED = 2,
+	REBOOT = 3
+};
+STATUS status;

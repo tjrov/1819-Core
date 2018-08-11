@@ -10,8 +10,8 @@ void initIMU() {
 	
 	//general device config
 	imu.settings.device.commInterface = IMU_MODE_SPI; // Set mode to SPI
-	imu.settings.device.mAddress = 9; // Mag CS pin connected to D9
-	imu.settings.device.agAddress = 10; // AG CS pin connected to D10
+	imu.settings.device.mAddress = LSM9DS1_M_CS;
+	imu.settings.device.agAddress = LSM9DS1_AG_CS;
 
 	//accel config
 	imu.settings.accel.scale = 4; // Set accel range to +/-4g
@@ -85,16 +85,24 @@ void readESCs() {
 MS5803 depth(DEPTH_ADDRESS);
 
 void initDepth() {
+	//attempt to contact sensor to check if it's available
+	Wire.beginTransmission(DEPTH_ADDRESS);
+	uint8_t err = Wire.endTransmission();
+	if (err > 0) {
+		error = PRESSURE_SENSOR_FAILURE;
+		return;
+	}
 	depth.reset();
 	depth.begin();
+	depth.getTemperature(CELSIUS, ADC_256);
 }
 
 void readDepth() {
-	//9-bit adc reading gives +/-1 mbar, or better than 
-	//1mm resolution of depth without compromising speed
+	//8-bit adc reading gives +/-1 mbar, or better than 
+	//1mm resolution of depth with a 0.5ms response time
 	//subtract pressure of air on surface; it doesn't factor
 	//into the pressure caused by the water column
-	double depthDouble = depth.getPressure(ADC_512) - BAROMETRIC_PRESSURE;
+	double depthDouble = depth.getPressure(ADC_256) - BAROMETRIC_PRESSURE;
 	//depth = pressure / (density * acceleration)
 	//where depth is in meters, pressure is in Pascals (N/m^2)
 	//density is in kilograms per cubic meter, 

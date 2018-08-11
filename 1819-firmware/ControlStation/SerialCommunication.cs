@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace ControlStation
 {
@@ -15,14 +18,41 @@ namespace ControlStation
      Data
      Checksum(XOR of length and all data bytes)
     */
-    public class SerialCommunication
+    public class SerialCommunication : Button, INotifyPropertyChanged
     {
         private SerialPort port;
-        public SerialCommunication(string portName, int baudRate)
+        private Timer checkTimer;
+        private bool wasOpen;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public SerialCommunication(string portName, int baudRate) : base()
         {
+            //checks for a change in connection status at 10Hz
             port = new SerialPort(portName, baudRate, Parity.None, 8, StopBits.One);
-            port.Open();
+
+            checkTimer = new Timer
+            {
+                Interval = 100,
+                Enabled = true
+            };
+            checkTimer.Tick += new EventHandler(OnCheckTimer);
+
+            Text = "Disconnected";
+            BackColor = Color.Red;
+            Click += new EventHandler(OnClick);
         }
+
+        //fires when connection lost or regained
+        private void OnCheckTimer(object sender, EventArgs e)
+        {
+            if (port.IsOpen != wasOpen)
+            {
+                PropertyChanged(null, null);
+            }
+            wasOpen = port.IsOpen;
+        }
+
         public void SendMessage(MessageStruct msg)
         {
             //assemble header, command, length bytes at front of message
@@ -46,8 +76,6 @@ namespace ControlStation
         {
             //after sending a request for sensor data, the ROV replies with info
             //only allow 10 ms for this to occur
-            return ReceiveMessageHelper();
-
             var task = Task.Run(() => ReceiveMessageHelper());
             if (task.Wait(TimeSpan.FromMilliseconds(10)))
                 return task.Result;
@@ -72,6 +100,34 @@ namespace ControlStation
                 throw new Exception("Received corrupted data (Checksums did not match)");
             }
             return msg;
+        }
+
+        private void OnClick(object sender, EventArgs e)
+        {
+            if (!port.IsOpen)
+            {
+                port.Open();
+            }
+            else
+            {
+                port.Close();
+            }
+            PropertyChanged(null, null);
+            UpdateButton();
+        }
+
+        private void UpdateButton()
+        {
+            if (port.IsOpen)
+            {
+                BackColor = Color.Green;
+                Text = "Connected";
+            }
+            else
+            {
+                BackColor = Color.Red;
+                Text = "Disconnected";
+            }
         }
     }
     public struct MessageStruct

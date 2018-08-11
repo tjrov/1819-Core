@@ -1,9 +1,0 @@
-C:\Users\Henry\source\repos\1819-Core\1819-firmware\ControlStation\bin\Release\ControlStation.exe.config
-C:\Users\Henry\source\repos\1819-Core\1819-firmware\ControlStation\bin\Release\ControlStation.exe
-C:\Users\Henry\source\repos\1819-Core\1819-firmware\ControlStation\bin\Release\ControlStation.pdb
-C:\Users\Henry\source\repos\1819-Core\1819-firmware\ControlStation\obj\Release\ControlStation.csprojAssemblyReference.cache
-C:\Users\Henry\source\repos\1819-Core\1819-firmware\ControlStation\obj\Release\ControlStation.Properties.Resources.resources
-C:\Users\Henry\source\repos\1819-Core\1819-firmware\ControlStation\obj\Release\ControlStation.csproj.GenerateResource.cache
-C:\Users\Henry\source\repos\1819-Core\1819-firmware\ControlStation\obj\Release\ControlStation.csproj.CoreCompileInputs.cache
-C:\Users\Henry\source\repos\1819-Core\1819-firmware\ControlStation\obj\Release\ControlStation.exe
-C:\Users\Henry\source\repos\1819-Core\1819-firmware\ControlStation\obj\Release\ControlStation.pdb

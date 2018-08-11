@@ -96,4 +96,22 @@ namespace ControlStation
             throw new NotImplementedException();
         }
     }
+    public class StatusActuator : Actuator<SystemStatus>
+    {
+        public StatusActuator(SerialCommunication comms) : base(comms, 0x83)
+        {
+        }
+
+        protected override byte[] Convert(SystemStatus controlData)
+        {
+            byte[] result = new byte[1];
+            result[0] = (byte)controlData.Status;
+            return result;
+        }
+
+        protected override void Draw()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
