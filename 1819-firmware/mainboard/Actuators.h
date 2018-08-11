@@ -65,7 +65,8 @@ void initStatus() {
 }
 
 void resetBoard() {
-	digitalWrite(A2, LOW); //connected to RESET pin
+	pinMode(RESET, OUTPUT);
+	digitalWrite(RESET, LOW); //connected to RESET pin
 	while (true);
 }
 

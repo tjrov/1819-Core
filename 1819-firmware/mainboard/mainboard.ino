@@ -31,8 +31,7 @@ void setup() {
 	MCUSR = 0; //clear register holding cause of board reset
 	//prevents interference with bootloader
 
-	digitalWrite(A2, HIGH);
-	pinMode(A2, OUTPUT);
+	digitalWrite(RESET, HIGH); //turn on pullup to RESET pin
 
 	initLEDs();
 

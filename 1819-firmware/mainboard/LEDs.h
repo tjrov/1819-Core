@@ -2,6 +2,19 @@
  Code for controlling status LEDs
 */
 
+/*
+ LED codes:
+
+ Reboot
+ Blue flash 2x for bootloader (upload can happen during this time)
+ Red, green, blue cycle to test lamps
+ ROV firmware starts
+ Yellow - disconnected
+ Green solid - disarmed but connected
+ Green flashing - armed and connected
+ Red blinks - error state, number of blinks shows which error
+*/
+
 void controlLEDs() {
 	if (error == ALL_SYSTEMS_GO) {
 		switch (status) {
