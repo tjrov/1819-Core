@@ -59,15 +59,22 @@ namespace ControlStation
 
         void Tick100Hz(object sender, EventArgs e)
         {
-            //Handle running Tick4Hz on same thread at proper interval
-            if (tickCount > 25)
+            try
             {
-                Tick4Hz();
-                tickCount = 0;
+                //Handle running Tick4Hz on same thread at proper interval
+                if (tickCount > 25)
+                {
+                    Tick4Hz();
+                    tickCount = 0;
+                }
+                thrusters.Update();
+                imu.Update();
+                tickCount++;
+            } catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.StackTrace, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Communication history", comms.GetHistory() + ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            thrusters.Update();
-            imu.Update();
-            tickCount++;
         }
 
         private void InitializeComponent()

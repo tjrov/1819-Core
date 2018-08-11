@@ -86,6 +86,7 @@ public:
 private:
 
 	int32_t _temperature_actual;
+	int32_t _temperature_raw; //Added
 	int32_t _pressure_actual;
 
 	ms5803_addr _address; 		// Variable used to store I2C device address.

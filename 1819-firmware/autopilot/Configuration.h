@@ -7,7 +7,7 @@
 */
 #define SERIAL_BAUD 115200 //Max tested on tether so far. 500 kbaud possible in theory
 #define MAX_PACKET_LENGTH 64 //maximum possible message is 255 bytes, increase to that if needed
-#define SERIAL_TIMEOUT 500 //if a message is not received in this time, board goes disconnected
+#define SERIAL_TIMEOUT 1250 //if a message is not received in this time, board goes disconnected
 #define HEADER_BYTE 0x42 //all messages begin with 0x42 (of course :D)
 
 /*
@@ -36,14 +36,6 @@
 #define DEPTH_PRECISION ADC_256 //lowest precision reading for highest speed
 
 /*
- Status LED config. 
- Give an expression based on millis() to determine how LED flashes in each state
-*/
-#define DISCONNECTED_FLASH (millis() % 1000) < 100
-#define DISARMED_FLASH 1
-#define ARMED_FLASH (millis() % 1000) < 500
-
-/*
  Message command code definitions
 */
 enum COMMAND {
@@ -62,9 +54,10 @@ enum COMMAND {
 enum ERROR {
 	ALL_SYSTEMS_GO = 0,
 	IMU_FAILURE = 1,
-	COMMUNICATION_FAILURE = 2,
-	ESC_FAILURE = 3,
-	PRESSURE_SENSOR_FAILURE = 4
+	ESC_FAILURE = 2,
+	PRESSURE_SENSOR_FAILURE = 3,
+	INVALID_CHECKSUM = 4,
+	INVALID_COMMAND = 5
 };
 ERROR error;
 

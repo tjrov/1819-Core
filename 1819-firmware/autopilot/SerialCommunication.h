@@ -19,6 +19,7 @@ uint32_t lastComms = 0;
 
 MESSAGE rxData, txData;
 
+
 /*
  Function to be called repeatedly in loop() that receives Serial messages
  After execution, rxData holds the latest message received
@@ -51,13 +52,17 @@ void receiveMessage() {
 			if (index >= rxData.length) {
 				receiveProgress = 4;
 			}
-		} else if (receiveProgress == 4 && c == calculatedChecksum) { //checksum
-			receiveProgress = 5;
-			lastComms = millis(); //update time of most recent message
+		} else if (receiveProgress == 4) { //checksum
+			if (c == calculatedChecksum) { //is it ok?
+				receiveProgress = 5;
+				lastComms = millis(); //update time of most recent message
+			}
+			else {
+				error = INVALID_CHECKSUM;
+			}
 		}
 		else {
-			receiveProgress = -1;
-			error = COMMUNICATION_FAILURE;
+			receiveProgress = 0;
 		}
 	}
 }

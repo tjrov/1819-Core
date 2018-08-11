@@ -28,7 +28,7 @@ void initIMU() {
 
 	//try to setup IMU
 	if (!imu.begin()) {
-		errorCode = IMU_FAILURE;
+		error = IMU_FAILURE;
 	}
 }
 
@@ -120,7 +120,7 @@ void readDepth() {
 void readStatus() {
 	txData.command = STATUS_REQ;
 	txData.length = 3;
-	txData.data[0] = isArmed << 1 | isConnected;
-	txData.data[1] = errorCode;
+	txData.data[0] = status;
+	txData.data[1] = error;
 	txData.data[2] = analogRead(VOLT_MONITOR) >> 2;
 }

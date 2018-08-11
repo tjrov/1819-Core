@@ -33,9 +33,10 @@
     {
         ALL_SYSTEMS_GO = 0,
         IMU_FAILURE = 1,
-        COMMUNICATION_FAILURE = 2,
-        ESC_FAILURE = 3,
-        PRESSURE_SENSOR_FAILURE = 4
+        ESC_FAILURE = 2,
+        PRESSURE_SENSOR_FAILURE = 3,
+        INVALID_CHECKSUM = 4,
+        INVALID_COMMAND = 5
     }
     public struct SystemStatus
     {
@@ -46,29 +47,7 @@
         {
             get
             {
-                string temp;
-                switch (Error)
-                {
-                    case ROVError.ALL_SYSTEMS_GO:
-                        temp = "All systems go";
-                        break;
-                    case ROVError.IMU_FAILURE:
-                        temp = "IMU failure";
-                        break;
-                    case ROVError.COMMUNICATION_FAILURE:
-                        temp = "Communication failure";
-                        break;
-                    case ROVError.ESC_FAILURE:
-                        temp = "ESC failure";
-                        break;
-                    case ROVError.PRESSURE_SENSOR_FAILURE:
-                        temp = "Pressure sensor failure";
-                        break;
-                    default:
-                        temp = "Unknown. Welllllllll, s&*t.";
-                        break;
-                }
-                return "Error " + (int)Error + ": " + temp;
+                return "Error " + (int)Error + ": " + Error.ToString();
             }
         }
         public string StatusString

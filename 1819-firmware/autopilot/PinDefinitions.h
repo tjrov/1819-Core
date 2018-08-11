@@ -8,8 +8,10 @@
 //=====LIGHTS====================================================================================================
 //Set HIGH to turn on
 
-//STATUS LIGHT (blue color)
-#define STATUS_LED 13
+//STATUS LIGHTS
+#define RED 11
+#define GREEN 12
+#define BLUE 13
 
 //HEADLIGHTS (white color)
 #define LED_CTRL A3
