@@ -28,6 +28,7 @@ namespace ControlStation
             Enabled = false; //start greyed out (assume disconnected)
         }
 
+        //only enabled when port connected
         private void OnConnectionStatusChanged(object sender, EventArgs e)
         {
             Enabled = comms.IsPortOpen;

@@ -175,7 +175,7 @@ namespace ControlStation
             }
             else
             {
-                toggle.BackColor = Color.Red;
+                toggle.BackColor = Color.Yellow;
                 toggle.Text = "Disconnected";
             }
         }

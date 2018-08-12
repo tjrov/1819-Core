@@ -38,16 +38,14 @@ namespace ControlStation
         void Tick1Hz()
         {
             escs.Update();
-            tools.Update();
             system.Update();
-
             status.Update();
-            depth.Update();
         }
 
         void Tick10Hz()
         {
-
+            tools.Update();
+            tools.Update();
         }
 
         void Tick100Hz(object sender, EventArgs e)
@@ -128,7 +126,7 @@ namespace ControlStation
                 Interval = 10
             };
             timer100Hz.Tick += new EventHandler(Tick100Hz);
-            timer100Hz.Start();
+            //timer100Hz.Start();
         }
     }
 }

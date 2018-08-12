@@ -47,7 +47,7 @@ namespace ControlStation
          * [0][1] First ESC's speed value (-100 to 100 percent)
          * ... and so on for all 6 ESCs
          */
-        public PropulsionActuator(SerialCommunication comms) : base(comms, (byte)0x81)
+        public PropulsionActuator(SerialCommunication comms) : base(comms, 0x81)
         {
         }
 
@@ -86,8 +86,77 @@ namespace ControlStation
     }
     public class StatusActuator : Actuator<SystemStatus>
     {
+        private Button arm, reboot, upload;
+        private Timer flasher;
         public StatusActuator(SerialCommunication comms) : base(comms, 0x83)
         {
+            flasher = new Timer
+            {
+                Interval = 500
+            };
+            flasher.Tick += OnFlasherTick;
+            arm = new Button
+            {
+                Text = "Arm",
+                AutoSize = true,
+                BackColor = Color.Green
+            };
+            arm.Click += OnArmClick;
+            reboot = new Button
+            {
+                Text = "Reboot",
+                AutoSize = true
+            };
+            reboot.Click += OnRebootClick;
+            upload = new Button
+            {
+                Text = "Upload",
+                AutoSize = true
+            };
+            upload.Click += OnUploadClick;
+
+            Controls.Add(arm);
+            Controls.Add(reboot);
+            Controls.Add(upload);
+        }
+
+        private void OnFlasherTick(object sender, EventArgs e)
+        {
+            if(arm.BackColor == Color.Green)
+            {
+                arm.BackColor = Color.White;
+            } else
+            {
+                arm.BackColor = Color.Green;
+            }
+        }
+
+        private void OnRebootClick(object sender, EventArgs e)
+        {
+            value.Status = ROVStatus.REBOOT;
+            Update();
+        }
+
+        private void OnUploadClick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnArmClick(object sender, EventArgs e)
+        {
+            if(arm.Text == "Arm")
+            {
+                arm.Text = "Disarm";
+                value.Status = ROVStatus.ARMED;
+                flasher.Start();
+            }
+            if(arm.Text == "Disarm")
+            {
+                arm.Text = "Arm";
+                value.Status = ROVStatus.DISARMED;
+                flasher.Stop();
+                arm.BackColor = Color.Green;
+            }
         }
 
         protected override byte[] Convert(SystemStatus controlData)
@@ -95,6 +164,11 @@ namespace ControlStation
             byte[] result = new byte[1];
             result[0] = (byte)controlData.Status;
             return result;
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            
         }
     }
 }

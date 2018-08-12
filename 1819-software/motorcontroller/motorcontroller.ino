@@ -28,20 +28,19 @@ void setup() {
 	Wire.begin(ADDRESS);
 	Wire.setClock(400000);
 	Wire.onReceive(onReceive); //attach method as event
-
-	Serial.begin(115200);
 }
 
 // the loop function runs over and over again until power down or reset
 void loop() {
 	if (isTimeout()) { //disconnected from autopilot
-		digitalWrite(RED, HIGH);
+		digitalWrite(RED, HIGH); //yellow light
 		digitalWrite(GREEN, HIGH);
 		for (int i = 0; i < 3; i++) {
-			speeds[i] = 128;
+			speeds[i] = 128; //reset speeds to stopped
+			idleMotor(in1[i], in2[i]); //release motors
 		}
 	}
-	else { //in contact
+	else { //in contact with autopilot
 		bool isRunning = false;
 		//check if any motors are running
 		for (int i = 0; i < 3; i++) {
@@ -49,17 +48,21 @@ void loop() {
 				isRunning = true;
 			}
 		}
+		//control LEDs
 		if (isRunning) {
+			//flash green
 			digitalWrite(RED, LOW);
 			digitalWrite(GREEN, (millis() % 1000) < 500);
 		}
 		else {
+			//solid green
 			digitalWrite(RED, LOW);
 			digitalWrite(GREEN, HIGH);
 		}
-	}
-	for (int i = 0; i < 3; i++) {
-		setMotor(speeds[i], in1[i], in2[i]);
+		//drive motors
+		for (int i = 0; i < 3; i++) {
+			setMotor(speeds[i], in1[i], in2[i]);
+		}
 	}
 }
 
@@ -127,7 +130,12 @@ void setMotor(int val, int one, int two) {
 		analogWrite(two, (val - 128) * 2);
 	}
 	else {
-		digitalWrite(one, LOW);
-		digitalWrite(two, LOW);
+		digitalWrite(one, HIGH);
+		digitalWrite(two, HIGH);
 	}
+}
+
+void idleMotor(int one, int two) {
+	digitalWrite(one, LOW);
+	digitalWrite(two, LOW);
 }
