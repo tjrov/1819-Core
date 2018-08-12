@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Windows.Forms;
 
 namespace ControlStation
 {
+    //class that both sensors and actuators extend from
     public abstract class Widget<TData> : Panel where TData : new()
     {
         protected byte messageCommand;
@@ -16,12 +18,22 @@ namespace ControlStation
         {
             this.comms = comms;
             this.messageCommand = messageCommand;
-            value = new TData();
+            value = new TData(); //instantiate value object to avoid null pointer
 
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.comms.OnConnectionStatusChange += OnConnectionStatusChanged;
+
+            //AutoSize = true; //fit components
+            //AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            Size = new Size(100, 100);
             BorderStyle = BorderStyle.Fixed3D;
+            Enabled = false; //start greyed out (assume disconnected)
         }
+
+        private void OnConnectionStatusChanged(object sender, EventArgs e)
+        {
+            Enabled = comms.IsPortOpen;
+        }
+
         public abstract new void Update();
         protected abstract override void OnPaint(PaintEventArgs e);
     }

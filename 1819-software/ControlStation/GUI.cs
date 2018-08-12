@@ -24,29 +24,14 @@ namespace ControlStation
         private StatusSensor status;
         private ToolsActuator tools;
         private StatusActuator system;
+        //can we make this a list with a generic type?
+        //idk how in C#
+        private List<object> widgets;
+        private FlowLayoutPanel panel;
 
         public GUI()
         {
             InitializeComponent();
-            //start serial comms
-            comms = new SerialCommunication("COM1", 115200);
-
-            //construct sensor and actuator display objects
-            depth = new DepthSensor(comms);
-            imu = new OrientationSensor(comms);
-            thrusters = new PropulsionActuator(comms);
-            tools = new ToolsActuator(comms);
-            escs = new PropulsionSensor(comms);
-            status = new StatusSensor(comms);
-            system = new StatusActuator(comms);
-
-            //start timer
-            timer100Hz = new Timer();
-            timer100Hz.Interval = 10;
-            timer100Hz.Tick += new EventHandler(Tick100Hz);
-            //timer100Hz.Enabled = true;
-
-            Controls.Add(comms);
         }
 
         void Tick4Hz()
@@ -81,20 +66,54 @@ namespace ControlStation
 
         private void InitializeComponent()
         {
-            this.SuspendLayout();
+            // 
+            // panel
+            // 
+            this.panel = new FlowLayoutPanel();
+            this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel.Location = new System.Drawing.Point(0, 0);
+            this.panel.Size = new System.Drawing.Size(1280, 1024);
+            this.panel.TabIndex = 0;
             // 
             // GUI
             // 
             this.ClientSize = new System.Drawing.Size(1280, 1024);
+            this.Controls.Add(this.panel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "GUI";
-            //this.TopMost = true;
             this.Load += new System.EventHandler(this.GUI_Load);
             this.ResumeLayout(false);
+
         }
 
         private void GUI_Load(object sender, EventArgs e)
         {
+            //start serial comms
+            comms = new SerialCommunication("COM1", 115200);
+
+            //construct sensor and actuator display objects
+            depth = new DepthSensor(comms);
+            imu = new OrientationSensor(comms);
+            thrusters = new PropulsionActuator(comms);
+            tools = new ToolsActuator(comms);
+            escs = new PropulsionSensor(comms);
+            status = new StatusSensor(comms);
+            system = new StatusActuator(comms);
+
+            panel.Controls.Add(comms);
+
+            panel.Controls.Add(depth);
+            panel.Controls.Add(imu);
+            panel.Controls.Add(thrusters);
+            panel.Controls.Add(tools);
+            panel.Controls.Add(escs);
+            panel.Controls.Add(status);
+            panel.Controls.Add(system);
+
+            //start timer
+            timer100Hz = new Timer();
+            timer100Hz.Interval = 10;
+            timer100Hz.Tick += new EventHandler(Tick100Hz);
+            //timer100Hz.Enabled = true;
         }
     }
 }

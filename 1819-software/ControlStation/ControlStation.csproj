@@ -74,6 +74,9 @@
     <Compile Include="SerialCommunication.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Widget.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="ControlStationInterface.resx">
       <DependentUpon>ControlStationInterface.cs</DependentUpon>
     </EmbeddedResource>

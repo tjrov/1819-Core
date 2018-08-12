@@ -30,6 +30,14 @@ namespace ControlStation
 
         public event EventHandler OnConnectionStatusChange;
 
+        public bool IsPortOpen
+        {
+            get
+            {
+                return port.IsOpen;
+            }
+        }
+
         public SerialCommunication(string portName, int baudRate) : base()
         {
             //checks for a change in connection status at 10Hz

@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace ControlStation
 {
-    public abstract class Actuator<TData> : Widget<TData>
+    public abstract class Actuator<TData> : Widget<TData> where TData : new()
     {
         public TData Value
         {

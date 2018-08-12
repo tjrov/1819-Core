@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace ControlStation
 {
     //All ROV devices that generate information extend from this class
-    public abstract class Sensor<TData> : Widget<TData>
+    public abstract class Sensor<TData> : Widget<TData> where TData : new()
     {
         private byte messageLength;
         public TData Value
@@ -47,7 +47,7 @@ namespace ControlStation
         protected override void OnPaint(PaintEventArgs e) //default look of sensor
         {
             Graphics g = e.Graphics;
-            g.DrawString("Actuator\nPlaceholder", new Font(FontFamily.GenericSansSerif, 12), Brushes.Black, new Point(0, 0));
+            g.DrawString("Sensor\nPlaceholder", new Font(FontFamily.GenericSansSerif, 12), Brushes.Black, new Point(0, 0));
         }
     }
     public class OrientationSensor : Sensor<Orientation>
