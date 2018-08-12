@@ -1,0 +1,9 @@
+<VisualMicro>
+  <Program Name="autopilot" Ext=".ino" Location="C:\Users\Henry\source\repos\1819-Core\1819-software\mainboard">
+    <Debug InBreakLiveView="1" PerfStats="1" />
+    <Compile IncludeDebug="0" IncludesDebug="0" CompilerErrors="0" SketchName="autopilot" IsCompiled="1" />
+    <VCCodeModel>
+      <VCCodeMacros />
+    </VCCodeModel>
+  </Program>
+</VisualMicro>
