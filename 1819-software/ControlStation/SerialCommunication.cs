@@ -18,14 +18,17 @@ namespace ControlStation
      Data
      Checksum(XOR of length and all data bytes)
     */
-    public class SerialCommunication : Button, INotifyPropertyChanged
+    public class SerialCommunication : FlowLayoutPanel
     {
         private SerialPort port;
         private Timer checkTimer;
         private bool wasOpen;
-        private Queue<string> history; 
+        private Queue<string> history;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private Button toggle;
+        private Label info;
+
+        public event EventHandler OnConnectionStatusChange;
 
         public SerialCommunication(string portName, int baudRate) : base()
         {
@@ -39,21 +42,28 @@ namespace ControlStation
                 Interval = 100,
                 Enabled = true
             };
-            checkTimer.Tick += new EventHandler(OnCheckTimer);
+            checkTimer.Tick += OnCheckTimer;
 
-            Text = "Disconnected";
-            BackColor = Color.Red;
-            Click += new EventHandler(OnClick);
-        }
+            toggle = new Button() {
+                Text = "Disconnected",
+                BackColor = Color.Red,
+                AutoSize = true
+            };
+            toggle.Click += OnClick;
 
-        //fires when connection lost or regained
-        private void OnCheckTimer(object sender, EventArgs e)
-        {
-            if (port.IsOpen != wasOpen)
+            info = new Label()
             {
-                PropertyChanged(null, null);
-            }
-            wasOpen = port.IsOpen;
+                Text = String.Format("{0}@{1}kbaud", portName, baudRate / 1000.0),
+                AutoSize = true
+            };
+
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BorderStyle = BorderStyle.Fixed3D;
+            FlowDirection = FlowDirection.RightToLeft;
+
+            Controls.Add(toggle);
+            Controls.Add(info);
         }
 
         public void SendMessage(MessageStruct msg)
@@ -96,7 +106,7 @@ namespace ControlStation
         private MessageStruct ReceiveMessageHelper()
         {
             MessageStruct msg = new MessageStruct();
-            string temp = "RX:"
+            string temp = "RX:";
             while (ReadByte(ref temp) != 0x42); //read in until header byte reached
             msg.command = (byte)ReadByte(ref temp);
             msg.data = new byte[ReadByte(ref temp)];
@@ -142,22 +152,37 @@ namespace ControlStation
             {
                 port.Close();
             }
-            PropertyChanged(null, null);
             UpdateButton();
+            if (OnConnectionStatusChange != null) {
+                OnConnectionStatusChange(this, null);
+            }
         }
 
         private void UpdateButton()
         {
             if (port.IsOpen)
             {
-                BackColor = Color.Green;
-                Text = "Connected";
+                toggle.BackColor = Color.Green;
+                toggle.Text = "Connected";
             }
             else
             {
-                BackColor = Color.Red;
-                Text = "Disconnected";
+                toggle.BackColor = Color.Red;
+                toggle.Text = "Disconnected";
             }
+        }
+
+        private void OnCheckTimer(object sender, EventArgs e)
+        {
+            if (port.IsOpen != wasOpen)
+            {
+                UpdateButton();
+                if (OnConnectionStatusChange != null)
+                {
+                    OnConnectionStatusChange(this, EventArgs.Empty);
+                }
+            }
+            wasOpen = port.IsOpen;
         }
     }
     public struct MessageStruct

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,12 +9,10 @@ using System.Windows.Forms;
 namespace ControlStation
 {
     //All ROV devices that generate information extend from this class
-    public abstract class Sensor<T> : Panel where T : new()
+    public abstract class Sensor<TData> : Widget<TData>
     {
-        private byte messageCommand, messageLength;
-        private SerialCommunication comms;
-        private T value;
-        public T Value
+        private byte messageLength;
+        public TData Value
         {
             get
             {
@@ -21,34 +20,35 @@ namespace ControlStation
             }
         }
         //messageCommand is the command byte used to signal a read from this specific type of sensor
-        public Sensor(SerialCommunication comms, byte messageCommand, byte messageLength) : base()
+        public Sensor(SerialCommunication comms, byte messageCommand, byte messageLength) : base(comms, messageCommand)
         {
-            this.messageCommand = messageCommand;
             this.messageLength = messageLength;
-            this.comms = comms;
-            value = new T();
         }
-        public new void Update()
+        public override void Update()
         {
             //send an empty message with the command byte to request data from this sensor
             comms.SendMessage(new MessageStruct(messageCommand, 0));
             //wait for a response
-            /*MessageStruct dataMessage = comms.ReceiveMessage();
+            MessageStruct dataMessage = comms.ReceiveMessage();
             //check if it matches this type of sensor
             if (dataMessage.data.Length == messageLength
                 && dataMessage.command == messageCommand)
             {
                 //turn the bytes into usable values, then refresh the screen
                 Convert(dataMessage.data, ref value);
-                Draw();
+                Invalidate();
             }
             else
             {
                 throw new Exception("Attempted to update with invalid data message");
-            }*/
+            }
         }
-        public abstract void Draw();
-        protected abstract void Convert(byte[] data, ref T result);
+        protected abstract void Convert(byte[] data, ref TData result);
+        protected override void OnPaint(PaintEventArgs e) //default look of sensor
+        {
+            Graphics g = e.Graphics;
+            g.DrawString("Actuator\nPlaceholder", new Font(FontFamily.GenericSansSerif, 12), Brushes.Black, new Point(0, 0));
+        }
     }
     public class OrientationSensor : Sensor<Orientation>
     {
@@ -74,10 +74,6 @@ namespace ControlStation
             }
             result.Heading = ypr[0]; result.Pitch = ypr[1]; result.Roll = ypr[2];
         }
-        public override void Draw()
-        {
-            throw new NotImplementedException();
-        }
     }
     public class PropulsionSensor : Sensor<Dictionary<string, ESCStatus>>
     {
@@ -91,11 +87,6 @@ namespace ControlStation
          */
         public PropulsionSensor(SerialCommunication comms) : base(comms, 0x02, 12)
         {
-        }
-
-        public override void Draw()
-        {
-            throw new NotImplementedException();
         }
 
         protected override void Convert(byte[] data, ref Dictionary<string, ESCStatus> result)
@@ -123,11 +114,6 @@ namespace ControlStation
         {
         }
 
-        public override void Draw()
-        {
-            throw new NotImplementedException();
-        }
-
         protected override void Convert(byte[] data, ref double result)
         {
             result = ConvertUtils.BytesToDouble(data[0], data[1], 0, 30);
@@ -146,11 +132,6 @@ namespace ControlStation
         public StatusSensor(SerialCommunication comms) : base(comms, 0x05, 3)
         {
 
-        }
-
-        public override void Draw()
-        {
-            throw new NotImplementedException();
         }
 
         protected override void Convert(byte[] data, ref SystemStatus result)

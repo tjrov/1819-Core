@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +9,9 @@ using System.Windows.Forms;
 
 namespace ControlStation
 {
-    public abstract class Actuator<T> : Panel where T : new()
+    public abstract class Actuator<TData> : Widget<TData>
     {
-        private byte messageCommand;
-        private T value;
-        public T Value
+        public TData Value
         {
             get
             {
@@ -22,23 +21,22 @@ namespace ControlStation
             {
                 this.value = value;
                 Update();
-                Draw();
+                Invalidate();
             }
         }
-        private SerialCommunication comms;
-
-        public Actuator(SerialCommunication comms, byte messageCommand) : base()
+        public Actuator(SerialCommunication comms, byte messageCommand) : base(comms, messageCommand)
         {
-            this.messageCommand = messageCommand;
-            this.comms = comms;
-            value = new T();
         }
-        public new void Update()
+        public override void Update()
         {
             comms.SendMessage(new MessageStruct(messageCommand, Convert(value)));
         }
-        protected abstract byte[] Convert(T controlData);
-        protected abstract void Draw();
+        protected abstract byte[] Convert(TData controlData);
+        protected override void OnPaint(PaintEventArgs e) //default look
+        {
+            Graphics g = e.Graphics;
+            g.DrawString("Actuator\nPlaceholder", new Font(FontFamily.GenericSansSerif, 12), Brushes.Black, new Point(0, 0));
+        }
     }
     public class PropulsionActuator : Actuator<Dictionary<string, ESCStatus>>
     {
@@ -67,11 +65,6 @@ namespace ControlStation
             }
             return result;
         }
-
-        protected override void Draw()
-        {
-            throw new NotImplementedException();
-        }
     }
     public class ToolsActuator : Actuator<Dictionary<string, double>>
     {
@@ -90,11 +83,6 @@ namespace ControlStation
             }
             return result;
         }
-
-        protected override void Draw()
-        {
-            throw new NotImplementedException();
-        }
     }
     public class StatusActuator : Actuator<SystemStatus>
     {
@@ -107,11 +95,6 @@ namespace ControlStation
             byte[] result = new byte[1];
             result[0] = (byte)controlData.Status;
             return result;
-        }
-
-        protected override void Draw()
-        {
-            throw new NotImplementedException();
         }
     }
 }

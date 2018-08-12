@@ -45,6 +45,8 @@ namespace ControlStation
             timer100Hz.Interval = 10;
             timer100Hz.Tick += new EventHandler(Tick100Hz);
             //timer100Hz.Enabled = true;
+
+            Controls.Add(comms);
         }
 
         void Tick4Hz()
@@ -86,11 +88,9 @@ namespace ControlStation
             this.ClientSize = new System.Drawing.Size(1280, 1024);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "GUI";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.TopMost = true;
+            //this.TopMost = true;
             this.Load += new System.EventHandler(this.GUI_Load);
             this.ResumeLayout(false);
-
         }
 
         private void GUI_Load(object sender, EventArgs e)
