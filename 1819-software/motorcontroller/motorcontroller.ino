@@ -74,10 +74,9 @@ void loop() {
 */
 
 void onReceive(int numBytes) {
-	if (numBytes >= 5) { //full msg
-		Serial.println("yay");
+	if (Wire.available() >= 5) { //full msg
 		if (Wire.read() == HEADER_BYTE) { //first byte is header
-			uint8_t checksum;
+			uint8_t checksum = 0x00;
 			for (int i = 0; i < 3; i++) {
 				speeds[i] = Wire.read();
 				checksum ^= speeds[i];
@@ -92,7 +91,6 @@ void onReceive(int numBytes) {
 			}
 		}
 	}
-	Serial.println("nope");
 }
 
 void initLEDs() {

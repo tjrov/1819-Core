@@ -48,26 +48,14 @@
         {
             get
             {
-                return "Error " + (int)Error + ": " + Error.ToString();
+                return string.Format("{0} ({1})", Error.ToString(), (int)Error);
             }
         }
         public string StatusString
         {
             get
             {
-                switch (Status)
-                {
-                    case ROVStatus.DISARMED:
-                        return "Disarmed";
-                    case ROVStatus.ARMED:
-                        return "Armed";
-                    case ROVStatus.DISCONNECTED:
-                        return "Disconnected";
-                    case ROVStatus.REBOOT:
-                        return "Reboot";
-                    default:
-                        return "Unknown status, hijo de puta.";
-                }
+                return string.Format("{0} ({1})", Status.ToString(), (int)Status);
             }
         }
         public bool IsUndervolt

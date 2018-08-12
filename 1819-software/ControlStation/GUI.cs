@@ -15,7 +15,8 @@ namespace ControlStation
         private SerialCommunication comms;
 
         private Timer timer100Hz;
-        private int tickCount = 0;
+        private int count10Hz = 0;
+        private int count1Hz = 0;
 
         private OrientationSensor imu;
         private DepthSensor depth;
@@ -34,7 +35,7 @@ namespace ControlStation
             InitializeComponent();
         }
 
-        void Tick4Hz()
+        void Tick1Hz()
         {
             escs.Update();
             tools.Update();
@@ -44,21 +45,33 @@ namespace ControlStation
             depth.Update();
         }
 
+        void Tick10Hz()
+        {
+
+        }
+
         void Tick100Hz(object sender, EventArgs e)
         {
             try
             {
-                //Handle running Tick4Hz on same thread at proper interval
-                if (tickCount > 25)
+                //Handle running other timers on same thread at proper intervals
+                if (count10Hz > 10)
                 {
-                    Tick4Hz();
-                    tickCount = 0;
+                    Tick10Hz();
+                    count10Hz = 0;
+                }
+                if(count1Hz > 100)
+                {
+                    Tick1Hz();
+                    count1Hz = 0;
                 }
                 thrusters.Update();
                 imu.Update();
-                tickCount++;
+                count10Hz++;
+                count1Hz++;
             } catch(Exception ex)
             {
+                timer100Hz.Stop();
                 MessageBox.Show(ex.Message, ex.StackTrace, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 MessageBox.Show("Communication history", comms.GetHistory() + ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -88,7 +101,7 @@ namespace ControlStation
         private void GUI_Load(object sender, EventArgs e)
         {
             //start serial comms
-            comms = new SerialCommunication("COM1", 115200);
+            comms = new SerialCommunication("COM7", 115200);
 
             //construct sensor and actuator display objects
             depth = new DepthSensor(comms);
@@ -110,10 +123,12 @@ namespace ControlStation
             panel.Controls.Add(system);
 
             //start timer
-            timer100Hz = new Timer();
-            timer100Hz.Interval = 10;
+            timer100Hz = new Timer
+            {
+                Interval = 10
+            };
             timer100Hz.Tick += new EventHandler(Tick100Hz);
-            //timer100Hz.Enabled = true;
+            timer100Hz.Start();
         }
     }
 }

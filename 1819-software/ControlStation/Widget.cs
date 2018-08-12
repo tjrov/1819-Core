@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace ControlStation
 {
     //class that both sensors and actuators extend from
-    public abstract class Widget<TData> : Panel where TData : new()
+    public abstract class Widget<TData> : FlowLayoutPanel where TData : new()
     {
         protected byte messageCommand;
         protected TData value;
@@ -22,9 +22,8 @@ namespace ControlStation
 
             this.comms.OnConnectionStatusChange += OnConnectionStatusChanged;
 
-            //AutoSize = true; //fit components
-            //AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            Size = new Size(100, 100);
+            AutoSize = true; //fit components
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BorderStyle = BorderStyle.Fixed3D;
             Enabled = false; //start greyed out (assume disconnected)
         }

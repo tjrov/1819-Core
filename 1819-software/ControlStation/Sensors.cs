@@ -129,9 +129,27 @@ namespace ControlStation
          * [1] error code
          * [2] voltage available at ROV (0 to 20 volts)
          */
+        private Label status, error, voltage;
         public StatusSensor(SerialCommunication comms) : base(comms, 0x05, 3)
         {
-
+            status = new Label
+            {
+                Text = "Status: *",
+                AutoSize = true
+            };
+            error = new Label
+            {
+                Text = "Error: *",
+                AutoSize = true
+            };
+            voltage = new Label
+            {
+                Text = "* V",
+                AutoSize = true
+            };
+            Controls.Add(status);
+            Controls.Add(error);
+            Controls.Add(voltage);
         }
 
         protected override void Convert(byte[] data, ref SystemStatus result)
@@ -139,6 +157,13 @@ namespace ControlStation
             result.Status = (ROVStatus)data[0];
             result.Error = (ROVError)data[1];
             result.Voltage = ConvertUtils.ByteToDouble(data[2], 0, 20);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            status.Text = value.StatusString;
+            error.Text = value.ErrorString;
+            voltage.Text = string.Format("{0:00.0}V", value.Voltage);
         }
     }
 }
