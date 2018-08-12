@@ -26,7 +26,7 @@ namespace ControlStation
         private static void OnThreadException(object sender, ThreadExceptionEventArgs e)
         {
             //show an error box
-            MessageBox.Show(e.Exception.Message, e.Exception.StackTrace, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(e.Exception.StackTrace, e.Exception.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
             //quit the app
             //Application.ExitThread();
         }

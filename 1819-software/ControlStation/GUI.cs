@@ -27,7 +27,7 @@ namespace ControlStation
         private StatusActuator system;
         //can we make this a list with a generic type?
         //idk how in C#
-        private List<object> widgets;
+
         private FlowLayoutPanel panel;
 
         public GUI()
@@ -55,12 +55,12 @@ namespace ControlStation
                 //Handle running other timers on same thread at proper intervals
                 if (count10Hz > 10)
                 {
-                    Tick10Hz();
+                    //Tick10Hz();
                     count10Hz = 0;
                 }
                 if(count1Hz > 100)
                 {
-                    Tick1Hz();
+                    //Tick1Hz();
                     count1Hz = 0;
                 }
                 thrusters.Update();
@@ -69,9 +69,10 @@ namespace ControlStation
                 count1Hz++;
             } catch(Exception ex)
             {
+                //comms.ClosePort();
                 timer100Hz.Stop();
-                MessageBox.Show(ex.Message, ex.StackTrace, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                MessageBox.Show("Communication history", comms.GetHistory() + ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(ex.Message + ex.StackTrace, "Communication exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(comms.GetHistory() + ex.Message, "Communication history", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -93,13 +94,15 @@ namespace ControlStation
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Load += new System.EventHandler(this.GUI_Load);
             this.ResumeLayout(false);
+            //this.TopMost = true;
 
         }
 
         private void GUI_Load(object sender, EventArgs e)
         {
             //start serial comms
-            comms = new SerialCommunication("COM7", 115200);
+            comms = new SerialCommunication("COM1", 115200);
+            comms.OnConnectionStatusChanged += OnConnectionStatusChanged;
 
             //construct sensor and actuator display objects
             depth = new DepthSensor(comms);
@@ -120,13 +123,18 @@ namespace ControlStation
             panel.Controls.Add(status);
             panel.Controls.Add(system);
 
-            //start timer
+            //get timer ready
             timer100Hz = new Timer
             {
-                Interval = 10
+                Interval = 100
             };
             timer100Hz.Tick += new EventHandler(Tick100Hz);
-            //timer100Hz.Start();
+        }
+
+        private void OnConnectionStatusChanged(object sender, EventArgs e)
+        {
+            //stop communicating if the port has closed
+            timer100Hz.Enabled = comms.IsPortOpen;
         }
     }
 }

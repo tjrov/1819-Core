@@ -157,6 +157,7 @@ namespace ControlStation
                 flasher.Stop();
                 arm.BackColor = Color.Green;
             }
+            Update();
         }
 
         protected override byte[] Convert(SystemStatus controlData)
@@ -164,11 +165,6 @@ namespace ControlStation
             byte[] result = new byte[1];
             result[0] = (byte)controlData.Status;
             return result;
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            
         }
     }
 }

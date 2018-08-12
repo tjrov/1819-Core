@@ -28,7 +28,7 @@ namespace ControlStation
         private Button toggle;
         private Label info;
 
-        public event EventHandler OnConnectionStatusChange;
+        public event EventHandler OnConnectionStatusChanged;
 
         public bool IsPortOpen
         {
@@ -38,10 +38,15 @@ namespace ControlStation
             }
         }
 
+        public void ClosePort()
+        {
+            port.Close();
+        }
+
         public SerialCommunication(string portName, int baudRate) : base()
         {
             //checks for a change in connection status at 10Hz
-            port = new SerialPort(portName, baudRate, Parity.None, 8, StopBits.One);
+            port = new SerialPort(portName, baudRate);
 
             history = new Queue<string>();
 
@@ -54,7 +59,7 @@ namespace ControlStation
 
             toggle = new Button() {
                 Text = "Disconnected",
-                BackColor = Color.Red,
+                BackColor = Color.Yellow,
                 AutoSize = true
             };
             toggle.Click += OnClick;
@@ -91,12 +96,11 @@ namespace ControlStation
             }
             //add checksum and send off
             temp[temp.Length - 1] = calculatedChecksum;
-            port.Write(temp, 0, temp.Length);
 
             //note transmission in history
-            history.Enqueue("TX: " + temp);
+            history.Enqueue(WriteBytes(temp));
             //limit size to ten messages total
-            if(history.Count > 10)
+            while(history.Count > 10)
             {
                 history.Dequeue();
             }
@@ -105,39 +109,52 @@ namespace ControlStation
         {
             //after sending a request for sensor data, the ROV replies with info
             //only allow 10 ms for this to occur
-            var task = Task.Run(() => ReceiveMessageHelper());
+            return ReceiveMessageHelper();
+            /*var task = Task.Run(() => ReceiveMessageHelper());
             if (task.Wait(TimeSpan.FromMilliseconds(10)))
                 return task.Result;
             else
-                throw new Exception("Timed out receiving data");
+                throw new Exception("Timed out receiving data");*/
         }
         private MessageStruct ReceiveMessageHelper()
         {
             MessageStruct msg = new MessageStruct();
-            string temp = "RX:";
+            string temp = "RX: ";
             while (ReadByte(ref temp) != 0x42); //read in until header byte reached
             msg.command = (byte)ReadByte(ref temp);
             msg.data = new byte[ReadByte(ref temp)];
             byte calculatedChecksum = (byte)msg.data.Length; //start calculating a checksum
             for (int i = 0; i < msg.data.Length; i++)
             {
-                //read in all the data bytes
+                //read in bytes one by one, calculating checksum as we go
                 msg.data[i] = (byte)ReadByte(ref temp);
                 calculatedChecksum ^= msg.data[i];
             }
-            if (calculatedChecksum != ReadByte(ref temp)) //see if received checksum matches calculated one
-            {
-                throw new Exception("Received corrupted data (Checksums did not match)");
-            }
+            byte actualChecksum = (byte)ReadByte(ref temp);
             history.Enqueue(temp);
+            if (calculatedChecksum != actualChecksum) //see if received checksum matches calculated one
+            {
+                throw new Exception(string.Format("Received corrupted data (Calculated checksum of {0} did not match received {1})", calculatedChecksum, actualChecksum));
+            }
             return msg;
         }
 
         private int ReadByte(ref string history)
         {
             int x = port.ReadByte();
-            history += " " + x;
+            history += x + " ";
             return x;
+        }
+
+        private string WriteBytes(byte[] bytes)
+        {
+            port.Write(bytes, 0, bytes.Length);
+            string result = "TX: ";
+            for(int i = 0; i < bytes.Length; i++)
+            {
+                result += bytes[i] + " ";
+            }
+            return result;
         }
 
         public string GetHistory()
@@ -146,6 +163,11 @@ namespace ControlStation
             while(history.Count > 0)
             {
                 result += history.Dequeue() + "\n";
+            }
+            result += "RX Buffer: ";
+            while(port.BytesToRead > 0)
+            {
+                result += port.ReadByte() + " ";
             }
             return result;
         }
@@ -161,8 +183,8 @@ namespace ControlStation
                 port.Close();
             }
             UpdateButton();
-            if (OnConnectionStatusChange != null) {
-                OnConnectionStatusChange(this, null);
+            if (OnConnectionStatusChanged != null) {
+                OnConnectionStatusChanged(this, null);
             }
         }
 
@@ -185,9 +207,9 @@ namespace ControlStation
             if (port.IsOpen != wasOpen)
             {
                 UpdateButton();
-                if (OnConnectionStatusChange != null)
+                if (OnConnectionStatusChanged != null)
                 {
-                    OnConnectionStatusChange(this, EventArgs.Empty);
+                    OnConnectionStatusChanged(this, EventArgs.Empty);
                 }
             }
             wasOpen = port.IsOpen;

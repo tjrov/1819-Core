@@ -46,7 +46,7 @@ void setup() {
 	//initalize subsystems (status changes based on init errors)
 	//initIMU();
 	//initDepth();
-	initTools();
+	//initTools();
 	//initESCs();
 
 	if (error != ALL_SYSTEMS_GO) { //if we can't init
@@ -95,8 +95,8 @@ void processMessage() {
 				//writeESCs();
 			break; //no need to send data in response to actuator commands
 		case TOOLS_CMD:
-			//if (status == ARMED)
-				writeTools();
+			if (status == ARMED)
+				//writeTools();
 			break; //ditto
 		case STATUS_CMD:
 			writeStatus();
@@ -104,15 +104,15 @@ void processMessage() {
 
 			//Sensor requests
 		case IMU_REQ:
-			//readIMU();
+			readIMU();
 			sendMessage();
 			break;
 		case ESC_REQ:
-			//readESCs();
+			readESCs();
 			sendMessage();
 			break;
 		case DEPTH_REQ:
-			//readDepth();
+			readDepth();
 			sendMessage();
 			break;
 		case STATUS_REQ:

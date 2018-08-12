@@ -33,6 +33,7 @@ void initIMU() {
 }
 
 void readIMU() {
+	/*
 	//refresh data from IMU
 	imu.readAccel();
 	imu.readMag();
@@ -58,28 +59,28 @@ void readIMU() {
 	//Convert double to int
 	int headingInt = (int)mapDouble(heading, -PI, PI, -32768, 32767);
 	int pitchInt = (int)mapDouble(pitch, -PI, PI, -32768, 32767);
-	int rollInt = (int)mapDouble(roll, -PI, PI, -32768, 32767);
+	int rollInt = (int)mapDouble(roll, -PI, PI, -32768, 32767);*/
 
 	//prepare txData for transmission
 	txData.command = IMU_REQ;
 	txData.length = 6;
-	txData.data[0] = headingInt & 0x00FF;
+	/*txData.data[0] = headingInt & 0x00FF;
 	txData.data[1] = headingInt >> 8;
 	txData.data[0] = pitchInt & 0x00FF;
 	txData.data[1] = pitchInt >> 8;
 	txData.data[0] = rollInt & 0x00FF;
-	txData.data[1] = rollInt >> 8;
+	txData.data[1] = rollInt >> 8;*/
 }
 
 void readESCs() {
 	txData.command = ESC_REQ;
 	txData.length = 12;
 	//refresh data from ESCs
-	for (int i = 0; i < 6; i++) {
+	/*for (int i = 0; i < 6; i++) {
 		escs[i]->update();
 		txData.data[i * 2] = (uint8_t)mapDouble(escs[i]->rpm(), 0, 5000, 0, 255);
 		txData.data[i * 2 + 1] = (uint8_t)mapDouble(escs[i]->temperature(), 0, 100, 0, 255);
-	}
+	}*/
 }
 
 MS5803 depth(DEPTH_ADDRESS);
@@ -102,7 +103,7 @@ void readDepth() {
 	//1mm resolution of depth with a 0.5ms response time
 	//subtract pressure of air on surface; it doesn't factor
 	//into the pressure caused by the water column
-	double depthDouble = depth.getPressure(ADC_256) - BAROMETRIC_PRESSURE;
+	/*double depthDouble = depth.getPressure(ADC_256) - BAROMETRIC_PRESSURE;
 	//depth = pressure / (density * acceleration)
 	//where depth is in meters, pressure is in Pascals (N/m^2)
 	//density is in kilograms per cubic meter, 
@@ -110,11 +111,11 @@ void readDepth() {
 	depthDouble /= 1000.0 * GRAVITATIONAL_ACCELERATION;
 
 	//now convert to bytes and prepare txData
-	int intDepth = (int)mapDouble(depthDouble, 0, 30, -32768, 32767);
+	int intDepth = (int)mapDouble(depthDouble, 0, 30, -32768, 32767);*/
 	txData.command = DEPTH_REQ;
 	txData.length = 2;
-	txData.data[0] = intDepth & 0x00FF;
-	txData.data[1] = intDepth >> 8;
+	/*txData.data[0] = intDepth & 0x00FF;
+	txData.data[1] = intDepth >> 8;*/
 }
 
 void readStatus() {

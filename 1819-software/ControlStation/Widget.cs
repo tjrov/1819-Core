@@ -20,7 +20,7 @@ namespace ControlStation
             this.messageCommand = messageCommand;
             value = new TData(); //instantiate value object to avoid null pointer
 
-            this.comms.OnConnectionStatusChange += OnConnectionStatusChanged;
+            this.comms.OnConnectionStatusChanged += OnConnectionStatusChanged;
 
             AutoSize = true; //fit components
             AutoSizeMode = AutoSizeMode.GrowAndShrink;

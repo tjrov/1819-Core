@@ -31,16 +31,21 @@ namespace ControlStation
             //wait for a response
             MessageStruct dataMessage = comms.ReceiveMessage();
             //check if it matches this type of sensor
-            if (dataMessage.data.Length == messageLength
-                && dataMessage.command == messageCommand)
+            if (dataMessage.data.Length == messageLength)
             {
-                //turn the bytes into usable values, then refresh the screen
-                Convert(dataMessage.data, ref value);
-                Invalidate();
+                if (dataMessage.command == messageCommand)
+                {
+                    //turn the bytes into usable values, then refresh the screen
+                    Convert(dataMessage.data, ref value);
+                    Invalidate();
+                } else
+                {
+                    throw new Exception(string.Format("Attempted to update with invalid data message (command was {0} instead of {1})", dataMessage.command, messageCommand));
+                }
             }
             else
             {
-                throw new Exception("Attempted to update with invalid data message");
+                throw new Exception(string.Format("Attempted to update with invalid data message (length was {0} instead of {1})", dataMessage.data.Length, messageLength));
             }
         }
         protected abstract void Convert(byte[] data, ref TData result);
@@ -61,7 +66,7 @@ namespace ControlStation
          * [4][5] Roll ...
          */
 
-        public OrientationSensor(SerialCommunication comms) : base(comms, (byte)0x01, (byte)8)
+        public OrientationSensor(SerialCommunication comms) : base(comms, (byte)0x01, (byte)6)
         {
         }
         protected override void Convert(byte[] data, ref Orientation result)
