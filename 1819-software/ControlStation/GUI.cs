@@ -27,8 +27,9 @@ namespace ControlStation
         private StatusSensor status;
         private ToolsActuator tools;
         private StatusActuator system;
-        //can we make this a list with a generic type?
-        //idk how in C#
+
+        private List<IDevice> deviceList;
+        private List<DevicePanel> displayList;
 
         private FlowLayoutPanel panel;
 

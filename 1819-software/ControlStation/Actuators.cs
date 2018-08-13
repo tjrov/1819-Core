@@ -9,7 +9,8 @@ using System.Windows.Forms;
 
 namespace ControlStation
 {
-    public abstract class Actuator<TData> : Device<TData> where TData : new()
+    public interface IActuator : IDevice { }
+    public abstract class Actuator<TData> : Device<TData>, IActuator where TData : new()
     {
         public TData Value
         {

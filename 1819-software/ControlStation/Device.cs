@@ -8,8 +8,13 @@ using System.Windows.Forms;
 
 namespace ControlStation
 {
+    public interface IDevice
+    {
+        void Update();
+        event EventHandler OnUpdated;
+    }
     //class that both sensors and actuators extend from
-    public abstract class Device<TData> where TData : new()
+    public abstract class Device<TData> : IDevice where TData : new()
     {
         protected byte messageCommand;
         protected TData value;

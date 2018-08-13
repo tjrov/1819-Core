@@ -9,8 +9,9 @@ using System.Windows.Forms;
 
 namespace ControlStation
 {
+    public interface ISensor : IDevice { }
     //All ROV devices that generate information extend from this class
-    public abstract class Sensor<TData> : Device<TData> where TData : new()
+    public abstract class Sensor<TData> : Device<TData>, ISensor where TData : new()
     {
         private byte messageLength;
         public TData Value

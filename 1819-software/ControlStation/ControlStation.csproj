@@ -52,6 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actuators.cs" />
+    <Compile Include="DevicePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controller.cs" />
     <Compile Include="ControlStationInterface.cs">
       <SubType>Form</SubType>
