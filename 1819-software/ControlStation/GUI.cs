@@ -117,16 +117,16 @@ namespace ControlStation
 
         private void Loop1Hz()
         {
-            //escs.Update();
+            escs.Update();
             system.Update();
             status.Update();
         }
 
         private void Loop10Hz()
         {
-            /*imu.Update();
+            imu.Update();
             depth.Update();
-            tools.Update();*/
+            tools.Update();
         }
 
         private void Loop100Hz()
