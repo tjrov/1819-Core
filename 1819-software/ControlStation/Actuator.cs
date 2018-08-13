@@ -84,6 +84,7 @@ namespace ControlStation
         private Timer flasher;
         public StatusActuator(SerialCommunication comms) : base(comms, 0x83)
         {
+            FlowDirection = FlowDirection.TopDown;
             arm = new Button
             {
                 Text = "Arm",
@@ -111,6 +112,7 @@ namespace ControlStation
             Controls.Add(arm);
             Controls.Add(reboot);
             Controls.Add(upload);
+            Invalidate();
         }
 
         protected override byte[] Convert(SystemStatus controlData)
@@ -151,6 +153,7 @@ namespace ControlStation
         private void OnRebootClick(object sender, EventArgs e)
         {
             Value.Status = ROVStatus.REBOOT;
+            comms.ClosePort();
         }
 
         private void OnUploadClick(object sender, EventArgs e)

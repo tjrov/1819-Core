@@ -16,7 +16,7 @@ namespace ControlStation
 
         private BackgroundWorker commsBackgroundWorker;
         private long lastLoopTime;
-        private long loopTime = TimeSpan.TicksPerMillisecond * 50;
+        private long loopTime = TimeSpan.TicksPerMillisecond * 20;
         private int count10Hz = 0;
         private int count1Hz = 0;
 
@@ -65,7 +65,7 @@ namespace ControlStation
         private void GUI_Load(object sender, EventArgs e)
         {
             //start serial comms
-            comms = new SerialCommunication("COM7", 115200);
+            comms = new SerialCommunication("COM7", 250000);
             comms.OnConnectionStatusChanged += OnConnectionStatusChanged;
             panel.Controls.Add(comms);
 
@@ -73,7 +73,7 @@ namespace ControlStation
             depth = new DepthSensor(comms);
             imu = new OrientationSensor(comms);
             escs = new PropulsionSensor(comms);
-            thrusters = new PropulsionActuator(comms, escs);
+            thrusters = new PropulsionActuator(comms);
             tools = new ToolsActuator(comms);
             status = new StatusSensor(comms);
             system = new StatusActuator(comms);
@@ -118,8 +118,8 @@ namespace ControlStation
         private void Loop1Hz()
         {
             //escs.Update();
-            status.Update();
             system.Update();
+            status.Update();
         }
 
         private void Loop10Hz()
@@ -131,7 +131,7 @@ namespace ControlStation
 
         private void Loop100Hz()
         {
-            //thrusters.Update();
+            thrusters.Update();
         }
 
         private void CommsBackgroundLoop(object sender, DoWorkEventArgs e)
@@ -144,11 +144,11 @@ namespace ControlStation
 
                     count10Hz++;
                     count1Hz++;
-                    if(count10Hz > 10)
+                    if(count10Hz > 5)
                     {
                         count10Hz = 0;
                         Loop10Hz();
-                    } else if(count1Hz > 20)
+                    } else if(count1Hz > 50)
                     {
                         count1Hz = 0;
                         Loop1Hz();

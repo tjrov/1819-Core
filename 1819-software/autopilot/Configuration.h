@@ -5,7 +5,7 @@
 /*
  Serial config
 */
-#define SERIAL_BAUD 115200 //Max tested on tether so far. 500 kbaud possible in theory
+#define SERIAL_BAUD 250000 //Max tested on tether so far. 500 kbaud possible in theory
 #define MAX_PACKET_LENGTH 64 //maximum possible message is 255 bytes, increase to that if needed
 #define SERIAL_TIMEOUT 2000 //if a message is not received in this time, board goes disconnected
 #define HEADER_BYTE 0x42 //all messages begin with 0x42 (of course :D)
