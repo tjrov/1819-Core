@@ -5,7 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ControlStation
@@ -14,7 +14,9 @@ namespace ControlStation
     {
         private SerialCommunication comms;
 
-        private Timer timer100Hz;
+        private BackgroundWorker commsBackgroundWorker;
+        private long lastLoopTime;
+        private long loopTime = TimeSpan.TicksPerMillisecond * 50;
         private int count10Hz = 0;
         private int count1Hz = 0;
 
@@ -30,50 +32,11 @@ namespace ControlStation
 
         private FlowLayoutPanel panel;
 
+        private Label label = new Label();
+
         public GUI()
         {
             InitializeComponent();
-        }
-
-        void Tick1Hz()
-        {
-            escs.Update();
-            system.Update();
-            status.Update();
-        }
-
-        void Tick10Hz()
-        {
-            tools.Update();
-            tools.Update();
-        }
-
-        void Tick100Hz(object sender, EventArgs e)
-        {
-            try
-            {
-                //Handle running other timers on same thread at proper intervals
-                if (count10Hz > 10)
-                {
-                    //Tick10Hz();
-                    count10Hz = 0;
-                }
-                if(count1Hz > 100)
-                {
-                    //Tick1Hz();
-                    count1Hz = 0;
-                }
-                thrusters.Update();
-                imu.Update();
-                count10Hz++;
-                count1Hz++;
-            } catch(Exception ex)
-            {
-                //comms.ClosePort();
-                timer100Hz.Stop();
-                MessageBox.Show(ex.Message + ex.StackTrace, "Communication exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                MessageBox.Show(comms.GetHistory() + ex.Message, "Communication history", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
         }
 
         private void InitializeComponent()
@@ -91,6 +54,7 @@ namespace ControlStation
             // 
             this.ClientSize = new System.Drawing.Size(1280, 1024);
             this.Controls.Add(this.panel);
+            panel.Controls.Add(label);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Load += new System.EventHandler(this.GUI_Load);
             this.ResumeLayout(false);
@@ -115,26 +79,92 @@ namespace ControlStation
 
             panel.Controls.Add(comms);
 
-            panel.Controls.Add(depth);
-            panel.Controls.Add(imu);
-            panel.Controls.Add(thrusters);
-            panel.Controls.Add(tools);
-            panel.Controls.Add(escs);
-            panel.Controls.Add(status);
-            panel.Controls.Add(system);
-
-            //get timer ready
-            timer100Hz = new Timer
-            {
-                Interval = 100
-            };
-            timer100Hz.Tick += new EventHandler(Tick100Hz);
+            //does communication on a background thread
+            commsBackgroundWorker = new BackgroundWorker();
+            commsBackgroundWorker.DoWork += CommsBackgroundLoop;
+            commsBackgroundWorker.RunWorkerCompleted += OnCommsBackgroundLoopExited;
+            commsBackgroundWorker.WorkerSupportsCancellation = true;
         }
 
         private void OnConnectionStatusChanged(object sender, EventArgs e)
         {
-            //stop communicating if the port has closed
-            timer100Hz.Enabled = comms.IsPortOpen;
+            //start or stop the background thread on port connect/disconnect
+            if (comms.PortIsOpen)
+            {
+                if (!commsBackgroundWorker.IsBusy)
+                {
+                    commsBackgroundWorker.RunWorkerAsync();
+                }
+            }
+            else
+            {
+                if (!commsBackgroundWorker.CancellationPending)
+                {
+                    //no longer needed since while loop exits on port close
+                    //commsBackgroundWorker.CancelAsync();
+                }
+            }
+        }
+
+        private void Loop100Hz(object sender, EventArgs e)
+        {
+            count10Hz++;
+            count1Hz++;
+            //Handle running other timers on same thread at proper intervals
+            if (count10Hz > 10)
+            {
+                Loop10Hz();
+                count10Hz = 0;
+            }
+            else if (count1Hz > 100)
+            {
+                Loop1Hz();
+                count1Hz = 0;
+            }
+            else
+            {
+                thrusters.Update();
+            }
+            //imu.Update();
+            //depth.Update();
+        }
+
+        private void Loop1Hz()
+        {
+            escs.Update();
+            status.Update();
+        }
+
+        private void Loop10Hz()
+        {
+            imu.Update();
+            depth.Update();
+        }
+
+        private void CommsBackgroundLoop(object sender, DoWorkEventArgs e)
+        {
+            while (comms.PortIsOpen)
+            {
+                if ((DateTime.Now.Ticks - lastLoopTime) > loopTime)
+                {
+                    lastLoopTime = DateTime.Now.Ticks;
+
+                    thrusters.Update();
+                }
+                Thread.Sleep(1);
+            }
+        }
+
+        private void OnCommsBackgroundLoopExited(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if(e.Error != null)
+            {
+                comms.ClosePort();
+                //show recent communications for debugging purposes
+                MessageBox.Show(comms.GetHistory() + e.Error.Message, "Communication history",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                throw e.Error; //so that the main method will show a dialog
+            }
         }
     }
 }

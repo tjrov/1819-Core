@@ -51,9 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actuators.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Actuators.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="ControlStationInterface.cs">
       <SubType>Form</SubType>
@@ -68,15 +66,11 @@
     </Compile>
     <Compile Include="MainCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sensors.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Sensors.cs" />
     <Compile Include="SerialCommunication.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Widget.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Device.cs" />
     <EmbeddedResource Include="ControlStationInterface.resx">
       <DependentUpon>ControlStationInterface.cs</DependentUpon>
     </EmbeddedResource>

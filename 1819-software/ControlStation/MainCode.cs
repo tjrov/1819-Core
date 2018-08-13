@@ -12,7 +12,7 @@ namespace ControlStation
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        [STAThread]
+        [STAThread] //I commented this out and the GUI stopped crashing. Why? Do we need this for winforms?
         static void Main()
         {
             Application.EnableVisualStyles();
@@ -26,7 +26,7 @@ namespace ControlStation
         private static void OnThreadException(object sender, ThreadExceptionEventArgs e)
         {
             //show an error box
-            MessageBox.Show(e.Exception.StackTrace, e.Exception.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            ThreadExceptionDialog ted = new ThreadExceptionDialog(e.Exception);
             //quit the app
             //Application.ExitThread();
         }

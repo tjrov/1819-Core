@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace ControlStation
 {
-    public abstract class Actuator<TData> : Widget<TData> where TData : new()
+    public abstract class Actuator<TData> : Device<TData> where TData : new()
     {
         public TData Value
         {
@@ -21,7 +21,6 @@ namespace ControlStation
             {
                 this.value = value;
                 Update();
-                Invalidate();
             }
         }
         public Actuator(SerialCommunication comms, byte messageCommand) : base(comms, messageCommand)
@@ -30,13 +29,9 @@ namespace ControlStation
         public override void Update()
         {
             comms.SendMessage(new MessageStruct(messageCommand, Convert(value)));
+            FireOnUpdated();
         }
         protected abstract byte[] Convert(TData controlData);
-        protected override void OnPaint(PaintEventArgs e) //default look
-        {
-            Graphics g = e.Graphics;
-            g.DrawString("Actuator\nPlaceholder", new Font(FontFamily.GenericSansSerif, 12), Brushes.Black, new Point(0, 0));
-        }
     }
     public class PropulsionActuator : Actuator<Dictionary<string, ESCStatus>>
     {
@@ -90,7 +85,7 @@ namespace ControlStation
         private Timer flasher;
         public StatusActuator(SerialCommunication comms) : base(comms, 0x83)
         {
-            flasher = new Timer
+            /*flasher = new Timer
             {
                 Interval = 500
             };
@@ -117,10 +112,10 @@ namespace ControlStation
 
             Controls.Add(arm);
             Controls.Add(reboot);
-            Controls.Add(upload);
+            Controls.Add(upload);*/
         }
 
-        private void OnFlasherTick(object sender, EventArgs e)
+        /*private void OnFlasherTick(object sender, EventArgs e)
         {
             if(arm.BackColor == Color.Green)
             {
@@ -134,7 +129,7 @@ namespace ControlStation
         private void OnRebootClick(object sender, EventArgs e)
         {
             value.Status = ROVStatus.REBOOT;
-            Update();
+            Update(this, null);
         }
 
         private void OnUploadClick(object sender, EventArgs e)
@@ -158,7 +153,7 @@ namespace ControlStation
                 arm.BackColor = Color.Green;
             }
             Update();
-        }
+        }*/
 
         protected override byte[] Convert(SystemStatus controlData)
         {
