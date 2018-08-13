@@ -1,4 +1,4 @@
-﻿namespace ControlStation
+﻿/*namespace ControlStation
 {
     partial class ControlStationInterface
     {
@@ -483,5 +483,5 @@
         private System.Windows.Forms.Label verticalDistanceLabel;
         private System.Windows.Forms.Button clickyBoi;
     }
-}
+}*/
 

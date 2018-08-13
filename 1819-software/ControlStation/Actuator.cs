@@ -9,8 +9,7 @@ using System.Windows.Forms;
 
 namespace ControlStation
 {
-    public interface IActuator : IDevice { }
-    public abstract class Actuator<TData> : Device<TData>, IActuator where TData : new()
+    public abstract class Actuator<TData> : Device<TData> where TData : new()
     {
         public TData Value
         {
@@ -21,7 +20,6 @@ namespace ControlStation
             set
             {
                 this.value = value;
-                Update();
             }
         }
         public Actuator(SerialCommunication comms, byte messageCommand) : base(comms, messageCommand)
@@ -86,16 +84,11 @@ namespace ControlStation
         private Timer flasher;
         public StatusActuator(SerialCommunication comms) : base(comms, 0x83)
         {
-            /*flasher = new Timer
-            {
-                Interval = 500
-            };
-            flasher.Tick += OnFlasherTick;
             arm = new Button
             {
                 Text = "Arm",
-                AutoSize = true,
-                BackColor = Color.Green
+                BackColor = Color.Green,
+                AutoSize = true
             };
             arm.Click += OnArmClick;
             reboot = new Button
@@ -110,18 +103,46 @@ namespace ControlStation
                 AutoSize = true
             };
             upload.Click += OnUploadClick;
-
+            flasher = new Timer
+            {
+                Interval = 500,
+            };
+            flasher.Tick += OnFlasherTick;
             Controls.Add(arm);
             Controls.Add(reboot);
-            Controls.Add(upload);*/
+            Controls.Add(upload);
         }
 
-        /*private void OnFlasherTick(object sender, EventArgs e)
+        protected override byte[] Convert(SystemStatus controlData)
         {
-            if(arm.BackColor == Color.Green)
+            byte[] result = new byte[1];
+            result[0] = (byte)controlData.Status;
+            return result;
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            //flash button for armed state
+            if (Value.Status == ROVStatus.ARMED)
+            {
+                arm.Text = "Disarm";
+                flasher.Start();
+            }
+            //solid green for disarmed state
+            else
+            {
+                arm.Text = "Arm";
+                flasher.Stop();
+                arm.BackColor = Color.Green;
+            }
+        }
+        private void OnFlasherTick(object sender, EventArgs e)
+        {
+            if (arm.BackColor == Color.Green)
             {
                 arm.BackColor = Color.White;
-            } else
+            }
+            else
             {
                 arm.BackColor = Color.Green;
             }
@@ -129,38 +150,29 @@ namespace ControlStation
 
         private void OnRebootClick(object sender, EventArgs e)
         {
-            value.Status = ROVStatus.REBOOT;
-            Update(this, null);
+            Value.Status = ROVStatus.REBOOT;
         }
 
         private void OnUploadClick(object sender, EventArgs e)
         {
             throw new NotImplementedException();
+            //Show dialog box with settings
+            //Send reboot command
+            //Call Visual Studio project compile and upload
         }
 
         private void OnArmClick(object sender, EventArgs e)
         {
-            if(arm.Text == "Arm")
+            if (Value.Status == ROVStatus.ARMED)
             {
-                arm.Text = "Disarm";
-                value.Status = ROVStatus.ARMED;
-                flasher.Start();
+                //send disarm command
+                Value.Status = ROVStatus.DISARMED;
             }
-            if(arm.Text == "Disarm")
+            else
             {
-                arm.Text = "Arm";
-                value.Status = ROVStatus.DISARMED;
-                flasher.Stop();
-                arm.BackColor = Color.Green;
+                //arm
+                Value.Status = ROVStatus.ARMED;
             }
-            Update();
-        }*/
-
-        protected override byte[] Convert(SystemStatus controlData)
-        {
-            byte[] result = new byte[1];
-            result[0] = (byte)controlData.Status;
-            return result;
         }
     }
 }

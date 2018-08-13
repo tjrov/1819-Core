@@ -22,7 +22,7 @@ namespace ControlStation
     public class SerialCommunication : FlowLayoutPanel
     {
         private SerialPort port;
-        private System.Windows.Forms.Timer checkTimer;
+        private System.Timers.Timer checkTimer;
         private bool wasOpen;
         private Queue<string> history;
 
@@ -42,8 +42,6 @@ namespace ControlStation
         public void ClosePort()
         {
             port.Close();
-            //fire the event
-            OnCheckTimer(this, null);
         }
 
         public SerialCommunication(string portName, int baudRate) : base()
@@ -53,12 +51,12 @@ namespace ControlStation
 
             history = new Queue<string>();
 
-            checkTimer = new System.Windows.Forms.Timer
+            checkTimer = new System.Timers.Timer
             {
-                Interval = 1,
-                Enabled = true
+                Interval = 10,
+                SynchronizingObject = this
             };
-            checkTimer.Tick += OnCheckTimer;
+            checkTimer.Elapsed += OnCheckTimer;
 
             toggle = new Button() {
                 Text = "Disconnected",
@@ -80,6 +78,8 @@ namespace ControlStation
 
             Controls.Add(toggle);
             Controls.Add(info);
+
+            checkTimer.Start();
         }
 
         public void SendMessage(MessageStruct msg)

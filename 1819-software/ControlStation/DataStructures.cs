@@ -1,6 +1,6 @@
 ﻿namespace ControlStation
 {
-    public struct ESCStatus
+    public class ESCStatus
     {
         public double Temperature, Speed;
         public int RPM;
@@ -12,15 +12,9 @@
             }
         }
     }
-    public struct Orientation
+    public class Orientation
     {
         public double Heading, Pitch, Roll;
-        public Orientation(double Heading, double Pitch, double Roll)
-        {
-            this.Heading = Heading;
-            this.Pitch = Pitch;
-            this.Roll = Roll;
-        }
     }
     public enum ROVStatus
     {
@@ -39,7 +33,7 @@
         INVALID_CHECKSUM = 5,
         INVALID_COMMAND = 6
     }
-    public struct SystemStatus
+    public class SystemStatus
     {
         public ROVStatus Status;
         public ROVError Error;

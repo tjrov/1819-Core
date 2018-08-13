@@ -28,8 +28,7 @@ namespace ControlStation
         private ToolsActuator tools;
         private StatusActuator system;
 
-        private List<IDevice> deviceList;
-        private List<DevicePanel> displayList;
+        private Dictionary<string, DeviceBase> devices;
 
         private FlowLayoutPanel panel;
 
@@ -66,19 +65,28 @@ namespace ControlStation
         private void GUI_Load(object sender, EventArgs e)
         {
             //start serial comms
-            comms = new SerialCommunication("COM1", 115200);
+            comms = new SerialCommunication("COM7", 115200);
             comms.OnConnectionStatusChanged += OnConnectionStatusChanged;
+            panel.Controls.Add(comms);
 
             //construct sensor and actuator display objects
             depth = new DepthSensor(comms);
             imu = new OrientationSensor(comms);
-            thrusters = new PropulsionActuator(comms);
-            tools = new ToolsActuator(comms);
             escs = new PropulsionSensor(comms);
+            thrusters = new PropulsionActuator(comms, escs);
+            tools = new ToolsActuator(comms);
             status = new StatusSensor(comms);
             system = new StatusActuator(comms);
+            system.LinkTo(status);
 
-            panel.Controls.Add(comms);
+            devices = new Dictionary<string, DeviceBase>();
+            devices.Add("status",status);
+            devices.Add("system",system);
+
+            //add devices to panel
+            foreach(DeviceBase device in devices.Values) {
+                panel.Controls.Add(device);
+            }
 
             //does communication on a background thread
             commsBackgroundWorker = new BackgroundWorker();
@@ -107,39 +115,23 @@ namespace ControlStation
             }
         }
 
-        private void Loop100Hz(object sender, EventArgs e)
-        {
-            count10Hz++;
-            count1Hz++;
-            //Handle running other timers on same thread at proper intervals
-            if (count10Hz > 10)
-            {
-                Loop10Hz();
-                count10Hz = 0;
-            }
-            else if (count1Hz > 100)
-            {
-                Loop1Hz();
-                count1Hz = 0;
-            }
-            else
-            {
-                thrusters.Update();
-            }
-            //imu.Update();
-            //depth.Update();
-        }
-
         private void Loop1Hz()
         {
-            escs.Update();
+            //escs.Update();
             status.Update();
+            system.Update();
         }
 
         private void Loop10Hz()
         {
-            imu.Update();
+            /*imu.Update();
             depth.Update();
+            tools.Update();*/
+        }
+
+        private void Loop100Hz()
+        {
+            //thrusters.Update();
         }
 
         private void CommsBackgroundLoop(object sender, DoWorkEventArgs e)
@@ -150,7 +142,20 @@ namespace ControlStation
                 {
                     lastLoopTime = DateTime.Now.Ticks;
 
-                    thrusters.Update();
+                    count10Hz++;
+                    count1Hz++;
+                    if(count10Hz > 10)
+                    {
+                        count10Hz = 0;
+                        Loop10Hz();
+                    } else if(count1Hz > 20)
+                    {
+                        count1Hz = 0;
+                        Loop1Hz();
+                    } else
+                    {
+                        Loop100Hz();
+                    }
                 }
                 Thread.Sleep(1);
             }

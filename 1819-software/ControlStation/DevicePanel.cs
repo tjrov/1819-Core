@@ -1,5 +1,6 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,17 +8,17 @@ using System.Windows.Forms;
 
 namespace ControlStation
 {
-    public abstract class DevicePanel : FlowLayoutPanel
+    public interface IDevicePanel { };
+    public abstract class DevicePanel<TDevice> : FlowLayoutPanel, IDevicePanel where TDevice : IDevice
     {
-        protected IDevice device;
-        public DevicePanel(IDevice attachedDevice)
+        protected TDevice device;
+        public DevicePanel(TDevice attachedDevice)
         {
             //size to fit components
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BorderStyle = BorderStyle.Fixed3D;
 
-            device = attachedDevice;
             //connect event handler to attached device
             device.OnUpdated += OnDeviceUpdated;
         }
@@ -28,16 +29,107 @@ namespace ControlStation
         }
         protected abstract void UpdateControls();
     }
-    public abstract class SensorPanel : DevicePanel
+    public class StatusReadout : DevicePanel<StatusSensor>
     {
-        public SensorPanel(ISensor attachedDevice) : base(attachedDevice)
+        private Label status, error, voltage;
+        public StatusReadout(StatusSensor attachedDevice) : base(attachedDevice)
         {
+            
+        }
+
+        protected override void UpdateControls()
+        {
+            status.Text = device.Value.StatusString;
+            error.Text = device.Value.ErrorString;
+            voltage.Text = string.Format("{0:00.0}V", device.Value.Voltage);
         }
     }
-    public abstract class ActuatorPanel : DevicePanel
-    {
-        public ActuatorPanel(IActuator attachedDevice) : base(attachedDevice)
+    public class StatusControl : DevicePanel<StatusActuator> {
+        private Button arm, reboot, upload;
+        private Timer flasher;
+        public StatusControl(StatusActuator attachedDevice) : base(attachedDevice)
         {
+            arm = new Button
+            {
+                Text = "Arm",
+                BackColor = Color.Green,
+                AutoSize = true
+            };
+            reboot = new Button
+            {
+                Text = "Arm",
+                BackColor = Color.Green,
+                AutoSize = true
+            };
+            upload = new Button
+            {
+                Text = "Arm",
+                BackColor = Color.Green,
+                AutoSize = true
+            };
+            flasher = new Timer
+            {
+                Interval = 500,
+            };
+            flasher.Tick += OnFlasherTick;
+            Controls.Add(arm);
+            Controls.Add(reboot);
+            Controls.Add(upload);
+        }
+
+        protected override void UpdateControls()
+        {
+            //flash button for armed state
+            if (device.Value.Status == ROVStatus.ARMED)
+            {
+                arm.Text = "Disarm";
+                flasher.Start();
+            }
+            //solid green for disarmed state
+            else
+            {
+                arm.Text = "Arm";
+                flasher.Stop();
+                arm.BackColor = Color.Green;
+            }
+        }
+
+        private void OnFlasherTick(object sender, EventArgs e)
+        {
+            if (arm.BackColor == Color.Green)
+            {
+                arm.BackColor = Color.White;
+            }
+            else
+            {
+                arm.BackColor = Color.Green;
+            }
+        }
+
+        private void OnRebootClick(object sender, EventArgs e)
+        {
+            device.Value.Status = ROVStatus.REBOOT;
+        }
+
+        private void OnUploadClick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+            //Show dialog box with settings
+            //Send reboot command
+            //Call Visual Studio project compile and upload
+        }
+
+        private void OnArmClick(object sender, EventArgs e)
+        {
+            if(device.Value.Status == ROVStatus.ARMED)
+            {
+                //send disarm command
+                device.Value.Status = ROVStatus.DISARMED;
+            } else
+            {
+                //arm
+                device.Value.Status = ROVStatus.ARMED;
+            }
         }
     }
-}
+}*/
