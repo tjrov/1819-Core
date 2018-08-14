@@ -14,11 +14,12 @@ namespace ControlStation
     {
         private SerialCommunication comms;
 
-        private BackgroundWorker commsBackgroundWorker;
-        private long lastLoopTime;
-        private long loopTime = TimeSpan.TicksPerMillisecond * 20;
-        private int count10Hz = 0;
-        private int count1Hz = 0;
+        private System.Windows.Forms.Timer checkCommsTimer;
+
+        private Thread commsBackgroundThread;
+        private Exception commsBackgroundException;
+        private int countSlow = 0;
+        private int countMedium = 0;
 
         private OrientationSensor imu;
         private DepthSensor depth;
@@ -28,45 +29,34 @@ namespace ControlStation
         private ToolsActuator tools;
         private StatusActuator system;
 
-        private Dictionary<string, DeviceBase> devices;
+        private Dictionary<string, GenericDevice> devices;
 
         private FlowLayoutPanel panel;
 
-        private Label label = new Label();
-
         public GUI()
         {
-            InitializeComponent();
-        }
+            //top window, fullscreen, no border
+            ClientSize = new Size(1280, 1024);
+            FormBorderStyle = FormBorderStyle.None;
+            //TopMost = true;
 
-        private void InitializeComponent()
-        {
-            // 
-            // panel
-            // 
-            this.panel = new FlowLayoutPanel();
-            this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel.Location = new System.Drawing.Point(0, 0);
-            this.panel.Size = new System.Drawing.Size(1280, 1024);
-            this.panel.TabIndex = 0;
-            // 
-            // GUI
-            // 
-            this.ClientSize = new System.Drawing.Size(1280, 1024);
-            this.Controls.Add(this.panel);
-            panel.Controls.Add(label);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Load += new System.EventHandler(this.GUI_Load);
-            this.ResumeLayout(false);
-            //this.TopMost = true;
+            //panel to hold subpanels
+            panel = new FlowLayoutPanel
+            {
+                Dock = System.Windows.Forms.DockStyle.Fill,
+                Location = new System.Drawing.Point(0, 0),
+                Size = new System.Drawing.Size(1280, 1024),
+            };
 
-        }
+            //timer to regularly check comm status
+            checkCommsTimer = new System.Windows.Forms.Timer
+            {
+                Interval = 200,
+            };
+            checkCommsTimer.Tick += CheckComms;
 
-        private void GUI_Load(object sender, EventArgs e)
-        {
             //start serial comms
             comms = new SerialCommunication("COM7", 250000);
-            comms.OnConnectionStatusChanged += OnConnectionStatusChanged;
             panel.Controls.Add(comms);
 
             //construct sensor and actuator display objects
@@ -79,97 +69,101 @@ namespace ControlStation
             system = new StatusActuator(comms);
             system.LinkTo(status);
 
-            devices = new Dictionary<string, DeviceBase>();
-            devices.Add("status",status);
-            devices.Add("system",system);
+            devices = new Dictionary<string, GenericDevice>();
+            devices.Add("status", status);
+            devices.Add("system", system);
 
             //add devices to panel
-            foreach(DeviceBase device in devices.Values) {
+            foreach (GenericDevice device in devices.Values)
+            {
                 panel.Controls.Add(device);
             }
 
             //does communication on a background thread
-            commsBackgroundWorker = new BackgroundWorker();
-            commsBackgroundWorker.DoWork += CommsBackgroundLoop;
-            commsBackgroundWorker.RunWorkerCompleted += OnCommsBackgroundLoopExited;
-            commsBackgroundWorker.WorkerSupportsCancellation = true;
+            commsBackgroundThread = new Thread(new ThreadStart(CommsBackgroundLoop));
+            commsBackgroundThread.SetApartmentState(ApartmentState.STA); //comptabile with UI threads
+            commsBackgroundThread.Start();
+
+            //start timer once everything else is ready
+            checkCommsTimer.Start();
+
+            //draw it
+            Controls.Add(panel);
+            Invalidate();
+            //ResumeLayout(false);
         }
 
-        private void OnConnectionStatusChanged(object sender, EventArgs e)
+        private void CheckComms(object sender, EventArgs e)
         {
-            //start or stop the background thread on port connect/disconnect
-            if (comms.PortIsOpen)
+            //show any errors from comms
+            if (commsBackgroundException != null)
             {
-                if (!commsBackgroundWorker.IsBusy)
-                {
-                    commsBackgroundWorker.RunWorkerAsync();
-                }
+                Exception ex = commsBackgroundException;
+                commsBackgroundException = null;
+                //Showing dialog boxes freezes program. Unsure why
+                //MessageBox.Show(this, ex.Message + ex.StackTrace,
+                //  "Error in CommsBackgroundLoop", MessageBoxButtons.OK, MessageBoxIcon.Error);*/
+                //MessageBox.Show(comms.GetHistory() + ex.Message,
+                //  "Communication history", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else
+            //enable/disable all device panels
+            foreach (GenericDevice device in devices.Values)
             {
-                if (!commsBackgroundWorker.CancellationPending)
-                {
-                    //no longer needed since while loop exits on port close
-                    //commsBackgroundWorker.CancelAsync();
-                }
+                device.Enabled = comms.PortIsOpen;
             }
+            //update the button on comms
+            comms.Invalidate();
         }
 
-        private void Loop1Hz()
+        private void SlowLoop()
         {
             escs.Update();
             system.Update();
             status.Update();
         }
 
-        private void Loop10Hz()
+        private void MediumLoop()
         {
             imu.Update();
             depth.Update();
             tools.Update();
         }
 
-        private void Loop100Hz()
+        private void FastLoop()
         {
             thrusters.Update();
         }
 
-        private void CommsBackgroundLoop(object sender, DoWorkEventArgs e)
+        private void CommsBackgroundLoop()
         {
-            while (comms.PortIsOpen)
+            while (true)
             {
-                if ((DateTime.Now.Ticks - lastLoopTime) > loopTime)
+                if (comms.PortIsOpen)
                 {
-                    lastLoopTime = DateTime.Now.Ticks;
-
-                    count10Hz++;
-                    count1Hz++;
-                    if(count10Hz > 5)
+                    try
                     {
-                        count10Hz = 0;
-                        Loop10Hz();
-                    } else if(count1Hz > 50)
+                        countSlow++;
+                        countMedium++;
+                        if (countSlow > 5)
+                        {
+                            countSlow = 0;
+                            SlowLoop();
+                        }
+                        else if (countMedium > 50)
+                        {
+                            countMedium = 0;
+                            MediumLoop();
+                        }
+                        else
+                        {
+                            FastLoop();
+                        }
+                    }
+                    catch (Exception ex)
                     {
-                        count1Hz = 0;
-                        Loop1Hz();
-                    } else
-                    {
-                        Loop100Hz();
+                        commsBackgroundException = ex;
                     }
                 }
-                Thread.Sleep(1);
-            }
-        }
-
-        private void OnCommsBackgroundLoopExited(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if(e.Error != null)
-            {
-                comms.ClosePort();
-                //show recent communications for debugging purposes
-                MessageBox.Show(comms.GetHistory() + e.Error.Message, "Communication history",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                throw e.Error; //so that the main method will show a dialog
             }
         }
     }

@@ -8,14 +8,13 @@ using System.Windows.Forms;
 
 namespace ControlStation
 {
-    public abstract class DeviceBase : FlowLayoutPanel
+    public abstract class GenericDevice : FlowLayoutPanel
     {
         protected byte messageCommand;
         protected SerialCommunication comms;
-        public DeviceBase(SerialCommunication comms, byte messageCommand)
+        public GenericDevice(SerialCommunication comms, byte messageCommand)
         {
             this.comms = comms;
-            this.comms.OnConnectionStatusChanged += ConnectionStatusChangedHandler;
             this.messageCommand = messageCommand;
 
             //fit around components
@@ -24,11 +23,6 @@ namespace ControlStation
             BorderStyle = BorderStyle.Fixed3D;
 
             OnUpdated += OnUpdatedHandler;
-        }
-
-        private void ConnectionStatusChangedHandler(object sender, EventArgs e)
-        {
-            Enabled = comms.PortIsOpen;
         }
 
         private void OnUpdatedHandler(object sender, EventArgs e)
@@ -46,7 +40,7 @@ namespace ControlStation
         }
     }
     //class that both sensors and actuators extend from
-    public abstract class Device<TData> : DeviceBase where TData : new()
+    public abstract class Device<TData> : GenericDevice where TData : new()
     {
         protected TData value;
         protected Device<TData> linkedDevice;

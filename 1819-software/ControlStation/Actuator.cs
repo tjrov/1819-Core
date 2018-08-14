@@ -153,7 +153,6 @@ namespace ControlStation
         private void OnRebootClick(object sender, EventArgs e)
         {
             Value.Status = ROVStatus.REBOOT;
-            comms.ClosePort();
         }
 
         private void OnUploadClick(object sender, EventArgs e)

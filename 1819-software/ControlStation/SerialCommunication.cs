@@ -22,14 +22,10 @@ namespace ControlStation
     public class SerialCommunication : FlowLayoutPanel
     {
         private SerialPort port;
-        private System.Timers.Timer checkTimer;
-        private bool wasOpen;
         private Queue<string> history;
 
         private Button toggle;
         private Label info;
-
-        public event EventHandler OnConnectionStatusChanged;
 
         public bool PortIsOpen
         {
@@ -42,6 +38,7 @@ namespace ControlStation
         public void ClosePort()
         {
             port.Close();
+            Invalidate();
         }
 
         public SerialCommunication(string portName, int baudRate) : base()
@@ -51,14 +48,8 @@ namespace ControlStation
 
             history = new Queue<string>();
 
-            checkTimer = new System.Timers.Timer
+            toggle = new Button()
             {
-                Interval = 10,
-                SynchronizingObject = this
-            };
-            checkTimer.Elapsed += OnCheckTimer;
-
-            toggle = new Button() {
                 Text = "Disconnected",
                 BackColor = Color.Yellow,
                 AutoSize = true
@@ -78,8 +69,6 @@ namespace ControlStation
 
             Controls.Add(toggle);
             Controls.Add(info);
-
-            checkTimer.Start();
         }
 
         public void SendMessage(MessageStruct msg)
@@ -102,13 +91,13 @@ namespace ControlStation
 
             //note transmission in history
             string historyString = "TX: ";
-            for(int i = 0; i < temp.Length; i++)
+            for (int i = 0; i < temp.Length; i++)
             {
                 historyString += temp[i] + " ";
             }
             history.Enqueue(historyString);
             //limit length of history
-            while(history.Count > 10)
+            while (history.Count > 10)
             {
                 history.Dequeue();
             }
@@ -159,7 +148,7 @@ namespace ControlStation
         public string GetHistory()
         {
             string result = "";
-            while(history.Count > 0)
+            while (history.Count > 0)
             {
                 result += history.Dequeue() + "\n";
             }
@@ -176,10 +165,10 @@ namespace ControlStation
             {
                 port.Close();
             }
-            UpdateButton();
+            Invalidate();
         }
 
-        private void UpdateButton()
+        protected override void OnInvalidated(InvalidateEventArgs e)
         {
             if (port.IsOpen)
             {
@@ -191,19 +180,6 @@ namespace ControlStation
                 toggle.BackColor = Color.Yellow;
                 toggle.Text = "Disconnected";
             }
-        }
-
-        private void OnCheckTimer(object sender, EventArgs e)
-        {
-            if (port.IsOpen != wasOpen)
-            {
-                UpdateButton();
-                if (OnConnectionStatusChanged != null)
-                {
-                    OnConnectionStatusChanged(this, EventArgs.Empty);
-                }
-            }
-            wasOpen = port.IsOpen;
         }
     }
     public struct MessageStruct
