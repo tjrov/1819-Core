@@ -85,6 +85,7 @@ namespace ControlStation
         public StatusActuator(SerialCommunication comms) : base(comms, 0x83)
         {
             FlowDirection = FlowDirection.TopDown;
+            OnUpdated += Reboot;
             arm = new Button
             {
                 Text = "Arm",
@@ -113,6 +114,14 @@ namespace ControlStation
             Controls.Add(reboot);
             Controls.Add(upload);
             Invalidate();
+        }
+
+        private void Reboot(object sender, EventArgs e)
+        {
+            if(value.Status == ROVStatus.REBOOT)
+            {
+                value.Status = ROVStatus.DISCONNECTED;
+            }
         }
 
         protected override byte[] Convert(SystemStatus controlData)
@@ -174,6 +183,14 @@ namespace ControlStation
             {
                 //arm
                 Value.Status = ROVStatus.ARMED;
+            }
+        }
+
+        protected override void OnEnabledChanged(EventArgs e)
+        {
+            if(!Enabled)
+            {
+                Value.Status = ROVStatus.DISARMED;
             }
         }
     }
