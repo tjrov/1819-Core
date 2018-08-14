@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Threading;
+using System.Collections.Concurrent;
 
 namespace ControlStation
 {
@@ -19,59 +20,95 @@ namespace ControlStation
      Data
      Checksum(XOR of length and all data bytes)
     */
-    public class SerialCommunication : FlowLayoutPanel
+    public class SerialCommunication
     {
-        private SerialPort port;
-        private Queue<string> history;
+        private EventSerialPort port;
+        private ConcurrentQueue<GenericDevice> devices;
 
-        private Button toggle;
-        private Label info;
+        private Thread thread;
+        private volatile Exception threadException;
 
-        public bool PortIsOpen
+        private ConcurrentQueue<string> history;
+
+        public SerialCommunicationPanel Panel;
+
+        public event EventHandler<bool> IsPortOpenChanged
         {
-            get
+            add
             {
-                return port.IsOpen;
+                port.IsOpenChanged += value;
             }
-        }
-
-        public void ClosePort()
-        {
-            port.Close();
-            Invalidate();
+            remove
+            {
+                port.IsOpenChanged -= value;
+            }
         }
 
         public SerialCommunication(string portName, int baudRate) : base()
         {
-            //checks for a change in connection status at 10Hz
-            port = new SerialPort(portName, baudRate);
-
-            history = new Queue<string>();
-
-            toggle = new Button()
-            {
-                Text = "Disconnected",
-                BackColor = Color.Yellow,
-                AutoSize = true
-            };
-            toggle.Click += OnClick;
-
-            info = new Label()
-            {
-                Text = String.Format("{0}@{1}kbaud", portName, baudRate / 1000.0),
-                AutoSize = true
-            };
-
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            BorderStyle = BorderStyle.Fixed3D;
-            FlowDirection = FlowDirection.RightToLeft;
-
-            Controls.Add(toggle);
-            Controls.Add(info);
+            port = new EventSerialPort(portName, baudRate);
+            devices = new ConcurrentQueue<GenericDevice>();
+            history = new ConcurrentQueue<string>();
+            Panel = new SerialCommunicationPanel(port);
+            //background loop runs on this thread
+            thread = new Thread(new ThreadStart(BackgroundLoop));
+            thread.SetApartmentState(ApartmentState.STA); //for UI compatibility
+            thread.Start();
         }
-
-        public void SendMessage(MessageStruct msg)
+        //requests update of a device
+        public void QueueDevice(GenericDevice device)
+        {
+            devices.Enqueue(device);
+        }
+        //recent comms to help with debugging
+        public string GetHistory()
+        {
+            string result = "";
+            while (history.Count > 0)
+            {
+                history.TryDequeue(out string temp);
+                result += temp + "\n";
+            }
+            return result;
+        }
+        //handles communication and processing of queue
+        private void BackgroundLoop()
+        {
+            while (true)
+            {
+                try
+                {
+                    if (port.IsOpen)
+                    {
+                        if (devices.Count > 0) //if anything needs updating
+                        {
+                            //send the request
+                            devices.TryDequeue(out GenericDevice device);
+                            TransmitMessage(device.GetMessage());
+                            //if it's a sensor and needs a reply
+                            if (device.NeedsResponse)
+                            {
+                                //get the reply
+                                MessageStruct msg = ReceiveMessage();
+                                //update the device's data on another thread
+                                device.Invoke(new Action(() => device.UpdateData(msg)));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Thread.Sleep(100);
+                    }
+                } catch(Exception ex)
+                {
+                    //exit the thread after noting the exception
+                    //todo: show this exception in a dialog somehow
+                    threadException = ex;
+                    Thread.CurrentThread.Abort();
+                }
+            }
+        }
+        private void TransmitMessage(MessageStruct msg)
         {
             //assemble header, command, length bytes at front of message
             byte[] temp = new byte[msg.data.Length + 4];
@@ -99,13 +136,13 @@ namespace ControlStation
             //limit length of history
             while (history.Count > 10)
             {
-                history.Dequeue();
+                history.TryDequeue(out string delete);
             }
 
             //send it off
             port.Write(temp, 0, temp.Length);
         }
-        public MessageStruct ReceiveMessage()
+        private MessageStruct ReceiveMessage()
         {
             //after sending a request for sensor data, the ROV replies with info
             //only allow 10 ms for this to occur
@@ -145,30 +182,64 @@ namespace ControlStation
             return x;
         }
 
-        public string GetHistory()
+    }
+    public class EventSerialPort : SerialPort
+    {
+        public event EventHandler<bool> IsOpenChanged;
+        public EventSerialPort(string portName, int baudRate) : base(portName, baudRate)
         {
-            string result = "";
-            while (history.Count > 0)
+            ErrorReceived += Error;
+        }
+        private void Error(object sender, SerialErrorReceivedEventArgs e)
+        {
+            IsOpenChanged(this, IsOpen);
+        }
+        public new void Open()
+        {
+            base.Open();
+            IsOpenChanged(this, IsOpen);
+        }
+        public new void Close()
+        {
+            base.Close();
+            IsOpenChanged(this, IsOpen);
+        }
+    }
+
+    public class SerialCommunicationPanel : FlowLayoutPanel
+    {
+        private EventSerialPort port;
+        private Button toggle;
+        private Label info;
+
+        public SerialCommunicationPanel(EventSerialPort port)
+        {
+            this.port = port;
+            port.IsOpenChanged += OnIsOpenChanged;
+
+            toggle = new Button()
             {
-                result += history.Dequeue() + "\n";
-            }
-            return result;
+                Text = "Disconnected",
+                BackColor = Color.Yellow,
+                AutoSize = true
+            };
+            toggle.Click += OnClick;
+
+            info = new Label()
+            {
+                Text = string.Format("{0}@{1}kbaud", port.PortName, port.BaudRate/1000.0)
+            };
+
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BorderStyle = BorderStyle.Fixed3D;
+            FlowDirection = FlowDirection.RightToLeft;
+
+            Controls.Add(toggle);
+            Controls.Add(info);
         }
 
-        private void OnClick(object sender, EventArgs e)
-        {
-            if (!port.IsOpen)
-            {
-                port.Open();
-            }
-            else
-            {
-                port.Close();
-            }
-            Invalidate();
-        }
-
-        protected override void OnInvalidated(InvalidateEventArgs e)
+        private void OnIsOpenChanged(object sender, bool e)
         {
             if (port.IsOpen)
             {
@@ -181,20 +252,17 @@ namespace ControlStation
                 toggle.Text = "Disconnected";
             }
         }
-    }
-    public struct MessageStruct
-    {
-        public MessageStruct(byte command, byte length)
+
+        private void OnClick(object sender, EventArgs e)
         {
-            this.command = command;
-            data = new byte[length];
+            if (!port.IsOpen)
+            {
+                port.Open();
+            }
+            else
+            {
+                port.Close();
+            }
         }
-        public MessageStruct(byte command, byte[] data)
-        {
-            this.command = command;
-            this.data = data;
-        }
-        public byte command;
-        public byte[] data;
     }
 }

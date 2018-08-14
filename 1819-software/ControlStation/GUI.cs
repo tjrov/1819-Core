@@ -5,7 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace ControlStation
@@ -14,12 +13,9 @@ namespace ControlStation
     {
         private SerialCommunication comms;
 
-        private System.Windows.Forms.Timer checkCommsTimer;
-
-        private Thread commsBackgroundThread;
-        private Exception commsBackgroundException;
         private int countSlow = 0;
         private int countMedium = 0;
+        private Timer timer;
 
         private OrientationSensor imu;
         private DepthSensor depth;
@@ -29,12 +25,18 @@ namespace ControlStation
         private ToolsActuator tools;
         private StatusActuator system;
 
-        private Dictionary<string, GenericDevice> devices;
+        private List<GenericDevice> devices;
 
         private FlowLayoutPanel panel;
 
         public GUI()
         {
+            timer = new Timer
+            {
+                Interval = 10
+            };
+            timer.Tick += TimerLoop;
+
             //top window, fullscreen, no border
             ClientSize = new Size(1280, 1024);
             FormBorderStyle = FormBorderStyle.None;
@@ -45,125 +47,100 @@ namespace ControlStation
             {
                 Dock = System.Windows.Forms.DockStyle.Fill,
                 Location = new System.Drawing.Point(0, 0),
-                Size = new System.Drawing.Size(1280, 1024),
+                Size = new System.Drawing.Size(1280, 1024)
             };
 
-            //timer to regularly check comm status
-            checkCommsTimer = new System.Windows.Forms.Timer
-            {
-                Interval = 200,
-            };
-            checkCommsTimer.Tick += CheckComms;
-
-            //start serial comms
+            //setup serial port
             comms = new SerialCommunication("COM7", 250000);
-            panel.Controls.Add(comms);
+            comms.IsPortOpenChanged += OnIsPortOpenChanged;
 
-            //construct sensor and actuator display objects
-            depth = new DepthSensor(comms);
-            imu = new OrientationSensor(comms);
-            escs = new PropulsionSensor(comms);
-            thrusters = new PropulsionActuator(comms);
-            tools = new ToolsActuator(comms);
-            status = new StatusSensor(comms);
-            system = new StatusActuator(comms);
-            system.LinkTo(status);
+            //construct sensor and actuator objects
+            depth = new DepthSensor();
+            imu = new OrientationSensor();
+            escs = new PropulsionSensor();
+            thrusters = new PropulsionActuator();
+            tools = new ToolsActuator();
+            status = new StatusSensor();
+            system = new StatusActuator();
 
-            devices = new Dictionary<string, GenericDevice>();
-            devices.Add("status", status);
-            devices.Add("system", system);
+            //put them in the dictionary
+            devices = new List<GenericDevice>();
+            devices.Add(depth);
+            devices.Add(imu);
+            devices.Add(escs);
+            devices.Add(thrusters);
+            devices.Add(tools);
+            devices.Add(status);
+            devices.Add(system);
 
-            //add devices to panel
-            foreach (GenericDevice device in devices.Values)
+            //add everything in
+            panel.Controls.Add(comms.Panel);
+            foreach (GenericDevice device in devices)
             {
                 panel.Controls.Add(device);
             }
-
-            //does communication on a background thread
-            commsBackgroundThread = new Thread(new ThreadStart(CommsBackgroundLoop));
-            commsBackgroundThread.SetApartmentState(ApartmentState.STA); //comptabile with UI threads
-            commsBackgroundThread.Start();
-
-            //start timer once everything else is ready
-            checkCommsTimer.Start();
-
-            //draw it
             Controls.Add(panel);
-            Invalidate();
-            //ResumeLayout(false);
         }
 
-        private void CheckComms(object sender, EventArgs e)
+        private void OnIsPortOpenChanged(object sender, bool e)
         {
             //show any errors from comms
-            if (commsBackgroundException != null)
+            /*if (commsBackgroundException != null)
             {
                 Exception ex = commsBackgroundException;
                 commsBackgroundException = null;
                 //Showing dialog boxes freezes program. Unsure why
-                //MessageBox.Show(this, ex.Message + ex.StackTrace,
-                //  "Error in CommsBackgroundLoop", MessageBoxButtons.OK, MessageBoxIcon.Error);*/
-                //MessageBox.Show(comms.GetHistory() + ex.Message,
-                //  "Communication history", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+                MessageBox.Show(this, ex.Message + ex.StackTrace,
+                  "Error in CommsBackgroundLoop", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(comms.GetHistory() + ex.Message,
+                  "Communication history", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }*/
             //enable/disable all device panels
-            foreach (GenericDevice device in devices.Values)
+            foreach (GenericDevice device in devices)
             {
-                device.Enabled = comms.PortIsOpen;
+                device.Enabled = e;
             }
-            //update the button on comms
-            comms.Invalidate();
+            //start/stop timer
+            timer.Enabled = e;
         }
 
         private void SlowLoop()
         {
-            escs.Update();
-            system.Update();
-            status.Update();
+            comms.QueueDevice(escs);
+            comms.QueueDevice(system);
+            comms.QueueDevice(status);
         }
 
         private void MediumLoop()
         {
-            imu.Update();
-            depth.Update();
-            tools.Update();
+            comms.QueueDevice(imu);
+            comms.QueueDevice(depth);
+            comms.QueueDevice(tools);
         }
 
         private void FastLoop()
         {
-            thrusters.Update();
+            comms.QueueDevice(thrusters);
         }
 
-        private void CommsBackgroundLoop()
+        private void TimerLoop(object sender, EventArgs e)
         {
-            while (true)
+
+            countSlow++;
+            countMedium++;
+            if (countSlow > 5)
             {
-                if (comms.PortIsOpen)
-                {
-                    try
-                    {
-                        countSlow++;
-                        countMedium++;
-                        if (countSlow > 5)
-                        {
-                            countSlow = 0;
-                            SlowLoop();
-                        }
-                        else if (countMedium > 50)
-                        {
-                            countMedium = 0;
-                            MediumLoop();
-                        }
-                        else
-                        {
-                            FastLoop();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        commsBackgroundException = ex;
-                    }
-                }
+                countSlow = 0;
+                SlowLoop();
+            }
+            else if (countMedium > 50)
+            {
+                countMedium = 0;
+                MediumLoop();
+            }
+            else
+            {
+                FastLoop();
             }
         }
     }

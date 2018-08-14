@@ -13,44 +13,48 @@ namespace ControlStation
     public abstract class Sensor<TData> : Device<TData> where TData : new()
     {
         private byte messageLength;
-        public TData Value
+        public TData Data
         {
             get
             {
-                return value;
+                return data;
             }
         }
         //messageCommand is the command byte used to signal a read from this specific type of sensor
-        public Sensor(SerialCommunication comms, byte messageCommand, byte messageLength) : base(comms, messageCommand)
+        public Sensor(byte messageCommand, byte messageLength) : base(messageCommand)
         {
+            NeedsResponse = true;
             this.messageLength = messageLength;
         }
-        public override void Update()
+        public override MessageStruct GetMessage()
         {
-            MessageStruct dataMessage;
-            comms.SendMessage(new MessageStruct(messageCommand, 0));
-            dataMessage = comms.ReceiveMessage();
-
-            //check if it matches this type of sensor
-            if (dataMessage.data.Length == messageLength)
+            return new MessageStruct
             {
-                if (dataMessage.command == messageCommand)
+                command = messageCommand,
+                data = new byte[0]
+            };
+        }
+        public override void UpdateData(MessageStruct msg)
+        {
+            //check if it matches this type of sensor
+            if (msg.data.Length == messageLength)
+            {
+                if (msg.command == messageCommand)
                 {
                     //turn the bytes into usable values
-                    Convert(dataMessage.data, ref value);
+                    Convert(msg.data, ref data);
                 }
                 else
                 {
                     throw new Exception(string.Format("Attempted to update with invalid data " +
-                        "message (command was {0} instead of {1})", dataMessage.command, messageCommand));
+                        "message (command was {0} instead of {1})", msg.command, messageCommand));
                 }
             }
             else
             {
                 throw new Exception(string.Format("Attempted to update with invalid data " +
-                    "message (length was {0} instead of {1})", dataMessage.data.Length, messageLength));
+                    "message (length was {0} instead of {1})", msg.data.Length, messageLength));
             }
-            FireOnUpdated();
         }
         protected abstract void Convert(byte[] data, ref TData result);
     }
@@ -64,7 +68,7 @@ namespace ControlStation
          * [2][3] Pitch ...
          * [4][5] Roll ...
          */
-        public OrientationSensor(SerialCommunication comms) : base(comms, (byte)0x01, (byte)6)
+        public OrientationSensor() : base((byte)0x01, (byte)6)
         {
 
         }
@@ -89,7 +93,7 @@ namespace ControlStation
          * [1] First ESC's temp (0 to 100 deg C)
          * ... and so on for all 6 ESCs
          */
-        public PropulsionSensor(SerialCommunication comms) : base(comms, 0x02, 12)
+        public PropulsionSensor() : base(0x02, 12)
         {
         }
 
@@ -114,7 +118,7 @@ namespace ControlStation
          * LEN: 2
          * [0][2] Vehicle depth (0 to 30 meters)
          */
-        public DepthSensor(SerialCommunication comms) : base(comms, 0x03, 2)
+        public DepthSensor() : base(0x03, 2)
         {
         }
 
@@ -135,7 +139,7 @@ namespace ControlStation
          */
         private Label status, error, voltage;
 
-        public StatusSensor(SerialCommunication comms) : base(comms, 0x04, 3)
+        public StatusSensor() : base(0x04, 3)
         {
             status = new Label
             {
@@ -166,9 +170,9 @@ namespace ControlStation
         }
         protected override void OnPaint(PaintEventArgs e)
         {
-            status.Text = Value.StatusString;
-            error.Text = Value.ErrorString;
-            voltage.Text = string.Format("{0:00.0}V", Value.Voltage);
+            status.Text = Data.StatusString;
+            error.Text = Data.ErrorString;
+            voltage.Text = string.Format("{0:00.0}V", Data.Voltage);
         }
     }
 }

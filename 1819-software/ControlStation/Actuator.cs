@@ -11,26 +11,33 @@ namespace ControlStation
 {
     public abstract class Actuator<TData> : Device<TData> where TData : new()
     {
-        public TData Value
+        public TData Data
         {
             get
             {
-                return value;
+                return data;
             }
             set
             {
-                this.value = value;
+                this.data = value;
             }
         }
-        public Actuator(SerialCommunication comms, byte messageCommand) : base(comms, messageCommand)
+        public Actuator(byte messageCommand) : base(messageCommand)
         {
+            NeedsResponse = false;
         }
-        public override void Update()
+        public override MessageStruct GetMessage()
         {
-            comms.SendMessage(new MessageStruct(messageCommand, Convert(value)));
-            FireOnUpdated();
+            return new MessageStruct
+            {
+                command = messageCommand,
+                data = Convert(data)
+            };
         }
         protected abstract byte[] Convert(TData controlData);
+        public override void UpdateData(MessageStruct msg)
+        {
+        }
     }
     public class PropulsionActuator : Actuator<Dictionary<string, ESCStatus>>
     {
@@ -41,7 +48,7 @@ namespace ControlStation
          * [0][1] First ESC's speed value (-100 to 100 percent)
          * ... and so on for all 6 ESCs
          */
-        public PropulsionActuator(SerialCommunication comms) : base(comms, 0x81)
+        public PropulsionActuator() : base(0x81)
         {
         }
 
@@ -62,7 +69,7 @@ namespace ControlStation
     }
     public class ToolsActuator : Actuator<Dictionary<string, double>>
     {
-        public ToolsActuator(SerialCommunication comms) : base(comms, 0x82)
+        public ToolsActuator() : base(0x82)
         {
         }
 
@@ -82,10 +89,9 @@ namespace ControlStation
     {
         private Button arm, reboot, upload;
         private Timer flasher;
-        public StatusActuator(SerialCommunication comms) : base(comms, 0x83)
+        public StatusActuator() : base(0x83)
         {
             FlowDirection = FlowDirection.TopDown;
-            OnUpdated += Reboot;
             arm = new Button
             {
                 Text = "Arm",
@@ -113,15 +119,6 @@ namespace ControlStation
             Controls.Add(arm);
             Controls.Add(reboot);
             Controls.Add(upload);
-            Invalidate();
-        }
-
-        private void Reboot(object sender, EventArgs e)
-        {
-            if(value.Status == ROVStatus.REBOOT)
-            {
-                value.Status = ROVStatus.DISCONNECTED;
-            }
         }
 
         protected override byte[] Convert(SystemStatus controlData)
@@ -131,10 +128,10 @@ namespace ControlStation
             return result;
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        protected override void OnInvalidated(InvalidateEventArgs e)
         {
             //flash button for armed state
-            if (Value.Status == ROVStatus.ARMED)
+            if (Data.Status == ROVStatus.ARMED)
             {
                 arm.Text = "Disarm";
                 flasher.Start();
@@ -161,7 +158,7 @@ namespace ControlStation
 
         private void OnRebootClick(object sender, EventArgs e)
         {
-            Value.Status = ROVStatus.REBOOT;
+            Data.Status = ROVStatus.REBOOT;
         }
 
         private void OnUploadClick(object sender, EventArgs e)
@@ -174,23 +171,15 @@ namespace ControlStation
 
         private void OnArmClick(object sender, EventArgs e)
         {
-            if (Value.Status == ROVStatus.ARMED)
+            if (Data.Status == ROVStatus.ARMED)
             {
                 //send disarm command
-                Value.Status = ROVStatus.DISARMED;
+                Data.Status = ROVStatus.DISARMED;
             }
             else
             {
                 //arm
-                Value.Status = ROVStatus.ARMED;
-            }
-        }
-
-        protected override void OnEnabledChanged(EventArgs e)
-        {
-            if(!Enabled)
-            {
-                Value.Status = ROVStatus.DISARMED;
+                Data.Status = ROVStatus.ARMED;
             }
         }
     }

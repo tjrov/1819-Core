@@ -54,7 +54,6 @@
     <Compile Include="Actuator.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DevicePanel.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="ControlStationInterface.cs" />
     <Compile Include="ControlStationInterface.Designer.cs">

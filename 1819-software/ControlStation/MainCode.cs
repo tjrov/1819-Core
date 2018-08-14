@@ -9,6 +9,7 @@ namespace ControlStation
 {
     static class MainCode
     {
+        private static GUI gui;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -17,18 +18,16 @@ namespace ControlStation
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException); //handle exceptions
-            Application.ThreadException += OnThreadException; //in a method below
+            Application.ThreadException += OnThreadException;
+            gui = new GUI();
             Application.Run(new GUI());
             //Application.Run(new ControlStationInterface());
         }
 
         private static void OnThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            //show an error box - this one doesn't work either
-            //MessageBox.Show(e.Exception.Message + e.Exception.StackTrace, "General exception", 
-                //MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(gui, e.Exception.Message + e.Exception.StackTrace, "Error", 
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
-
 }

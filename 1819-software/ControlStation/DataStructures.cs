@@ -1,5 +1,12 @@
-﻿namespace ControlStation
+﻿using System;
+
+namespace ControlStation
 {
+    public struct MessageStruct
+    {
+        public byte command;
+        public byte[] data;
+    }
     public class ESCStatus
     {
         public double Temperature, Speed;
