@@ -60,6 +60,9 @@
       <DependentUpon>ControlStationInterface.cs</DependentUpon>
     </Compile>
     <Compile Include="ConvertUtils.cs" />
+    <Compile Include="CustomGUIControls.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DataStructures.cs" />
     <Compile Include="GUI.cs">
       <SubType>Form</SubType>
