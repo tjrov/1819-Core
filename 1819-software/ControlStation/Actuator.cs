@@ -22,7 +22,7 @@ namespace ControlStation
                 this.data = value;
             }
         }
-        public Actuator(byte messageCommand) : base(messageCommand)
+        public Actuator(byte messageCommand, TData data) : base(messageCommand, data)
         {
             NeedsResponse = false;
         }
@@ -39,7 +39,7 @@ namespace ControlStation
         {
         }
     }
-    public class PropulsionActuator : Actuator<Dictionary<string, ESCStatus>>
+    public class PropulsionActuator : Actuator<List<ESC>>
     {
         /*
          * Message format:
@@ -48,17 +48,20 @@ namespace ControlStation
          * [0][1] First ESC's speed value (-100 to 100 percent)
          * ... and so on for all 6 ESCs
          */
-        public PropulsionActuator() : base(0x81)
+        public PropulsionActuator(List<ESC> data) : base(0x81, data)
         {
         }
 
-        protected override byte[] Convert(Dictionary<string, ESCStatus> controlData)
+        public override void UpdateControls()
+        {
+        }
+
+        protected override byte[] Convert(List<ESC> controlData)
         {
             byte[] result = new byte[controlData.Count * 2];
             int i = 0;
-            foreach (string escName in controlData.Keys)
+            foreach (ESC esc in controlData)
             {
-                controlData.TryGetValue(escName, out ESCStatus esc);
                 Tuple<byte, byte> bytes = ConvertUtils.DoubleToBytes(esc.Speed, -100, 100);
                 result[i] = bytes.Item1;
                 result[i + 1] = bytes.Item2;
@@ -67,29 +70,32 @@ namespace ControlStation
             return result;
         }
     }
-    public class ToolsActuator : Actuator<Dictionary<string, double>>
+    public class ToolsActuator : Actuator<List<Tool>>
     {
-        public ToolsActuator() : base(0x82)
+        public ToolsActuator(List<Tool> data) : base(0x82, data)
         {
         }
 
-        protected override byte[] Convert(Dictionary<string, double> controlData)
+        public override void UpdateControls()
+        {
+        }
+
+        protected override byte[] Convert(List<Tool> controlData)
         {
             byte[] result = new byte[controlData.Count];
             int i = 0;
-            foreach (string toolName in controlData.Keys)
+            foreach (Tool tool in controlData)
             {
-                controlData.TryGetValue(toolName, out double toolSpeed);
-                result[i] = ConvertUtils.DoubleToByte(toolSpeed, -100, 100);
+                result[i] = ConvertUtils.DoubleToByte(tool.Speed, -100, 100);
             }
             return result;
         }
     }
-    public class StatusActuator : Actuator<SystemStatus>
+    public class StatusActuator : Actuator<State>
     {
         private Button arm, reboot, upload;
         private Timer flasher;
-        public StatusActuator() : base(0x83)
+        public StatusActuator(State data) : base(0x83, data)
         {
             FlowDirection = FlowDirection.TopDown;
             arm = new Button
@@ -121,14 +127,15 @@ namespace ControlStation
             Controls.Add(upload);
         }
 
-        protected override byte[] Convert(SystemStatus controlData)
+        protected override byte[] Convert(State controlData)
         {
             byte[] result = new byte[1];
-            result[0] = (byte)controlData.Status;
+            result[0] = (byte)controlData.DesiredStatus;
+
             return result;
         }
 
-        protected override void OnInvalidated(InvalidateEventArgs e)
+        public override void UpdateControls()
         {
             //flash button for armed state
             if (Data.Status == ROVStatus.ARMED)
@@ -144,6 +151,7 @@ namespace ControlStation
                 arm.BackColor = Color.Green;
             }
         }
+
         private void OnFlasherTick(object sender, EventArgs e)
         {
             if (arm.BackColor == Color.Green)
@@ -158,7 +166,7 @@ namespace ControlStation
 
         private void OnRebootClick(object sender, EventArgs e)
         {
-            Data.Status = ROVStatus.REBOOT;
+            Data.DesiredStatus = ROVStatus.REBOOT;
         }
 
         private void OnUploadClick(object sender, EventArgs e)
@@ -171,15 +179,15 @@ namespace ControlStation
 
         private void OnArmClick(object sender, EventArgs e)
         {
-            if (Data.Status == ROVStatus.ARMED)
+            if (Data.DesiredStatus == ROVStatus.ARMED)
             {
                 //send disarm command
-                Data.Status = ROVStatus.DISARMED;
+                Data.DesiredStatus = ROVStatus.DISARMED;
             }
             else
             {
                 //arm
-                Data.Status = ROVStatus.ARMED;
+                Data.DesiredStatus = ROVStatus.ARMED;
             }
         }
     }

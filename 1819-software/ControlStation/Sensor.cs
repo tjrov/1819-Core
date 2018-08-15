@@ -21,7 +21,7 @@ namespace ControlStation
             }
         }
         //messageCommand is the command byte used to signal a read from this specific type of sensor
-        public Sensor(byte messageCommand, byte messageLength) : base(messageCommand)
+        public Sensor(byte messageCommand, byte messageLength, TData data) : base(messageCommand, data)
         {
             NeedsResponse = true;
             this.messageLength = messageLength;
@@ -68,10 +68,15 @@ namespace ControlStation
          * [2][3] Pitch ...
          * [4][5] Roll ...
          */
-        public OrientationSensor() : base((byte)0x01, (byte)6)
+        public OrientationSensor(Orientation data) : base((byte)0x01, (byte)6, data)
         {
 
         }
+
+        public override void UpdateControls()
+        {
+        }
+
         protected override void Convert(byte[] data, ref Orientation result)
         {
             double[] ypr = new double[3];
@@ -83,7 +88,7 @@ namespace ControlStation
             result.Heading = ypr[0]; result.Pitch = ypr[1]; result.Roll = ypr[2];
         }
     }
-    public class PropulsionSensor : Sensor<Dictionary<string, ESCStatus>>
+    public class PropulsionSensor : Sensor<List<ESC>>
     {
         /*
          * Message format:
@@ -93,45 +98,51 @@ namespace ControlStation
          * [1] First ESC's temp (0 to 100 deg C)
          * ... and so on for all 6 ESCs
          */
-        public PropulsionSensor() : base(0x02, 12)
+        public PropulsionSensor(List<ESC> data) : base(0x02, 12, data)
         {
         }
 
-        protected override void Convert(byte[] data, ref Dictionary<string, ESCStatus> result)
+        public override void UpdateControls()
+        {
+        }
+
+        protected override void Convert(byte[] data, ref List<ESC> result)
         {
             int i = 0;
-            foreach (string escName in result.Keys)
+            foreach (ESC esc in result)
             {
-                result.TryGetValue(escName, out ESCStatus esc);
                 esc.RPM = (int)ConvertUtils.ByteToDouble(data[i], -5000, 5000);
                 esc.Temperature = (int)ConvertUtils.ByteToDouble(data[i + 1], 0, 100);
-                result.Add(escName, esc);
                 i += 2;
             }
         }
     }
-    public class DepthSensor : Sensor<Double>
+    public class DepthSensor : Sensor<Depth>
     {
         /*
          * Message format:
-         * CMD: 0x02
+         * CMD: 0x03
          * LEN: 2
          * [0][2] Vehicle depth (0 to 30 meters)
          */
-        public DepthSensor() : base(0x03, 2)
+        public DepthSensor(Depth data) : base(0x03, 2, data)
         {
         }
 
-        protected override void Convert(byte[] data, ref double result)
+        public override void UpdateControls()
         {
-            result = ConvertUtils.BytesToDouble(data[0], data[1], 0, 30);
+        }
+
+        protected override void Convert(byte[] data, ref Depth result)
+        {
+            result.DepthValue = ConvertUtils.BytesToDouble(data[0], data[1], 0, 30);
         }
     }
-    public class StatusSensor : Sensor<SystemStatus>
+    public class StatusSensor : Sensor<State>
     {
         /*
          * Message format:
-         * CMD: 0x05
+         * CMD: 0x04
          * LEN: 2
          * [0] system status
          * [1] error code
@@ -139,7 +150,7 @@ namespace ControlStation
          */
         private Label status, error, voltage;
 
-        public StatusSensor() : base(0x04, 3)
+        public StatusSensor(State data) : base(0x04, 3, data)
         {
             status = new Label
             {
@@ -162,17 +173,18 @@ namespace ControlStation
             Controls.Add(voltage);
         }
 
-        protected override void Convert(byte[] data, ref SystemStatus result)
-        {
-            result.Status = (ROVStatus)data[0];
-            result.Error = (ROVError)data[1];
-            result.Voltage = ConvertUtils.ByteToDouble(data[2], 0, 20);
-        }
-        protected override void OnPaint(PaintEventArgs e)
+        public override void UpdateControls()
         {
             status.Text = Data.StatusString;
             error.Text = Data.ErrorString;
             voltage.Text = string.Format("{0:00.0}V", Data.Voltage);
+        }
+
+        protected override void Convert(byte[] data, ref State result)
+        {
+            result.Status = (ROVStatus)data[0];
+            result.Error = (ROVError)data[1];
+            result.Voltage = ConvertUtils.ByteToDouble(data[2], 0, 20);
         }
     }
 }

@@ -26,15 +26,16 @@ namespace ControlStation
         }
         public abstract MessageStruct GetMessage();
         public abstract void UpdateData(MessageStruct msg);
+        public abstract void UpdateControls();
         public bool NeedsResponse { get; protected set; }
     }
     //class that both sensors and actuators extend from
     public abstract class Device<TData> : GenericDevice where TData : new()
     {
         protected TData data;
-        public Device(byte messageCommand) : base(messageCommand)
+        public Device(byte messageCommand, TData data) : base(messageCommand)
         {
-            data = new TData();
+            this.data = data;
         }
     }
 }

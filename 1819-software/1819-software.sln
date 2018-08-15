@@ -5,9 +5,9 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "motorcontroller", "motorcontroller\motorcontroller.vcxproj", "{64637BE8-697F-4407-A5C4-A45674CA8C18}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "autopilot", "mainboard\mainboard.vcxproj", "{CA779122-0D88-4302-8B70-2FCB2A3BBA57}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlStation", "ControlStation\ControlStation.csproj", "{1828FA7B-83C1-42EC-96B0-BEBDC62D05B2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "autopilot-firmware", "autopilot-firmware\autopilot-firmware.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +23,6 @@ Global
 		{64637BE8-697F-4407-A5C4-A45674CA8C18}.Release|Any CPU.ActiveCfg = Release|Win32
 		{64637BE8-697F-4407-A5C4-A45674CA8C18}.Release|x86.ActiveCfg = Release|Win32
 		{64637BE8-697F-4407-A5C4-A45674CA8C18}.Release|x86.Build.0 = Release|Win32
-		{CA779122-0D88-4302-8B70-2FCB2A3BBA57}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{CA779122-0D88-4302-8B70-2FCB2A3BBA57}.Debug|x86.ActiveCfg = Debug|Win32
-		{CA779122-0D88-4302-8B70-2FCB2A3BBA57}.Debug|x86.Build.0 = Debug|Win32
-		{CA779122-0D88-4302-8B70-2FCB2A3BBA57}.Release|Any CPU.ActiveCfg = Release|Win32
-		{CA779122-0D88-4302-8B70-2FCB2A3BBA57}.Release|x86.ActiveCfg = Release|Win32
-		{CA779122-0D88-4302-8B70-2FCB2A3BBA57}.Release|x86.Build.0 = Release|Win32
 		{1828FA7B-83C1-42EC-96B0-BEBDC62D05B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1828FA7B-83C1-42EC-96B0-BEBDC62D05B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1828FA7B-83C1-42EC-96B0-BEBDC62D05B2}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -37,6 +31,12 @@ Global
 		{1828FA7B-83C1-42EC-96B0-BEBDC62D05B2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1828FA7B-83C1-42EC-96B0-BEBDC62D05B2}.Release|x86.ActiveCfg = Release|Any CPU
 		{1828FA7B-83C1-42EC-96B0-BEBDC62D05B2}.Release|x86.Build.0 = Release|Any CPU
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Debug|x86.ActiveCfg = Debug|Win32
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Debug|x86.Build.0 = Debug|Win32
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|Any CPU.ActiveCfg = Release|Win32
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.ActiveCfg = Release|Win32
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

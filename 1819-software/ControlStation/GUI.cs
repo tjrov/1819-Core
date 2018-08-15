@@ -11,6 +11,7 @@ namespace ControlStation
 {
     public class GUI : Form
     {
+        private FlowLayoutPanel panel;
         private SerialCommunication comms;
 
         private int countSlow = 0;
@@ -23,11 +24,8 @@ namespace ControlStation
         private PropulsionSensor escs;
         private StatusSensor status;
         private ToolsActuator tools;
-        private StatusActuator system;
-
+        private StatusActuator statusControl;
         private List<GenericDevice> devices;
-
-        private FlowLayoutPanel panel;
 
         public GUI()
         {
@@ -51,17 +49,23 @@ namespace ControlStation
             };
 
             //setup serial port
-            comms = new SerialCommunication("COM7", 250000);
+            comms = new SerialCommunication("COM5", 250000);
             comms.IsPortOpenChanged += OnIsPortOpenChanged;
 
             //construct sensor and actuator objects
-            depth = new DepthSensor();
-            imu = new OrientationSensor();
-            escs = new PropulsionSensor();
-            thrusters = new PropulsionActuator();
-            tools = new ToolsActuator();
-            status = new StatusSensor();
-            system = new StatusActuator();
+            depth = new DepthSensor(new Depth());
+            imu = new OrientationSensor(new Orientation());
+            tools = new ToolsActuator(new List<Tool>());
+
+            //both use the same data object
+            List<ESC> escList = new List<ESC>();
+            escs = new PropulsionSensor(escList);
+            thrusters = new PropulsionActuator(escList);
+
+            //both use the same data object
+            State state = new State();
+            status = new StatusSensor(state);
+            statusControl = new StatusActuator(state);
 
             //put them in the dictionary
             devices = new List<GenericDevice>();
@@ -71,10 +75,10 @@ namespace ControlStation
             devices.Add(thrusters);
             devices.Add(tools);
             devices.Add(status);
-            devices.Add(system);
+            devices.Add(statusControl);
 
             //add everything in
-            panel.Controls.Add(comms.Panel);
+            panel.Controls.Add(comms);
             foreach (GenericDevice device in devices)
             {
                 panel.Controls.Add(device);
@@ -84,17 +88,6 @@ namespace ControlStation
 
         private void OnIsPortOpenChanged(object sender, bool e)
         {
-            //show any errors from comms
-            /*if (commsBackgroundException != null)
-            {
-                Exception ex = commsBackgroundException;
-                commsBackgroundException = null;
-                //Showing dialog boxes freezes program. Unsure why
-                MessageBox.Show(this, ex.Message + ex.StackTrace,
-                  "Error in CommsBackgroundLoop", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                MessageBox.Show(comms.GetHistory() + ex.Message,
-                  "Communication history", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }*/
             //enable/disable all device panels
             foreach (GenericDevice device in devices)
             {
@@ -107,7 +100,7 @@ namespace ControlStation
         private void SlowLoop()
         {
             comms.QueueDevice(escs);
-            comms.QueueDevice(system);
+            comms.QueueDevice(statusControl);
             comms.QueueDevice(status);
         }
 
@@ -128,12 +121,12 @@ namespace ControlStation
 
             countSlow++;
             countMedium++;
-            if (countSlow > 5)
+            if (countSlow > 50)
             {
                 countSlow = 0;
                 SlowLoop();
             }
-            else if (countMedium > 50)
+            else if (countMedium > 5)
             {
                 countMedium = 0;
                 MediumLoop();

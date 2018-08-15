@@ -20,17 +20,17 @@ namespace ControlStation
      Data
      Checksum(XOR of length and all data bytes)
     */
-    public class SerialCommunication
+    public class SerialCommunication : FlowLayoutPanel
     {
         private EventSerialPort port;
         private ConcurrentQueue<GenericDevice> devices;
 
         private Thread thread;
-        private volatile Exception threadException;
 
         private ConcurrentQueue<string> history;
 
-        public SerialCommunicationPanel Panel;
+        private Button toggle;
+        private Label info;
 
         public event EventHandler<bool> IsPortOpenChanged
         {
@@ -47,13 +47,35 @@ namespace ControlStation
         public SerialCommunication(string portName, int baudRate) : base()
         {
             port = new EventSerialPort(portName, baudRate);
+            port.IsOpenChanged += OnIsOpenChanged;
             devices = new ConcurrentQueue<GenericDevice>();
             history = new ConcurrentQueue<string>();
-            Panel = new SerialCommunicationPanel(port);
             //background loop runs on this thread
             thread = new Thread(new ThreadStart(BackgroundLoop));
             thread.SetApartmentState(ApartmentState.STA); //for UI compatibility
-            thread.Start();
+            //setup gui
+            toggle = new Button()
+            {
+                Text = "Disconnected",
+                BackColor = Color.Yellow,
+                AutoSize = true
+            };
+            toggle.Click += OnClick;
+
+            info = new Label()
+            {
+                Text = string.Format("{0}@{1}kbaud", port.PortName, port.BaudRate / 1000.0)
+            };
+
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BorderStyle = BorderStyle.Fixed3D;
+            FlowDirection = FlowDirection.RightToLeft;
+
+            Controls.Add(toggle);
+            Controls.Add(info);
+
+            thread.Start(); //start the background loop
         }
         //requests update of a device
         public void QueueDevice(GenericDevice device)
@@ -61,7 +83,7 @@ namespace ControlStation
             devices.Enqueue(device);
         }
         //recent comms to help with debugging
-        public string GetHistory()
+        private string GetHistory()
         {
             string result = "";
             while (history.Count > 0)
@@ -90,9 +112,11 @@ namespace ControlStation
                             {
                                 //get the reply
                                 MessageStruct msg = ReceiveMessage();
-                                //update the device's data on another thread
+                                //update the device's data on UI thread
                                 device.Invoke(new Action(() => device.UpdateData(msg)));
                             }
+                            //redraw the device on UI thread
+                            device.Invoke(new Action(device.UpdateControls));
                         }
                     }
                     else
@@ -101,13 +125,24 @@ namespace ControlStation
                     }
                 } catch(Exception ex)
                 {
-                    //exit the thread after noting the exception
-                    //todo: show this exception in a dialog somehow
-                    threadException = ex;
-                    Thread.CurrentThread.Abort();
+                    //show in dialog
+                    this.Invoke(new Action(() => ShowException(ex)));
                 }
             }
         }
+
+        private void ShowException(Exception ex)
+        {
+            //stop further errors from occuring
+            port.Close();
+            //show error
+            MessageBox.Show(this, ex.Message + ex.StackTrace,
+                  "Error in CommsBackgroundLoop", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //show comms history
+            MessageBox.Show(GetHistory() + ex.Message,
+              "Communication history", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private void TransmitMessage(MessageStruct msg)
         {
             //assemble header, command, length bytes at front of message
@@ -181,64 +216,6 @@ namespace ControlStation
             history += x + " ";
             return x;
         }
-
-    }
-    public class EventSerialPort : SerialPort
-    {
-        public event EventHandler<bool> IsOpenChanged;
-        public EventSerialPort(string portName, int baudRate) : base(portName, baudRate)
-        {
-            ErrorReceived += Error;
-        }
-        private void Error(object sender, SerialErrorReceivedEventArgs e)
-        {
-            IsOpenChanged(this, IsOpen);
-        }
-        public new void Open()
-        {
-            base.Open();
-            IsOpenChanged(this, IsOpen);
-        }
-        public new void Close()
-        {
-            base.Close();
-            IsOpenChanged(this, IsOpen);
-        }
-    }
-
-    public class SerialCommunicationPanel : FlowLayoutPanel
-    {
-        private EventSerialPort port;
-        private Button toggle;
-        private Label info;
-
-        public SerialCommunicationPanel(EventSerialPort port)
-        {
-            this.port = port;
-            port.IsOpenChanged += OnIsOpenChanged;
-
-            toggle = new Button()
-            {
-                Text = "Disconnected",
-                BackColor = Color.Yellow,
-                AutoSize = true
-            };
-            toggle.Click += OnClick;
-
-            info = new Label()
-            {
-                Text = string.Format("{0}@{1}kbaud", port.PortName, port.BaudRate/1000.0)
-            };
-
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            BorderStyle = BorderStyle.Fixed3D;
-            FlowDirection = FlowDirection.RightToLeft;
-
-            Controls.Add(toggle);
-            Controls.Add(info);
-        }
-
         private void OnIsOpenChanged(object sender, bool e)
         {
             if (port.IsOpen)
@@ -263,6 +240,28 @@ namespace ControlStation
             {
                 port.Close();
             }
+        }
+    }
+    public class EventSerialPort : SerialPort
+    {
+        public event EventHandler<bool> IsOpenChanged;
+        public EventSerialPort(string portName, int baudRate) : base(portName, baudRate)
+        {
+            ErrorReceived += Error;
+        }
+        private void Error(object sender, SerialErrorReceivedEventArgs e)
+        {
+            IsOpenChanged(this, IsOpen);
+        }
+        public new void Open()
+        {
+            base.Open();
+            IsOpenChanged(this, IsOpen);
+        }
+        public new void Close()
+        {
+            base.Close();
+            IsOpenChanged(this, IsOpen);
         }
     }
 }

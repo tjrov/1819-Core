@@ -7,7 +7,15 @@ namespace ControlStation
         public byte command;
         public byte[] data;
     }
-    public class ESCStatus
+    public class Tool
+    {
+        public double Speed;
+    }
+    public class Depth
+    {
+        public double DepthValue;
+    }
+    public class ESC
     {
         public double Temperature, Speed;
         public int RPM;
@@ -40,9 +48,10 @@ namespace ControlStation
         INVALID_CHECKSUM = 5,
         INVALID_COMMAND = 6
     }
-    public class SystemStatus
+    public class State
     {
-        public ROVStatus Status;
+        public ROVStatus Status = ROVStatus.DISCONNECTED;
+        public ROVStatus DesiredStatus = ROVStatus.DISCONNECTED;
         public ROVError Error;
         public double Voltage;
         public string ErrorString
