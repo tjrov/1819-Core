@@ -14,7 +14,7 @@ namespace ControlStation
     public class AttitudeIndicator : Panel
     {
         // Load images
-        Bitmap mybitmap1 = new Bitmap(Properties.Resources.bezel);
+        Bitmap mybitmap1 = new Bitmap(Properties.Resources.horizon);
         Bitmap mybitmap2 = new Bitmap(Properties.Resources.bezel);
         Bitmap mybitmap3 = new Bitmap(Properties.Resources.heading);
         Bitmap mybitmap4 = new Bitmap(Properties.Resources.wings);
@@ -28,7 +28,7 @@ namespace ControlStation
         {
             set
             {
-                pitchAngle = value;
+                pitchAngle = value * Math.PI / 180;
                 Invalidate();
             }
         }
@@ -36,7 +36,7 @@ namespace ControlStation
         {
             set
             {
-                rollAngle = value;
+                rollAngle = value * Math.PI / 180;
                 Invalidate();
             }
         }
@@ -44,7 +44,7 @@ namespace ControlStation
         {
             set
             {
-                yawAngle = value;
+                yawAngle = value * Math.PI / 180;
                 Invalidate();
             }
         }
@@ -55,6 +55,7 @@ namespace ControlStation
 
         public AttitudeIndicator()
         {
+            Size = new Size(300, 300);
             mybitmap2.MakeTransparent(Color.Yellow); // Sets image transparency
             mybitmap3.MakeTransparent(Color.Black); // Sets image transparency
             mybitmap4.MakeTransparent(Color.Yellow); // Sets image transparency

@@ -411,6 +411,7 @@ void initIMU() {
 		return;
 	}
 	imuSensor.setExtCrystalUse(true);
+	imuSensor.setAxisRemap(adafruit_bno055_axis_remap_config_t )
 	//do any configuration of imu here
 }
 
@@ -439,19 +440,19 @@ void readIMU() {
 		+----------+
 	*/
 
-	int headingInt = (int)mapDouble(imuData.orientation.heading, 0, 360, -32768, 32767);
-	int pitchInt = (int)mapDouble(imuData.orientation.pitch, 0, 360, -32768, 32767);
-	int rollInt = (int)mapDouble(imuData.orientation.roll, 0, 360, -32768, 32767);
+	uint16_t rollInt = (int)mapDouble(imuData.orientation.heading, 0, 360, 0, 65535);
+	uint16_t pitchInt = (int)mapDouble(imuData.orientation.pitch, 0, 360, 0, 65535);
+	uint16_t headingInt = (int)mapDouble(imuData.orientation.roll, 0, 360, 0, 65535);
 
 	//prepare txData for transmission
 	txData.command = IMU_REQ;
 	txData.length = 6;
-	txData.data[0] = headingInt & 0x00FF;
-	txData.data[1] = headingInt >> 8;
-	txData.data[0] = pitchInt & 0x00FF;
-	txData.data[1] = pitchInt >> 8;
-	txData.data[0] = rollInt & 0x00FF;
-	txData.data[1] = rollInt >> 8;
+	txData.data[0] = headingInt & 0xFF;
+	txData.data[1] = (headingInt >> 8) & 0xFF;
+	txData.data[2] = pitchInt & 0xFF;
+	txData.data[3] = (pitchInt >> 8) & 0xFF;
+	txData.data[4] = rollInt & 0xFF;
+	txData.data[5] = (rollInt >> 8) & 0xFF;
 }
 /*Depth*/
 void initDepth() {

@@ -61,77 +61,41 @@ namespace ControlStation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string bezel {
-            get {
-                return ResourceManager.GetString("bezel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap bezel1 {
+        internal static System.Drawing.Bitmap bezel {
             get {
-                object obj = ResourceManager.GetObject("bezel1", resourceCulture);
+                object obj = ResourceManager.GetObject("bezel", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string heading {
-            get {
-                return ResourceManager.GetString("heading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap heading1 {
+        internal static System.Drawing.Bitmap heading {
             get {
-                object obj = ResourceManager.GetObject("heading1", resourceCulture);
+                object obj = ResourceManager.GetObject("heading", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string horizon {
-            get {
-                return ResourceManager.GetString("horizon", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap horizon1 {
+        internal static System.Drawing.Bitmap horizon {
             get {
-                object obj = ResourceManager.GetObject("horizon1", resourceCulture);
+                object obj = ResourceManager.GetObject("horizon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string wings {
-            get {
-                return ResourceManager.GetString("wings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap wings1 {
+        internal static System.Drawing.Bitmap wings {
             get {
-                object obj = ResourceManager.GetObject("wings1", resourceCulture);
+                object obj = ResourceManager.GetObject("wings", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
