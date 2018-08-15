@@ -68,13 +68,18 @@ namespace ControlStation
          * [2][3] Pitch ...
          * [4][5] Roll ...
          */
+        private AttitudeIndicator attitudeIndicator;
         public OrientationSensor(Orientation data) : base((byte)0x01, (byte)6, data)
         {
-
+            attitudeIndicator = new AttitudeIndicator();
+            Controls.Add(attitudeIndicator);
         }
 
         public override void UpdateControls()
         {
+            attitudeIndicator.YawAngle = data.Heading;
+            attitudeIndicator.PitchAngle = data.Pitch;
+            attitudeIndicator.RollAngle = data.Roll;
         }
 
         protected override void Convert(byte[] data, ref Orientation result)
@@ -82,7 +87,7 @@ namespace ControlStation
             double[] ypr = new double[3];
             for (int i = 0; i < 3; i++)
             {
-                ypr[i] = ConvertUtils.BytesToDouble(data[i], data[i + 1], -180, 180);
+                ypr[i] = ConvertUtils.BytesToDouble(data[i], data[i + 1], 0, 360);
                 i += 2;
             }
             result.Heading = ypr[0]; result.Pitch = ypr[1]; result.Roll = ypr[2];

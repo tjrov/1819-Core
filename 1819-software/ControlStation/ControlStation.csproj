@@ -54,6 +54,9 @@
     <Compile Include="Actuator.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AttitudeIndicator.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controller.cs" />
     <Compile Include="ControlStationInterface.cs" />
     <Compile Include="ControlStationInterface.Designer.cs">
@@ -92,6 +95,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="SerialCommunication.resx">
       <DependentUpon>SerialCommunication.cs</DependentUpon>
@@ -114,6 +118,10 @@
   <ItemGroup>
     <Content Include="broken-plug.png" />
     <Content Include="connected-plug.png" />
+    <None Include="Resources\wings.bmp" />
+    <None Include="Resources\horizon.bmp" />
+    <None Include="Resources\heading.bmp" />
+    <None Include="Resources\bezel.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

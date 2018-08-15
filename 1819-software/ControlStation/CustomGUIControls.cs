@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace ControlStation
 {
     public class BarGraph : FlowLayoutPanel
     {
-        private double min, max;
         private string label, unit;
         private ProgressBar pb;
         private Label lb;

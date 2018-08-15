@@ -97,7 +97,7 @@ namespace ControlStation
         private Timer flasher;
         public StatusActuator(State data) : base(0x83, data)
         {
-            FlowDirection = FlowDirection.TopDown;
+            //FlowDirection = FlowDirection.TopDown;
             arm = new Button
             {
                 Text = "Arm",
