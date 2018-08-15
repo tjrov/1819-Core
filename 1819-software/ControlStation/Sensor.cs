@@ -148,7 +148,8 @@ namespace ControlStation
          * [1] error code
          * [2] voltage available at ROV (0 to 20 volts)
          */
-        private Label status, error, voltage;
+        private Label status, error;
+        private BarGraph voltage;
 
         public StatusSensor(State data) : base(0x04, 3, data)
         {
@@ -162,11 +163,7 @@ namespace ControlStation
                 Text = "Error: *",
                 AutoSize = true
             };
-            voltage = new Label
-            {
-                Text = "* V",
-                AutoSize = true
-            };
+            voltage = new BarGraph("Voltage", "", Color.Green, 0, 20, 100);
 
             Controls.Add(status);
             Controls.Add(error);
@@ -177,7 +174,7 @@ namespace ControlStation
         {
             status.Text = Data.StatusString;
             error.Text = Data.ErrorString;
-            voltage.Text = string.Format("{0:00.0}V", Data.Voltage);
+            voltage.Value = Data.Voltage;
         }
 
         protected override void Convert(byte[] data, ref State result)

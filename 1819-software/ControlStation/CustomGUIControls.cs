@@ -4,27 +4,47 @@ using System.Drawing;
 
 namespace ControlStation
 {
-    public class BarGraphLabel : Label
+    public class BarGraph : FlowLayoutPanel
     {
-        public double Min, Max;
-        public string Label, Unit;
-        public Color BarColor;
-        private double value;
-        public void UpdateBarGraph(double value)
+        private double min, max;
+        private string label, unit;
+        private ProgressBar pb;
+        private Label lb;
+        public BarGraph(string label, string unit, Color barColor, double min, double max, int width)
         {
-            if(value < Min || value > Max)
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.label = label;
+            this.unit = unit;
+            pb = new ProgressBar()
             {
-                throw new Exception("Bar graph set to value that was out of range");
-            }
-            this.value = value;
-            //display the numeric value
-            Text = Label + ": " + value + Unit;
+                ForeColor = barColor,
+                Minimum = (int)(min * 10),
+                Maximum = (int)(max * 10),
+                Width = width,
+            };
+            lb = new Label()
+            {
+                AutoSize = true,
+                Text = string.Format("{0}: {1:0.#}{2}", label, 0, unit)
+            };
+            Controls.Add(lb);
+            Controls.Add(pb);
         }
-        protected override void OnPaint(PaintEventArgs e)
+        private double value;
+        public double Value
         {
-            Graphics g = e.Graphics;
-            g.Clear(BackColor);
-            g.DrawRectangle(new Pen(BarColor), 0, 0, (float)((value - Min) / (Max - Min) * Width), Height);
+            get
+            {
+                return value;
+            }
+            set
+            {
+                //display the numeric value
+                lb.Text = string.Format("{0}: {1:0.#}{2}", label, value, unit);
+                pb.Value = (int)(value * 10);
+                this.value = value;
+            }
         }
     }
 }
