@@ -55,7 +55,13 @@ namespace ControlStation
             //construct sensor and actuator objects
             depth = new DepthSensor(new Depth());
             imu = new OrientationSensor(new Orientation());
-            tools = new ToolsActuator(new List<Tool>());
+
+            List<Tool> toolList = new List<Tool>();
+            for(int i = 0; i < 3; i++)
+            {
+                toolList.Add(new Tool());
+            }
+            tools = new ToolsActuator(toolList);
 
             //both use the same data object
             List<ESC> escList = new List<ESC>();
@@ -104,7 +110,7 @@ namespace ControlStation
 
         private void SlowLoop()
         {
-            //comms.QueueDevice(escs);
+            comms.QueueDevice(escs);
             comms.QueueDevice(statusControl);
             comms.QueueDevice(status);
         }

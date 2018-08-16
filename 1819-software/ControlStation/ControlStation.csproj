@@ -118,6 +118,7 @@
   <ItemGroup>
     <Content Include="broken-plug.png" />
     <Content Include="connected-plug.png" />
+    <None Include="Resources\dcmotor.png" />
     <None Include="Resources\thruster.bmp" />
     <None Include="Resources\wings.bmp" />
     <None Include="Resources\horizon.bmp" />

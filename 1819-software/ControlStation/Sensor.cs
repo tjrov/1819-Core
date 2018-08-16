@@ -103,26 +103,14 @@ namespace ControlStation
          * [1] First ESC's temp (0 to 100 deg C)
          * ... and so on for all 6 ESCs
          */
-        private List<ESCPanel> escPanels;
         public PropulsionSensor(List<ESC> data) : base(0x02, 12, data)
         {
-            escPanels = new List<ESCPanel>();
-            for (int i = 0; i < data.Count; i++)
-            {
-                ESCPanel panel = new ESCPanel();
-                escPanels.Add(panel);
-                Controls.Add(panel);
-            }
+            
         }
 
         public override void UpdateControls()
         {
-            for(int i = 0; i < data.Count; i++)
-            {
-                escPanels[i].Speed.Value = data[i].Speed;
-                escPanels[i].Temperature.Value = data[i].Temperature;
-                escPanels[i].RPM.Value = data[i].RPM;
-            }
+
         }
 
         protected override void Convert(byte[] data, ref List<ESC> result)
@@ -130,7 +118,7 @@ namespace ControlStation
             int i = 0;
             foreach (ESC esc in result)
             {
-                esc.RPM = (int)ConvertUtils.ByteToDouble(data[i], -5000, 5000);
+                esc.RPM = (int)ConvertUtils.ByteToDouble(data[i], 0, 5000);
                 esc.Temperature = (int)ConvertUtils.ByteToDouble(data[i + 1], 0, 100);
                 i += 2;
             }

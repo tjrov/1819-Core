@@ -92,6 +92,9 @@ uint32_t lastComms;
 
 ERROR error;
 STATUS status;
+
+bool stopped = false;
+
 /*Function prototypes*/
 void receiveMessage();
 void sendMessage();
@@ -164,8 +167,8 @@ void loop() {
 			status = DISARMED;
 		}
 	}
-	//stop all actuators if the robot is disarmed or disconnected
-	if (status != ARMED) {
+	//stop all actuators every .25 sec if the robot is disarmed or disconnected
+	if (status != ARMED && millis() % 250 == 0) {
 		emergencyStop();
 	}
 

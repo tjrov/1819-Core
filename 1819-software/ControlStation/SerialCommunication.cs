@@ -179,14 +179,13 @@ namespace ControlStation
         }
         private MessageStruct ReceiveMessage()
         {
-            return ReceiveMessageHelper();
             //after sending a request for sensor data, the ROV replies with info
             //only allow 100 ms for this to occur
-            /*var task = Task.Run(() => ReceiveMessageHelper());
+            var task = Task.Run(() => ReceiveMessageHelper());
             if (task.Wait(TimeSpan.FromMilliseconds(100)))
                 return task.Result;
             else
-                throw new Exception("Timed out receiving data");*/
+                throw new Exception("Timed out receiving data");
         }
         private MessageStruct ReceiveMessageHelper()
         {

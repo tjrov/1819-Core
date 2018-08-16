@@ -58,15 +58,13 @@ namespace ControlStation
             }
             set
             {
-                if(value > max || value < min)
-                {
-                    throw new Exception("tried to set bargraph to value out of range");
-                }
                 if (value < 0)
                 {
                     pb.Value = 0;
                     pb2.Value = (int)(-value * 10);
-                } else {
+                }
+                else
+                {
                     pb2.Value = 0;
                     pb.Value = (int)(value * 10);
                 }
@@ -74,24 +72,6 @@ namespace ControlStation
                 lb.Text = string.Format("{0}: {1:0.#}{2}", label, value, unit);
                 this.value = value;
             }
-        }
-    }
-    public class ESCPanel : FlowLayoutPanel
-    {
-        Bitmap thrusterBitmap = new Bitmap(Properties.Resources.thruster);
-        public BarGraph Temperature, RPM, Speed;
-        public ESCPanel()
-        {
-            FlowDirection = FlowDirection.TopDown;
-            Size = new Size(100, 150);
-            BackgroundImage = thrusterBitmap;
-            BackgroundImageLayout = ImageLayout.Center;
-            Temperature = new BarGraph("Temp", "C", Color.Green, 0, 100, 50);
-            RPM = new BarGraph("RPM", "", Color.Green, 0, 5000, 50);
-            Speed = new BarGraph("Speed", "%", Color.Green, -100, 100, 50);
-            Controls.Add(Speed);
-            Controls.Add(RPM);
-            Controls.Add(Temperature);
         }
     }
 }

@@ -48,12 +48,28 @@ namespace ControlStation
          * [0][1] First ESC's speed value (-100 to 100 percent)
          * ... and so on for all 6 ESCs
          */
+        private List<ESCPanel> escPanels;
         public PropulsionActuator(List<ESC> data) : base(0x81, data)
         {
+            escPanels = new List<ESCPanel>();
+            for (int i = 0; i < data.Count; i++)
+            {
+                ESCPanel panel = new ESCPanel();
+                escPanels.Add(panel);
+                Controls.Add(panel);
+            }
+            //new line for each of the three panels
+            SetFlowBreak(Controls[2], true);
         }
 
         public override void UpdateControls()
         {
+            for (int i = 0; i < data.Count; i++)
+            {
+                escPanels[i].Speed.Value = data[i].Speed;
+                escPanels[i].Temperature.Value = data[i].Temperature;
+                escPanels[i].RPM.Value = data[i].RPM;
+            }
         }
 
         protected override byte[] Convert(List<ESC> controlData)
@@ -69,15 +85,45 @@ namespace ControlStation
             }
             return result;
         }
+        private class ESCPanel : FlowLayoutPanel
+        {
+            Bitmap thrusterBitmap = new Bitmap(Properties.Resources.thruster);
+            public BarGraph Temperature, RPM, Speed;
+            public ESCPanel()
+            {
+                FlowDirection = FlowDirection.TopDown;
+                Size = new Size(100, 150);
+                BackgroundImage = thrusterBitmap;
+                BackgroundImageLayout = ImageLayout.Center;
+                Temperature = new BarGraph("Temp", "C", Color.Green, 0, 100, 50);
+                RPM = new BarGraph("RPM", "", Color.Green, 0, 5000, 50);
+                Speed = new BarGraph("Speed", "%", Color.Green, -100, 100, 50);
+                Controls.Add(Speed);
+                Controls.Add(RPM);
+                Controls.Add(Temperature);
+            }
+        }
     }
     public class ToolsActuator : Actuator<List<Tool>>
     {
+        private List<ToolPanel> toolPanels;
         public ToolsActuator(List<Tool> data) : base(0x82, data)
         {
+            toolPanels = new List<ToolPanel>();
+            for(int i = 0; i < data.Count; i++)
+            {
+                ToolPanel panel = new ToolPanel();
+                toolPanels.Add(panel);
+                Controls.Add(panel);
+            }
         }
 
         public override void UpdateControls()
         {
+            for(int i = 0; i < data.Count; i++)
+            {
+                toolPanels[i].Speed.Value = data[i].Speed;
+            }
         }
 
         protected override byte[] Convert(List<Tool> controlData)
@@ -86,9 +132,32 @@ namespace ControlStation
             int i = 0;
             foreach (Tool tool in controlData)
             {
-                result[i] = ConvertUtils.DoubleToByte(tool.Speed, -100, 100);
+                if (tool.Speed == 0)
+                {
+                    result[i] = 128;
+                }
+                else
+                {
+                    result[i] = ConvertUtils.DoubleToByte(tool.Speed, -100, 100);
+                }
+                i++;
             }
             return result;
+        }
+
+        private class ToolPanel : FlowLayoutPanel
+        {
+            Bitmap toolBitmap = new Bitmap(Properties.Resources.dcmotor);
+            public BarGraph Speed;
+            public ToolPanel()
+            {
+                FlowDirection = FlowDirection.TopDown;
+                Size = new Size(100, 100);
+                BackgroundImage = toolBitmap;
+                BackgroundImageLayout = ImageLayout.Center;
+                Speed = new BarGraph("Speed", "%", Color.Green, -100, 100, 50);
+                Controls.Add(Speed);
+            }
         }
     }
     public class StatusActuator : Actuator<State>
