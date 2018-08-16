@@ -70,10 +70,13 @@ namespace ControlStation
          * [4][5] Roll ...
          */
         private AttitudeIndicator attitudeIndicator;
+        private HeadingIndicator headingIndicator;
         public OrientationSensor(Orientation data) : base((byte)0x01, (byte)6, data)
         {
             attitudeIndicator = new AttitudeIndicator();
+            headingIndicator = new HeadingIndicator();
             Controls.Add(attitudeIndicator);
+            Controls.Add(headingIndicator);
         }
 
         public override void UpdateControls()
@@ -82,6 +85,7 @@ namespace ControlStation
             attitudeIndicator.PitchAngle = data.Pitch;
             attitudeIndicator.RollAngle = data.Roll;
             attitudeIndicator.Invalidate();
+            headingIndicator.Heading = data.Yaw;
         }
 
         protected override void Convert(byte[] data, ref Orientation result)

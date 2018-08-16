@@ -54,11 +54,10 @@ namespace ControlStation
             {
                 g.FillRectangle(new SolidBrush(Color.OrangeRed), 0, 0, 40, 250);
             }
-            g.DrawImage(Image.FromFile("C:\\Users\\Henry\\source\\repos\\WindowsFormsApp1\\WindowsFormsApp1\\Assets\\depth-back.png"),
-                0, 0, new Rectangle(0, (int)(depth * 100) - 125, 40, 250), GraphicsUnit.Pixel);
+            g.DrawImage(backBitmap, 0, 0, new Rectangle(0, (int)(depth * 100) - 125, 
+                40, 250), GraphicsUnit.Pixel);
 
-            g.DrawImage(Image.FromFile("C:\\Users\\Henry\\source\\repos\\WindowsFormsApp1\\WindowsFormsApp1\\Assets\\depth-front.png")
-                , 0, 0);
+            g.DrawImage(frontBitmap, 0, 0);
         }
     }
 }
