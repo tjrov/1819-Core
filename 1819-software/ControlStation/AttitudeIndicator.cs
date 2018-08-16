@@ -14,10 +14,11 @@ namespace ControlStation
     public class AttitudeIndicator : Panel
     {
         // Load images
-        Bitmap mybitmap1 = new Bitmap(Properties.Resources.horizon);
-        Bitmap mybitmap2 = new Bitmap(Properties.Resources.bezel);
-        Bitmap mybitmap3 = new Bitmap(Properties.Resources.heading);
-        Bitmap mybitmap4 = new Bitmap(Properties.Resources.wings);
+        Bitmap horizonBitmap = new Bitmap(Properties.Resources.horizon);
+        Bitmap bezelBitmap = new Bitmap(Properties.Resources.bezel);
+        Bitmap headingBitmap = new Bitmap(Properties.Resources.heading);
+        Bitmap editedHeadingBitmap;
+        Bitmap wingsBitmap = new Bitmap(Properties.Resources.wings);
 
         //Pen myPen;
 
@@ -34,10 +35,6 @@ namespace ControlStation
         }
         public double PitchAngle
         {
-            get
-            {
-                return pitchAngle;
-            }
             set
             {
                 pitchAngle = ConvertAngle(value);
@@ -45,10 +42,6 @@ namespace ControlStation
         }
         public double RollAngle
         {
-            get
-            {
-                return rollAngle;
-            }
             set
             {
                 rollAngle = ConvertAngle(value) * Math.PI / 180;
@@ -73,9 +66,10 @@ namespace ControlStation
         public AttitudeIndicator()
         {
             Size = new Size(300, 300);
-            mybitmap2.MakeTransparent(Color.Yellow); // Sets image transparency
-            mybitmap3.MakeTransparent(Color.Black); // Sets image transparency
-            mybitmap4.MakeTransparent(Color.Yellow); // Sets image transparency
+            bezelBitmap.MakeTransparent(Color.Yellow); // Sets image transparency
+            headingBitmap.MakeTransparent(Color.Black); // Sets image transparency
+            wingsBitmap.MakeTransparent(Color.Yellow); // Sets image transparency
+            editedHeadingBitmap = headingBitmap;
             //reduce flickering
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.UserPaint, true);
@@ -102,9 +96,10 @@ namespace ControlStation
             Graphics gfx = paintEvnt.Graphics;
 
             // Adjust and draw horizon image
-            RotateAndTranslate(paintEvnt, mybitmap1, rollAngle, 0, ptBoule, (double)(4 * pitchAngle), ptRotation, 1);
+            RotateAndTranslate(paintEvnt, horizonBitmap, rollAngle, 0, ptBoule, (double)(4 * pitchAngle), ptRotation, 1);
 
-            RotateAndTranslate2(paintEvnt, mybitmap3, yawAngle, rollAngle, 0, ptHeading, (double)(4 * pitchAngle), ptRotation, 1);
+            //draw the heading mthing
+            RotateAndTranslate2(paintEvnt, editedHeadingBitmap, yawAngle, rollAngle, 0, ptHeading, (double)(4 * pitchAngle), ptRotation, 1);
 
 
 
@@ -112,8 +107,8 @@ namespace ControlStation
             //Pen maskPen = new Pen(this.BackColor, 220); // width of mask
             //gfx.DrawRectangle(maskPen, -100, -100, 500, 500); // size of mask
 
-            gfx.DrawImage(mybitmap2, 0, 0); // Draw bezel image
-            gfx.DrawImage(mybitmap4, 75, 125); // Draw wings image
+            gfx.DrawImage(bezelBitmap, 0, 0); // Draw bezel image
+            gfx.DrawImage(wingsBitmap, 75, 125); // Draw wings image
 
             //myPen = new Pen(System.Drawing.Color.Green, 3);
             //gfx.DrawLine(myPen, 200, 20, 20, 210); // Draw a line

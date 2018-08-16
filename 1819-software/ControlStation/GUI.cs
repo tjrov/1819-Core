@@ -59,6 +59,10 @@ namespace ControlStation
 
             //both use the same data object
             List<ESC> escList = new List<ESC>();
+            for (int i = 0; i < 6; i++)
+            {
+                escList.Add(new ESC());
+            }
             escs = new PropulsionSensor(escList);
             thrusters = new PropulsionActuator(escList);
 

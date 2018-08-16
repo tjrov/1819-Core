@@ -93,6 +93,16 @@ namespace ControlStation.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap thruster {
+            get {
+                object obj = ResourceManager.GetObject("thruster", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap wings {
             get {
                 object obj = ResourceManager.GetObject("wings", resourceCulture);
