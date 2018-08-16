@@ -42,7 +42,7 @@ namespace ControlStation
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             SetStyle(ControlStyles.ResizeRedraw, true);
 
-            Size = new Size(40, 250);
+            Size = new Size(60, 375);
         }
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -50,12 +50,12 @@ namespace ControlStation
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
 
-            if (depth > 8.5f)
+            if (depth > 8.5 || depth < 0)
             {
-                g.FillRectangle(new SolidBrush(Color.OrangeRed), 0, 0, 40, 250);
+                g.Clear(Color.Black);
             }
-            g.DrawImage(backBitmap, 0, 0, new Rectangle(0, (int)(depth * 100) - 125, 
-                40, 250), GraphicsUnit.Pixel);
+            g.DrawImage(backBitmap, 0, 0, new Rectangle(0, (int)(depth * 150) - 187, 
+                60, 375), GraphicsUnit.Pixel);
 
             g.DrawImage(frontBitmap, 0, 0);
         }
