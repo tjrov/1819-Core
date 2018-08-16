@@ -25,9 +25,9 @@ uint8_t speeds[] = { 128, 128, 128 };
 void setup() {
 	initLEDs();
 	initMotors();
-	Wire.begin(ADDRESS);
 	Wire.setClock(400000);
 	Wire.onReceive(onReceive); //attach method as event
+	Serial.begin(250000);
 }
 
 // the loop function runs over and over again until power down or reset
@@ -77,21 +77,12 @@ void loop() {
 */
 
 void onReceive(int numBytes) {
-	if (Wire.available() >= 5) { //full msg
+	if (Wire.available() >= 4) { //full msg
 		if (Wire.read() == HEADER_BYTE) { //first byte is header
-			uint8_t checksum = 0x00;
 			for (int i = 0; i < 3; i++) {
 				speeds[i] = Wire.read();
-				checksum ^= speeds[i];
 			}
-			if (checksum == Wire.read()) {
-				lastComms = millis();
-			}
-			else {
-				for (int i = 0; i < 3; i++) {
-					speeds[i] = 128;
-				}
-			}
+			lastComms = millis();
 		}
 	}
 }

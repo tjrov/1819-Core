@@ -135,7 +135,7 @@ void setup() {
 	//initalize subsystems (status changes based on init errors)
 	initIMU();
 	//initDepth();
-	//initTools();
+	initTools();
 	//initESCs();
 
 	if (error != ALL_SYSTEMS_GO) { //if we can't init
@@ -176,20 +176,20 @@ void processMessage() {
 	if (receiveProgress == 5) {
 		receiveProgress = 0;
 		switch (rxData.command) {
-		//Actuator commands
+			//Actuator commands
 		case ESC_CMD:
 			if (status == ARMED)
 				//writeESCs();
 				break; //no need to send data in response to actuator commands
 		case TOOLS_CMD:
 			if (status == ARMED)
-				//writeTools();
-				break; //ditto
+				writeTools();
+			break; //ditto
 		case STATUS_CMD:
 			writeStatus();
 			break;
 
-		//Sensor requests
+			//Sensor requests
 		case IMU_REQ:
 			readIMU();
 			sendMessage();
@@ -337,12 +337,9 @@ void initTools() {
 void writeTools() {
 	Wire.beginTransmission(TOOLS_ADDRESS);
 	Wire.write(HEADER_BYTE);
-	uint8_t checksum;
 	for (int i = 0; i < NUM_TOOLS; i++) {
 		Wire.write(rxData.data[i]);
-		checksum ^= rxData.data[i];
 	}
-	Wire.write(checksum);
 	Wire.endTransmission();
 }
 
@@ -389,15 +386,12 @@ void emergencyStop() {
 	/*for (int i = 0; i < NUM_ESCS; i++) {
 		escs[i]->set(0);
 	}*/
-	/*for (int i = 0; i < NUM_TOOLS; i++) {
-		Wire.beginTransmission(TOOLS_ADDRESS);
-		Wire.write(HEADER_BYTE);
-		for (int i = 0; i < 3; i++) {
-			Wire.write(128);
-		}
-		Wire.write(0);
-		Wire.endTransmission();
-	}*/
+	Wire.beginTransmission(TOOLS_ADDRESS);
+	Wire.write(HEADER_BYTE);
+	for (int i = 0; i < 3; i++) {
+		Wire.write(128);
+	}
+	Wire.endTransmission();
 }
 
 double mapDouble(double val, double minVal, double maxVal, double minResult, double maxResult) {
