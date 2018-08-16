@@ -19,9 +19,6 @@ namespace ControlStation
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BorderStyle = BorderStyle.Fixed3D;
 
-            //start disabled
-            Enabled = false;
-
             this.messageCommand = messageCommand;
         }
         public abstract MessageStruct GetMessage();

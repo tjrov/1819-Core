@@ -190,5 +190,10 @@ namespace ControlStation
                 Data.DesiredStatus = ROVStatus.ARMED;
             }
         }
+        protected override void OnEnabledChanged(EventArgs e)
+        {
+            base.OnEnabledChanged(e);
+            Data.DesiredStatus = ROVStatus.DISCONNECTED;
+        }
     }
 }

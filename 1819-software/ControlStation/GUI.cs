@@ -86,6 +86,7 @@ namespace ControlStation
             foreach (GenericDevice device in devices)
             {
                 panel.Controls.Add(device);
+                device.Enabled = false;
             }
             Controls.Add(panel);
         }
@@ -103,7 +104,7 @@ namespace ControlStation
 
         private void SlowLoop()
         {
-            comms.QueueDevice(escs);
+            //comms.QueueDevice(escs);
             comms.QueueDevice(statusControl);
             comms.QueueDevice(status);
         }

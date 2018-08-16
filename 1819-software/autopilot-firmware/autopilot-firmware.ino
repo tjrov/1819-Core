@@ -352,11 +352,6 @@ void initStatus() {
 	status = DISCONNECTED;
 }
 
-void resetBoard() {
-	digitalWrite(RESET, LOW); //connected to RESET pin
-	while (true);
-}
-
 void readStatus() {
 	txData.command = STATUS_REQ;
 	txData.length = 3;
@@ -379,7 +374,12 @@ void writeStatus() {
 			}
 			break;
 		case REBOOT:
-			resetBoard();
+			//turn off leds or they will stay on
+			digitalWrite(RED, LOW);
+			digitalWrite(GREEN, LOW);
+			digitalWrite(BLUE, LOW);
+			//go to the bootloader address in flash memory
+			asm("jmp 0x3800");
 		}
 	}
 }
