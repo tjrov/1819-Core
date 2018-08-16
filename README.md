@@ -7,10 +7,15 @@ So far, I've made abstract classes for sub-Panels of the GUI that control robot 
 or read data from robot sensors. Serial comms are already taken care of. Just instantiate
 one of the concrete subclasses and add it to the GUI controls.
 
-The UpdateControls() panels for most of these subclasses aren't yet implemented, so there isn't
-any UI for most of the ROV devices. This method will run after the device is updated over serial.
-New information will be available in the Data field of each device class, and you can update the
-UI with that data.
+The UpdateControls() methods are what draws the UI for each Device class. This method will run after the device is updated over serial.
+New information will be available in the Data field of the class, and you can update the UI with that data.
+
+TODO:
+- Make UI look better (probably have the controls take up more of the screen and be laid out less haphazardly. Also maybe use win10 look and feel)
+- Controller input
+- Heading lock (override handheld controller values and control motors based on heading as compared to a desired heading)
+- Depth lock
+- Roll lock
 
 It's recommended to use Visual Studio with the .NET and Windows Forms stuff installed for 
 ControlStation development.
