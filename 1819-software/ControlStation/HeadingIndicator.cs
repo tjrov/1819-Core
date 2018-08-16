@@ -94,7 +94,7 @@ namespace ControlStation
             if (s.Width * s.Height > 0)
             {
                 result = new Bitmap(s.Width, s.Height);
-                using (Font font2 = new Font("Arial", (float)(16 * sizeMultiplier)))
+                using (Font font2 = new Font("Arial", (float)(40 * sizeMultiplier)))
                 {
                     using (Font font1 = new Font("Arial", (float)(14 * sizeMultiplier)))
                     {
@@ -130,14 +130,14 @@ namespace ControlStation
                                                     Point[] a2 = new Point[] { pA1, pB1, pC1 };
                                                     Point[] a3 = new Point[] { pA1, pB2, pC1 };
 
-                                                    g.DrawPolygon(penred, a2);
-                                                    g.FillPolygon(drawBrushRed, a2);
-                                                    g.DrawPolygon(penred, a3);
+                                                    g.DrawPolygon(pen1, a2);
+                                                    g.FillPolygon(drawBrushWhite, a2);
+                                                    g.DrawPolygon(pen1, a3);
                                                     g.FillPolygon(drawBrushWhite, a3);
 
                                                     double[] Cos = new double[360];
                                                     double[] Sin = new double[360];
-
+                                                    /*
                                                     //draw centercross
                                                     g.DrawLine(pen2, new Point(((int)(xcenterpoint - (PitchTiltRadius - sizeMultiplier * 50))), ycenterpoint), new Point(((int)(xcenterpoint + (PitchTiltRadius - sizeMultiplier * 50))), ycenterpoint));
                                                     g.DrawLine(pen2, new Point(xcenterpoint, (int)(ycenterpoint - (PitchTiltRadius - sizeMultiplier * 50))), new Point(xcenterpoint, ((int)(ycenterpoint + (PitchTiltRadius - sizeMultiplier * 50)))));
@@ -152,7 +152,7 @@ namespace ControlStation
                                                     g.FillEllipse(drawBrushWhiteGrey, r);
                                                     g.DrawLine(penorange, PitchTiltCenter.X - rad, PitchTiltCenter.Y, PitchTiltCenter.X + rad, PitchTiltCenter.Y);
                                                     g.DrawLine(penorange, PitchTiltCenter.X, PitchTiltCenter.Y - rad, PitchTiltCenter.X, PitchTiltCenter.Y + rad);
-
+                                                    */
                                                     //prep here because need before and after for red triangle.
                                                     for (int d = 0; d < 360; d++)
                                                     {
@@ -172,7 +172,7 @@ namespace ControlStation
                                                         //Draw Degree labels
                                                         if (d % 30 == 0)
                                                         {
-                                                            g.DrawLine(penblue, p1, p2);
+                                                            g.DrawLine(pen1, p1, p2); //was penblue
 
                                                             Point p3 = new Point((int)(degreeRadius * Cos[d]) + xcenterpoint, (int)(degreeRadius * Sin[d]) + ycenterpoint);
                                                             SizeF s1 = g.MeasureString(d.ToString(), font1);
@@ -198,12 +198,12 @@ namespace ControlStation
                                                             }
                                                             Point[] a = new Point[] { pA, pB, pC };
 
-                                                            g.DrawPolygon(p, a);
-                                                            g.FillPolygon(b, a);
+                                                            /*g.DrawPolygon(p, a);
+                                                            g.FillPolygon(b, a);*/
                                                         }
                                                         else if (d % 2 == 0)
                                                             g.DrawLine(pen2, p1, p2);
-
+                                                        /*
                                                         //draw N,E,S,W
                                                         if (d % 90 == 0)
                                                         {
@@ -220,7 +220,7 @@ namespace ControlStation
                                                             //if (d == 0)
                                                             //{
 
-                                                        }
+                                                        }*/
 
                                                     }
                                                     //draw course
@@ -228,10 +228,10 @@ namespace ControlStation
                                                     //g.DrawLine(pen1, new Point(xcenterpoint, ycenterpoint - (int)innerradius), new Point(xcenterpoint, ycenterpoint - ((int)outerradius + (int)(sizeMultiplier * 50))));
 
 
-                                                    String deg = Math.Round(degree, 2).ToString("0.00") + "°";
-                                                    SizeF s3 = g.MeasureString(deg, font1);
+                                                    String deg = Math.Round(degree, 2).ToString("000");
+                                                    SizeF s3 = g.MeasureString(deg, font2);
 
-                                                    g.DrawString(deg, font2, drawBrushOrange, new Point(xcenterpoint - (int)(s3.Width / 2), ycenterpoint - (int)(sizeMultiplier * 40)));
+                                                    g.DrawString(deg, font2, drawBrushWhite, new Point(xcenterpoint - (int)(s3.Width / 2), ycenterpoint - (int)(s3.Height / 2)));
 
                                                 }
                                             }

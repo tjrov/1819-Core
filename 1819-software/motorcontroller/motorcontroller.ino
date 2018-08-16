@@ -25,9 +25,9 @@ uint8_t speeds[] = { 128, 128, 128 };
 void setup() {
 	initLEDs();
 	initMotors();
+	Wire.begin(ADDRESS);
 	Wire.setClock(400000);
 	Wire.onReceive(onReceive); //attach method as event
-	Serial.begin(250000);
 }
 
 // the loop function runs over and over again until power down or reset
@@ -111,14 +111,14 @@ bool isTimeout() {
 	return (millis() - lastComms) > TIMEOUT;
 }
 
-void setMotor(int val, int one, int two) {
+void setMotor(uint8_t val, uint8_t one, uint8_t two) {
 	if (val < 128) {
-		digitalWrite(two, LOW);
-		analogWrite(one, 255 - val * 2);
+		analogWrite(one, val * 2);
+		digitalWrite(two, HIGH);
 	}
 	else if (val > 128) {
-		digitalWrite(one, LOW);
-		analogWrite(two, (val - 128) * 2);
+		digitalWrite(one, HIGH);
+		analogWrite(two, (255 - val) * 2);
 	}
 	else {
 		digitalWrite(one, HIGH);
