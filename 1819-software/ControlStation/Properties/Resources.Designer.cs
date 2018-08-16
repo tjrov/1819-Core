@@ -83,6 +83,26 @@ namespace ControlStation.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap depth_back {
+            get {
+                object obj = ResourceManager.GetObject("depth_back", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap depth_front {
+            get {
+                object obj = ResourceManager.GetObject("depth_front", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap heading {
             get {
                 object obj = ResourceManager.GetObject("heading", resourceCulture);

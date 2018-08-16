@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -132,12 +133,16 @@ namespace ControlStation
          * LEN: 2
          * [0][2] Vehicle depth (0 to 30 meters)
          */
+        private DepthIndicator depthIndicator;
         public DepthSensor(Depth data) : base(0x03, 2, data)
         {
+            depthIndicator = new DepthIndicator();
+            Controls.Add(depthIndicator);
         }
 
         public override void UpdateControls()
         {
+            depthIndicator.Depth = data.DepthValue;
         }
 
         protected override void Convert(byte[] data, ref Depth result)

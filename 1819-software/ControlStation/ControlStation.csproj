@@ -67,6 +67,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataStructures.cs" />
+    <Compile Include="DepthIndicator.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +121,8 @@
   <ItemGroup>
     <Content Include="broken-plug.png" />
     <Content Include="connected-plug.png" />
+    <None Include="Resources\depth-front.png" />
+    <None Include="Resources\depth-back.png" />
     <None Include="Resources\dcmotor.png" />
     <None Include="Resources\thruster.bmp" />
     <None Include="Resources\wings.bmp" />
