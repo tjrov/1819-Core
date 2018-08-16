@@ -76,6 +76,11 @@ namespace ControlStation
             mybitmap2.MakeTransparent(Color.Yellow); // Sets image transparency
             mybitmap3.MakeTransparent(Color.Black); // Sets image transparency
             mybitmap4.MakeTransparent(Color.Yellow); // Sets image transparency
+            //reduce flickering
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.ResizeRedraw, true);
         }
 
         // OnPaint takes care of drawing all graphics to the screen automatically
