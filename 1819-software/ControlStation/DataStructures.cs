@@ -29,7 +29,7 @@ namespace ControlStation
     }
     public class Orientation
     {
-        public double Heading, Pitch, Roll;
+        public double Yaw, Pitch, Roll;
     }
     public enum ROVStatus
     {

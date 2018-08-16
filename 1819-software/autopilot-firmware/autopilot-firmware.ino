@@ -411,7 +411,6 @@ void initIMU() {
 		return;
 	}
 	imuSensor.setExtCrystalUse(true);
-	imuSensor.setAxisRemap(adafruit_bno055_axis_remap_config_t )
 	//do any configuration of imu here
 }
 

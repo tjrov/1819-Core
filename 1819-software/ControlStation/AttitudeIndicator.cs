@@ -24,28 +24,45 @@ namespace ControlStation
         double pitchAngle = 0;
         double rollAngle = 0;
         double yawAngle = 0;
+        private double ConvertAngle(double angle)
+        {
+            if(angle > 180)
+            {
+                angle -= 360;
+            }
+            return angle;
+        }
         public double PitchAngle
         {
+            get
+            {
+                return pitchAngle;
+            }
             set
             {
-                pitchAngle = value * Math.PI / 180;
-                Invalidate();
+                pitchAngle = ConvertAngle(value);
             }
         }
         public double RollAngle
         {
+            get
+            {
+                return rollAngle;
+            }
             set
             {
-                rollAngle = value * Math.PI / 180;
-                Invalidate();
+                rollAngle = ConvertAngle(value) * Math.PI / 180;
             }
         }
         public double YawAngle
         {
+            get
+            {
+                return yawAngle;
+            }
             set
             {
-                yawAngle = value * Math.PI / 180;
-                Invalidate();
+                yawAngle = -ConvertAngle(value) * Math.PI / 180;
             }
         }
 

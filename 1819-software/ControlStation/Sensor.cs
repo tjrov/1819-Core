@@ -68,28 +68,19 @@ namespace ControlStation
          * [2][3] Pitch ...
          * [4][5] Roll ...
          */
-        private Label heading, pitch, roll;
         private AttitudeIndicator attitudeIndicator;
         public OrientationSensor(Orientation data) : base((byte)0x01, (byte)6, data)
         {
             attitudeIndicator = new AttitudeIndicator();
-            heading = new Label();
-            pitch = new Label();
-            roll = new Label();
             Controls.Add(attitudeIndicator);
-            Controls.Add(heading);
-            Controls.Add(pitch);
-            Controls.Add(roll);
         }
 
         public override void UpdateControls()
         {
-            attitudeIndicator.YawAngle = data.Heading;
+            attitudeIndicator.YawAngle = data.Yaw;
             attitudeIndicator.PitchAngle = data.Pitch;
             attitudeIndicator.RollAngle = data.Roll;
-            heading.Text = "" + data.Heading;
-            pitch.Text = "" + data.Pitch;
-            roll.Text = "" + data.Roll;
+            attitudeIndicator.Invalidate();
         }
 
         protected override void Convert(byte[] data, ref Orientation result)
@@ -97,9 +88,9 @@ namespace ControlStation
             double[] ypr = new double[3];
             for (int i = 0; i < 3; i++)
             {
-                ypr[i] = ConvertUtils.BytesToDouble(data[i * 2], data[i * 2 + 1], -180, 180);
+                ypr[i] = ConvertUtils.BytesToDouble(data[i * 2], data[i * 2 + 1], 0, 360);
             }
-            result.Heading = ypr[0]; result.Pitch = ypr[1]; result.Roll = ypr[2];
+            result.Yaw = ypr[0]; result.Pitch = ypr[1]; result.Roll = ypr[2];
         }
     }
     public class PropulsionSensor : Sensor<List<ESC>>
