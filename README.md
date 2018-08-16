@@ -7,16 +7,29 @@ So far, I've made abstract classes for sub-Panels of the GUI that control robot 
 or read data from robot sensors. Serial comms are already taken care of. Just instantiate
 one of the concrete subclasses and add it to the GUI controls.
 
-The Draw() methods of these subclasses are not yet implemented.
-
-The Update() methods should be added to timers that regularly update the sub-Panels
+The UpdateControls() panels for most of these subclasses aren't yet implemented, so there isn't
+any UI for most of the ROV devices. This method will run after the device is updated over serial.
+New information will be available in the Data field of each device class, and you can update the
+UI with that data.
 
 It's recommended to use Visual Studio with the .NET and Windows Forms stuff installed for 
-ControlStation development. For development of firmware for the mainboard and motorcontroller,
-which are Arduino boards, install the Visual Micro plugin for Visual Studio.
+ControlStation development.
+
+The autopilot-firmware and motorcontroller-firmware code is pretty much done. For development of firmware for the autopilot and motorcontroller, which are Arduino boards, install the Visual Micro plugin for Visual Studio. Upload the autopilot-firmware to a regular Arduino board connected to your computer over USB (comment out code that actually uses sensors and actuators since it won't work anyway), then start the ControlStation code and test out the UI.
 
 Electronics people can take a look at the autopilot board files. We'll also be making a
-motor controller board that connects to the ROV's i2c bus. Features:
+motorcontroller board that connects to the ROV's i2c bus.
+
+Current autopilot revision features:
+- Arduino Pro Mini
+- RGB status LED
+- RS485 interface
+- Auto direction control of rs485 interface allows new firmware to be uploaded over the tether
+- PCA-9615 differential I2C transceiver allows it to talk to the ROV data bus and access the motorcontroller board and the 6 ESC boards
+- I2C Orientation sensor gives compass heading, pitch, and roll angles
+- I2C Pressure sensor provides a depth reading
+
+Motorcontroller planned features:
 - Arduino Pro Mini
 - RGB status led
 - PCA-9615 differential I2C transceiver (connects to the ROV i2c bus)
