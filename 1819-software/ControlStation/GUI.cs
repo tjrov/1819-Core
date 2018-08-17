@@ -27,6 +27,10 @@ namespace ControlStation
         private StatusActuator statusControl;
         private TableLayoutPanel centerPanel;
         private FlowLayoutPanel upperPanel;
+        private GroupBox groupBox1;
+        private GroupBox groupBox2;
+        private GroupBox groupBox3;
+        private GroupBox groupBox4;
         private List<GenericDevice> devices;
 
         public GUI()
@@ -88,31 +92,87 @@ namespace ControlStation
         private void InitializeComponent()
         {
             this.centerPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.upperPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.centerPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // centerPanel
             // 
-            this.centerPanel.AutoSize = true;
-            this.centerPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.centerPanel.ColumnCount = 2;
             this.centerPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.centerPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.centerPanel.Controls.Add(this.groupBox2, 1, 0);
+            this.centerPanel.Controls.Add(this.groupBox1, 0, 0);
+            this.centerPanel.Controls.Add(this.groupBox3, 0, 1);
+            this.centerPanel.Controls.Add(this.groupBox4, 1, 1);
             this.centerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.centerPanel.Location = new System.Drawing.Point(0, 0);
             this.centerPanel.Name = "centerPanel";
+            this.centerPanel.Padding = new System.Windows.Forms.Padding(10, 10, 10, 25);
             this.centerPanel.RowCount = 2;
             this.centerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.centerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.centerPanel.Size = new System.Drawing.Size(1280, 1024);
-            this.centerPanel.TabIndex = 0;
+            this.centerPanel.TabIndex = 3;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.BackgroundImage = global::ControlStation.Properties.Resources.rov_tools;
+            this.groupBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Location = new System.Drawing.Point(643, 13);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(624, 488);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Tools";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.BackgroundImage = global::ControlStation.Properties.Resources.rov_electronics;
+            this.groupBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(13, 13);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(624, 488);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Status";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.BackgroundImage = global::ControlStation.Properties.Resources.rov_thrusters;
+            this.groupBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(13, 507);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(624, 489);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Thrusters";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox4.Location = new System.Drawing.Point(643, 507);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(624, 489);
+            this.groupBox4.TabIndex = 3;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Attitude";
             // 
             // upperPanel
             // 
+            this.upperPanel.AutoSize = true;
+            this.upperPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.upperPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.upperPanel.Location = new System.Drawing.Point(0, 0);
             this.upperPanel.Name = "upperPanel";
-            this.upperPanel.Size = new System.Drawing.Size(1280, 100);
+            this.upperPanel.Size = new System.Drawing.Size(1280, 0);
             this.upperPanel.TabIndex = 3;
             // 
             // GUI
@@ -123,6 +183,7 @@ namespace ControlStation
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "GUI";
             this.Load += new System.EventHandler(this.GUI_Load);
+            this.centerPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -193,10 +254,10 @@ namespace ControlStation
             upperPanel.Controls.Add(comms);
             foreach (GenericDevice device in devices)
             {
-                centerPanel.Controls.Add(device);
+                //centerPanel.Controls.Add(device);
                 device.Enabled = false;
             }
-            Controls.Add(centerPanel);
+            upperPanel.SendToBack();
         }
     }
 }
