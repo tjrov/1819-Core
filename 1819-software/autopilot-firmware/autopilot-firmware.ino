@@ -363,6 +363,7 @@ void writeTools() {
 			Wire.write(rxData.data[i]);
 		}
 		Wire.endTransmission();
+
 		error &= ~(TOOLS_FAILURE);
 	}
 	else {

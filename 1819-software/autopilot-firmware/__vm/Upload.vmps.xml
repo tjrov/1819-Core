@@ -5,28 +5,7 @@
     <VCCodeModel>
       <VCCodeMacros />
     </VCCodeModel>
-    <BreakPoints>
-      <BreakPoint Index="1" Name="Sensor.cs, line 94 character 9" Id="5fca3710-8734-47e0-bd79-2f3bd4485d19" Enabled="1" Message="" MessageTextType="2" PreProcessedMessage="" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\henry\source\repos\1819-core\1819-software\controlstation\sensor.cs" FileLine="94" FileColumn="9" FunctionName="ControlStation.OrientationSensor.Convert(byte[] data, ref OrientationData result)" FunctionLineOffset="2" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C#" LocationType="3" Tag="&lt;vmbp Id='5fca3710-8734-47e0-bd79-2f3bd4485d19'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="1">
-        <Source>87	            attitudeIndicator.PitchAngle = data.Pitch;
-88	            attitudeIndicator.RollAngle = data.Roll;
-89	            attitudeIndicator.Invalidate();
-90	            headingIndicator.Heading = data.Yaw;
-91	        }
-92	
-93	        protected override void Convert(byte[] data, ref OrientationData result)
---&gt;94	        {
-95	            double[] ypr = new double[3];
-96	            for (int i = 0; i &lt; 3; i++)
-97	            {
-98	                ypr[i] = ConvertUtils.BytesToDouble(data[i * 2], data[i * 2 + 1], 0, 360);
-99	            }
-100	            result.Yaw = ypr[0]; result.Pitch = ypr[1]; result.Roll = ypr[2];
-101	        }
-102	    }
-103	    public class PropulsionSensor : Sensor&lt;List&lt;ESCData&gt;&gt;
-</Source>
-      </BreakPoint>
-    </BreakPoints>
+    <BreakPoints />
     <Platform>
       <Board />
     </Platform>
