@@ -23,7 +23,7 @@ ControlStation development.
 The autopilot-firmware and motorcontroller-firmware code is pretty much done. For development of firmware for the autopilot and motorcontroller, which are Arduino boards, install the Visual Micro plugin for Visual Studio. Upload the autopilot-firmware to a regular Arduino board connected to your computer over USB (comment out code that actually uses sensors and actuators since it won't work anyway), then start the ControlStation code and test out the UI.
 
 Electronics people can take a look at the autopilot board files. We'll also be making a
-motorcontroller board that connects to the ROV's i2c bus.
+motorcontroller board that connects to the ROV's i2c bus. You can use Eagle with the Sparkfun Eagle part libraries installed to work on them.
 
 Current autopilot revision features:
 - Arduino Pro Mini
