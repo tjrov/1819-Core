@@ -45,7 +45,8 @@ namespace ControlStation
             {
                 Dock = System.Windows.Forms.DockStyle.Fill,
                 Location = new System.Drawing.Point(0, 0),
-                Size = new System.Drawing.Size(1280, 1024)
+                Size = new System.Drawing.Size(1280, 1024),
+                BackColor = Color.Black
             };
 
             //setup serial port

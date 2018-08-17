@@ -17,7 +17,8 @@ namespace ControlStation
             //size to fit components
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            BorderStyle = BorderStyle.Fixed3D;
+            BorderStyle = BorderStyle.FixedSingle;
+            BackColor = Color.Black;
 
             this.messageCommand = messageCommand;
         }

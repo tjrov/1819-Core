@@ -123,9 +123,9 @@ namespace ControlStation.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap protractor {
+        internal static System.Drawing.Bitmap rov_electronics {
             get {
-                object obj = ResourceManager.GetObject("protractor", resourceCulture);
+                object obj = ResourceManager.GetObject("rov_electronics", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +133,19 @@ namespace ControlStation.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap thruster {
+        internal static System.Drawing.Bitmap rov_thrusters {
             get {
-                object obj = ResourceManager.GetObject("thruster", resourceCulture);
+                object obj = ResourceManager.GetObject("rov_thrusters", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap rov_tools {
+            get {
+                object obj = ResourceManager.GetObject("rov_tools", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
