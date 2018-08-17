@@ -124,6 +124,7 @@
   <ItemGroup>
     <Content Include="broken-plug.png" />
     <Content Include="connected-plug.png" />
+    <None Include="Resources\estop.png" />
     <None Include="Resources\rov-tools.png" />
     <None Include="Resources\rov-thrusters.png" />
     <None Include="Resources\rov-electronics.png" />

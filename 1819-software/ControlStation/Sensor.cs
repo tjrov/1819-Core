@@ -76,6 +76,7 @@ namespace ControlStation
         {
             attitudeIndicator = new AttitudeIndicator();
             headingIndicator = new HeadingIndicator();
+            headingIndicator.Location = new Point(300, 0);
             Controls.Add(attitudeIndicator);
             Controls.Add(headingIndicator);
         }
@@ -126,11 +127,11 @@ namespace ControlStation
             temp = new List<DataLabel>();
             foreach(ESCData esc in data)
             {
-                BarGraph rpmGraph = new BarGraph("RPM", "####", "", Color.Green, 0, 5000, 50);
+                BarGraph rpmGraph = new BarGraph("RPM", "{0:###0}", "", Color.Green, 0, 5000, 50);
                 DataLabel tempGraph = new DataLabel
                 {
                     Info = "Temp",
-                    Format = "###",
+                    Format = "{0:##0}",
                     Unit = "C",
                 };
                 rpm.Add(rpmGraph);
@@ -219,7 +220,7 @@ namespace ControlStation
                 AutoSize = true,
                 Info = "Error"
             };
-            voltage = new BarGraph("Voltage", "00.#", "V", Color.Green, 0, 20, 100);
+            voltage = new BarGraph("Voltage", "{0:#0.0}", "V", Color.Green, 0, 20, 100);
             panel.Controls.Add(status);
             panel.Controls.Add(error);
             panel.Controls.Add(voltage);

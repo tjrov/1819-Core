@@ -32,7 +32,7 @@ Configuration for autopilot board
 #define NUM_POLES 6
 
 #define NUM_TOOLS 3
-#define TOOLS_ADDRESS 0x10
+#define TOOLS_ADDRESS 0x1A
 
 #define DEPTH_ADDRESS ADDRESS_LOW
 
@@ -69,8 +69,6 @@ Pin definitions for autopilot board
 */
 #define VOLTAGE_SENSOR A0
 
-#define RESET A1
-
 #define RED 11
 #define GREEN 12
 #define BLUE 13
@@ -93,16 +91,14 @@ MESSAGE rxData, txData;
 uint8_t receiveProgress, index, calculatedChecksum;
 uint32_t lastComms;
 
-ERROR error;
-STATUS status;
-
-bool stopped = false;
+ERROR error = ALL_SYSTEMS_GO;
+STATUS status = DISCONNECTED;
 
 /*Function prototypes*/
 void receiveMessage();
 void sendMessage();
 bool isTimeout();
-bool checkI2C(uint8_t);
+bool checkI2C(uint8_t address);
 void initESCs();
 void readESCs();
 void writeESCs();
@@ -125,10 +121,6 @@ void initLEDs();
 the setup function runs once when you press reset or power the board
 */
 void setup() {
-	//prevent board reset by holding reset HIGH
-	digitalWrite(RESET, HIGH);
-	pinMode(RESET, OUTPUT);
-
 	initLEDs();
 
 	//pinMode(TX_EN, OUTPUT);
@@ -141,15 +133,19 @@ void setup() {
 
 	//initalize subsystems (status changes based on init errors)
 	initIMU();
-	//initDepth();
+	initDepth();
 	initTools();
-	//initESCs();
+	initESCs();
 
-	if (error != ALL_SYSTEMS_GO) { //if we can't init
+	/*if (error != ALL_SYSTEMS_GO) { //if we can't init
 		while (true) {
 			controlLEDs(); //flash out the error code
 		}
-	}
+	}*/
+	/*while (true) {
+		readIMU();
+		delay(10);
+	}*/
 }
 
 /*
@@ -186,8 +182,8 @@ void processMessage() {
 			//Actuator commands
 		case ESC_CMD:
 			if (status == ARMED)
-				//writeESCs();
-				break; //no need to send data in response to actuator commands
+				writeESCs();
+			break; //no need to send data in response to actuator commands
 		case TOOLS_CMD:
 			if (status == ARMED)
 				writeTools();
@@ -214,7 +210,7 @@ void processMessage() {
 			sendMessage();
 			break;
 		default:
-			error = INVALID_COMMAND;
+			error |= INVALID_COMMAND;
 		}
 	}
 }
@@ -268,7 +264,7 @@ void receiveMessage() {
 			}
 			else {
 				receiveProgress = 0;
-				error = INVALID_CHECKSUM;
+				error |= INVALID_CHECKSUM;
 			}
 		}
 		else {
@@ -292,7 +288,7 @@ bool isTimeout() {
 }
 
 //returns true if device at address available
-bool testI2C(uint8_t address) {
+bool checkI2C(uint8_t address) {
 	Wire.beginTransmission(address);
 	//endtransmission returns 0 only for a successful contact
 	return Wire.endTransmission() == 0;
@@ -310,10 +306,11 @@ digitalWrite(TX_EN, LOW);
 /*ESCs*/
 void initESCs() {
 	for (int i = 0; i < NUM_ESCS; i++) {
-		if(checkI2C(addresses[i])) {
+		if (checkI2C(addresses[i])) {
 			escs[i] = new Arduino_I2C_ESC(addresses[i], NUM_POLES); //T100 has 12 poles. Is the default of 6 correct?
-		} else {
-			error = ESC_FAILURE;
+		}
+		else {
+			error |= ESC_FAILURE;
 			return;
 		}
 	}
@@ -324,12 +321,14 @@ void readESCs() {
 	txData.length = 12;
 	//refresh data from ESCs
 	for (int i = 0; i < 6; i++) {
-		if(checkI2C(addresses[i])) {
+		if (checkI2C(addresses[i])) {
 			escs[i]->update();
 			txData.data[i * 2] = (uint8_t)mapDouble(escs[i]->rpm(), 0, 5000, 0, 255);
 			txData.data[i * 2 + 1] = (uint8_t)mapDouble(escs[i]->temperature(), 0, 100, 0, 255);
-		} else {
-			error = ESC_FAILURE;
+			error &= ~(ESC_FAILURE);
+		}
+		else {
+			error |= ESC_FAILURE;
 			return;
 		}
 	}
@@ -337,11 +336,13 @@ void readESCs() {
 
 void writeESCs() {
 	for (int i = 0; i < NUM_ESCS; i++) {
-		if(checkI2C(addresses[i])) {
+		if (checkI2C(addresses[i])) {
 			//convert pairs of bytes into 16-bit int for control of ESC
 			escs[i]->set(rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2]);
-		} else {
-			error = ESC_FAILURE;
+			error &= ~(ESC_FAILURE);
+		}
+		else {
+			error |= ESC_FAILURE;
 			return;
 		}
 	}
@@ -349,21 +350,23 @@ void writeESCs() {
 
 /*Tools*/
 void initTools() {
-	if(!checkI2C(TOOLS_ADDRESS)) {
-		error = TOOLS_FAILURE;
+	if (!checkI2C(TOOLS_ADDRESS)) {
+		error |= TOOLS_FAILURE;
 	}
 }
 
 void writeTools() {
-	if(checkI2C(TOOLS_ADDRESS)) {
+	if (checkI2C(TOOLS_ADDRESS)) {
 		Wire.beginTransmission(TOOLS_ADDRESS);
 		Wire.write(HEADER_BYTE);
 		for (int i = 0; i < NUM_TOOLS; i++) {
 			Wire.write(rxData.data[i]);
 		}
 		Wire.endTransmission();
-	} else {
-		error = TOOLS_FAILURE;
+		error &= ~(TOOLS_FAILURE);
+	}
+	else {
+		error |= TOOLS_FAILURE;
 	}
 }
 
@@ -407,15 +410,19 @@ void writeStatus() {
 
 //call to stop all movement of actuators
 void emergencyStop() {
-	/*for (int i = 0; i < NUM_ESCS; i++) {
-		escs[i]->set(0);
-	}*/
-	Wire.beginTransmission(TOOLS_ADDRESS);
-	Wire.write(HEADER_BYTE);
-	for (int i = 0; i < 3; i++) {
-		Wire.write(128);
+	for (int i = 0; i < NUM_ESCS; i++) {
+		if (checkI2C(addresses[i])) {
+			escs[i]->set(0);
+		}
 	}
-	Wire.endTransmission();
+	if (checkI2C(TOOLS_ADDRESS)) {
+		Wire.beginTransmission(TOOLS_ADDRESS);
+		Wire.write(HEADER_BYTE);
+		for (int i = 0; i < 3; i++) {
+			Wire.write(128);
+		}
+		Wire.endTransmission();
+	}
 }
 
 double mapDouble(double val, double minVal, double maxVal, double minResult, double maxResult) {
@@ -425,7 +432,7 @@ double mapDouble(double val, double minVal, double maxVal, double minResult, dou
 void initIMU() {
 	//try to setup IMU
 	if (!imuSensor.begin()) {
-		error = IMU_FAILURE;
+		error |= IMU_FAILURE;
 		return;
 	}
 	imuSensor.setExtCrystalUse(true);
@@ -435,7 +442,6 @@ void initIMU() {
 void readIMU() {
 	txData.command = IMU_REQ;
 	txData.length = 6;
-	if(checkI2C(IMU_ADDRESS)) {
 	//refresh data from imu
 	sensors_event_t imuData;
 	imuSensor.getEvent(&imuData);
@@ -471,43 +477,43 @@ void readIMU() {
 	txData.data[3] = (pitchInt >> 8) & 0xFF;
 	txData.data[4] = rollInt & 0xFF;
 	txData.data[5] = (rollInt >> 8) & 0xFF;
-	} else {
-		error = IMU_FAILURE;
-	}
 }
 /*Depth*/
 void initDepth() {
 	//attempt to contact sensor to check if it's available
-	if(checkI2C(DEPTH_ADDRESS)) {
+	if (checkI2C(DEPTH_ADDRESS)) {
 		depth.reset();
 		depth.begin();
 		depth.getTemperature(CELSIUS, ADC_256);
-	} else {
-		error = PRESSURE_SENSOR_FAILURE;
+	}
+	else {
+		error |= PRESSURE_SENSOR_FAILURE;
 	}
 }
 
 void readDepth() {
 	txData.command = DEPTH_REQ;
 	txData.length = 2;
-	if(checkI2C(DEPTH_ADDRESS)) {
-	//8-bit adc reading gives +/-1 mbar, or better than 
-	//1mm resolution of depth with a 0.5ms response time
-	//subtract pressure of air on surface; it doesn't factor
-	//into the pressure caused by the water column
-	double depthDouble = depth.getPressure(ADC_256) - 101300;
-	//depth = pressure / (density * acceleration)
-	//where depth is in meters, pressure is in Pascals (N/m^2)
-	//density is in kilograms per cubic meter,
-	//and acceleration is in meters per second per second
-	depthDouble /= 1000.0 * 9.81;
-	//now convert to bytes and prepare txData
-	int intDepth = (int)mapDouble(depthDouble, 0, 30, -32768, 32767);
+	if (checkI2C(DEPTH_ADDRESS)) {
+		//8-bit adc reading gives +/-1 mbar, or better than 
+		//1mm resolution of depth with a 0.5ms response time
+		//subtract pressure of air on surface; it doesn't factor
+		//into the pressure caused by the water column
+		double depthDouble = depth.getPressure(ADC_256) - 101300;
+		//depth = pressure / (density * acceleration)
+		//where depth is in meters, pressure is in Pascals (N/m^2)
+		//density is in kilograms per cubic meter,
+		//and acceleration is in meters per second per second
+		depthDouble /= 1000.0 * 9.81;
+		//now convert to bytes and prepare txData
+		int intDepth = (int)mapDouble(depthDouble, 0, 30, -32768, 32767);
 
-	txData.data[0] = intDepth & 0xFF;
-	txData.data[1] = (intDepth >> 8) & 0xFF;
-	} else {
-		error = PRESSURE_SENSOR_FAILURE;
+		txData.data[0] = intDepth & 0xFF;
+		txData.data[1] = (intDepth >> 8) & 0xFF;
+		error &= ~(IMU_FAILURE);
+	}
+	else {
+		error |= PRESSURE_SENSOR_FAILURE;
 	}
 }
 
@@ -525,7 +531,7 @@ ROV firmware starts
 Yellow - disconnected
 Green solid - disarmed but connected
 Green flashing - armed and connected
-Red blinks - error state, number of blinks shows which error
+Red blinks - error state
 */
 
 void controlLEDs() {
@@ -551,9 +557,8 @@ void controlLEDs() {
 		//digitalWrite(BLUE, (millis() - lastComms) < 5); //too slow to show all msgs
 	}
 	else {
-		//flash red the number of times in the error code number
-		int t = millis() % 10000;
-		digitalWrite(RED, ((t % 1000) < 500) && ((t / 1000) < error));
+		//flash red
+		digitalWrite(RED, (millis() % 1000) < 500);
 		digitalWrite(GREEN, LOW);
 		digitalWrite(BLUE, LOW);
 	}

@@ -7,7 +7,7 @@
 */
 
 /*CONFIGURATION*/
-#define ADDRESS 0x10
+#define ADDRESS 0x1A
 #define HEADER_BYTE 0x42
 #define TIMEOUT 1000
 

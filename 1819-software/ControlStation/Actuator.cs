@@ -53,14 +53,20 @@ namespace ControlStation
         public PropulsionActuator(List<ESCData> data) : base(0x81, data)
         {
             speeds = new List<BarGraph>();
-            BackColor = Color.Transparent;
             Dock = DockStyle.Fill;
-            for (int i = 0; i < 6; i++)
+            for (int y = 50; y < 350; y+=100)
             {
-                BarGraph graph = new BarGraph("Speed", "###.#", "%", Color.Green, -100, 100, 50);
+                BarGraph graph = new BarGraph("Speed", "{0:###.#}", "%", Color.Green, -100, 100, 50);
                 speeds.Add(graph);
+                graph.Location = new Point(0, y);
+                BarGraph graph2 = new BarGraph("Speed", "{0:###.#}", "%", Color.Green, -100, 100, 50);
+                speeds.Add(graph2);
+                graph2.Location = new Point(500, y);
                 Controls.Add(graph);
+                Controls.Add(graph2);
             }
+
+            UpdateControls();
         }
 
         public override void UpdateControls()
@@ -87,23 +93,27 @@ namespace ControlStation
     }
     public class ToolsActuator : Actuator<List<ToolData>>
     {
-        private List<ToolPanel> toolPanels;
+        private List<BarGraph> speeds;
         public ToolsActuator(List<ToolData> data) : base(0x82, data)
         {
-            toolPanels = new List<ToolPanel>();
-            for(int i = 0; i < data.Count; i++)
+            speeds = new List<BarGraph>();
+            for(int i = 0; i < 3; i++)
             {
-                ToolPanel panel = new ToolPanel();
-                toolPanels.Add(panel);
-                Controls.Add(panel);
+                BarGraph graph = new BarGraph("Speed", "{0:###.#}", "%", Color.Green, -100, 100, 50);
+                speeds.Add(graph);
+                Controls.Add(graph);
             }
+            speeds[0].Location = new Point(300, 0);
+            speeds[1].Location = new Point(0, 0);
+            speeds[2].Location = new Point(350, 350);
+            UpdateControls();
         }
 
         public override void UpdateControls()
         {
             for(int i = 0; i < data.Count; i++)
             {
-                toolPanels[i].Speed.Value = data[i].Speed;
+                speeds[i].Value = data[i].Speed;
             }
         }
 
@@ -125,29 +135,16 @@ namespace ControlStation
             }
             return result;
         }
-
-        private class ToolPanel : FlowLayoutPanel
-        {
-            Bitmap toolBitmap = new Bitmap(Properties.Resources.dcmotor);
-            public BarGraph Speed;
-            public ToolPanel()
-            {
-                FlowDirection = FlowDirection.TopDown;
-                Size = new Size(100, 100);
-                BackgroundImage = toolBitmap;
-                BackgroundImageLayout = ImageLayout.Center;
-                Speed = new BarGraph("Speed", "###.#", "%", Color.Green, -100, 100, 50);
-                Controls.Add(Speed);
-            }
-        }
     }
     public class StatusActuator : Actuator<StatusData>
     {
-        private Button arm, reboot, upload;
+        private Button arm, reboot, upload, estop;
         private Timer flasher;
         private FlowLayoutPanel panel;
+        private Bitmap estopBitmap = new Bitmap(Properties.Resources.estop);
         public StatusActuator(StatusData data) : base(0x83, data)
         {
+            estopBitmap.MakeTransparent(Color.White);
             panel = new FlowLayoutPanel
             {
                 FlowDirection = FlowDirection.TopDown,
@@ -172,11 +169,20 @@ namespace ControlStation
                 AutoSize = true
             };
             upload.Click += OnUploadClick;
+            estop = new Button
+            {
+                BackColor = Color.Red,
+                BackgroundImage = estopBitmap,
+                BackgroundImageLayout = ImageLayout.Zoom,
+                Size = new Size(100, 100)
+            };
+            estop.Click += OnArmClick;
             flasher = new Timer
             {
                 Interval = 500,
             };
             flasher.Tick += OnFlasherTick;
+            panel.Controls.Add(estop);
             panel.Controls.Add(arm);
             panel.Controls.Add(reboot);
             panel.Controls.Add(upload);
@@ -196,12 +202,14 @@ namespace ControlStation
             //flash button for armed state
             if (Data.Status == ROVStatus.ARMED)
             {
+                estop.Visible = true;
                 arm.Text = "Disarm";
                 flasher.Start();
             }
             //solid green for disarmed state
             else
             {
+                estop.Visible = false;
                 arm.Text = "Arm";
                 flasher.Stop();
                 arm.BackColor = Color.Green;
@@ -250,6 +258,7 @@ namespace ControlStation
         {
             base.OnEnabledChanged(e);
             Data.DesiredStatus = ROVStatus.DISCONNECTED;
+            Data.Status = ROVStatus.DISCONNECTED;
             UpdateControls();
         }
     }

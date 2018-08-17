@@ -1,11 +1,32 @@
 <VisualMicro>
   <Program Name="autopilot-firmware" Ext=".ino" Location="C:\Users\Henry\source\repos\1819-Core\1819-software\autopilot-firmware">
     <Debug InBreakLiveView="1" PerfStats="1" IsGdb="0" RemotePortSpeedWrittenToDebugSource="115200" />
-    <Compile CompilerErrors="0" SketchName="autopilot-firmware" ReportDigitalPins="0" ReportAnalogPins="0" ReportI2C="0" ReportFreeMemory="0" IncludeDebug="1" LastDebugPreProcessorDefinitions="VM_DEBUG;VM_DEBUG_ENABLE 1;VM_DEBUG_BANDWIDTH_THROTTLE_MS 100;VM_DEBUGGER_TYPE_HARDWARESERIAL 0;VM_DEBUGGER_TYPE_SOFTWARESERIAL 1;VM_DEBUGGER_TYPE_FASTSERIAL 2;VM_DEBUGGER_TYPE_USB 3;VM_DEBUGGER_TYPE_TEENSY 4;VM_DEBUGGER_TYPE_UART 5;VM_DEBUGGER_TYPE_USART 6;VM_DEBUGGER_TYPE_USBSERIAL 7;VM_DEBUGGER_TYPE_TTYUART 8;VM_DEBUGGER_TYPE_NET_CONSOLE 9;VM_DEBUGGER_TYPE_Uart 10;VM_DEBUGGER_TYPE_COSA 11;VM_DEBUGGER_TYPE_CDCSerialClass 12;VM_DEBUGGER_TYPE_HARDWARESERIAL1 13;VM_DEBUGGER_TYPE_HARDWARESERIAL2 14;VM_DEBUGGER_TYPE_HARDWARESERIAL3 15;VM_DEBUGGER_TYPE_NET_UDP 16;VM_DEBUGGER_TYPE_USBAPI 17;VM_DEBUGGER_TYPE_SERIALUSB 18;VM_DEBUGGER_TYPE VM_DEBUGGER_TYPE_HARDWARESERIAL;" IncludesDebug="1" IsCompiled="1" />
+    <Compile CompilerErrors="0" SketchName="autopilot-firmware" ReportDigitalPins="0" ReportAnalogPins="0" ReportI2C="0" ReportFreeMemory="0" IncludeDebug="1" LastDebugPreProcessorDefinitions="VM_DEBUG;VM_DEBUG_ENABLE 1;VM_DEBUG_BANDWIDTH_THROTTLE_MS 50;VM_DEBUGGER_TYPE_HARDWARESERIAL 0;VM_DEBUGGER_TYPE_SOFTWARESERIAL 1;VM_DEBUGGER_TYPE_FASTSERIAL 2;VM_DEBUGGER_TYPE_USB 3;VM_DEBUGGER_TYPE_TEENSY 4;VM_DEBUGGER_TYPE_UART 5;VM_DEBUGGER_TYPE_USART 6;VM_DEBUGGER_TYPE_USBSERIAL 7;VM_DEBUGGER_TYPE_TTYUART 8;VM_DEBUGGER_TYPE_NET_CONSOLE 9;VM_DEBUGGER_TYPE_Uart 10;VM_DEBUGGER_TYPE_COSA 11;VM_DEBUGGER_TYPE_CDCSerialClass 12;VM_DEBUGGER_TYPE_HARDWARESERIAL1 13;VM_DEBUGGER_TYPE_HARDWARESERIAL2 14;VM_DEBUGGER_TYPE_HARDWARESERIAL3 15;VM_DEBUGGER_TYPE_NET_UDP 16;VM_DEBUGGER_TYPE_USBAPI 17;VM_DEBUGGER_TYPE_SERIALUSB 18;VM_DEBUGGER_TYPE VM_DEBUGGER_TYPE_HARDWARESERIAL;" IncludesDebug="1" IsCompiled="1" />
     <VCCodeModel>
       <VCCodeMacros />
     </VCCodeModel>
-    <BreakPoints />
+    <BreakPoints>
+      <BreakPoint Index="1" Name="Sensor.cs, line 94 character 9" Id="5fca3710-8734-47e0-bd79-2f3bd4485d19" Enabled="1" Message="" MessageTextType="2" PreProcessedMessage="" Condition="" ConditionType="1" CurrentHits="0" File="c:\users\henry\source\repos\1819-core\1819-software\controlstation\sensor.cs" FileLine="94" FileColumn="9" FunctionName="ControlStation.OrientationSensor.Convert(byte[] data, ref OrientationData result)" FunctionLineOffset="2" FunctionColumnOffset="1" HitCountTarget="1" HitCountType="1" Language="C#" LocationType="3" Tag="&lt;vmbp Id='5fca3710-8734-47e0-bd79-2f3bd4485d19'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="1">
+        <Source>87	            attitudeIndicator.PitchAngle = data.Pitch;
+88	            attitudeIndicator.RollAngle = data.Roll;
+89	            attitudeIndicator.Invalidate();
+90	            headingIndicator.Heading = data.Yaw;
+91	        }
+92	
+93	        protected override void Convert(byte[] data, ref OrientationData result)
+--&gt;94	        {
+95	            double[] ypr = new double[3];
+96	            for (int i = 0; i &lt; 3; i++)
+97	            {
+98	                ypr[i] = ConvertUtils.BytesToDouble(data[i * 2], data[i * 2 + 1], 0, 360);
+99	            }
+100	            result.Yaw = ypr[0]; result.Pitch = ypr[1]; result.Roll = ypr[2];
+101	        }
+102	    }
+103	    public class PropulsionSensor : Sensor&lt;List&lt;ESCData&gt;&gt;
+</Source>
+      </BreakPoint>
+    </BreakPoints>
     <Platform>
       <Board />
     </Platform>

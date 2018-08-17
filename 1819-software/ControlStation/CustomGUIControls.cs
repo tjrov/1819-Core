@@ -13,10 +13,10 @@ namespace ControlStation
             set
             {
                 base.Text = string.Format("{0}: {1}{2}", 
-                    Info, string.Format(Format, "" + value), Unit);
+                    Info, string.Format(Format, value), Unit);
             }
         }
-        public new string Text
+        public override string Text
         {
             set
             {
