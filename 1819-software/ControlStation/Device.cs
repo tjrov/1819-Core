@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace ControlStation
 {
-    public abstract class GenericDevice //: FlowLayoutPanel
+    public abstract class GenericDevice : Control //: FlowLayoutPanel
     {
         protected byte messageCommand;
         public GenericDevice(byte messageCommand)
