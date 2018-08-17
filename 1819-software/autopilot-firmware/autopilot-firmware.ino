@@ -36,6 +36,8 @@ Configuration for autopilot board
 
 #define DEPTH_ADDRESS ADDRESS_LOW
 
+#define IMU_ADDRESS 0x28
+
 enum ERROR {
 	ALL_SYSTEMS_GO = 0,
 	IMU_FAILURE = 1,
@@ -77,6 +79,7 @@ Pin definitions for autopilot board
 
 /*Variable declarations*/
 Arduino_I2C_ESC *escs[NUM_ESCS];
+const uint8_t addresses[] = ESC_ADDRESSES;
 Adafruit_BNO055 imuSensor;
 MS5803 depth(DEPTH_ADDRESS);
 
@@ -99,6 +102,7 @@ bool stopped = false;
 void receiveMessage();
 void sendMessage();
 bool isTimeout();
+bool testI2C(uint8_t address);
 void initESCs();
 void readESCs();
 void writeESCs();
@@ -286,6 +290,14 @@ void sendMessage() {
 bool isTimeout() {
 	return (millis() - lastComms) > SERIAL_TIMEOUT;
 }
+
+//returns true if device at address available
+bool testI2C(uint8_t address) {
+	Wire.beginTransmission(address);
+	//endtransmission returns 0 only for a successful contact
+	return Wire.endTransmission() == 0;
+}
+
 /*void handleDataDirection() {
 if ((UCSR0A & _BV(TXC0)) == 0) {
 digitalWrite(TX_EN, HIGH);
@@ -297,16 +309,13 @@ digitalWrite(TX_EN, LOW);
 
 /*ESCs*/
 void initESCs() {
-	uint8_t addresses[] = ESC_ADDRESSES;
 	for (int i = 0; i < NUM_ESCS; i++) {
-		Wire.beginTransmission(addresses[i]); //check if ESC at this address available
-		uint8_t err = Wire.endTransmission();
-		if (err > 0) {
+		if(checkI2C(addresses[i])) {
+			escs[i] = new Arduino_I2C_ESC(addresses[i], NUM_POLES); //T100 has 12 poles. Is the default of 6 correct?
+		} else {
 			error = ESC_FAILURE;
 			return;
 		}
-		escs[i] = new Arduino_I2C_ESC(addresses[i], NUM_POLES); //T100 has 12 poles. Is the default of 6 correct?
-																//This will affect the RPM value
 	}
 }
 
@@ -314,36 +323,48 @@ void readESCs() {
 	txData.command = ESC_REQ;
 	txData.length = 12;
 	//refresh data from ESCs
-	/*for (int i = 0; i < 6; i++) {
-	escs[i]->update();
-	txData.data[i * 2] = (uint8_t)mapDouble(escs[i]->rpm(), 0, 5000, 0, 255);
-	txData.data[i * 2 + 1] = (uint8_t)mapDouble(escs[i]->temperature(), 0, 100, 0, 255);
-	}*/
+	for (int i = 0; i < 6; i++) {
+		if(checkI2C(addresses[i])) {
+			escs[i]->update();
+			txData.data[i * 2] = (uint8_t)mapDouble(escs[i]->rpm(), 0, 5000, 0, 255);
+			txData.data[i * 2 + 1] = (uint8_t)mapDouble(escs[i]->temperature(), 0, 100, 0, 255);
+		} else {
+			error = ESC_FAILURE;
+			return;
+		}
+	}
 }
 
 void writeESCs() {
 	for (int i = 0; i < NUM_ESCS; i++) {
-		//convert pairs of bytes into 16-bit int for control of ESC
-		escs[i]->set(rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2]);
+		if(checkI2C(addresses[i])) {
+			//convert pairs of bytes into 16-bit int for control of ESC
+			escs[i]->set(rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2]);
+		} else {
+			error = ESC_FAILURE;
+			return;
+		}
 	}
 }
 
 /*Tools*/
 void initTools() {
-	Wire.beginTransmission(TOOLS_ADDRESS);
-	uint8_t err = Wire.endTransmission();
-	if (err > 0) {
+	if(!checkI2C(TOOLS_ADDRESS)) {
 		error = TOOLS_FAILURE;
 	}
 }
 
 void writeTools() {
-	Wire.beginTransmission(TOOLS_ADDRESS);
-	Wire.write(HEADER_BYTE);
-	for (int i = 0; i < NUM_TOOLS; i++) {
-		Wire.write(rxData.data[i]);
+	if(checkI2C(TOOLS_ADDRESS)) {
+		Wire.beginTransmission(TOOLS_ADDRESS);
+		Wire.write(HEADER_BYTE);
+		for (int i = 0; i < NUM_TOOLS; i++) {
+			Wire.write(rxData.data[i]);
+		}
+		Wire.endTransmission();
+	} else {
+		error = TOOLS_FAILURE;
 	}
-	Wire.endTransmission();
 }
 
 /*Status*/
@@ -412,6 +433,9 @@ void initIMU() {
 }
 
 void readIMU() {
+	txData.command = IMU_REQ;
+	txData.length = 6;
+	if(checkI2C(IMU_ADDRESS)) {
 	//refresh data from imu
 	sensors_event_t imuData;
 	imuSensor.getEvent(&imuData);
@@ -441,47 +465,50 @@ void readIMU() {
 	uint16_t headingInt = (int)mapDouble(imuData.orientation.roll, 0, 360, 0, 65535);
 
 	//prepare txData for transmission
-	txData.command = IMU_REQ;
-	txData.length = 6;
 	txData.data[0] = headingInt & 0xFF;
 	txData.data[1] = (headingInt >> 8) & 0xFF;
 	txData.data[2] = pitchInt & 0xFF;
 	txData.data[3] = (pitchInt >> 8) & 0xFF;
 	txData.data[4] = rollInt & 0xFF;
 	txData.data[5] = (rollInt >> 8) & 0xFF;
+	} else {
+		error = IMU_FAILURE;
+	}
 }
 /*Depth*/
 void initDepth() {
 	//attempt to contact sensor to check if it's available
-	Wire.beginTransmission(DEPTH_ADDRESS);
-	uint8_t err = Wire.endTransmission();
-	if (err > 0) {
-		error = PRESSURE_SENSOR_FAILURE;
-		return;
+	if(checkI2C(DEPTH_ADDRESS)) {
+		depth.reset();
+		depth.begin();
+		depth.getTemperature(CELSIUS, ADC_256);
+	} else {
+		error = DEPTH_SENSOR_FAILURE;
 	}
-	depth.reset();
-	depth.begin();
-	depth.getTemperature(CELSIUS, ADC_256);
 }
 
 void readDepth() {
+	txData.command = DEPTH_REQ;
+	txData.length = 2;
+	if(checkI2C(DEPTH_ADDRESS)) {
 	//8-bit adc reading gives +/-1 mbar, or better than 
 	//1mm resolution of depth with a 0.5ms response time
 	//subtract pressure of air on surface; it doesn't factor
 	//into the pressure caused by the water column
-	/*double depthDouble = depth.getPressure(ADC_256) - BAROMETRIC_PRESSURE;
+	double depthDouble = depth.getPressure(ADC_256) - BAROMETRIC_PRESSURE;
 	//depth = pressure / (density * acceleration)
 	//where depth is in meters, pressure is in Pascals (N/m^2)
 	//density is in kilograms per cubic meter,
 	//and acceleration is in meters per second per second
 	depthDouble /= 1000.0 * GRAVITATIONAL_ACCELERATION;
-
 	//now convert to bytes and prepare txData
-	int intDepth = (int)mapDouble(depthDouble, 0, 30, -32768, 32767);*/
-	txData.command = DEPTH_REQ;
-	txData.length = 2;
-	/*txData.data[0] = intDepth & 0x00FF;
-	txData.data[1] = intDepth >> 8;*/
+	int intDepth = (int)mapDouble(depthDouble, 0, 30, -32768, 32767);
+
+	txData.data[0] = intDepth & 0xFF;
+	txData.data[1] = (intDepth >> 8) & 0xFF;
+	} else {
+		error = DEPTH_SENSOR_FAILURE;
+	}
 }
 
 /*
