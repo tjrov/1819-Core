@@ -109,14 +109,41 @@ namespace ControlStation
          * [1] First ESC's temp (0 to 100 deg C)
          * ... and so on for all 6 ESCs
          */
+
+        private List<BarGraph> rpm;
+        private List<DataLabel> temp;
         public PropulsionSensor(List<ESCData> data) : base(0x02, 12, data)
         {
-            
+            BackColor = Color.Transparent;
+            rpm = new List<BarGraph>();
+            temp = new List<DataLabel>();
+            foreach(ESCData esc in data)
+            {
+                BarGraph rpmGraph = new BarGraph("RPM", "####", "", Color.Green, 0, 5000, 50);
+                DataLabel tempGraph = new DataLabel
+                {
+                    Info = "Temp",
+                    Format = "###",
+                    Unit = "C",
+                };
+                rpm.Add(rpmGraph);
+                temp.Add(tempGraph);
+                Controls.Add(rpmGraph);
+                Controls.Add(tempGraph);
+                SetFlowBreak(tempGraph, true);
+            }
+            UpdateControls();
         }
 
         public override void UpdateControls()
         {
-
+            int i = 0;
+            foreach(ESCData esc in data)
+            {
+                rpm[i].Value = esc.RPM;
+                temp[i].Value = esc.Temperature;
+                i++;
+            }
         }
 
         protected override void Convert(byte[] data, ref List<ESCData> result)

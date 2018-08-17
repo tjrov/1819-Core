@@ -26,9 +26,6 @@ namespace ControlStation
         private ToolsActuator tools;
         private StatusActuator statusControl;
 
-        private AttitudeIndicator attitudeIndicator;
-        private HeadingIndicator headingIndicator;
-
         private TableLayoutPanel centerPanel;
         private FlowLayoutPanel upperPanel;
         private GroupBox statusBox;
@@ -36,9 +33,8 @@ namespace ControlStation
         private GroupBox thrustersBox;
         private GroupBox attitudeBox;
         private FlowLayoutPanel toolsPanel;
-        private FlowLayoutPanel thrustersPanel;
         private FlowLayoutPanel attitudePanel;
-        private FlowLayoutPanel statusPanel;
+        private TableLayoutPanel statusPanel;
         private List<GenericDevice> devices;
 
         public GUI()
@@ -104,16 +100,14 @@ namespace ControlStation
             this.toolsBox = new System.Windows.Forms.GroupBox();
             this.toolsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.statusBox = new System.Windows.Forms.GroupBox();
-            this.statusPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.thrustersBox = new System.Windows.Forms.GroupBox();
-            this.thrustersPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.attitudeBox = new System.Windows.Forms.GroupBox();
             this.attitudePanel = new System.Windows.Forms.FlowLayoutPanel();
             this.upperPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.statusPanel = new System.Windows.Forms.TableLayoutPanel();
             this.centerPanel.SuspendLayout();
             this.toolsBox.SuspendLayout();
             this.statusBox.SuspendLayout();
-            this.thrustersBox.SuspendLayout();
             this.attitudeBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -172,21 +166,9 @@ namespace ControlStation
             this.statusBox.TabStop = false;
             this.statusBox.Text = "Status";
             // 
-            // statusPanel
-            // 
-            this.statusPanel.BackgroundImage = global::ControlStation.Properties.Resources.rov_electronics;
-            this.statusPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.statusPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.statusPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.statusPanel.Location = new System.Drawing.Point(3, 34);
-            this.statusPanel.Name = "statusPanel";
-            this.statusPanel.Size = new System.Drawing.Size(691, 426);
-            this.statusPanel.TabIndex = 0;
-            // 
             // thrustersBox
             // 
             this.thrustersBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.thrustersBox.Controls.Add(this.thrustersPanel);
             this.thrustersBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.thrustersBox.Location = new System.Drawing.Point(716, 13);
             this.thrustersBox.Name = "thrustersBox";
@@ -194,16 +176,6 @@ namespace ControlStation
             this.thrustersBox.TabIndex = 2;
             this.thrustersBox.TabStop = false;
             this.thrustersBox.Text = "Thrusters";
-            // 
-            // thrustersPanel
-            // 
-            this.thrustersPanel.BackgroundImage = global::ControlStation.Properties.Resources.rov_thrusters;
-            this.thrustersPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.thrustersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.thrustersPanel.Location = new System.Drawing.Point(3, 34);
-            this.thrustersPanel.Name = "thrustersPanel";
-            this.thrustersPanel.Size = new System.Drawing.Size(638, 426);
-            this.thrustersPanel.TabIndex = 0;
             // 
             // attitudeBox
             // 
@@ -233,6 +205,22 @@ namespace ControlStation
             this.upperPanel.Size = new System.Drawing.Size(1280, 50);
             this.upperPanel.TabIndex = 3;
             // 
+            // statusPanel
+            // 
+            this.statusPanel.BackgroundImage = global::ControlStation.Properties.Resources.rov_electronics;
+            this.statusPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.statusPanel.ColumnCount = 2;
+            this.statusPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.statusPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.statusPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statusPanel.Location = new System.Drawing.Point(3, 34);
+            this.statusPanel.Name = "statusPanel";
+            this.statusPanel.RowCount = 2;
+            this.statusPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.statusPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.statusPanel.Size = new System.Drawing.Size(691, 426);
+            this.statusPanel.TabIndex = 0;
+            // 
             // GUI
             // 
             this.ClientSize = new System.Drawing.Size(1280, 1024);
@@ -244,7 +232,6 @@ namespace ControlStation
             this.centerPanel.ResumeLayout(false);
             this.toolsBox.ResumeLayout(false);
             this.statusBox.ResumeLayout(false);
-            this.thrustersBox.ResumeLayout(false);
             this.attitudeBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -299,12 +286,15 @@ namespace ControlStation
             //add controls to their respective panels
             upperPanel.Controls.Add(comms);
 
-            statusPanel.Controls.Add(status);
-            statusPanel.Controls.Add(statusControl);
+            statusPanel.Controls.Add(status, 0, 0);
+            statusPanel.Controls.Add(escs, 1, 0);
+            statusPanel.Controls.Add(statusControl, 0, 1);
+            statusPanel.SetRowSpan(escs, 2);
+            escs.Anchor = AnchorStyles.Right;
 
             toolsPanel.Controls.Add(tools);
 
-            thrustersPanel.Controls.Add(thrusters);
+            thrustersBox.Controls.Add(thrusters);
 
             attitudePanel.Controls.Add(imu);
             attitudePanel.Controls.Add(depth);

@@ -53,7 +53,7 @@ namespace ControlStation
     {
         public ROVStatus Status = ROVStatus.DISCONNECTED;
         public ROVStatus DesiredStatus = ROVStatus.DISCONNECTED;
-        public ROVError Error = ROVError.IMU_FAILURE | ROVError.ESC_FAILURE;
+        public ROVError Error = ROVError.ALL_SYSTEMS_GO;
         public double Voltage;
         public bool IsUndervolt
         {

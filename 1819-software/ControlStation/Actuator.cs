@@ -49,27 +49,26 @@ namespace ControlStation
          * [0][1] First ESC's speed value (-100 to 100 percent)
          * ... and so on for all 6 ESCs
          */
-        private List<ESCPanel> escPanels;
+        private List<BarGraph> speeds;
         public PropulsionActuator(List<ESCData> data) : base(0x81, data)
         {
-            escPanels = new List<ESCPanel>();
-            for (int i = 0; i < data.Count; i++)
+            speeds = new List<BarGraph>();
+            BackColor = Color.Transparent;
+            Dock = DockStyle.Fill;
+            for (int i = 0; i < 6; i++)
             {
-                ESCPanel panel = new ESCPanel();
-                escPanels.Add(panel);
-                Controls.Add(panel);
+                BarGraph graph = new BarGraph("Speed", "###.#", "%", Color.Green, -100, 100, 50);
+                speeds.Add(graph);
+                Controls.Add(graph);
             }
-            //new line for each of the three panels
-            //SetFlowBreak(Controls[2], true);
+            SetFlowBreak(speeds[2], true);
         }
 
         public override void UpdateControls()
         {
             for (int i = 0; i < data.Count; i++)
             {
-                escPanels[i].Speed.Value = data[i].Speed;
-                escPanels[i].Temperature.Value = data[i].Temperature;
-                escPanels[i].RPM.Value = data[i].RPM;
+                speeds[i].Value = data[i].Speed;
             }
         }
 
@@ -85,22 +84,6 @@ namespace ControlStation
                 i += 2;
             }
             return result;
-        }
-        private class ESCPanel : FlowLayoutPanel
-        {
-            public BarGraph Temperature, RPM, Speed;
-            public ESCPanel()
-            {
-                FlowDirection = FlowDirection.TopDown;
-                Size = new Size(100, 150);
-                BackgroundImageLayout = ImageLayout.Center;
-                Temperature = new BarGraph("Temp", "###", "C", Color.Green, 0, 100, 50);
-                RPM = new BarGraph("RPM", "####", "", Color.Green, 0, 5000, 50);
-                Speed = new BarGraph("Speed", "###.#", "%", Color.Green, -100, 100, 50);
-                Controls.Add(Speed);
-                Controls.Add(RPM);
-                Controls.Add(Temperature);
-            }
         }
     }
     public class ToolsActuator : Actuator<List<ToolData>>
