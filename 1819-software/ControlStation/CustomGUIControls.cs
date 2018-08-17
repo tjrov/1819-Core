@@ -5,18 +5,34 @@ using System.Drawing.Drawing2D;
 
 namespace ControlStation
 {
+    public class DataLabel : Label
+    {
+        public string Info = "", Unit = "", Format = "#";
+        public double Value
+        {
+            set
+            {
+                base.Text = string.Format("{0}: {1}{2}", 
+                    Info, string.Format(Format, "" + value), Unit);
+            }
+        }
+        public new string Text
+        {
+            set
+            {
+                base.Text = string.Format("{0}: {1}", Info, value);
+            }
+        }
+    }
     public class BarGraph : FlowLayoutPanel
     {
-        private string label, unit;
         private ProgressBar pb, pb2;
-        private Label lb;
+        private DataLabel lb;
         private double min, max;
-        public BarGraph(string label, string unit, Color barColor, double min, double max, int width)
+        public BarGraph(string label, string format, string unit, Color barColor, double min, double max, int width)
         {
             AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.label = label;
-            this.unit = unit;
+            AutoSizeMode = AutoSizeMode.GrowOnly;
             this.min = min;
             this.max = max;
             pb = new ProgressBar()
@@ -37,10 +53,12 @@ namespace ControlStation
             {
                 pb.Width /= 2;
             }
-            lb = new Label()
+            lb = new DataLabel()
             {
                 AutoSize = true,
-                Text = string.Format("{0}: {1:0.#}{2}", label, 0, unit)
+                Info = label,
+                Format = format,
+                Unit = unit
             };
             Controls.Add(lb);
             if (min < 0)
@@ -49,13 +67,8 @@ namespace ControlStation
             }
             Controls.Add(pb);
         }
-        private double value;
         public double Value
         {
-            get
-            {
-                return value;
-            }
             set
             {
                 if (value < 0)
@@ -69,8 +82,7 @@ namespace ControlStation
                     pb.Value = (int)(value * 10);
                 }
                 //display the numeric value
-                lb.Text = string.Format("{0}: {1:0.#}{2}", label, value, unit);
-                this.value = value;
+                lb.Value = value;
             }
         }
     }

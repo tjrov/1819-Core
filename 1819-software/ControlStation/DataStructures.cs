@@ -38,6 +38,7 @@ namespace ControlStation
         ARMED = 2,
         REBOOT = 3
     }
+    [Flags]
     public enum ROVError
     {
         ALL_SYSTEMS_GO = 0,
@@ -52,22 +53,8 @@ namespace ControlStation
     {
         public ROVStatus Status = ROVStatus.DISCONNECTED;
         public ROVStatus DesiredStatus = ROVStatus.DISCONNECTED;
-        public ROVError Error;
+        public ROVError Error = ROVError.IMU_FAILURE | ROVError.ESC_FAILURE;
         public double Voltage;
-        public string ErrorString
-        {
-            get
-            {
-                return string.Format("{0} ({1})", Error.ToString(), (int)Error);
-            }
-        }
-        public string StatusString
-        {
-            get
-            {
-                return string.Format("{0} ({1})", Status.ToString(), (int)Status);
-            }
-        }
         public bool IsUndervolt
         {
             get

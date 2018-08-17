@@ -54,8 +54,8 @@ namespace ControlStation
             {
                 g.Clear(Color.Black);
             }
-            g.DrawImage(backBitmap, 0, 0, new Rectangle(0, (int)(depth * 150) - 187, 
-                60, 375), GraphicsUnit.Pixel);
+            g.DrawImage(backBitmap, 0, 0, new Rectangle(0, (int)(depth * 120) - 150, 
+                48, 300), GraphicsUnit.Pixel);
 
             g.DrawImage(frontBitmap, 0, 0);
         }

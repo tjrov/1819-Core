@@ -57,7 +57,7 @@ namespace ControlStation
             {
                 ESCPanel panel = new ESCPanel();
                 escPanels.Add(panel);
-                //Controls.Add(panel);
+                Controls.Add(panel);
             }
             //new line for each of the three panels
             //SetFlowBreak(Controls[2], true);
@@ -94,9 +94,9 @@ namespace ControlStation
                 FlowDirection = FlowDirection.TopDown;
                 Size = new Size(100, 150);
                 BackgroundImageLayout = ImageLayout.Center;
-                Temperature = new BarGraph("Temp", "C", Color.Green, 0, 100, 50);
-                RPM = new BarGraph("RPM", "", Color.Green, 0, 5000, 50);
-                Speed = new BarGraph("Speed", "%", Color.Green, -100, 100, 50);
+                Temperature = new BarGraph("Temp", "###", "C", Color.Green, 0, 100, 50);
+                RPM = new BarGraph("RPM", "####", "", Color.Green, 0, 5000, 50);
+                Speed = new BarGraph("Speed", "###.#", "%", Color.Green, -100, 100, 50);
                 Controls.Add(Speed);
                 Controls.Add(RPM);
                 Controls.Add(Temperature);
@@ -113,7 +113,7 @@ namespace ControlStation
             {
                 ToolPanel panel = new ToolPanel();
                 toolPanels.Add(panel);
-                //Controls.Add(panel);
+                Controls.Add(panel);
             }
         }
 
@@ -154,7 +154,7 @@ namespace ControlStation
                 Size = new Size(100, 100);
                 BackgroundImage = toolBitmap;
                 BackgroundImageLayout = ImageLayout.Center;
-                Speed = new BarGraph("Speed", "%", Color.Green, -100, 100, 50);
+                Speed = new BarGraph("Speed", "###.#", "%", Color.Green, -100, 100, 50);
                 Controls.Add(Speed);
             }
         }
@@ -165,7 +165,7 @@ namespace ControlStation
         private Timer flasher;
         public StatusActuator(StatusData data) : base(0x83, data)
         {
-            //FlowDirection = FlowDirection.TopDown;
+            FlowDirection = FlowDirection.TopDown;
             arm = new Button
             {
                 Text = "Arm",
@@ -190,9 +190,9 @@ namespace ControlStation
                 Interval = 500,
             };
             flasher.Tick += OnFlasherTick;
-            //Controls.Add(arm);
-            //Controls.Add(reboot);
-            //Controls.Add(upload);
+            Controls.Add(arm);
+            Controls.Add(reboot);
+            Controls.Add(upload);
         }
 
         protected override byte[] Convert(StatusData controlData)
@@ -257,11 +257,12 @@ namespace ControlStation
                 //arm
                 Data.DesiredStatus = ROVStatus.ARMED;
             }
-        } /*
+        } 
         protected override void OnEnabledChanged(EventArgs e)
         {
             base.OnEnabledChanged(e);
             Data.DesiredStatus = ROVStatus.DISCONNECTED;
-        }*/
+            UpdateControls();
+        }
     }
 }

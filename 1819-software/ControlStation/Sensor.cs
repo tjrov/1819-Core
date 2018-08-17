@@ -76,8 +76,8 @@ namespace ControlStation
         {
             attitudeIndicator = new AttitudeIndicator();
             headingIndicator = new HeadingIndicator();
-            //Controls.Add(attitudeIndicator);
-            //Controls.Add(headingIndicator);
+            Controls.Add(attitudeIndicator);
+            Controls.Add(headingIndicator);
         }
 
         public override void UpdateControls()
@@ -142,7 +142,7 @@ namespace ControlStation
         public DepthSensor(DepthData data) : base(0x03, 2, data)
         {
             depthIndicator = new DepthIndicator();
-            //Controls.Add(depthIndicator);
+            Controls.Add(depthIndicator);
         }
 
         public override void UpdateControls()
@@ -170,27 +170,29 @@ namespace ControlStation
 
         public StatusSensor(StatusData data) : base(0x04, 3, data)
         {
-            status = new Label
-            {
-                Text = "Status: *",
-                AutoSize = true
-            };
-            error = new Label
-            {
-                Text = "Error: *",
-                AutoSize = true
-            };
-            voltage = new BarGraph("Voltage", "", Color.Green, 0, 20, 100);
+            FlowDirection = FlowDirection.TopDown;
 
-            //Controls.Add(status);
-            //Controls.Add(error);
-            //Controls.Add(voltage);
+            status = new DataLabel
+            {
+                Info = "Status",
+                AutoSize = true
+            };
+            error = new DataLabel
+            {
+                AutoSize = true,
+                Info = "Error"
+            };
+            voltage = new BarGraph("Voltage", "00.#", "V", Color.Green, 0, 20, 100);
+            Controls.Add(status);
+            Controls.Add(error);
+            Controls.Add(voltage);
+            UpdateControls();
         }
 
         public override void UpdateControls()
         {
-            status.Text = Data.StatusString;
-            error.Text = Data.ErrorString;
+            status.Text = ""+Data.Status;
+            error.Text = ""+Data.Error;
             voltage.Value = Data.Voltage;
         }
 
