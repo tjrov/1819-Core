@@ -44,6 +44,7 @@ namespace ControlStation
                 {
                     //turn the bytes into usable values
                     Convert(msg.data, ref data);
+                    FireDataUpdated();
                 }
                 else
                 {
@@ -75,8 +76,8 @@ namespace ControlStation
         {
             attitudeIndicator = new AttitudeIndicator();
             headingIndicator = new HeadingIndicator();
-            Controls.Add(attitudeIndicator);
-            Controls.Add(headingIndicator);
+            //Controls.Add(attitudeIndicator);
+            //Controls.Add(headingIndicator);
         }
 
         public override void UpdateControls()
@@ -141,7 +142,7 @@ namespace ControlStation
         public DepthSensor(DepthData data) : base(0x03, 2, data)
         {
             depthIndicator = new DepthIndicator();
-            Controls.Add(depthIndicator);
+            //Controls.Add(depthIndicator);
         }
 
         public override void UpdateControls()
@@ -181,9 +182,9 @@ namespace ControlStation
             };
             voltage = new BarGraph("Voltage", "", Color.Green, 0, 20, 100);
 
-            Controls.Add(status);
-            Controls.Add(error);
-            Controls.Add(voltage);
+            //Controls.Add(status);
+            //Controls.Add(error);
+            //Controls.Add(voltage);
         }
 
         public override void UpdateControls()

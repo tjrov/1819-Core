@@ -9,16 +9,16 @@ using System.Windows.Forms;
 
 namespace ControlStation
 {
-    public abstract class GenericDevice : FlowLayoutPanel
+    public abstract class GenericDevice //: FlowLayoutPanel
     {
         protected byte messageCommand;
         public GenericDevice(byte messageCommand)
         {
             //size to fit components
-            AutoSize = true;
+            /*AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BorderStyle = BorderStyle.FixedSingle;
-            BackColor = Color.Black;
+            BackColor = Color.Black;*/
 
             this.messageCommand = messageCommand;
         }
@@ -34,6 +34,14 @@ namespace ControlStation
         public Device(byte messageCommand, TData data) : base(messageCommand)
         {
             this.data = data;
+        }
+        public event EventHandler<TData> DataUpdated;
+        protected void FireDataUpdated()
+        {
+            if(DataUpdated != null)
+            {
+                DataUpdated(this, data);
+            }
         }
     }
 }
