@@ -11,7 +11,7 @@ namespace ControlStation
 {
     public class GUI : Form
     {
-        private FlowLayoutPanel panel;
+        //private FlowLayoutPanel panel;
         private SerialCommunication comms;
 
         private int countSlow = 0;
@@ -25,77 +25,13 @@ namespace ControlStation
         private StatusSensor status;
         private ToolsActuator tools;
         private StatusActuator statusControl;
+        private TableLayoutPanel centerPanel;
+        private FlowLayoutPanel upperPanel;
         private List<GenericDevice> devices;
 
         public GUI()
         {
-            timer = new Timer
-            {
-                Interval = 10
-            };
-            timer.Tick += TimerLoop;
-
-            //top window, fullscreen, no border
-            ClientSize = new Size(1280, 1024);
-            FormBorderStyle = FormBorderStyle.None;
-            //TopMost = true;
-
-            //panel to hold subpanels
-            panel = new FlowLayoutPanel
-            {
-                Dock = System.Windows.Forms.DockStyle.Fill,
-                Location = new System.Drawing.Point(0, 0),
-                Size = new System.Drawing.Size(1280, 1024),
-                BackColor = Color.Black
-            };
-
-            //setup serial port
-            comms = new SerialCommunication("COM5", 250000);
-            comms.IsPortOpenChanged += OnIsPortOpenChanged;
-
-            //construct sensor and actuator objects
-            depth = new DepthSensor(new Depth());
-            imu = new OrientationSensor(new Orientation());
-
-            List<Tool> toolList = new List<Tool>();
-            for(int i = 0; i < 3; i++)
-            {
-                toolList.Add(new Tool());
-            }
-            tools = new ToolsActuator(toolList);
-
-            //both use the same data object
-            List<ESC> escList = new List<ESC>();
-            for (int i = 0; i < 6; i++)
-            {
-                escList.Add(new ESC());
-            }
-            escs = new PropulsionSensor(escList);
-            thrusters = new PropulsionActuator(escList);
-
-            //both use the same data object
-            State state = new State();
-            status = new StatusSensor(state);
-            statusControl = new StatusActuator(state);
-
-            //put them in the dictionary
-            devices = new List<GenericDevice>();
-            devices.Add(depth);
-            devices.Add(imu);
-            devices.Add(escs);
-            devices.Add(thrusters);
-            devices.Add(tools);
-            devices.Add(status);
-            devices.Add(statusControl);
-
-            //add everything in
-            panel.Controls.Add(comms);
-            foreach (GenericDevice device in devices)
-            {
-                panel.Controls.Add(device);
-                device.Enabled = false;
-            }
-            Controls.Add(panel);
+            InitializeComponent();
         }
 
         private void OnIsPortOpenChanged(object sender, bool e)
@@ -147,6 +83,120 @@ namespace ControlStation
             {
                 FastLoop();
             }
+        }
+
+        private void InitializeComponent()
+        {
+            this.centerPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.upperPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.SuspendLayout();
+            // 
+            // centerPanel
+            // 
+            this.centerPanel.AutoSize = true;
+            this.centerPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.centerPanel.ColumnCount = 2;
+            this.centerPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.centerPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.centerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.centerPanel.Location = new System.Drawing.Point(0, 0);
+            this.centerPanel.Name = "centerPanel";
+            this.centerPanel.RowCount = 2;
+            this.centerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.centerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.centerPanel.Size = new System.Drawing.Size(1280, 1024);
+            this.centerPanel.TabIndex = 0;
+            // 
+            // upperPanel
+            // 
+            this.upperPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.upperPanel.Location = new System.Drawing.Point(0, 0);
+            this.upperPanel.Name = "upperPanel";
+            this.upperPanel.Size = new System.Drawing.Size(1280, 100);
+            this.upperPanel.TabIndex = 3;
+            // 
+            // GUI
+            // 
+            this.ClientSize = new System.Drawing.Size(1280, 1024);
+            this.Controls.Add(this.upperPanel);
+            this.Controls.Add(this.centerPanel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Name = "GUI";
+            this.Load += new System.EventHandler(this.GUI_Load);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        private void GUI_Load(object sender, EventArgs e)
+        {
+            timer = new Timer
+            {
+                Interval = 10
+            };
+            timer.Tick += TimerLoop;
+
+            //top window, fullscreen, no border
+            /*ClientSize = new Size(1280, 1024);
+            FormBorderStyle = FormBorderStyle.None;*/
+            //TopMost = true;
+
+            //panel to hold subpanels
+            /*panel = new FlowLayoutPanel
+            {
+                Dock = System.Windows.Forms.DockStyle.Fill,
+                Location = new System.Drawing.Point(0, 0),
+                Size = new System.Drawing.Size(1280, 1024),
+                BackColor = Color.Black
+            };*/
+
+            //setup serial port
+            comms = new SerialCommunication("COM5", 250000);
+            comms.IsPortOpenChanged += OnIsPortOpenChanged;
+
+            //construct sensor and actuator objects
+            depth = new DepthSensor(new DepthData());
+            imu = new OrientationSensor(new OrientationData());
+
+            List<ToolData> toolList = new List<ToolData>();
+            for (int i = 0; i < 3; i++)
+            {
+                toolList.Add(new ToolData());
+            }
+            tools = new ToolsActuator(toolList);
+
+            //both use the same data object
+            List<ESCData> escList = new List<ESCData>();
+            for (int i = 0; i < 6; i++)
+            {
+                escList.Add(new ESCData());
+            }
+            escs = new PropulsionSensor(escList);
+            thrusters = new PropulsionActuator(escList);
+
+            //both use the same data object
+            StatusData state = new StatusData();
+            status = new StatusSensor(state);
+            statusControl = new StatusActuator(state);
+
+            //put them in the dictionary
+            devices = new List<GenericDevice>();
+            devices.Add(depth);
+            devices.Add(imu);
+            devices.Add(escs);
+            devices.Add(thrusters);
+            devices.Add(tools);
+            devices.Add(status);
+            devices.Add(statusControl);
+
+            //add everything in
+            upperPanel.Controls.Add(comms);
+            foreach (GenericDevice device in devices)
+            {
+                centerPanel.Controls.Add(device);
+                device.Enabled = false;
+            }
+            Controls.Add(centerPanel);
         }
     }
 }

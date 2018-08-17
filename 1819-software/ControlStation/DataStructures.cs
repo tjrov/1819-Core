@@ -7,15 +7,15 @@ namespace ControlStation
         public byte command;
         public byte[] data;
     }
-    public class Tool
+    public class ToolData
     {
         public double Speed;
     }
-    public class Depth
+    public class DepthData
     {
         public double DepthValue;
     }
-    public class ESC
+    public class ESCData
     {
         public double Temperature, Speed;
         public int RPM;
@@ -27,7 +27,7 @@ namespace ControlStation
             }
         }
     }
-    public class Orientation
+    public class OrientationData
     {
         public double Yaw, Pitch, Roll;
     }
@@ -43,12 +43,12 @@ namespace ControlStation
         ALL_SYSTEMS_GO = 0,
         IMU_FAILURE = 1,
         ESC_FAILURE = 2,
-        PRESSURE_SENSOR_FAILURE = 3,
-        TOOLS_FAILURE = 4,
-        INVALID_CHECKSUM = 5,
-        INVALID_COMMAND = 6
+        PRESSURE_SENSOR_FAILURE = 4,
+        TOOLS_FAILURE = 8,
+        INVALID_CHECKSUM = 16,
+        INVALID_COMMAND = 32
     }
-    public class State
+    public class StatusData
     {
         public ROVStatus Status = ROVStatus.DISCONNECTED;
         public ROVStatus DesiredStatus = ROVStatus.DISCONNECTED;

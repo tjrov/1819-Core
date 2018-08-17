@@ -39,7 +39,7 @@ namespace ControlStation
         {
         }
     }
-    public class PropulsionActuator : Actuator<List<ESC>>
+    public class PropulsionActuator : Actuator<List<ESCData>>
     {
         /*
          * Message format:
@@ -49,7 +49,7 @@ namespace ControlStation
          * ... and so on for all 6 ESCs
          */
         private List<ESCPanel> escPanels;
-        public PropulsionActuator(List<ESC> data) : base(0x81, data)
+        public PropulsionActuator(List<ESCData> data) : base(0x81, data)
         {
             escPanels = new List<ESCPanel>();
             for (int i = 0; i < data.Count; i++)
@@ -72,11 +72,11 @@ namespace ControlStation
             }
         }
 
-        protected override byte[] Convert(List<ESC> controlData)
+        protected override byte[] Convert(List<ESCData> controlData)
         {
             byte[] result = new byte[controlData.Count * 2];
             int i = 0;
-            foreach (ESC esc in controlData)
+            foreach (ESCData esc in controlData)
             {
                 Tuple<byte, byte> bytes = ConvertUtils.DoubleToBytes(esc.Speed, -100, 100);
                 result[i] = bytes.Item1;
@@ -87,13 +87,11 @@ namespace ControlStation
         }
         private class ESCPanel : FlowLayoutPanel
         {
-            Bitmap thrusterBitmap = new Bitmap(Properties.Resources.thruster);
             public BarGraph Temperature, RPM, Speed;
             public ESCPanel()
             {
                 FlowDirection = FlowDirection.TopDown;
                 Size = new Size(100, 150);
-                BackgroundImage = thrusterBitmap;
                 BackgroundImageLayout = ImageLayout.Center;
                 Temperature = new BarGraph("Temp", "C", Color.Green, 0, 100, 50);
                 RPM = new BarGraph("RPM", "", Color.Green, 0, 5000, 50);
@@ -104,10 +102,10 @@ namespace ControlStation
             }
         }
     }
-    public class ToolsActuator : Actuator<List<Tool>>
+    public class ToolsActuator : Actuator<List<ToolData>>
     {
         private List<ToolPanel> toolPanels;
-        public ToolsActuator(List<Tool> data) : base(0x82, data)
+        public ToolsActuator(List<ToolData> data) : base(0x82, data)
         {
             toolPanels = new List<ToolPanel>();
             for(int i = 0; i < data.Count; i++)
@@ -126,11 +124,11 @@ namespace ControlStation
             }
         }
 
-        protected override byte[] Convert(List<Tool> controlData)
+        protected override byte[] Convert(List<ToolData> controlData)
         {
             byte[] result = new byte[controlData.Count];
             int i = 0;
-            foreach (Tool tool in controlData)
+            foreach (ToolData tool in controlData)
             {
                 if (tool.Speed == 0)
                 {
@@ -160,11 +158,11 @@ namespace ControlStation
             }
         }
     }
-    public class StatusActuator : Actuator<State>
+    public class StatusActuator : Actuator<StatusData>
     {
         private Button arm, reboot, upload;
         private Timer flasher;
-        public StatusActuator(State data) : base(0x83, data)
+        public StatusActuator(StatusData data) : base(0x83, data)
         {
             //FlowDirection = FlowDirection.TopDown;
             arm = new Button
@@ -196,7 +194,7 @@ namespace ControlStation
             Controls.Add(upload);
         }
 
-        protected override byte[] Convert(State controlData)
+        protected override byte[] Convert(StatusData controlData)
         {
             byte[] result = new byte[1];
             result[0] = (byte)controlData.DesiredStatus;

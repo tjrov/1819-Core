@@ -59,7 +59,7 @@ namespace ControlStation
         }
         protected abstract void Convert(byte[] data, ref TData result);
     }
-    public class OrientationSensor : Sensor<Orientation>
+    public class OrientationSensor : Sensor<OrientationData>
     {
         /*
          * Message format:
@@ -71,7 +71,7 @@ namespace ControlStation
          */
         private AttitudeIndicator attitudeIndicator;
         private HeadingIndicator headingIndicator;
-        public OrientationSensor(Orientation data) : base((byte)0x01, (byte)6, data)
+        public OrientationSensor(OrientationData data) : base((byte)0x01, (byte)6, data)
         {
             attitudeIndicator = new AttitudeIndicator();
             headingIndicator = new HeadingIndicator();
@@ -88,7 +88,7 @@ namespace ControlStation
             headingIndicator.Heading = data.Yaw;
         }
 
-        protected override void Convert(byte[] data, ref Orientation result)
+        protected override void Convert(byte[] data, ref OrientationData result)
         {
             double[] ypr = new double[3];
             for (int i = 0; i < 3; i++)
@@ -98,7 +98,7 @@ namespace ControlStation
             result.Yaw = ypr[0]; result.Pitch = ypr[1]; result.Roll = ypr[2];
         }
     }
-    public class PropulsionSensor : Sensor<List<ESC>>
+    public class PropulsionSensor : Sensor<List<ESCData>>
     {
         /*
          * Message format:
@@ -108,7 +108,7 @@ namespace ControlStation
          * [1] First ESC's temp (0 to 100 deg C)
          * ... and so on for all 6 ESCs
          */
-        public PropulsionSensor(List<ESC> data) : base(0x02, 12, data)
+        public PropulsionSensor(List<ESCData> data) : base(0x02, 12, data)
         {
             
         }
@@ -118,10 +118,10 @@ namespace ControlStation
 
         }
 
-        protected override void Convert(byte[] data, ref List<ESC> result)
+        protected override void Convert(byte[] data, ref List<ESCData> result)
         {
             int i = 0;
-            foreach (ESC esc in result)
+            foreach (ESCData esc in result)
             {
                 esc.RPM = (int)ConvertUtils.ByteToDouble(data[i], 0, 5000);
                 esc.Temperature = (int)ConvertUtils.ByteToDouble(data[i + 1], 0, 100);
@@ -129,7 +129,7 @@ namespace ControlStation
             }
         }
     }
-    public class DepthSensor : Sensor<Depth>
+    public class DepthSensor : Sensor<DepthData>
     {
         /*
          * Message format:
@@ -138,7 +138,7 @@ namespace ControlStation
          * [0][2] Vehicle depth (0 to 30 meters)
          */
         private DepthIndicator depthIndicator;
-        public DepthSensor(Depth data) : base(0x03, 2, data)
+        public DepthSensor(DepthData data) : base(0x03, 2, data)
         {
             depthIndicator = new DepthIndicator();
             Controls.Add(depthIndicator);
@@ -149,12 +149,12 @@ namespace ControlStation
             depthIndicator.Depth = data.DepthValue;
         }
 
-        protected override void Convert(byte[] data, ref Depth result)
+        protected override void Convert(byte[] data, ref DepthData result)
         {
             result.DepthValue = ConvertUtils.BytesToDouble(data[0], data[1], 0, 30);
         }
     }
-    public class StatusSensor : Sensor<State>
+    public class StatusSensor : Sensor<StatusData>
     {
         /*
          * Message format:
@@ -167,7 +167,7 @@ namespace ControlStation
         private Label status, error;
         private BarGraph voltage;
 
-        public StatusSensor(State data) : base(0x04, 3, data)
+        public StatusSensor(StatusData data) : base(0x04, 3, data)
         {
             status = new Label
             {
@@ -193,7 +193,7 @@ namespace ControlStation
             voltage.Value = Data.Voltage;
         }
 
-        protected override void Convert(byte[] data, ref State result)
+        protected override void Convert(byte[] data, ref StatusData result)
         {
             result.Status = (ROVStatus)data[0];
             result.Error = (ROVError)data[1];
