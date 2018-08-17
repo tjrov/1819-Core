@@ -61,7 +61,6 @@ namespace ControlStation
                 speeds.Add(graph);
                 Controls.Add(graph);
             }
-            SetFlowBreak(speeds[2], true);
         }
 
         public override void UpdateControls()
@@ -146,9 +145,14 @@ namespace ControlStation
     {
         private Button arm, reboot, upload;
         private Timer flasher;
+        private FlowLayoutPanel panel;
         public StatusActuator(StatusData data) : base(0x83, data)
         {
-            FlowDirection = FlowDirection.TopDown;
+            panel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.TopDown,
+                Dock = DockStyle.Fill
+            };
             arm = new Button
             {
                 Text = "Arm",
@@ -173,9 +177,10 @@ namespace ControlStation
                 Interval = 500,
             };
             flasher.Tick += OnFlasherTick;
-            Controls.Add(arm);
-            Controls.Add(reboot);
-            Controls.Add(upload);
+            panel.Controls.Add(arm);
+            panel.Controls.Add(reboot);
+            panel.Controls.Add(upload);
+            Controls.Add(panel);
         }
 
         protected override byte[] Convert(StatusData controlData)

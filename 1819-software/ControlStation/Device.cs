@@ -9,15 +9,14 @@ using System.Windows.Forms;
 
 namespace ControlStation
 {
-    public abstract class GenericDevice : FlowLayoutPanel
+    public abstract class GenericDevice : Panel
     {
         protected byte messageCommand;
         public GenericDevice(byte messageCommand)
         {
-            //size to fit components
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
+            //size to fill parents
+            Dock = DockStyle.Fill;
+            BackColor = Color.Transparent;
             this.messageCommand = messageCommand;
         }
         public abstract MessageStruct GetMessage();

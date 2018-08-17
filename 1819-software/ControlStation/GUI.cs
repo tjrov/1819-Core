@@ -290,7 +290,6 @@ namespace ControlStation
             statusPanel.Controls.Add(escs, 1, 0);
             statusPanel.Controls.Add(statusControl, 0, 1);
             statusPanel.SetRowSpan(escs, 2);
-            escs.Anchor = AnchorStyles.Right;
 
             toolsPanel.Controls.Add(tools);
 

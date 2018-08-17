@@ -112,9 +112,16 @@ namespace ControlStation
 
         private List<BarGraph> rpm;
         private List<DataLabel> temp;
+        private TableLayoutPanel panel;
         public PropulsionSensor(List<ESCData> data) : base(0x02, 12, data)
         {
-            BackColor = Color.Transparent;
+            Dock = DockStyle.Fill;
+            panel = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                RowCount = 6,
+                ColumnCount = 2
+            };
             rpm = new List<BarGraph>();
             temp = new List<DataLabel>();
             foreach(ESCData esc in data)
@@ -128,10 +135,10 @@ namespace ControlStation
                 };
                 rpm.Add(rpmGraph);
                 temp.Add(tempGraph);
-                Controls.Add(rpmGraph);
-                Controls.Add(tempGraph);
-                SetFlowBreak(tempGraph, true);
+                panel.Controls.Add(rpmGraph);
+                panel.Controls.Add(tempGraph);
             }
+            Controls.Add(panel);
             UpdateControls();
         }
 
@@ -194,11 +201,14 @@ namespace ControlStation
          */
         private Label status, error;
         private BarGraph voltage;
-
+        private FlowLayoutPanel panel;
         public StatusSensor(StatusData data) : base(0x04, 3, data)
         {
-            FlowDirection = FlowDirection.TopDown;
-
+            panel = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.TopDown,
+            };
             status = new DataLabel
             {
                 Info = "Status",
@@ -210,9 +220,10 @@ namespace ControlStation
                 Info = "Error"
             };
             voltage = new BarGraph("Voltage", "00.#", "V", Color.Green, 0, 20, 100);
-            Controls.Add(status);
-            Controls.Add(error);
-            Controls.Add(voltage);
+            panel.Controls.Add(status);
+            panel.Controls.Add(error);
+            panel.Controls.Add(voltage);
+            Controls.Add(panel);
             UpdateControls();
         }
 
