@@ -42,10 +42,10 @@ enum ERROR {
 	ALL_SYSTEMS_GO = 0,
 	IMU_FAILURE = 1,
 	ESC_FAILURE = 2,
-	PRESSURE_SENSOR_FAILURE = 3,
-	TOOLS_FAILURE = 4,
-	INVALID_CHECKSUM = 5,
-	INVALID_COMMAND = 6
+	PRESSURE_SENSOR_FAILURE = 4,
+	TOOLS_FAILURE = 8,
+	INVALID_CHECKSUM = 16,
+	INVALID_COMMAND = 32
 };
 
 enum STATUS {
@@ -102,7 +102,7 @@ bool stopped = false;
 void receiveMessage();
 void sendMessage();
 bool isTimeout();
-bool testI2C(uint8_t address);
+bool checkI2C(uint8_t);
 void initESCs();
 void readESCs();
 void writeESCs();
@@ -483,7 +483,7 @@ void initDepth() {
 		depth.begin();
 		depth.getTemperature(CELSIUS, ADC_256);
 	} else {
-		error = DEPTH_SENSOR_FAILURE;
+		error = PRESSURE_SENSOR_FAILURE;
 	}
 }
 
@@ -495,19 +495,19 @@ void readDepth() {
 	//1mm resolution of depth with a 0.5ms response time
 	//subtract pressure of air on surface; it doesn't factor
 	//into the pressure caused by the water column
-	double depthDouble = depth.getPressure(ADC_256) - BAROMETRIC_PRESSURE;
+	double depthDouble = depth.getPressure(ADC_256) - 101300;
 	//depth = pressure / (density * acceleration)
 	//where depth is in meters, pressure is in Pascals (N/m^2)
 	//density is in kilograms per cubic meter,
 	//and acceleration is in meters per second per second
-	depthDouble /= 1000.0 * GRAVITATIONAL_ACCELERATION;
+	depthDouble /= 1000.0 * 9.81;
 	//now convert to bytes and prepare txData
 	int intDepth = (int)mapDouble(depthDouble, 0, 30, -32768, 32767);
 
 	txData.data[0] = intDepth & 0xFF;
 	txData.data[1] = (intDepth >> 8) & 0xFF;
 	} else {
-		error = DEPTH_SENSOR_FAILURE;
+		error = PRESSURE_SENSOR_FAILURE;
 	}
 }
 

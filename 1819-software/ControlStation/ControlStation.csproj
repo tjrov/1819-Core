@@ -78,6 +78,11 @@
     </Compile>
     <Compile Include="MainCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Sensor.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -95,14 +100,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="SerialCommunication.resx">
       <DependentUpon>SerialCommunication.cs</DependentUpon>
     </EmbeddedResource>
@@ -124,11 +124,12 @@
   <ItemGroup>
     <Content Include="broken-plug.png" />
     <Content Include="connected-plug.png" />
-    <None Include="Resources\protractor.bmp" />
+    <None Include="Resources\rov-tools.png" />
+    <None Include="Resources\rov-thrusters.png" />
+    <None Include="Resources\rov-electronics.png" />
     <None Include="Resources\depth-front.png" />
     <None Include="Resources\depth-back.png" />
     <None Include="Resources\dcmotor.png" />
-    <None Include="Resources\thruster.bmp" />
     <None Include="Resources\wings.bmp" />
     <None Include="Resources\horizon.bmp" />
     <None Include="Resources\heading.bmp" />
