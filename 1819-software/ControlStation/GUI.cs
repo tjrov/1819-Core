@@ -151,7 +151,7 @@ namespace ControlStation
             this.toolsBox.Size = new System.Drawing.Size(599, 471);
             this.toolsBox.TabIndex = 1;
             this.toolsBox.TabStop = false;
-            this.toolsBox.Text = "Tools";
+            this.toolsBox.Text = "Manipulators";
             // 
             // toolsPanel
             // 
@@ -173,7 +173,7 @@ namespace ControlStation
             this.statusBox.Size = new System.Drawing.Size(599, 471);
             this.statusBox.TabIndex = 0;
             this.statusBox.TabStop = false;
-            this.statusBox.Text = "Status";
+            this.statusBox.Text = "System Status";
             // 
             // statusPanel
             // 
@@ -202,7 +202,7 @@ namespace ControlStation
             this.thrustersBox.Size = new System.Drawing.Size(669, 471);
             this.thrustersBox.TabIndex = 2;
             this.thrustersBox.TabStop = false;
-            this.thrustersBox.Text = "Thrusters";
+            this.thrustersBox.Text = "Propulsion";
             // 
             // thrustersPanel
             // 
@@ -223,7 +223,7 @@ namespace ControlStation
             this.attitudeBox.Size = new System.Drawing.Size(669, 471);
             this.attitudeBox.TabIndex = 3;
             this.attitudeBox.TabStop = false;
-            this.attitudeBox.Text = "Attitude";
+            this.attitudeBox.Text = "Depth, Attitude, & Heading";
             // 
             // attitudePanel
             // 
@@ -299,7 +299,7 @@ namespace ControlStation
             status = new StatusSensor(state);
             statusControl = new StatusActuator(state);
 
-            diagnostics = new DiagnosticsSensor(new DiagnosticsData());
+            diagnostics = new DiagnosticsSensor(new VersionData());
 
             //put them in the list
             devices = new List<GenericDevice>();

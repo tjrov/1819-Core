@@ -66,7 +66,7 @@ enum COMMAND {
 	ESC_REQ = 0x02,
 	DEPTH_REQ = 0x03,
 	STATUS_REQ = 0x04,
-	DIAGNOSTICS_REQ = 0x05,
+	VERSION_REQ = 0x05,
 	ESC_CMD = 0x81,
 	TOOLS_CMD = 0x82,
 	STATUS_CMD = 0x83
@@ -217,8 +217,8 @@ void processMessage() {
 			readStatus();
 			sendMessage();
 			break;
-		case DIAGNOSTICS_REQ:
-			readDiagnostics();
+		case VERSION_REQ:
+			readVersion();
 			sendMessage();
 			break;
 		default:
@@ -299,21 +299,13 @@ bool isTimeout() {
 	return (millis() - lastComms) > SERIAL_TIMEOUT;
 }
 
-//reads the versioning info and the i2c bus's available devices
-void readDiagnostics() {
-	txData.length = 20;
-	txData.command = DIAGNOSTICS_REQ;
+//reads the versioning info
+void readVersion() {
+	txData.length = 2;
+	txData.command = VERSION_REQ;
 	//get ready to send versioning info
 	txData.data[0] = VERSION_MAJOR;
 	txData.data[1] = VERSION_MINOR;
-	//check entire range of i2c addresses and store in txdata
-	int j = 2;
-	for (int i = 8; i < 128; i++) {
-		if (checkI2C(i)) {
-			txData.data[j] = i;
-			j++;
-		}
-	}
 }
 
 //returns true if device at address available
@@ -443,6 +435,11 @@ void emergencyStop() {
 	for (int i = 0; i < NUM_ESCS; i++) {
 		if (checkI2C(addresses[i])) {
 			escs[i]->set(0);
+			error &= ~ESC_FAILURE;
+		}
+		else {
+			error |= ESC_FAILURE;
+			break;
 		}
 	}
 	if (checkI2C(TOOLS_ADDRESS)) {
@@ -452,6 +449,9 @@ void emergencyStop() {
 			Wire.write(128);
 		}
 		Wire.endTransmission();
+		error &= ~TOOLS_FAILURE;
+	} else{
+		error |= TOOLS_FAILURE;
 	}
 }
 

@@ -119,17 +119,17 @@ namespace ControlStation
             temp = new List<DataLabel>();
             for (int y = 100; y < 280; y += 30)
             {
-                BarGraph rpmGraph = new BarGraph("RPM", "{0:###0}", "", Color.Green,
+                BarGraph rpmGraph = new BarGraph("RPM", "{0:0000}", "", Color.Green,
                     0, 5000, 50)
                 {
                     Location = new Point(60, y)
                 };
                 DataLabel tempGraph = new DataLabel
                 {
-                    Info = "Temp",
-                    Format = "{0:##0}",
+                    Info = "T",
+                    Format = "{0:000}",
                     Unit = "°C",
-                    Location = new Point(170, y)
+                    Location = new Point(185, y)
                 };
                 rpm.Add(rpmGraph);
                 temp.Add(tempGraph);
@@ -238,11 +238,10 @@ namespace ControlStation
             result.Voltage = ConvertUtils.ByteToDouble(data[2], 0, 20);
         }
     }
-    public class DiagnosticsSensor : Sensor<DiagnosticsData>
+    public class DiagnosticsSensor : Sensor<VersionData>
     {
         private DataLabel version;
-        private Button diagnostics;
-        public DiagnosticsSensor(DiagnosticsData data) : base(0x05, 20, data)
+        public DiagnosticsSensor(VersionData data) : base(0x05, 2, data)
         {
             version = new DataLabel
             {
@@ -251,21 +250,7 @@ namespace ControlStation
                 Location = new Point(0, 0),
                 Text = ""
             };
-            diagnostics = new Button
-            {
-                Text = "I2C Diagnostics",
-                AutoSize = true,
-                Location = new Point(0, 20)
-            };
-            diagnostics.Click += DiagnosticsClicked;
             Controls.Add(version);
-            Controls.Add(diagnostics);
-        }
-
-        private void DiagnosticsClicked(object sender, EventArgs e)
-        {
-            MessageBox.Show("I2C Devices: " + data.AddressesString, "Diagnostics",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         public override void UpdateControls()
@@ -273,18 +258,10 @@ namespace ControlStation
             version.Text = data.VersionString;
         }
 
-        protected override void Convert(byte[] data, ref DiagnosticsData result)
+        protected override void Convert(byte[] data, ref VersionData result)
         {
             result.Major = data[0];
             result.Minor = data[1];
-            for (int i = 0; i < result.Addresses.Length; i++)
-            {
-                result.Addresses[i] = 0;
-            }
-            for (int i = 2; i < data.Length; i++)
-            {
-                result.Addresses[i - 2] = data[i];
-            }
         }
     }
 }

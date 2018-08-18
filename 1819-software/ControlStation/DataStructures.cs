@@ -64,26 +64,14 @@ namespace ControlStation
             }
         }
     }
-    public class DiagnosticsData
+    public class VersionData
     {
-        public DiagnosticsData()
-        {
-            Addresses = new byte[18];
-        }
         public byte Major, Minor;
         public string VersionString
         {
             get
             {
                 return "v" + Major + "." + Minor;
-            }
-        }
-        public byte[] Addresses;
-        public string AddressesString
-        {
-            get
-            {
-                return BitConverter.ToString(Addresses).Replace('-', ',');
             }
         }
     }
