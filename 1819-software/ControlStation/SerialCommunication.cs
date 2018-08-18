@@ -20,7 +20,7 @@ namespace ControlStation
      Data
      Checksum(XOR of length and all data bytes)
     */
-    public class SerialCommunication : FlowLayoutPanel
+    public class SerialCommunication : GroupBox
     {
         private EventSerialPort port;
         private ConcurrentQueue<GenericDevice> devices;
@@ -29,8 +29,10 @@ namespace ControlStation
 
         private ConcurrentQueue<string> history;
 
+        private FlowLayoutPanel panel;
         private Button toggle;
-        private Label info;
+        private ComboBox portChooser;
+        private TextBox baudChooser;
 
         public event EventHandler<bool> IsPortOpenChanged
         {
@@ -44,39 +46,78 @@ namespace ControlStation
             }
         }
 
-        public SerialCommunication(string portName, int baudRate) : base()
+        public SerialCommunication() : base()
         {
-            port = new EventSerialPort(portName, baudRate);
-            port.IsOpenChanged += OnIsOpenChanged;
+            Size = new Size(350, 40);
             devices = new ConcurrentQueue<GenericDevice>();
             history = new ConcurrentQueue<string>();
             //background loop runs on this thread
             thread = new Thread(new ThreadStart(BackgroundLoop));
             thread.SetApartmentState(ApartmentState.STA); //for UI compatibility
             //setup gui
+            Text = "Communication Link";
+            panel = new FlowLayoutPanel()
+            {
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Padding = new Padding(10),
+                BackColor = Color.Transparent
+            };
             toggle = new Button()
             {
                 Text = "Disconnected",
                 BackColor = Color.Yellow,
-                AutoSize = true
+                AutoSize = true,
             };
             toggle.Click += OnClick;
 
-            info = new Label()
+            portChooser = new ComboBox()
             {
-                Text = string.Format("{0}@{1}kbaud", port.PortName, port.BaudRate / 1000.0)
+                Width = 100,
+                DropDownStyle = ComboBoxStyle.DropDownList
             };
+            foreach (string name in SerialPort.GetPortNames())
+            {
+                portChooser.Items.Add(name);
+            }
+            portChooser.SelectedIndex = 0;
+            portChooser.SelectedValueChanged += PortChosen;
 
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            BorderStyle = BorderStyle.Fixed3D;
-            FlowDirection = FlowDirection.RightToLeft;
+            baudChooser = new TextBox()
+            {
+                Text = "250000",
+                Width = 100
+            };
+            baudChooser.TextChanged += BaudChosen;
 
-            Controls.Add(toggle);
-            Controls.Add(info);
+            panel.Controls.Add(toggle);
+            panel.Controls.Add(portChooser);
+            panel.Controls.Add(baudChooser);
+            Controls.Add(panel);
+
+            port = new EventSerialPort((string)portChooser.Items[portChooser.SelectedIndex], int.Parse(baudChooser.Text));
+            port.IsOpenChanged += OnIsOpenChanged;
 
             thread.Start(); //start the background loop
         }
+
+        private void CreatePort()
+        {
+            port.Close();
+            port.PortName = (string)portChooser.Items[portChooser.SelectedIndex];
+            port.BaudRate = int.Parse(baudChooser.Text);
+        }
+
+        private void BaudChosen(object sender, EventArgs e)
+        {
+            CreatePort();
+        }
+
+        private void PortChosen(object sender, EventArgs e)
+        {
+            CreatePort();
+        }
+
         //requests update of a device
         public void QueueDevice(GenericDevice device)
         {
@@ -123,7 +164,8 @@ namespace ControlStation
                     {
                         Thread.Sleep(100);
                     }
-                } catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     //show in dialog
                     this.Invoke(new Action(() => ShowException(ex)));
@@ -253,17 +295,17 @@ namespace ControlStation
         }
         private void Error(object sender, SerialErrorReceivedEventArgs e)
         {
-            IsOpenChanged(this, IsOpen);
+            IsOpenChanged?.Invoke(this, IsOpen);
         }
         public new void Open()
         {
             base.Open();
-            IsOpenChanged(this, IsOpen);
+            IsOpenChanged?.Invoke(this, IsOpen);
         }
         public new void Close()
         {
             base.Close();
-            IsOpenChanged(this, IsOpen);
+            IsOpenChanged?.Invoke(this, IsOpen);
         }
     }
 }

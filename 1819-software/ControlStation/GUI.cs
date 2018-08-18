@@ -273,7 +273,7 @@ namespace ControlStation
             timer.Tick += TimerLoop;
 
             //setup serial port
-            comms = new SerialCommunication("COM5", 250000);
+            comms = new SerialCommunication();
             comms.IsPortOpenChanged += OnIsPortOpenChanged;
 
             //construct sensor and actuator objects
