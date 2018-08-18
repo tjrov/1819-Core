@@ -25,6 +25,7 @@ namespace ControlStation
         private StatusSensor status;
         private ToolsActuator tools;
         private StatusActuator statusControl;
+        private DiagnosticsSensor diagnostics;
 
         private TableLayoutPanel centerPanel;
         private FlowLayoutPanel upperPanel;
@@ -44,15 +45,20 @@ namespace ControlStation
             upperPanel.SendToBack(); //don't overlap with controls
         }
 
-        private void OnIsPortOpenChanged(object sender, bool e)
+        private void OnIsPortOpenChanged(object sender, bool isOpen)
         {
             //enable/disable all device panels
             foreach (GenericDevice device in devices)
             {
-                device.Enabled = e;
+                device.Enabled = isOpen;
             }
             //start/stop timer
-            timer.Enabled = e;
+            timer.Enabled = isOpen;
+            //ask for new version and diagnostics
+            if(isOpen)
+            {
+                comms.QueueDevice(diagnostics);
+            }
         }
 
         private void SlowLoop()
@@ -99,14 +105,14 @@ namespace ControlStation
         {
             this.centerPanel = new System.Windows.Forms.TableLayoutPanel();
             this.toolsBox = new System.Windows.Forms.GroupBox();
+            this.toolsPanel = new System.Windows.Forms.Panel();
             this.statusBox = new System.Windows.Forms.GroupBox();
             this.statusPanel = new System.Windows.Forms.TableLayoutPanel();
             this.thrustersBox = new System.Windows.Forms.GroupBox();
-            this.attitudeBox = new System.Windows.Forms.GroupBox();
-            this.upperPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.thrustersPanel = new System.Windows.Forms.Panel();
+            this.attitudeBox = new System.Windows.Forms.GroupBox();
             this.attitudePanel = new System.Windows.Forms.TableLayoutPanel();
-            this.toolsPanel = new System.Windows.Forms.Panel();
+            this.upperPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.centerPanel.SuspendLayout();
             this.toolsBox.SuspendLayout();
             this.statusBox.SuspendLayout();
@@ -147,6 +153,16 @@ namespace ControlStation
             this.toolsBox.TabStop = false;
             this.toolsBox.Text = "Tools";
             // 
+            // toolsPanel
+            // 
+            this.toolsPanel.BackgroundImage = global::ControlStation.Properties.Resources.rov_tools;
+            this.toolsPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.toolsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolsPanel.Location = new System.Drawing.Point(3, 34);
+            this.toolsPanel.Name = "toolsPanel";
+            this.toolsPanel.Size = new System.Drawing.Size(593, 434);
+            this.toolsPanel.TabIndex = 0;
+            // 
             // statusBox
             // 
             this.statusBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -164,14 +180,15 @@ namespace ControlStation
             this.statusPanel.BackgroundImage = global::ControlStation.Properties.Resources.rov_electronics;
             this.statusPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.statusPanel.ColumnCount = 2;
-            this.statusPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.statusPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.statusPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.statusPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.statusPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.statusPanel.Location = new System.Drawing.Point(3, 34);
             this.statusPanel.Name = "statusPanel";
-            this.statusPanel.RowCount = 2;
-            this.statusPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.statusPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.statusPanel.RowCount = 3;
+            this.statusPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.statusPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.statusPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.statusPanel.Size = new System.Drawing.Size(593, 434);
             this.statusPanel.TabIndex = 0;
             // 
@@ -187,6 +204,16 @@ namespace ControlStation
             this.thrustersBox.TabStop = false;
             this.thrustersBox.Text = "Thrusters";
             // 
+            // thrustersPanel
+            // 
+            this.thrustersPanel.BackgroundImage = global::ControlStation.Properties.Resources.rov_thrusters;
+            this.thrustersPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.thrustersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.thrustersPanel.Location = new System.Drawing.Point(3, 34);
+            this.thrustersPanel.Name = "thrustersPanel";
+            this.thrustersPanel.Size = new System.Drawing.Size(663, 434);
+            this.thrustersPanel.TabIndex = 0;
+            // 
             // attitudeBox
             // 
             this.attitudeBox.Controls.Add(this.attitudePanel);
@@ -197,24 +224,6 @@ namespace ControlStation
             this.attitudeBox.TabIndex = 3;
             this.attitudeBox.TabStop = false;
             this.attitudeBox.Text = "Attitude";
-            // 
-            // upperPanel
-            // 
-            this.upperPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.upperPanel.Location = new System.Drawing.Point(0, 0);
-            this.upperPanel.Name = "upperPanel";
-            this.upperPanel.Size = new System.Drawing.Size(1280, 50);
-            this.upperPanel.TabIndex = 3;
-            // 
-            // thrustersPanel
-            // 
-            this.thrustersPanel.BackgroundImage = global::ControlStation.Properties.Resources.rov_thrusters;
-            this.thrustersPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.thrustersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.thrustersPanel.Location = new System.Drawing.Point(3, 34);
-            this.thrustersPanel.Name = "thrustersPanel";
-            this.thrustersPanel.Size = new System.Drawing.Size(663, 434);
-            this.thrustersPanel.TabIndex = 0;
             // 
             // attitudePanel
             // 
@@ -229,15 +238,13 @@ namespace ControlStation
             this.attitudePanel.Size = new System.Drawing.Size(663, 434);
             this.attitudePanel.TabIndex = 0;
             // 
-            // toolsPanel
+            // upperPanel
             // 
-            this.toolsPanel.BackgroundImage = global::ControlStation.Properties.Resources.rov_tools;
-            this.toolsPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.toolsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolsPanel.Location = new System.Drawing.Point(3, 34);
-            this.toolsPanel.Name = "toolsPanel";
-            this.toolsPanel.Size = new System.Drawing.Size(593, 434);
-            this.toolsPanel.TabIndex = 0;
+            this.upperPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.upperPanel.Location = new System.Drawing.Point(0, 0);
+            this.upperPanel.Name = "upperPanel";
+            this.upperPanel.Size = new System.Drawing.Size(1280, 50);
+            this.upperPanel.TabIndex = 3;
             // 
             // GUI
             // 
@@ -292,6 +299,8 @@ namespace ControlStation
             status = new StatusSensor(state);
             statusControl = new StatusActuator(state);
 
+            diagnostics = new DiagnosticsSensor(new DiagnosticsData());
+
             //put them in the list
             devices = new List<GenericDevice>();
             devices.Add(depth);
@@ -301,14 +310,16 @@ namespace ControlStation
             devices.Add(tools);
             devices.Add(status);
             devices.Add(statusControl);
+            devices.Add(diagnostics);
 
             //add controls to their respective panels
             upperPanel.Controls.Add(comms);
 
             statusPanel.Controls.Add(status, 0, 0);
-            statusPanel.Controls.Add(escs, 1, 0);
             statusPanel.Controls.Add(statusControl, 0, 1);
-            statusPanel.SetRowSpan(escs, 2);
+            statusPanel.Controls.Add(diagnostics, 0, 2);
+            statusPanel.Controls.Add(escs, 1, 0);
+            statusPanel.SetRowSpan(escs, 3);
 
             toolsPanel.Controls.Add(tools);
 

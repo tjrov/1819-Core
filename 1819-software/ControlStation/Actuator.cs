@@ -54,14 +54,14 @@ namespace ControlStation
         {
             speeds = new List<BarGraph>();
             Dock = DockStyle.Fill;
-            for (int y = 50; y < 350; y+=100)
+            for (int y = 50; y < 410; y+=120)
             {
-                BarGraph graph = new BarGraph("Speed", "{0:###.#}", "%", Color.Green, -100, 100, 50);
+                BarGraph graph = new BarGraph("Speed", "{0:##0.0}", "%", Color.Green, -100, 100, 50);
                 speeds.Add(graph);
                 graph.Location = new Point(0, y);
-                BarGraph graph2 = new BarGraph("Speed", "{0:###.#}", "%", Color.Green, -100, 100, 50);
+                BarGraph graph2 = new BarGraph("Speed", "{0:##0.0}", "%", Color.Green, -100, 100, 50);
                 speeds.Add(graph2);
-                graph2.Location = new Point(500, y);
+                graph2.Location = new Point(520, y);
                 Controls.Add(graph);
                 Controls.Add(graph2);
             }
@@ -99,7 +99,7 @@ namespace ControlStation
             speeds = new List<BarGraph>();
             for(int i = 0; i < 3; i++)
             {
-                BarGraph graph = new BarGraph("Speed", "{0:###.#}", "%", Color.Green, -100, 100, 50);
+                BarGraph graph = new BarGraph("Speed", "{0:##0.0}", "%", Color.Green, -100, 100, 50);
                 speeds.Add(graph);
                 Controls.Add(graph);
             }
@@ -174,7 +174,7 @@ namespace ControlStation
                 BackColor = Color.Red,
                 BackgroundImage = estopBitmap,
                 BackgroundImageLayout = ImageLayout.Zoom,
-                Size = new Size(100, 100)
+                Size = new Size(75, 75)
             };
             estop.Click += OnArmClick;
             flasher = new Timer

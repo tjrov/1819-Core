@@ -113,40 +113,36 @@ namespace ControlStation
 
         private List<BarGraph> rpm;
         private List<DataLabel> temp;
-        private TableLayoutPanel panel;
         public PropulsionSensor(List<ESCData> data) : base(0x02, 12, data)
         {
-            Dock = DockStyle.Fill;
-            panel = new TableLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                RowCount = 6,
-                ColumnCount = 2
-            };
             rpm = new List<BarGraph>();
             temp = new List<DataLabel>();
-            foreach(ESCData esc in data)
+            for (int y = 100; y < 280; y += 30)
             {
-                BarGraph rpmGraph = new BarGraph("RPM", "{0:###0}", "", Color.Green, 0, 5000, 50);
+                BarGraph rpmGraph = new BarGraph("RPM", "{0:###0}", "", Color.Green,
+                    0, 5000, 50)
+                {
+                    Location = new Point(60, y)
+                };
                 DataLabel tempGraph = new DataLabel
                 {
                     Info = "Temp",
                     Format = "{0:##0}",
-                    Unit = "C",
+                    Unit = "°C",
+                    Location = new Point(170, y)
                 };
                 rpm.Add(rpmGraph);
                 temp.Add(tempGraph);
-                panel.Controls.Add(rpmGraph);
-                panel.Controls.Add(tempGraph);
+                Controls.Add(rpmGraph);
+                Controls.Add(tempGraph);
             }
-            Controls.Add(panel);
             UpdateControls();
         }
 
         public override void UpdateControls()
         {
             int i = 0;
-            foreach(ESCData esc in data)
+            foreach (ESCData esc in data)
             {
                 rpm[i].Value = esc.RPM;
                 temp[i].Value = esc.Temperature;
@@ -230,8 +226,8 @@ namespace ControlStation
 
         public override void UpdateControls()
         {
-            status.Text = ""+Data.Status;
-            error.Text = ""+Data.Error;
+            status.Text = "" + Data.Status;
+            error.Text = "" + Data.Error;
             voltage.Value = Data.Voltage;
         }
 
@@ -240,6 +236,55 @@ namespace ControlStation
             result.Status = (ROVStatus)data[0];
             result.Error = (ROVError)data[1];
             result.Voltage = ConvertUtils.ByteToDouble(data[2], 0, 20);
+        }
+    }
+    public class DiagnosticsSensor : Sensor<DiagnosticsData>
+    {
+        private DataLabel version;
+        private Button diagnostics;
+        public DiagnosticsSensor(DiagnosticsData data) : base(0x05, 20, data)
+        {
+            version = new DataLabel
+            {
+                AutoSize = true,
+                Info = "Autopilot Firmware",
+                Location = new Point(0, 0),
+                Text = ""
+            };
+            diagnostics = new Button
+            {
+                Text = "I2C Diagnostics",
+                AutoSize = true,
+                Location = new Point(0, 20)
+            };
+            diagnostics.Click += DiagnosticsClicked;
+            Controls.Add(version);
+            Controls.Add(diagnostics);
+        }
+
+        private void DiagnosticsClicked(object sender, EventArgs e)
+        {
+            MessageBox.Show("I2C Devices: " + data.AddressesString, "Diagnostics",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        public override void UpdateControls()
+        {
+            version.Text = data.VersionString;
+        }
+
+        protected override void Convert(byte[] data, ref DiagnosticsData result)
+        {
+            result.Major = data[0];
+            result.Minor = data[1];
+            for (int i = 0; i < result.Addresses.Length; i++)
+            {
+                result.Addresses[i] = 0;
+            }
+            for (int i = 2; i < data.Length; i++)
+            {
+                result.Addresses[i - 2] = data[i];
+            }
         }
     }
 }

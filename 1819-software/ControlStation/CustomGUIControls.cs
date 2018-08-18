@@ -32,7 +32,7 @@ namespace ControlStation
         public BarGraph(string label, string format, string unit, Color barColor, double min, double max, int width)
         {
             AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowOnly;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             this.min = min;
             this.max = max;
             pb = new ProgressBar()

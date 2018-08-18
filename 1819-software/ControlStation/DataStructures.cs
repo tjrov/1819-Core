@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ControlStation
 {
@@ -60,6 +61,29 @@ namespace ControlStation
             get
             {
                 return (Voltage < 7);
+            }
+        }
+    }
+    public class DiagnosticsData
+    {
+        public DiagnosticsData()
+        {
+            Addresses = new byte[18];
+        }
+        public byte Major, Minor;
+        public string VersionString
+        {
+            get
+            {
+                return "v" + Major + "." + Minor;
+            }
+        }
+        public byte[] Addresses;
+        public string AddressesString
+        {
+            get
+            {
+                return BitConverter.ToString(Addresses).Replace('-', ',');
             }
         }
     }
