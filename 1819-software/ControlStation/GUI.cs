@@ -124,6 +124,7 @@ namespace ControlStation
             // 
             this.centerPanel.AutoSize = true;
             this.centerPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.centerPanel.BackColor = System.Drawing.Color.Transparent;
             this.centerPanel.ColumnCount = 2;
             this.centerPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.centerPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 675F));
@@ -240,6 +241,7 @@ namespace ControlStation
             // 
             // upperPanel
             // 
+            this.upperPanel.BackColor = System.Drawing.Color.Transparent;
             this.upperPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.upperPanel.Location = new System.Drawing.Point(0, 0);
             this.upperPanel.Name = "upperPanel";
@@ -248,7 +250,7 @@ namespace ControlStation
             // 
             // GUI
             // 
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(145)))), ((int)(((byte)(255)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(220)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1280, 1024);
             this.Controls.Add(this.centerPanel);
             this.Controls.Add(this.upperPanel);
