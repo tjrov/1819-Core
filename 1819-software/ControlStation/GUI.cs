@@ -248,6 +248,7 @@ namespace ControlStation
             // 
             // GUI
             // 
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(145)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1280, 1024);
             this.Controls.Add(this.centerPanel);
             this.Controls.Add(this.upperPanel);

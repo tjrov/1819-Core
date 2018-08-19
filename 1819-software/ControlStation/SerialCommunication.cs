@@ -76,6 +76,11 @@ namespace ControlStation
                 Width = 100,
                 DropDownStyle = ComboBoxStyle.DropDownList
             };
+            if(SerialPort.GetPortNames().Length == 0)
+            {
+                MessageBox.Show("No Serial Ports Available");
+                Application.Exit();
+            }
             foreach (string name in SerialPort.GetPortNames())
             {
                 portChooser.Items.Add(name);

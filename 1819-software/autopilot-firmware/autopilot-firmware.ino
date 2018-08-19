@@ -35,6 +35,7 @@ Configuration for autopilot board
 
 #define NUM_ESCS 6
 #define ESC_ADDRESSES { 0x31, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E }
+#define ESC_INVERT {0,0,0,0,0,0}
 #define NUM_POLES 6
 
 #define NUM_TOOLS 3
@@ -85,6 +86,7 @@ Pin definitions for autopilot board
 /*Variable declarations*/
 Arduino_I2C_ESC *escs[NUM_ESCS];
 const uint8_t addresses[] = ESC_ADDRESSES;
+const uint8_t invert[] = ESC_INVERT;
 Adafruit_BNO055 imuSensor;
 MS5803 depth(DEPTH_ADDRESS);
 
@@ -359,7 +361,13 @@ void writeESCs() {
 	for (int i = 0; i < NUM_ESCS; i++) {
 		if (checkI2C(addresses[i])) {
 			//convert pairs of bytes into 16-bit int for control of ESC
-			escs[i]->set(rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2]);
+			int16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
+			if (invert[i]) {
+				escs[i]->set(~speed);
+			}
+			else {
+				escs[i]->set(speed);
+			}
 			error &= ~(ESC_FAILURE);
 		}
 		else {
