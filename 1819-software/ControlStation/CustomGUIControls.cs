@@ -37,17 +37,18 @@ namespace ControlStation
             this.max = max;
             pb = new ProgressBar()
             {
-                ForeColor = barColor,
+                ForeColor = Color.Orange,
                 Minimum = 0,
                 Maximum = (int)(max * 10),
                 Width = width,
             };
             pb2 = new ProgressBar()
             {
-                ForeColor = barColor,
+                ForeColor = Color.Red,
+                BackColor = Color.Blue,
                 Minimum = 0,
                 Maximum = (int)(-min * 10),
-                Width = width / 2
+                Width = width / 2,
             };
             if (min < 0)
             {
@@ -74,11 +75,11 @@ namespace ControlStation
                 if (value < 0)
                 {
                     pb.Value = 0;
-                    pb2.Value = (int)(-value * 10);
+                    pb2.Value = (int)((value - min) * 10);
                 }
                 else
                 {
-                    pb2.Value = 0;
+                    pb2.Value = (int)(-min * 10);
                     pb.Value = (int)(value * 10);
                 }
                 //display the numeric value

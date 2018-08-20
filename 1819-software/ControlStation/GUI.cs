@@ -255,8 +255,10 @@ namespace ControlStation
             this.Controls.Add(this.centerPanel);
             this.Controls.Add(this.upperPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
             this.Name = "GUI";
             this.Load += new System.EventHandler(this.GUI_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GUI_KeyPress);
             this.centerPanel.ResumeLayout(false);
             this.toolsBox.ResumeLayout(false);
             this.statusBox.ResumeLayout(false);
@@ -335,6 +337,19 @@ namespace ControlStation
             foreach (GenericDevice device in devices)
             {
                 device.Enabled = false;
+            }
+        }
+
+        private void GUI_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            switch(e.KeyChar)
+            {
+                case '1':
+                    tools.Data[0].Speed++;
+                    break;
+                case '2':
+                    tools.Data[0].Speed--;
+                    break;
             }
         }
     }
