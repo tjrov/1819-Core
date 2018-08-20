@@ -20,7 +20,7 @@ namespace ControlStation
      Data
      Checksum(XOR of length and all data bytes)
     */
-    public class SerialCommunication : GroupBox
+    public class SerialCommunication : FlowLayoutPanel
     {
         private EventSerialPort port;
         private ConcurrentQueue<GenericDevice> devices;
@@ -29,7 +29,6 @@ namespace ControlStation
 
         private ConcurrentQueue<string> history;
 
-        private FlowLayoutPanel panel;
         private Button toggle;
         private Label info;
 
@@ -47,21 +46,17 @@ namespace ControlStation
 
         public SerialCommunication() : base()
         {
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BackColor = Color.Transparent;
+
             //construct port object
             port = new EventSerialPort(Properties.Settings.Default.PortName, Properties.Settings.Default.BaudRate);
             port.IsOpenChanged += OnIsOpenChanged;
             Size = new Size(350, 40);
             devices = new ConcurrentQueue<GenericDevice>();
             history = new ConcurrentQueue<string>();
-            //setup gui
-            Text = "Communication Link";
-            panel = new FlowLayoutPanel()
-            {
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                Padding = new Padding(10),
-                BackColor = Color.Transparent
-            };
+
             toggle = new Button()
             {
                 Text = "Disconnected",
@@ -76,9 +71,9 @@ namespace ControlStation
                 Text = string.Format("{0}@{1}kbaud", port.PortName, port.BaudRate / 1000.0)
             };
 
-            panel.Controls.Add(toggle);
-            panel.Controls.Add(info);
-            Controls.Add(panel);
+            Controls.Add(toggle);
+            Controls.Add(info);
+
             //background loop runs on this thread
             thread = new Thread(new ThreadStart(BackgroundLoop));
             thread.SetApartmentState(ApartmentState.STA); //for UI compatibility
@@ -143,7 +138,7 @@ namespace ControlStation
         private void ShowException(Exception ex)
         {
             //empty queue
-            while(devices.Count > 0)
+            while (devices.Count > 0)
             {
                 devices.TryDequeue(out GenericDevice trash);
             }

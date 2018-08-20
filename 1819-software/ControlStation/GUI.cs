@@ -32,11 +32,16 @@ namespace ControlStation
         private GroupBox statusBox;
         private GroupBox toolsBox;
         private GroupBox thrustersBox;
-        private GroupBox attitudeBox;
         private TableLayoutPanel statusPanel;
         private Panel thrustersPanel;
         private TableLayoutPanel attitudePanel;
         private Panel toolsPanel;
+        private GroupBox communicationBox;
+        private GroupBox controllerBox;
+        private GroupBox groupBox1;
+        private TableLayoutPanel attitudeDepthPanel;
+        private GroupBox depthBox;
+        private GroupBox attitudeBox;
         private List<GenericDevice> devices;
 
         public GUI()
@@ -110,14 +115,21 @@ namespace ControlStation
             this.statusPanel = new System.Windows.Forms.TableLayoutPanel();
             this.thrustersBox = new System.Windows.Forms.GroupBox();
             this.thrustersPanel = new System.Windows.Forms.Panel();
-            this.attitudeBox = new System.Windows.Forms.GroupBox();
             this.attitudePanel = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.upperPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.communicationBox = new System.Windows.Forms.GroupBox();
+            this.controllerBox = new System.Windows.Forms.GroupBox();
+            this.attitudeDepthPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.depthBox = new System.Windows.Forms.GroupBox();
+            this.attitudeBox = new System.Windows.Forms.GroupBox();
             this.centerPanel.SuspendLayout();
             this.toolsBox.SuspendLayout();
             this.statusBox.SuspendLayout();
             this.thrustersBox.SuspendLayout();
-            this.attitudeBox.SuspendLayout();
+            this.attitudePanel.SuspendLayout();
+            this.upperPanel.SuspendLayout();
+            this.attitudeDepthPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // centerPanel
@@ -131,7 +143,7 @@ namespace ControlStation
             this.centerPanel.Controls.Add(this.toolsBox, 0, 1);
             this.centerPanel.Controls.Add(this.statusBox, 0, 0);
             this.centerPanel.Controls.Add(this.thrustersBox, 1, 0);
-            this.centerPanel.Controls.Add(this.attitudeBox, 1, 1);
+            this.centerPanel.Controls.Add(this.attitudeDepthPanel, 1, 1);
             this.centerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.centerPanel.Location = new System.Drawing.Point(0, 50);
             this.centerPanel.Name = "centerPanel";
@@ -174,7 +186,7 @@ namespace ControlStation
             this.statusBox.Size = new System.Drawing.Size(599, 471);
             this.statusBox.TabIndex = 0;
             this.statusBox.TabStop = false;
-            this.statusBox.Text = "System Status";
+            this.statusBox.Text = "System Status/Control";
             // 
             // statusPanel
             // 
@@ -215,22 +227,12 @@ namespace ControlStation
             this.thrustersPanel.Size = new System.Drawing.Size(663, 434);
             this.thrustersPanel.TabIndex = 0;
             // 
-            // attitudeBox
-            // 
-            this.attitudeBox.Controls.Add(this.attitudePanel);
-            this.attitudeBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.attitudeBox.Location = new System.Drawing.Point(608, 480);
-            this.attitudeBox.Name = "attitudeBox";
-            this.attitudeBox.Size = new System.Drawing.Size(669, 471);
-            this.attitudeBox.TabIndex = 3;
-            this.attitudeBox.TabStop = false;
-            this.attitudeBox.Text = "Depth, Attitude, & Heading";
-            // 
             // attitudePanel
             // 
             this.attitudePanel.ColumnCount = 2;
             this.attitudePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.attitudePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.attitudePanel.Controls.Add(this.groupBox1, 1, 0);
             this.attitudePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.attitudePanel.Location = new System.Drawing.Point(3, 34);
             this.attitudePanel.Name = "attitudePanel";
@@ -239,14 +241,83 @@ namespace ControlStation
             this.attitudePanel.Size = new System.Drawing.Size(663, 434);
             this.attitudePanel.TabIndex = 0;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(63, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(597, 428);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Attitude & Heading";
+            // 
             // upperPanel
             // 
             this.upperPanel.BackColor = System.Drawing.Color.Transparent;
+            this.upperPanel.Controls.Add(this.communicationBox);
+            this.upperPanel.Controls.Add(this.controllerBox);
             this.upperPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.upperPanel.Location = new System.Drawing.Point(0, 0);
             this.upperPanel.Name = "upperPanel";
             this.upperPanel.Size = new System.Drawing.Size(1280, 50);
             this.upperPanel.TabIndex = 3;
+            // 
+            // communicationBox
+            // 
+            this.communicationBox.AutoSize = true;
+            this.communicationBox.Location = new System.Drawing.Point(3, 3);
+            this.communicationBox.Name = "communicationBox";
+            this.communicationBox.Padding = new System.Windows.Forms.Padding(10);
+            this.communicationBox.Size = new System.Drawing.Size(20, 19);
+            this.communicationBox.TabIndex = 0;
+            this.communicationBox.TabStop = false;
+            this.communicationBox.Text = "Serial Communication";
+            // 
+            // controllerBox
+            // 
+            this.controllerBox.AutoSize = true;
+            this.controllerBox.Location = new System.Drawing.Point(29, 3);
+            this.controllerBox.Name = "controllerBox";
+            this.controllerBox.Padding = new System.Windows.Forms.Padding(10);
+            this.controllerBox.Size = new System.Drawing.Size(20, 19);
+            this.controllerBox.TabIndex = 1;
+            this.controllerBox.TabStop = false;
+            this.controllerBox.Text = "Controllers";
+            // 
+            // attitudeDepthPanel
+            // 
+            this.attitudeDepthPanel.ColumnCount = 2;
+            this.attitudeDepthPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.attitudeDepthPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.attitudeDepthPanel.Controls.Add(this.depthBox, 0, 0);
+            this.attitudeDepthPanel.Controls.Add(this.attitudeBox, 1, 0);
+            this.attitudeDepthPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.attitudeDepthPanel.Location = new System.Drawing.Point(608, 480);
+            this.attitudeDepthPanel.Name = "attitudeDepthPanel";
+            this.attitudeDepthPanel.RowCount = 1;
+            this.attitudeDepthPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.attitudeDepthPanel.Size = new System.Drawing.Size(669, 471);
+            this.attitudeDepthPanel.TabIndex = 3;
+            // 
+            // depthBox
+            // 
+            this.depthBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.depthBox.Location = new System.Drawing.Point(3, 3);
+            this.depthBox.Name = "depthBox";
+            this.depthBox.Size = new System.Drawing.Size(54, 465);
+            this.depthBox.TabIndex = 0;
+            this.depthBox.TabStop = false;
+            this.depthBox.Text = "Depth";
+            // 
+            // attitudeBox
+            // 
+            this.attitudeBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.attitudeBox.Location = new System.Drawing.Point(63, 3);
+            this.attitudeBox.Name = "attitudeBox";
+            this.attitudeBox.Size = new System.Drawing.Size(603, 465);
+            this.attitudeBox.TabIndex = 1;
+            this.attitudeBox.TabStop = false;
+            this.attitudeBox.Text = "Attitude/Heading";
             // 
             // GUI
             // 
@@ -263,7 +334,10 @@ namespace ControlStation
             this.toolsBox.ResumeLayout(false);
             this.statusBox.ResumeLayout(false);
             this.thrustersBox.ResumeLayout(false);
-            this.attitudeBox.ResumeLayout(false);
+            this.attitudePanel.ResumeLayout(false);
+            this.upperPanel.ResumeLayout(false);
+            this.upperPanel.PerformLayout();
+            this.attitudeDepthPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -318,7 +392,9 @@ namespace ControlStation
             devices.Add(diagnostics);
 
             //add controls to their respective panels
-            upperPanel.Controls.Add(comms);
+            communicationBox.Controls.Add(comms);
+            comms.Location = new Point(0, 10);
+            controllerBox.Controls.Add(new Label { Text = "Joystick placeholder" });
 
             statusPanel.Controls.Add(status, 0, 0);
             statusPanel.Controls.Add(statusControl, 0, 1);
@@ -330,8 +406,8 @@ namespace ControlStation
 
             thrustersPanel.Controls.Add(thrusters);
 
-            attitudePanel.Controls.Add(depth, 0, 0);
-            attitudePanel.Controls.Add(imu, 1, 0);
+            depthBox.Controls.Add(depth);
+            attitudeBox.Controls.Add(imu);
 
             //disable all devices to start off
             foreach (GenericDevice device in devices)
