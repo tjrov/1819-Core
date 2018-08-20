@@ -31,8 +31,7 @@ namespace ControlStation
 
         private FlowLayoutPanel panel;
         private Button toggle;
-        private ComboBox portChooser;
-        private TextBox baudChooser;
+        private Label info;
 
         public event EventHandler<bool> IsPortOpenChanged
         {
@@ -48,12 +47,12 @@ namespace ControlStation
 
         public SerialCommunication() : base()
         {
+            //construct port object
+            port = new EventSerialPort(Properties.Settings.Default.PortName, Properties.Settings.Default.BaudRate);
+            port.IsOpenChanged += OnIsOpenChanged;
             Size = new Size(350, 40);
             devices = new ConcurrentQueue<GenericDevice>();
             history = new ConcurrentQueue<string>();
-            //background loop runs on this thread
-            thread = new Thread(new ThreadStart(BackgroundLoop));
-            thread.SetApartmentState(ApartmentState.STA); //for UI compatibility
             //setup gui
             Text = "Communication Link";
             panel = new FlowLayoutPanel()
@@ -71,56 +70,19 @@ namespace ControlStation
             };
             toggle.Click += OnClick;
 
-            portChooser = new ComboBox()
+            info = new Label()
             {
-                Width = 100,
-                DropDownStyle = ComboBoxStyle.DropDownList
+                AutoSize = true,
+                Text = string.Format("{0}@{1}kbaud", port.PortName, port.BaudRate / 1000.0)
             };
-            if(SerialPort.GetPortNames().Length == 0)
-            {
-                MessageBox.Show("No Serial Ports Available");
-                Application.Exit();
-            }
-            foreach (string name in SerialPort.GetPortNames())
-            {
-                portChooser.Items.Add(name);
-            }
-            portChooser.SelectedIndex = 0;
-            portChooser.SelectedValueChanged += PortChosen;
-
-            baudChooser = new TextBox()
-            {
-                Text = "250000",
-                Width = 100
-            };
-            baudChooser.TextChanged += BaudChosen;
 
             panel.Controls.Add(toggle);
-            panel.Controls.Add(portChooser);
-            panel.Controls.Add(baudChooser);
+            panel.Controls.Add(info);
             Controls.Add(panel);
-
-            port = new EventSerialPort((string)portChooser.Items[portChooser.SelectedIndex], int.Parse(baudChooser.Text));
-            port.IsOpenChanged += OnIsOpenChanged;
-
+            //background loop runs on this thread
+            thread = new Thread(new ThreadStart(BackgroundLoop));
+            thread.SetApartmentState(ApartmentState.STA); //for UI compatibility
             thread.Start(); //start the background loop
-        }
-
-        private void CreatePort()
-        {
-            port.Close();
-            port.PortName = (string)portChooser.Items[portChooser.SelectedIndex];
-            port.BaudRate = int.Parse(baudChooser.Text);
-        }
-
-        private void BaudChosen(object sender, EventArgs e)
-        {
-            CreatePort();
-        }
-
-        private void PortChosen(object sender, EventArgs e)
-        {
-            CreatePort();
         }
 
         //requests update of a device
@@ -180,6 +142,11 @@ namespace ControlStation
 
         private void ShowException(Exception ex)
         {
+            //empty queue
+            while(devices.Count > 0)
+            {
+                devices.TryDequeue(out GenericDevice trash);
+            }
             //stop further errors from occuring
             port.Close();
             //show error

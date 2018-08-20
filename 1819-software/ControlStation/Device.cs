@@ -28,6 +28,16 @@ namespace ControlStation
     public abstract class Device<TData> : GenericDevice where TData : new()
     {
         protected TData data;
+        public TData Data
+        {
+            get
+            {
+                return data;
+            } set
+            {
+                data = value;
+            }
+        }
         public Device(byte messageCommand, TData data) : base(messageCommand)
         {
             this.data = data;

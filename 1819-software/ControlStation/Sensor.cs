@@ -14,13 +14,6 @@ namespace ControlStation
     public abstract class Sensor<TData> : Device<TData> where TData : new()
     {
         private byte messageLength;
-        public TData Data
-        {
-            get
-            {
-                return data;
-            }
-        }
         //messageCommand is the command byte used to signal a read from this specific type of sensor
         public Sensor(byte messageCommand, byte messageLength, TData data) : base(messageCommand, data)
         {

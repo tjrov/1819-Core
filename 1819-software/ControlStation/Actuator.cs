@@ -11,17 +11,6 @@ namespace ControlStation
 {
     public abstract class Actuator<TData> : Device<TData> where TData : new()
     {
-        public TData Data
-        {
-            get
-            {
-                return data;
-            }
-            set
-            {
-                this.data = value;
-            }
-        }
         public Actuator(byte messageCommand, TData data) : base(messageCommand, data)
         {
             NeedsResponse = false;
