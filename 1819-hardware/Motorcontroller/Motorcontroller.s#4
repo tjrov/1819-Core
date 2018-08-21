@@ -4985,9 +4985,9 @@ VFP: IC-10141&lt;br&gt;</description>
 <label x="198.12" y="124.46" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
-<pinref part="J6" gate="G$1" pin="5"/>
-<wire x1="93.98" y1="127" x2="91.44" y2="127" width="0.1524" layer="91"/>
-<label x="91.44" y="127" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="J6" gate="G$1" pin="6"/>
+<wire x1="93.98" y1="124.46" x2="91.44" y2="124.46" width="0.1524" layer="91"/>
+<label x="91.44" y="124.46" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="M2OUT1" class="0">
@@ -4997,9 +4997,9 @@ VFP: IC-10141&lt;br&gt;</description>
 <label x="198.12" y="119.38" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
-<pinref part="J6" gate="G$1" pin="6"/>
-<wire x1="93.98" y1="124.46" x2="91.44" y2="124.46" width="0.1524" layer="91"/>
-<label x="91.44" y="124.46" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="J6" gate="G$1" pin="5"/>
+<wire x1="93.98" y1="127" x2="91.44" y2="127" width="0.1524" layer="91"/>
+<label x="91.44" y="127" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="M3OUT2" class="0">
@@ -5009,9 +5009,9 @@ VFP: IC-10141&lt;br&gt;</description>
 <label x="198.12" y="78.74" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
-<pinref part="J6" gate="G$1" pin="7"/>
-<wire x1="93.98" y1="121.92" x2="91.44" y2="121.92" width="0.1524" layer="91"/>
-<label x="91.44" y="121.92" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="J6" gate="G$1" pin="8"/>
+<wire x1="93.98" y1="119.38" x2="91.44" y2="119.38" width="0.1524" layer="91"/>
+<label x="91.44" y="119.38" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="M3OUT1" class="0">
@@ -5021,9 +5021,9 @@ VFP: IC-10141&lt;br&gt;</description>
 <label x="198.12" y="73.66" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
-<pinref part="J6" gate="G$1" pin="8"/>
-<wire x1="93.98" y1="119.38" x2="91.44" y2="119.38" width="0.1524" layer="91"/>
-<label x="91.44" y="119.38" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="J6" gate="G$1" pin="7"/>
+<wire x1="93.98" y1="121.92" x2="91.44" y2="121.92" width="0.1524" layer="91"/>
+<label x="91.44" y="121.92" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 </nets>
