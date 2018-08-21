@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using SlimDX.DirectInput;
 using System.Runtime.InteropServices;
+using System.Timers;
 
 /// <summary>
 /// https://www.youtube.com/watch?v=rtnLGfAj7W0
@@ -15,6 +16,7 @@ using System.Runtime.InteropServices;
 
 namespace ControllerTest
 {
+    
     public partial class ControllerScreen : Form
     {
         public ControllerScreen()
@@ -23,15 +25,22 @@ namespace ControllerTest
             GetSticks();
             Sticks = GetSticks();
             ControllerTimer.Enabled = true;
+            ControllerTimer.Interval = 100;
         }
+        
         DirectInput Input = new DirectInput();
         SlimDX.DirectInput.Joystick stick;
         Joystick[] Sticks;
         bool MouseClicked = false;
+        bool[] buttons;
 
         int xValue = 0;
         int yValue = 0;
         int zValue = 0;
+
+        int xRotValue = 0;
+        int yRotValue = 0;
+        int zRotValue = 0;
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern void mouse_event(uint flag, uint _x, uint _y, uint btn, uint exInfo);
@@ -73,7 +82,11 @@ namespace ControllerTest
             yValue = state.Y;
             zValue = state.Z;
 
-            bool[] buttons = state.GetButtons();
+            xRotValue = state.RotationX;
+            yRotValue = state.RotationY;
+            zRotValue = state.RotationZ;
+
+            bool[] buttons = state.GetButtons(); 
 
             if (id == 0)
             {
@@ -93,6 +106,12 @@ namespace ControllerTest
                         MouseClicked = false;
                     }
                 }
+                checkBox1.Text = buttons[0] + "";
+                checkBox2.Text = buttons[1] + "";
+                checkBox3.Text = buttons[2] + "";
+                checkBox4.Text = buttons[3] + "";
+                checkBox5.Text = buttons[4] + "";
+                checkBox6.Text = buttons[5] + "";
             }
         }
 
@@ -102,14 +121,15 @@ namespace ControllerTest
             Cursor.Clip = new Rectangle(this.Location, this.Size);
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void ControllerTimer_Tick(object sender, EventArgs e)
         {
             for (int a = 0; a < Sticks.Length; a++)
             {
                 stickHandle(Sticks[a], a);
+                RightTriggerBar.Value = (yRotValue + 100) / 2;
+                LeftTriggerBar.Value = (xRotValue + 100) / 2;
             }
         }
-
         private void ControllerScreen_Load(object sender, EventArgs e)
         {
             Joystick[] joystick = GetSticks();
