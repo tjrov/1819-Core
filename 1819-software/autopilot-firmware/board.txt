@@ -1,0 +1,3 @@
+# autopilot-firmware build property overrides
+# run reset code before uploading
+recipe.hooks.deploy.preupload.pattern=cmd.exe /c "{build.project_path}\reset.bat COM5"
