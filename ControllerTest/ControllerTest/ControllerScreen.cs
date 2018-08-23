@@ -16,7 +16,7 @@ using System.Timers;
 
 namespace ControllerTest
 {
-    
+
     public partial class ControllerScreen : Form
     {
         public ControllerScreen()
@@ -27,12 +27,13 @@ namespace ControllerTest
             ControllerTimer.Enabled = true;
             ControllerTimer.Interval = 100;
         }
-        
+
         DirectInput Input = new DirectInput();
         SlimDX.DirectInput.Joystick stick;
         Joystick[] Sticks;
         bool MouseClicked = false;
         bool[] buttons;
+        int[] pointOfView;
 
         int xValue = 0;
         int yValue = 0;
@@ -86,8 +87,8 @@ namespace ControllerTest
             yRotValue = state.RotationY;
             zRotValue = state.RotationZ;
 
-            bool[] buttons = state.GetButtons(); 
-
+            bool[] buttons = state.GetButtons();
+            int[] pointOfView = state.GetPointOfViewControllers();
             if (id == 0)
             {
                 if (buttons[0])
@@ -106,6 +107,8 @@ namespace ControllerTest
                         MouseClicked = false;
                     }
                 }
+                label1.Text = pointOfView[0] + "";
+
                 checkBox1.Text = buttons[0] + "";
                 checkBox2.Text = buttons[1] + "";
                 checkBox3.Text = buttons[2] + "";
@@ -130,6 +133,7 @@ namespace ControllerTest
                 LeftTriggerBar.Value = (xRotValue + 100) / 2;
             }
         }
+
         private void ControllerScreen_Load(object sender, EventArgs e)
         {
             Joystick[] joystick = GetSticks();
