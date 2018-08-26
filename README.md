@@ -1,6 +1,8 @@
 # 1819-Core
 All software and hardware for 2018-19 season
 
+## Software
+### ControlStation
 If you want to program something, the ControlStation is a great place to start.
 
 So far, I've made abstract classes for sub-Panels of the GUI that control robot actuators
@@ -20,7 +22,21 @@ TODO:
 It's recommended to use Visual Studio with the .NET and Windows Forms stuff installed for 
 ControlStation development.
 
+### autopilot-firmware
+
 The autopilot-firmware and motorcontroller-firmware code is pretty much done. For development of firmware for the autopilot and motorcontroller, which are Arduino boards, install the Visual Micro plugin for Visual Studio. Upload the autopilot-firmware to a regular Arduino board connected to your computer over USB (comment out code that actually uses sensors and actuators since it won't work anyway), then start the ControlStation code and test out the UI.
+
+### Uploading procedure
+
+It's kinda complicated since we only have RS-485 (one twisted pair of wires) connecting the surface and ROV computers
+1. You click upload in visual studio on the surface computer
+2. The code gets compiled into a .hex file
+3. The board.txt file (in the project directory) specifies a pre-upload command to run reset.bat (also in that directory)
+4. reset.bat sends a command to the ROV: (hex) 42 83 01 03 02
+5. On receiving this command, the autopilot-firmware (as well as the autopilot-setup code once it has finished running) will jump to the start of its bootloader code
+6. reset.bat runs avrdude to upload the .hex file to the ROV
+
+## Hardware
 
 Electronics people can take a look at the autopilot board files. We'll also be making a
 motorcontroller board that connects to the ROV's i2c bus. You can use Eagle with the Sparkfun Eagle part libraries installed to work on them.
