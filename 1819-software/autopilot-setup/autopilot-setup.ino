@@ -19,7 +19,7 @@ uint8_t identifiedAddresses[6];
 uint8_t invert[6];
 
 void setup() {
-	Serial.begin(250000);
+	Serial.begin(500000);
 	delay(1000);
 	Serial.println("Autopilot board setup utility");
 	Serial.println("Scanning I2C devices");
@@ -89,6 +89,10 @@ void setup() {
 }
 
 void loop() {
+	//wait for reset cmd
+	if (Serial.available()) {
+		asm("jmp 0x3800");
+	}
 }
 
 uint8_t identifyThruster() {
