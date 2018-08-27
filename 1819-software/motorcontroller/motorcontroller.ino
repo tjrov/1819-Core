@@ -12,7 +12,16 @@
 #define TIMEOUT 1000
 
 #include <Wire.h>
-#include "PinDefinitions.h"
+
+/*Pin definitions*/
+//DO NOT CHANGE PIN DEFS ON MASTER BRANCH WITHOUT ASKING AN ELECTRICAL SUBTEAM MEMBER
+#define RED 8
+#define GREEN 7
+#define BLUE 13
+
+#define IN1 {11,3,6}
+#define IN2 {10,5,9}
+/*End pin definitions*/
 
 const uint8_t in1[] = IN1;
 const uint8_t in2[] = IN2;

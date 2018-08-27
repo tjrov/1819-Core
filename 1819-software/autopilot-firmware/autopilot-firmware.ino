@@ -72,14 +72,15 @@ enum COMMAND {
 	TOOLS_CMD = 0x82,
 	STATUS_CMD = 0x83
 };
-/*
-Pin definitions for autopilot board
-*/
+
+/*Pin definitions*/
+//DO NOT CHANGE PIN DEFS ON MASTER BRANCH WITHOUT ASKING AN ELECTRICAL SUBTEAM MEMBER
 #define VOLTAGE_SENSOR A0
 
-#define RED 11
-#define GREEN 12
+#define RED 12
+#define GREEN 11
 #define BLUE 13
+/*End pin definitions*/
 
 //#define TX_EN 2
 
@@ -603,10 +604,21 @@ void controlLEDs() {
 }
 
 void initLEDs() {
-	for (int i = RED; i <= BLUE; i++) {
-		pinMode(i, OUTPUT);
-		digitalWrite(i, HIGH);
-		delay(150);
-		digitalWrite(i, LOW);
-	}
+	pinMode(RED, OUTPUT);
+	digitalWrite(RED, HIGH);
+	delay(50);
+	digitalWrite(RED, LOW);
+	delay(100);
+
+	pinMode(GREEN, OUTPUT);
+	digitalWrite(GREEN, HIGH);
+	delay(50);
+	digitalWrite(GREEN, LOW);
+	delay(100);
+
+	pinMode(BLUE, OUTPUT);
+	digitalWrite(BLUE, HIGH);
+	delay(50);
+	digitalWrite(BLUE, LOW);
+	delay(100);
 }
