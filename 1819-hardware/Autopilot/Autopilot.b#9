@@ -23,13 +23,13 @@
 <layer number="13" name="Route13" color="4" fill="5" visible="no" active="no"/>
 <layer number="14" name="Route14" color="1" fill="6" visible="no" active="no"/>
 <layer number="15" name="Route15" color="4" fill="6" visible="yes" active="yes"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="20" name="Dimension" color="24" fill="1" visible="yes" active="yes"/>
 <layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="yes"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="yes"/>
 <layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
@@ -178,6 +178,9 @@ TJROV ELECTRICAL, 2018</text>
 <wire x1="40.005" y1="31.75" x2="40.005" y2="52.07" width="0.2032" layer="21"/>
 <wire x1="40.005" y1="52.07" x2="21.59" y2="52.07" width="0.2032" layer="21"/>
 <wire x1="21.59" y1="52.07" x2="21.59" y2="31.75" width="0.2032" layer="21"/>
+<text x="26.67" y="0" size="1.27" layer="21" font="vector">-SDA++SCL-</text>
+<text x="15.875" y="0" size="1.27" layer="21" font="vector">B+/A-</text>
+<text x="0.635" y="0" size="1.27" layer="21" font="vector">GND/12V/BATT</text>
 </plain>
 <libraries>
 <library name="SparkFun-Boards">
