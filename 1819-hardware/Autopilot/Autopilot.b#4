@@ -1485,25 +1485,22 @@ design rules under a new name.</description>
 <contactref element="R10" pad="1"/>
 <wire x1="11.01" y1="17.78" x2="13.97" y2="20.74" width="0.2032" layer="1"/>
 <wire x1="13.97" y1="20.74" x2="13.97" y2="24.13" width="0.2032" layer="1"/>
-<wire x1="13.97" y1="24.13" x2="17.78" y2="27.94" width="0.2032" layer="1"/>
-<contactref element="B1" pad="14"/>
-<wire x1="13.97" y1="24.13" x2="17.78" y2="23.495" width="0" layer="19" extent="1-1"/>
+<contactref element="B1" pad="15"/>
+<wire x1="13.97" y1="24.13" x2="17.78" y2="26.035" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="GREEN">
-<contactref element="B1" pad="15"/>
 <contactref element="R12" pad="1"/>
 <wire x1="11.01" y1="15.875" x2="14.605" y2="19.47" width="0.2032" layer="1"/>
 <wire x1="14.605" y1="19.47" x2="14.605" y2="23.495" width="0.2032" layer="1"/>
-<wire x1="14.605" y1="23.495" x2="17.145" y2="26.035" width="0.2032" layer="1"/>
-<wire x1="17.145" y1="26.035" x2="17.78" y2="26.035" width="0.2032" layer="1"/>
+<contactref element="B1" pad="14"/>
+<wire x1="14.605" y1="23.495" x2="17.78" y2="23.495" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="BLUE">
 <contactref element="R11" pad="1"/>
 <wire x1="11.01" y1="13.97" x2="15.24" y2="18.2" width="0.2032" layer="1"/>
 <wire x1="15.24" y1="18.2" x2="15.24" y2="21.59" width="0.2032" layer="1"/>
-<wire x1="15.24" y1="21.59" x2="17.145" y2="23.495" width="0.2032" layer="1"/>
 <contactref element="B1" pad="16"/>
-<wire x1="17.145" y1="23.495" x2="17.78" y2="28.575" width="0" layer="19" extent="1-1"/>
+<wire x1="15.24" y1="21.59" x2="17.78" y2="28.575" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="SDA">
 <contactref element="B1" pad="A4"/>
