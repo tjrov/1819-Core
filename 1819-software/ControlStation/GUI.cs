@@ -410,7 +410,6 @@ namespace ControlStation
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.Name = "GUI";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.GUI_Load);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GUI_KeyPress);
             this.centerPanel.ResumeLayout(false);
