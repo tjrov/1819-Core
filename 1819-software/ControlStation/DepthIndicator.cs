@@ -13,7 +13,7 @@ namespace ControlStation
     {
         private double depth;
         private Bitmap backBitmap = new Bitmap(Properties.Resources.depth_back);
-        private Bitmap frontBitmap = new Bitmap(Properties.Resources.depth_front);
+        //private Bitmap frontBitmap = new Bitmap(Properties.Resources.depth_front);
         public double Depth
         {
             get
@@ -42,7 +42,7 @@ namespace ControlStation
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             SetStyle(ControlStyles.ResizeRedraw, true);
 
-            Size = new Size(60, 375);
+            Size = new Size(80, 500);
         }
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -54,10 +54,13 @@ namespace ControlStation
             {
                 g.Clear(Color.Black);
             }
-            g.DrawImage(backBitmap, 0, 0, new Rectangle(0, (int)(depth * 120) - 150, 
-                48, 300), GraphicsUnit.Pixel);
+            g.DrawImage(backBitmap, 0, 0, new Rectangle(0, (int)(depth * 160) - 200, 
+                64, 500), GraphicsUnit.Pixel);
 
-            g.DrawImage(frontBitmap, 0, 0);
+            //g.DrawImage(frontBitmap, 0, 0);
+
+            Font font1 = new Font("Arial", 12);
+            g.DrawString("[LOCK]", font1, Brushes.Black, new Point(0, 365));
         }
     }
 }

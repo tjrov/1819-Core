@@ -71,7 +71,7 @@ namespace ControlStation.Devices.Sensors
         {
             attitudeIndicator = new AttitudeIndicator();
             headingIndicator = new HeadingIndicator();
-            headingIndicator.Location = new Point(300, 0);
+            headingIndicator.Location = new Point(400, 0);
             Controls.Add(attitudeIndicator);
             Controls.Add(headingIndicator);
         }

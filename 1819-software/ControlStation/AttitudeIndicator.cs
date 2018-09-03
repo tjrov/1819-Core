@@ -59,13 +59,13 @@ namespace ControlStation
             }
         }
 
-        Point ptBoule = new Point(-25, -410); //Ground-Sky initial location
-        Point ptHeading = new Point(-592, 150); // Heading ticks
-        Point ptRotation = new Point(150, 150); // Point of rotation
+        Point ptBoule = new Point(-33, -546); //Ground-Sky initial location //(-25, 410)
+        Point ptHeading = new Point(-789, 200); // Heading ticks
+        Point ptRotation = new Point(200, 200); // Point of rotation
 
         public AttitudeIndicator()
         {
-            Size = new Size(300, 300);
+            Size = new Size(400, 400);
             bezelBitmap.MakeTransparent(Color.Yellow); // Sets image transparency
             headingBitmap.MakeTransparent(Color.Black); // Sets image transparency
             wingsBitmap.MakeTransparent(Color.Yellow); // Sets image transparency
@@ -85,7 +85,7 @@ namespace ControlStation
 
 
             // Clipping mask for Attitude Indicator
-            paintEvnt.Graphics.Clip = new Region(new Rectangle(0, 0, 300, 300));
+            paintEvnt.Graphics.Clip = new Region(new Rectangle(0, 0, 400, 400));
             paintEvnt.Graphics.FillRegion(Brushes.Black, paintEvnt.Graphics.Clip);
 
 
@@ -108,7 +108,7 @@ namespace ControlStation
             //gfx.DrawRectangle(maskPen, -100, -100, 500, 500); // size of mask
 
             gfx.DrawImage(bezelBitmap, 0, 0); // Draw bezel image
-            gfx.DrawImage(wingsBitmap, 75, 125); // Draw wings image
+            gfx.DrawImage(wingsBitmap, 100, 166); // Draw wings image
 
             //myPen = new Pen(System.Drawing.Color.Green, 3);
             //gfx.DrawLine(myPen, 200, 20, 20, 210); // Draw a line
@@ -119,6 +119,11 @@ namespace ControlStation
             //slider3.Value = Convert.ToInt16((YawAngle / Math.PI) * 180);   //serial data (if available)           
 
             // Update text boxes with angles (if we have any)
+
+
+            //show lock symbol
+            Font font1 = new Font("Arial", 12);
+            paintEvnt.Graphics.DrawString("[LOCK]", font1, Brushes.Black, new Point(0, 365));
 
         }
 
