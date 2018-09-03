@@ -196,21 +196,21 @@ namespace ControlStation
             this.statusPanel = new System.Windows.Forms.TableLayoutPanel();
             this.thrustersBox = new System.Windows.Forms.GroupBox();
             this.thrustersPanel = new System.Windows.Forms.Panel();
+            this.attitudeDepthPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.depthBox = new System.Windows.Forms.GroupBox();
+            this.attitudeBox = new System.Windows.Forms.GroupBox();
             this.attitudePanel = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.upperPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.communicationBox = new System.Windows.Forms.GroupBox();
             this.controllerBox = new System.Windows.Forms.GroupBox();
-            this.attitudeDepthPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.depthBox = new System.Windows.Forms.GroupBox();
-            this.attitudeBox = new System.Windows.Forms.GroupBox();
             this.centerPanel.SuspendLayout();
             this.toolsBox.SuspendLayout();
             this.statusBox.SuspendLayout();
             this.thrustersBox.SuspendLayout();
+            this.attitudeDepthPanel.SuspendLayout();
             this.attitudePanel.SuspendLayout();
             this.upperPanel.SuspendLayout();
-            this.attitudeDepthPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // centerPanel
@@ -230,8 +230,8 @@ namespace ControlStation
             this.centerPanel.Name = "centerPanel";
             this.centerPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 20);
             this.centerPanel.RowCount = 2;
-            this.centerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.centerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.centerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.centerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 320F));
             this.centerPanel.Size = new System.Drawing.Size(1280, 974);
             this.centerPanel.TabIndex = 3;
             // 
@@ -240,9 +240,9 @@ namespace ControlStation
             this.toolsBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.toolsBox.Controls.Add(this.toolsPanel);
             this.toolsBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolsBox.Location = new System.Drawing.Point(3, 480);
+            this.toolsBox.Location = new System.Drawing.Point(3, 637);
             this.toolsBox.Name = "toolsBox";
-            this.toolsBox.Size = new System.Drawing.Size(599, 471);
+            this.toolsBox.Size = new System.Drawing.Size(599, 314);
             this.toolsBox.TabIndex = 1;
             this.toolsBox.TabStop = false;
             this.toolsBox.Text = "Manipulators";
@@ -254,7 +254,7 @@ namespace ControlStation
             this.toolsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolsPanel.Location = new System.Drawing.Point(3, 34);
             this.toolsPanel.Name = "toolsPanel";
-            this.toolsPanel.Size = new System.Drawing.Size(593, 434);
+            this.toolsPanel.Size = new System.Drawing.Size(593, 277);
             this.toolsPanel.TabIndex = 0;
             // 
             // statusBox
@@ -264,7 +264,7 @@ namespace ControlStation
             this.statusBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.statusBox.Location = new System.Drawing.Point(3, 3);
             this.statusBox.Name = "statusBox";
-            this.statusBox.Size = new System.Drawing.Size(599, 471);
+            this.statusBox.Size = new System.Drawing.Size(599, 628);
             this.statusBox.TabIndex = 0;
             this.statusBox.TabStop = false;
             this.statusBox.Text = "System Status/Control";
@@ -283,7 +283,7 @@ namespace ControlStation
             this.statusPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.statusPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.statusPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.statusPanel.Size = new System.Drawing.Size(593, 434);
+            this.statusPanel.Size = new System.Drawing.Size(593, 591);
             this.statusPanel.TabIndex = 0;
             // 
             // thrustersBox
@@ -293,7 +293,7 @@ namespace ControlStation
             this.thrustersBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.thrustersBox.Location = new System.Drawing.Point(608, 3);
             this.thrustersBox.Name = "thrustersBox";
-            this.thrustersBox.Size = new System.Drawing.Size(669, 471);
+            this.thrustersBox.Size = new System.Drawing.Size(669, 628);
             this.thrustersBox.TabIndex = 2;
             this.thrustersBox.TabStop = false;
             this.thrustersBox.Text = "Propulsion";
@@ -305,8 +305,43 @@ namespace ControlStation
             this.thrustersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.thrustersPanel.Location = new System.Drawing.Point(3, 34);
             this.thrustersPanel.Name = "thrustersPanel";
-            this.thrustersPanel.Size = new System.Drawing.Size(663, 434);
+            this.thrustersPanel.Size = new System.Drawing.Size(663, 591);
             this.thrustersPanel.TabIndex = 0;
+            // 
+            // attitudeDepthPanel
+            // 
+            this.attitudeDepthPanel.ColumnCount = 2;
+            this.attitudeDepthPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.attitudeDepthPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.attitudeDepthPanel.Controls.Add(this.depthBox, 0, 0);
+            this.attitudeDepthPanel.Controls.Add(this.attitudeBox, 1, 0);
+            this.attitudeDepthPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.attitudeDepthPanel.Location = new System.Drawing.Point(608, 637);
+            this.attitudeDepthPanel.Name = "attitudeDepthPanel";
+            this.attitudeDepthPanel.RowCount = 1;
+            this.attitudeDepthPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.attitudeDepthPanel.Size = new System.Drawing.Size(669, 314);
+            this.attitudeDepthPanel.TabIndex = 3;
+            // 
+            // depthBox
+            // 
+            this.depthBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.depthBox.Location = new System.Drawing.Point(3, 3);
+            this.depthBox.Name = "depthBox";
+            this.depthBox.Size = new System.Drawing.Size(54, 308);
+            this.depthBox.TabIndex = 0;
+            this.depthBox.TabStop = false;
+            this.depthBox.Text = "Depth";
+            // 
+            // attitudeBox
+            // 
+            this.attitudeBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.attitudeBox.Location = new System.Drawing.Point(63, 3);
+            this.attitudeBox.Name = "attitudeBox";
+            this.attitudeBox.Size = new System.Drawing.Size(603, 308);
+            this.attitudeBox.TabIndex = 1;
+            this.attitudeBox.TabStop = false;
+            this.attitudeBox.Text = "Attitude/Heading";
             // 
             // attitudePanel
             // 
@@ -365,60 +400,27 @@ namespace ControlStation
             this.controllerBox.TabStop = false;
             this.controllerBox.Text = "Controllers";
             // 
-            // attitudeDepthPanel
-            // 
-            this.attitudeDepthPanel.ColumnCount = 2;
-            this.attitudeDepthPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.attitudeDepthPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.attitudeDepthPanel.Controls.Add(this.depthBox, 0, 0);
-            this.attitudeDepthPanel.Controls.Add(this.attitudeBox, 1, 0);
-            this.attitudeDepthPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.attitudeDepthPanel.Location = new System.Drawing.Point(608, 480);
-            this.attitudeDepthPanel.Name = "attitudeDepthPanel";
-            this.attitudeDepthPanel.RowCount = 1;
-            this.attitudeDepthPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.attitudeDepthPanel.Size = new System.Drawing.Size(669, 471);
-            this.attitudeDepthPanel.TabIndex = 3;
-            // 
-            // depthBox
-            // 
-            this.depthBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.depthBox.Location = new System.Drawing.Point(3, 3);
-            this.depthBox.Name = "depthBox";
-            this.depthBox.Size = new System.Drawing.Size(54, 465);
-            this.depthBox.TabIndex = 0;
-            this.depthBox.TabStop = false;
-            this.depthBox.Text = "Depth";
-            // 
-            // attitudeBox
-            // 
-            this.attitudeBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.attitudeBox.Location = new System.Drawing.Point(63, 3);
-            this.attitudeBox.Name = "attitudeBox";
-            this.attitudeBox.Size = new System.Drawing.Size(603, 465);
-            this.attitudeBox.TabIndex = 1;
-            this.attitudeBox.TabStop = false;
-            this.attitudeBox.Text = "Attitude/Heading";
-            // 
             // GUI
             // 
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(1280, 1024);
             this.Controls.Add(this.centerPanel);
             this.Controls.Add(this.upperPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.Name = "GUI";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.GUI_Load);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GUI_KeyPress);
             this.centerPanel.ResumeLayout(false);
             this.toolsBox.ResumeLayout(false);
             this.statusBox.ResumeLayout(false);
             this.thrustersBox.ResumeLayout(false);
+            this.attitudeDepthPanel.ResumeLayout(false);
             this.attitudePanel.ResumeLayout(false);
             this.upperPanel.ResumeLayout(false);
             this.upperPanel.PerformLayout();
-            this.attitudeDepthPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
