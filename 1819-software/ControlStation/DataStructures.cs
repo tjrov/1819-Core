@@ -3,11 +3,6 @@ using System.Collections.Generic;
 
 namespace ControlStation
 {
-    public struct MessageStruct
-    {
-        public byte command;
-        public byte[] data;
-    }
     public class ToolData
     {
         public double Speed;

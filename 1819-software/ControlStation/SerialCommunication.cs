@@ -1,62 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO.Ports;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Threading;
 using System.Collections.Concurrent;
+using System.IO;
+using ControlStation.Devices;
+using ControlStation.Devices.Sensors;
 
-namespace ControlStation
+namespace ControlStation.Communication
 {
-    /*
-     Protocol is as follows:
-     Header(0x42)
-     Command(bit 0 determines whether request or command)
-     Length of data
-     Data
-     Checksum(XOR of length and all data bytes)
-    */
-    public class SerialCommunication : FlowLayoutPanel
+
+    //static to prevent multiple instances of file writing
+    public static class Logger
     {
-        private EventSerialPort port;
-        private ConcurrentQueue<GenericDevice> devices;
-
-        private Thread thread;
-
-        private ConcurrentQueue<string> history;
-
+        public static void ClearLog()
+        {
+            File.Create(Properties.Resources.log);
+        }
+        public static void LogString(string msg)
+        {
+            File.AppendAllText(Properties.Resources.log, string.Format("{0:HH:mm:ss.fff}: {1}\n", DateTime.Now, msg));
+        }
+        public static void LogException(Exception ex)
+        {
+            LogString("Exception: " + ex.Message + ex.StackTrace);
+        }
+    }
+    public class SerialCommunicationPanel : FlowLayoutPanel
+    {
         private Button toggle;
         private Label info;
+        private BetterSerialPort port;
 
-        public event EventHandler<bool> IsPortOpenChanged
+        public SerialCommunicationPanel(BetterSerialPort port) : base()
         {
-            add
-            {
-                port.IsOpenChanged += value;
-            }
-            remove
-            {
-                port.IsOpenChanged -= value;
-            }
-        }
-
-        public SerialCommunication() : base()
-        {
+            this.port = port;
+            //setup gui
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.Transparent;
-
-            //construct port object
-            port = new EventSerialPort(Properties.Settings.Default.PortName, Properties.Settings.Default.BaudRate);
-            port.IsOpenChanged += OnIsOpenChanged;
             Size = new Size(350, 40);
-            devices = new ConcurrentQueue<GenericDevice>();
-            history = new ConcurrentQueue<string>();
-
             toggle = new Button()
             {
                 Text = "Disconnected",
@@ -70,163 +53,11 @@ namespace ControlStation
                 AutoSize = true,
                 Text = string.Format("{0}@{1}kbaud", port.PortName, port.BaudRate / 1000.0)
             };
-
             Controls.Add(toggle);
             Controls.Add(info);
-
-            //background loop runs on this thread
-            thread = new Thread(new ThreadStart(BackgroundLoop));
-            thread.SetApartmentState(ApartmentState.STA); //for UI compatibility
-            thread.Start(); //start the background loop
+            port.IsOpenChanged += OnIsOpenChanged;
         }
 
-        //requests update of a device
-        public void QueueDevice(GenericDevice device)
-        {
-            devices.Enqueue(device);
-        }
-        //recent comms to help with debugging
-        private string GetHistory()
-        {
-            string result = "";
-            while (history.Count > 0)
-            {
-                history.TryDequeue(out string temp);
-                result += temp + "\n";
-            }
-            return result;
-        }
-        //handles communication and processing of queue
-        private void BackgroundLoop()
-        {
-            while (true)
-            {
-                try
-                {
-                    if (port.IsOpen)
-                    {
-                        if (devices.Count > 0) //if anything needs updating
-                        {
-                            //send the request
-                            devices.TryDequeue(out GenericDevice device);
-                            TransmitMessage(device.GetMessage());
-                            //if it's a sensor and needs a reply
-                            if (device.NeedsResponse)
-                            {
-                                //get the reply
-                                MessageStruct msg = ReceiveMessage();
-                                //update the device's data on UI thread
-                                device.Invoke(new Action(() => device.UpdateData(msg)));
-                            }
-                            //redraw the device on UI thread
-                            device.Invoke(new Action(device.UpdateControls));
-                        }
-                    }
-                    else
-                    {
-                        Thread.Sleep(100);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    //show in dialog
-                    this.Invoke(new Action(() => ShowException(ex)));
-                }
-            }
-        }
-
-        private void ShowException(Exception ex)
-        {
-            //empty queue
-            while (devices.Count > 0)
-            {
-                devices.TryDequeue(out GenericDevice trash);
-            }
-            //stop further errors from occuring
-            port.Close();
-            //show error
-            MessageBox.Show(this, ex.Message + ex.StackTrace,
-                  "Error in CommsBackgroundLoop", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //show comms history
-            MessageBox.Show(GetHistory() + ex.Message,
-              "Communication history", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void TransmitMessage(MessageStruct msg)
-        {
-            //assemble header, command, length bytes at front of message
-            byte[] temp = new byte[msg.data.Length + 4];
-            temp[0] = (byte)0x42;
-            temp[1] = msg.command;
-            temp[2] = (byte)msg.data.Length;
-            //checksum starts as msg length
-            byte calculatedChecksum = (byte)msg.data.Length;
-            //add all message data in
-            for (int i = 0; i < msg.data.Length; i++)
-            {
-                temp[i + 3] = msg.data[i];
-                calculatedChecksum ^= msg.data[i];
-            }
-            //add checksum
-            temp[temp.Length - 1] = calculatedChecksum;
-
-            //note transmission in history
-            string historyString = "TX: ";
-            for (int i = 0; i < temp.Length; i++)
-            {
-                historyString += temp[i] + " ";
-            }
-            history.Enqueue(historyString);
-            //limit length of history
-            while (history.Count > 10)
-            {
-                history.TryDequeue(out string delete);
-            }
-
-            //send it off
-            port.Write(temp, 0, temp.Length);
-        }
-        private MessageStruct ReceiveMessage()
-        {
-            //after sending a request for sensor data, the ROV replies with info
-            //only allow 100 ms for this to occur
-            var task = Task.Run(() => ReceiveMessageHelper());
-            if (task.Wait(TimeSpan.FromMilliseconds(1000)))
-                return task.Result;
-            else
-                throw new Exception("Timed out receiving data");
-        }
-        private MessageStruct ReceiveMessageHelper()
-        {
-
-            MessageStruct msg = new MessageStruct();
-            string temp = "RX: ";
-            while (ReadByte(ref temp) != 0x42) ; //read in until header byte reached
-            msg.command = (byte)ReadByte(ref temp);
-            msg.data = new byte[ReadByte(ref temp)];
-            byte calculatedChecksum = (byte)msg.data.Length; //start calculating a checksum
-            for (int i = 0; i < msg.data.Length; i++)
-            {
-                //read in bytes one by one, calculating checksum as we go
-                msg.data[i] = (byte)ReadByte(ref temp);
-                calculatedChecksum ^= msg.data[i];
-            }
-            byte actualChecksum = (byte)ReadByte(ref temp);
-            history.Enqueue(temp);
-            if (calculatedChecksum != actualChecksum) //see if received checksum matches calculated one
-            {
-                throw new Exception(string.Format("Received corrupted data (Calculated checksum" +
-                    " of {0} did not match received {1})", calculatedChecksum, actualChecksum));
-            }
-            return msg;
-        }
-
-        private int ReadByte(ref string history)
-        {
-            int x = port.ReadByte();
-            history += x + " ";
-            return x;
-        }
         private void OnIsOpenChanged(object sender, bool e)
         {
             if (port.IsOpen)
@@ -253,26 +84,79 @@ namespace ControlStation
             }
         }
     }
-    public class EventSerialPort : SerialPort
+    public class SerialCommunicationProcess
     {
-        public event EventHandler<bool> IsOpenChanged;
-        public EventSerialPort(string portName, int baudRate) : base(portName, baudRate)
+        private BetterSerialPort port;
+        private ConcurrentQueue<GenericDevice> devices;
+        private Thread thread;
+        public event EventHandler<Exception> ExceptionThrown;
+
+        public SerialCommunicationProcess(BetterSerialPort port)
         {
-            ErrorReceived += Error;
+            this.port = port;
+
+            //connection between UI and background threads is a queue of Devices that need updating
+            devices = new ConcurrentQueue<GenericDevice>();
+
+            //background loop runs on this thread
+            thread = new Thread(new ThreadStart(BackgroundLoop));
+            thread.SetApartmentState(ApartmentState.STA); //for UI compatibility
+            thread.Start(); //start the background loop
         }
-        private void Error(object sender, SerialErrorReceivedEventArgs e)
+
+        //requests update of a device
+        public void QueueDeviceUpdate(GenericDevice device)
         {
-            IsOpenChanged?.Invoke(this, IsOpen);
+            devices.Enqueue(device);
         }
-        public new void Open()
+        //handles communication and processing of queue
+        private void BackgroundLoop()
         {
-            base.Open();
-            IsOpenChanged?.Invoke(this, IsOpen);
-        }
-        public new void Close()
-        {
-            base.Close();
-            IsOpenChanged?.Invoke(this, IsOpen);
+            while (true)
+            {
+                try
+                {
+                    if (port.IsOpen)
+                    {
+                        if (devices.Count > 0) //if anything needs updating
+                        {
+                            //send the request or command
+                            devices.TryDequeue(out GenericDevice device);
+                            port.TransmitRequestOrCommand(device.GetMessage());
+                            //if it's a sensor and needs a reply
+                            if (device.NeedsResponse)
+                            {
+                                //get the reply
+                                ROVMessage msg = port.WaitReceiveData(1000);
+                                //update the device's data on UI thread
+                                device.Invoke(new Action(() => device.UpdateData(msg)));
+                            }
+                            //redraw the device on UI thread
+                            device.Invoke(new Action(device.UpdateControls));
+                        }
+                    }
+                    else
+                    {
+                        //reduce thread's processing time while port is closed
+                        Thread.Sleep(100);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    port.Close(); //stop further exceptions
+                    //empty queue of devices needing update
+                    while (devices.Count > 0)
+                    {
+                        devices.TryDequeue(out GenericDevice trash);
+                    }
+                    //log exception
+                    Logger.LogException(ex);
+                    Logger.LogString("History: " + port.GetHistory());
+                    //fire event
+                    if (ExceptionThrown != null)
+                        ExceptionThrown(this, ex);
+                }
+            }
         }
     }
 }

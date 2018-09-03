@@ -72,6 +72,7 @@
     <Compile Include="AttitudeIndicator.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="BetterSerialPort.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="ControlStationInterface.cs" />
     <Compile Include="ControlStationInterface.Designer.cs">
@@ -101,9 +102,7 @@
     <Compile Include="Sensor.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SerialCommunication.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="SerialCommunication.cs" />
     <Compile Include="Device.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -139,6 +138,7 @@
   <ItemGroup>
     <Content Include="broken-plug.png" />
     <Content Include="connected-plug.png" />
+    <None Include="Resources\log.txt" />
     <None Include="Resources\estop.png" />
     <None Include="Resources\rov-tools.png" />
     <None Include="Resources\rov-thrusters.png" />

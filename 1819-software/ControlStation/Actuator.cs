@@ -6,8 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ControlStation.Devices;
+using ControlStation.Communication;
 
-namespace ControlStation
+namespace ControlStation.Devices.Actuators
 {
     public abstract class Actuator<TData> : Device<TData> where TData : new()
     {
@@ -15,16 +17,16 @@ namespace ControlStation
         {
             NeedsResponse = false;
         }
-        public override MessageStruct GetMessage()
+        public override ROVMessage GetMessage()
         {
-            return new MessageStruct
+            return new Communication.ROVMessage
             {
                 command = messageCommand,
                 data = Convert(data)
             };
         }
         protected abstract byte[] Convert(TData controlData);
-        public override void UpdateData(MessageStruct msg)
+        public override void UpdateData(ROVMessage msg)
         {
             FireDataUpdated();
         }

@@ -171,7 +171,7 @@ void loop() {
 	}
 	else {
 		if (status == DISCONNECTED) {
-			//go from disconnected to disarmed 
+			//go from disconnected to disarmed
 			//after comms return for safety
 			status = DISARMED;
 		}
@@ -532,7 +532,7 @@ void readDepth() {
 	txData.command = DEPTH_REQ;
 	txData.length = 2;
 	if (checkI2C(DEPTH_ADDRESS)) {
-		//8-bit adc reading gives +/-1 mbar, or better than 
+		//8-bit adc reading gives +/-1 mbar, or better than
 		//1mm resolution of depth with a 0.5ms response time
 		//subtract pressure of air on surface; it doesn't factor
 		//into the pressure caused by the water column

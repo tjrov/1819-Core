@@ -6,8 +6,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ControlStation.Communication;
 
-namespace ControlStation
+namespace ControlStation.Devices
 {
     public abstract class GenericDevice : Panel
     {
@@ -19,8 +20,8 @@ namespace ControlStation
             BackColor = Color.Transparent;
             this.messageCommand = messageCommand;
         }
-        public abstract MessageStruct GetMessage();
-        public abstract void UpdateData(MessageStruct msg);
+        public abstract ROVMessage GetMessage();
+        public abstract void UpdateData(ROVMessage msg);
         public abstract void UpdateControls();
         public bool NeedsResponse { get; protected set; }
     }

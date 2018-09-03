@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+using ControlStation.Communication;
+using ControlStation.Devices;
+using ControlStation.Devices.Actuators;
+using ControlStation.Devices.Sensors;
 
 namespace ControlStation
 {
     public class GUI : Form
     {
-        //private FlowLayoutPanel panel;
-        private SerialCommunication comms;
+        private SerialCommunicationProcess comms;
+        private SerialCommunicationPanel commsPanel;
 
         private int countSlow = 0;
         private int countMedium = 0;
@@ -25,7 +25,7 @@ namespace ControlStation
         private StatusSensor status;
         private ToolsActuator tools;
         private StatusActuator statusControl;
-        private DiagnosticsSensor diagnostics;
+        private DiagnosticsSensor versioning;
 
         private TableLayoutPanel centerPanel;
         private FlowLayoutPanel upperPanel;
@@ -47,10 +47,91 @@ namespace ControlStation
         public GUI()
         {
             InitializeComponent();
-            upperPanel.SendToBack(); //don't overlap with controls
+            timer = new Timer
+            {
+                Interval = 10
+            };
+            timer.Tick += TimerLoop;
+
+            //setup serial port
+            BetterSerialPort port = new BetterSerialPort(ControlStation.Properties.Settings.Default.PortName,
+                ControlStation.Properties.Settings.Default.BaudRate);
+            comms = new SerialCommunicationProcess(port);
+            commsPanel = new SerialCommunicationPanel(port);
+            port.IsOpenChanged += OnIsOpenChanged;
+            comms.ExceptionThrown += OnExceptionThrown;
+
+            //construct sensor and actuator objects
+            depth = new DepthSensor(new DepthData());
+            imu = new OrientationSensor(new OrientationData());
+
+            List<ToolData> toolList = new List<ToolData>();
+            for (int i = 0; i < 3; i++)
+            {
+                toolList.Add(new ToolData());
+            }
+            tools = new ToolsActuator(toolList);
+
+            List<ESCData> escList = new List<ESCData>();
+            for (int i = 0; i < 6; i++)
+            {
+                escList.Add(new ESCData());
+            }
+            escs = new PropulsionSensor(escList);
+            thrusters = new PropulsionActuator(escList);
+
+            StatusData state = new StatusData();
+            status = new StatusSensor(state);
+            statusControl = new StatusActuator(state);
+
+            versioning = new DiagnosticsSensor(new VersionData());
+
+            //put them in the list
+            devices = new List<GenericDevice>();
+            devices.Add(depth);
+            devices.Add(imu);
+            devices.Add(escs);
+            devices.Add(thrusters);
+            devices.Add(tools);
+            devices.Add(status);
+            devices.Add(statusControl);
+            devices.Add(versioning);
+
+            //add controls to their respective panels
+            communicationBox.Controls.Add(commsPanel);
+            commsPanel.Location = new Point(0, 10);
+            controllerBox.Controls.Add(new Label { Text = "Joystick placeholder" });
+
+            statusPanel.Controls.Add(status, 0, 0);
+            statusPanel.Controls.Add(statusControl, 0, 1);
+            statusPanel.Controls.Add(versioning, 0, 2);
+            statusPanel.Controls.Add(escs, 1, 0);
+            statusPanel.SetRowSpan(escs, 3);
+
+            toolsPanel.Controls.Add(tools);
+
+            thrustersPanel.Controls.Add(thrusters);
+
+            depthBox.Controls.Add(depth);
+            attitudeBox.Controls.Add(imu);
+
+            //disable all devices to start off
+            foreach (GenericDevice device in devices)
+            {
+                device.Enabled = false;
+            }
+
+            upperPanel.SendToBack(); //don't overlap top bar with main section
         }
 
-        private void OnIsPortOpenChanged(object sender, bool isOpen)
+        private void OnExceptionThrown(object sender, Exception e)
+        {
+            //show dialog on UI thread
+            this.Invoke(new Action(() => MessageBox.Show(e.Message + " (See log.txt for details)",
+                "Exception in communication thread", MessageBoxButtons.OK, MessageBoxIcon.Error)));
+        }
+
+        private void OnIsOpenChanged(object sender, bool isOpen)
         {
             //enable/disable all device panels
             foreach (GenericDevice device in devices)
@@ -62,27 +143,27 @@ namespace ControlStation
             //ask for new version and diagnostics
             if(isOpen)
             {
-                comms.QueueDevice(diagnostics);
+                comms.QueueDeviceUpdate(versioning);
             }
         }
 
         private void SlowLoop()
         {
-            comms.QueueDevice(escs);
-            comms.QueueDevice(statusControl);
-            comms.QueueDevice(status);
+            comms.QueueDeviceUpdate(escs);
+            comms.QueueDeviceUpdate(statusControl);
+            comms.QueueDeviceUpdate(status);
         }
 
         private void MediumLoop()
         {
-            comms.QueueDevice(imu);
-            comms.QueueDevice(depth);
-            comms.QueueDevice(tools);
+            comms.QueueDeviceUpdate(imu);
+            comms.QueueDeviceUpdate(depth);
+            comms.QueueDeviceUpdate(tools);
         }
 
         private void FastLoop()
         {
-            comms.QueueDevice(thrusters);
+            comms.QueueDeviceUpdate(thrusters);
         }
 
         private void TimerLoop(object sender, EventArgs e)
@@ -345,75 +426,6 @@ namespace ControlStation
 
         private void GUI_Load(object sender, EventArgs e)
         {
-            timer = new Timer
-            {
-                Interval = 10
-            };
-            timer.Tick += TimerLoop;
-
-            //setup serial port
-            comms = new SerialCommunication();
-            comms.IsPortOpenChanged += OnIsPortOpenChanged;
-
-            //construct sensor and actuator objects
-            depth = new DepthSensor(new DepthData());
-            imu = new OrientationSensor(new OrientationData());
-
-            List<ToolData> toolList = new List<ToolData>();
-            for (int i = 0; i < 3; i++)
-            {
-                toolList.Add(new ToolData());
-            }
-            tools = new ToolsActuator(toolList);
-
-            List<ESCData> escList = new List<ESCData>();
-            for (int i = 0; i < 6; i++)
-            {
-                escList.Add(new ESCData());
-            }
-            escs = new PropulsionSensor(escList);
-            thrusters = new PropulsionActuator(escList);
-
-            StatusData state = new StatusData();
-            status = new StatusSensor(state);
-            statusControl = new StatusActuator(state);
-
-            diagnostics = new DiagnosticsSensor(new VersionData());
-
-            //put them in the list
-            devices = new List<GenericDevice>();
-            devices.Add(depth);
-            devices.Add(imu);
-            devices.Add(escs);
-            devices.Add(thrusters);
-            devices.Add(tools);
-            devices.Add(status);
-            devices.Add(statusControl);
-            devices.Add(diagnostics);
-
-            //add controls to their respective panels
-            communicationBox.Controls.Add(comms);
-            comms.Location = new Point(0, 10);
-            controllerBox.Controls.Add(new Label { Text = "Joystick placeholder" });
-
-            statusPanel.Controls.Add(status, 0, 0);
-            statusPanel.Controls.Add(statusControl, 0, 1);
-            statusPanel.Controls.Add(diagnostics, 0, 2);
-            statusPanel.Controls.Add(escs, 1, 0);
-            statusPanel.SetRowSpan(escs, 3);
-
-            toolsPanel.Controls.Add(tools);
-
-            thrustersPanel.Controls.Add(thrusters);
-
-            depthBox.Controls.Add(depth);
-            attitudeBox.Controls.Add(imu);
-
-            //disable all devices to start off
-            foreach (GenericDevice device in devices)
-            {
-                device.Enabled = false;
-            }
         }
 
         private void GUI_KeyPress(object sender, KeyPressEventArgs e)

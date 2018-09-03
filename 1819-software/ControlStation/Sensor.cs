@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ControlStation.Devices;
+using ControlStation.Communication;
 
-namespace ControlStation
+namespace ControlStation.Devices.Sensors
 {
     //All ROV devices that generate information extend from this class
     public abstract class Sensor<TData> : Device<TData> where TData : new()
@@ -20,15 +22,15 @@ namespace ControlStation
             NeedsResponse = true;
             this.messageLength = messageLength;
         }
-        public override MessageStruct GetMessage()
+        public override ROVMessage GetMessage()
         {
-            return new MessageStruct
+            return new ROVMessage
             {
                 command = messageCommand,
                 data = new byte[0]
             };
         }
-        public override void UpdateData(MessageStruct msg)
+        public override void UpdateData(ROVMessage msg)
         {
             //check if it matches this type of sensor
             if (msg.data.Length == messageLength)
