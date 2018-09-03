@@ -16,6 +16,8 @@ namespace ControlStation
         [STAThread]
         static void Main()
         {
+            //empty the log file at the start of each session
+            Logger.ClearLog();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.ThreadException += OnThreadException;
@@ -26,8 +28,9 @@ namespace ControlStation
 
         private static void OnThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            MessageBox.Show(gui, e.Exception.Message + e.Exception.StackTrace, "Error", 
+            MessageBox.Show(gui, e.Exception.Message + e.Exception.StackTrace, "Exception in UI thread",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Logger.LogException(e.Exception);
         }
     }
 }

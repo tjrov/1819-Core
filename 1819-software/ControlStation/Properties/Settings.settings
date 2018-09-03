@@ -8,5 +8,8 @@
     <Setting Name="PortName" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM5</Value>
     </Setting>
+    <Setting Name="LogFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">log.txt</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
