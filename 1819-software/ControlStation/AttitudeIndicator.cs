@@ -15,7 +15,7 @@ namespace ControlStation
     {
         // Load images
         Bitmap horizonBitmap = new Bitmap(Properties.Resources.horizon);
-        Bitmap bezelBitmap = new Bitmap(Properties.Resources.rov_backview);
+        Bitmap bezelBitmap = new Bitmap(Properties.Resources.bezel);
         Bitmap headingBitmap = new Bitmap(Properties.Resources.heading);
         Bitmap editedHeadingBitmap;
         Bitmap wingsBitmap = new Bitmap(Properties.Resources.wings);
@@ -66,7 +66,7 @@ namespace ControlStation
         public AttitudeIndicator()
         {
             Size = new Size(300, 300);
-            bezelBitmap.MakeTransparent(Color.White); // Sets image transparency
+            bezelBitmap.MakeTransparent(Color.Yellow); // Sets image transparency
             headingBitmap.MakeTransparent(Color.Black); // Sets image transparency
             wingsBitmap.MakeTransparent(Color.Yellow); // Sets image transparency
             editedHeadingBitmap = headingBitmap;

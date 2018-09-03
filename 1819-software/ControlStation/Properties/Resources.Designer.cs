@@ -133,16 +133,6 @@ namespace ControlStation.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap rov_backview {
-            get {
-                object obj = ResourceManager.GetObject("rov_backview", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap rov_electronics {
             get {
                 object obj = ResourceManager.GetObject("rov_electronics", resourceCulture);
