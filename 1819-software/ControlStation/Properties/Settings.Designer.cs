@@ -25,7 +25,7 @@ namespace ControlStation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("500000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000000")]
         public int BaudRate {
             get {
                 return ((int)(this["BaudRate"]));

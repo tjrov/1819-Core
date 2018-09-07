@@ -43,7 +43,7 @@ namespace ControlStation.Communication
 
         private void OnIsOpenChanged(object sender, bool e)
         {
-            if (port.IsOpen)
+            if (e)
             {
                 toggle.BackColor = Color.Green;
                 toggle.Text = "Connected";
@@ -77,7 +77,6 @@ namespace ControlStation.Communication
         public SerialCommunicationProcess(BetterSerialPort port)
         {
             this.port = port;
-
             //connection between UI and background threads is a queue of Devices that need updating
             devices = new ConcurrentQueue<GenericDevice>();
 

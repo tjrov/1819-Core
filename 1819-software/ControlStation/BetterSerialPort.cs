@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ControlStation.Communication
 {
@@ -37,6 +38,7 @@ namespace ControlStation.Communication
             }
             return result;
         }
+        //throw event and log message when port opened or closed
         public new void Open()
         {
             base.Open();
