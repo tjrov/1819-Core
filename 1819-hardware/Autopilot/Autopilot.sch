@@ -27,9 +27,9 @@
 <layer number="17" name="Pads" color="2" fill="1" visible="no" active="no"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="no" active="no"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="no" active="no"/>
-<layer number="20" name="Dimension" color="15" fill="1" visible="no" active="no"/>
-<layer number="21" name="tPlace" color="16" fill="1" visible="no" active="no"/>
-<layer number="22" name="bPlace" color="14" fill="1" visible="no" active="no"/>
+<layer number="20" name="Dimension" color="24" fill="1" visible="no" active="no"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="no"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="no"/>
 <layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="no"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="no"/>
 <layer number="25" name="tNames" color="7" fill="1" visible="no" active="no"/>
@@ -58,7 +58,7 @@
 <layer number="48" name="Document" color="7" fill="1" visible="no" active="no"/>
 <layer number="49" name="Reference" color="7" fill="1" visible="no" active="no"/>
 <layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
-<layer number="51" name="tDocu" color="6" fill="1" visible="no" active="no"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="no" active="no"/>
 <layer number="52" name="bDocu" color="7" fill="1" visible="no" active="no"/>
 <layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
 <layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
@@ -3083,53 +3083,49 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <smd name="10" x="2.366" y="1.0175" dx="1.1" dy="0.25" layer="1"/>
 <smd name="6" x="2.366" y="-0.9875" dx="1.1" dy="0.25" layer="1"/>
 </package>
-<package name="PSOP-8">
-<description>&lt;h3&gt;PSOP-8&lt;/h3&gt;
-&lt;p&gt;Specifications:
-&lt;ul&gt;&lt;li&gt;Pin count:8&lt;/li&gt;
-&lt;/ul&gt;&lt;/p&gt;
-&lt;p&gt;Example device(s):
-&lt;ul&gt;&lt;li&gt;PCA9306&lt;/li&gt;
-&lt;/ul&gt;&lt;/p&gt;</description>
-<wire x1="-1" y1="-1.03" x2="1" y2="-1.03" width="0.08" layer="21"/>
-<wire x1="1" y1="-1.03" x2="1" y2="1.04" width="0.08" layer="21"/>
-<wire x1="1" y1="1.04" x2="-1" y2="1.04" width="0.08" layer="21"/>
-<wire x1="-1" y1="1.04" x2="-1" y2="-1.03" width="0.08" layer="21"/>
-<circle x="-0.66" y="-0.67" radius="0.1524" width="0" layer="21"/>
-<smd name="1" x="-0.73" y="-1.37" dx="0.25" dy="0.5" layer="1"/>
-<smd name="2" x="-0.23" y="-1.37" dx="0.25" dy="0.5" layer="1"/>
-<smd name="3" x="0.27" y="-1.37" dx="0.25" dy="0.5" layer="1"/>
-<smd name="4" x="0.77" y="-1.37" dx="0.25" dy="0.5" layer="1"/>
-<smd name="8" x="-0.73" y="1.38" dx="0.25" dy="0.5" layer="1"/>
-<smd name="7" x="-0.23" y="1.38" dx="0.25" dy="0.5" layer="1"/>
-<smd name="6" x="0.27" y="1.38" dx="0.25" dy="0.5" layer="1"/>
-<smd name="5" x="0.77" y="1.38" dx="0.25" dy="0.5" layer="1"/>
-<circle x="-1.27" y="-0.67" radius="0.1524" width="0" layer="21"/>
-</package>
-<package name="PCA9306DC">
-<description>&lt;h3&gt;PCA9306DC&lt;/h3&gt;
-1:1 package. 
-&lt;p&gt;Specifications:
-&lt;ul&gt;&lt;li&gt;Pin count: 8&lt;/li&gt;
-&lt;/ul&gt;&lt;/p&gt;
-&lt;p&gt;Example device(s):
-&lt;ul&gt;&lt;li&gt;PCA9306&lt;/li&gt;
-&lt;/ul&gt;&lt;/p&gt;</description>
-<wire x1="1" y1="-0.93" x2="1" y2="0.94" width="0.2032" layer="21"/>
-<wire x1="-1" y1="0.94" x2="-1" y2="-0.93" width="0.2032" layer="21"/>
-<circle x="-1.28" y="-1.47" radius="0.1923" width="0" layer="21"/>
-<smd name="1" x="-0.73" y="-1.4462" dx="0.25" dy="0.6016" layer="1"/>
-<smd name="2" x="-0.23" y="-1.4462" dx="0.25" dy="0.6016" layer="1"/>
-<smd name="3" x="0.27" y="-1.4462" dx="0.25" dy="0.6016" layer="1"/>
-<smd name="4" x="0.77" y="-1.4462" dx="0.25" dy="0.6016" layer="1"/>
-<smd name="8" x="-0.73" y="1.4308" dx="0.25" dy="0.6016" layer="1"/>
-<smd name="7" x="-0.23" y="1.4308" dx="0.25" dy="0.6016" layer="1"/>
-<smd name="6" x="0.27" y="1.4308" dx="0.25" dy="0.6016" layer="1"/>
-<smd name="5" x="0.77" y="1.4308" dx="0.25" dy="0.6016" layer="1"/>
-<text x="-1.2954" y="-1.2" size="0.6096" layer="25" font="vector" ratio="20" rot="R90">&gt;NAME</text>
-<text x="1.2954" y="-1.2" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-left">&gt;VALUE</text>
+<package name="MSOP8" urn="urn:adsk.eagle:footprint:4307/1">
+<description>&lt;b&gt;8M, 8-Lead, 0.118" Wide, Miniature Small Outline Package&lt;/b&gt;&lt;p&gt;
+MSOP&lt;br&gt;
+8M-Package doc1097.pdf</description>
+<wire x1="-1.48" y1="1.23" x2="-1.23" y2="1.48" width="0.1524" layer="21" curve="-90"/>
+<wire x1="1.23" y1="1.48" x2="1.48" y2="1.23" width="0.1524" layer="21" curve="-90"/>
+<wire x1="1.23" y1="-1.49" x2="1.48" y2="-1.24" width="0.1524" layer="21" curve="90"/>
+<wire x1="-1.48" y1="-1.24" x2="-1.23" y2="-1.49" width="0.1524" layer="21" curve="90"/>
+<wire x1="1.24" y1="-1.49" x2="-1.22" y2="-1.49" width="0.1524" layer="21"/>
+<wire x1="-1.22" y1="1.48" x2="1.24" y2="1.48" width="0.1524" layer="21"/>
+<wire x1="-1.48" y1="1.23" x2="-1.48" y2="-1.23" width="0.1524" layer="21"/>
+<wire x1="1.48" y1="-1.24" x2="1.48" y2="1.23" width="0.1524" layer="21"/>
+<circle x="-0.65" y="-0.65" radius="0.325" width="0.254" layer="21"/>
+<smd name="1" x="-0.975" y="-2.25" dx="0.4" dy="1.1" layer="1"/>
+<smd name="2" x="-0.325" y="-2.25" dx="0.4" dy="1.1" layer="1"/>
+<smd name="3" x="0.325" y="-2.25" dx="0.4" dy="1.1" layer="1"/>
+<smd name="4" x="0.975" y="-2.25" dx="0.4" dy="1.1" layer="1"/>
+<smd name="5" x="0.975" y="2.25" dx="0.4" dy="1.1" layer="1"/>
+<smd name="6" x="0.325" y="2.25" dx="0.4" dy="1.1" layer="1"/>
+<smd name="7" x="-0.325" y="2.25" dx="0.4" dy="1.1" layer="1"/>
+<smd name="8" x="-0.975" y="2.25" dx="0.4" dy="1.1" layer="1"/>
+<text x="-1.8825" y="-2.484" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
+<text x="3.089" y="-2.484" size="1.27" layer="27" ratio="10" rot="R90">&gt;VALUE</text>
+<rectangle x1="-1.175" y1="-2.45" x2="-0.775" y2="-1.55" layer="51"/>
+<rectangle x1="-0.525" y1="-2.45" x2="-0.125" y2="-1.55" layer="51"/>
+<rectangle x1="0.125" y1="-2.45" x2="0.525" y2="-1.55" layer="51"/>
+<rectangle x1="0.775" y1="-2.45" x2="1.175" y2="-1.55" layer="51"/>
+<rectangle x1="0.775" y1="1.55" x2="1.175" y2="2.45" layer="51"/>
+<rectangle x1="0.125" y1="1.55" x2="0.525" y2="2.45" layer="51"/>
+<rectangle x1="-0.525" y1="1.55" x2="-0.125" y2="2.45" layer="51"/>
+<rectangle x1="-1.175" y1="1.55" x2="-0.775" y2="2.45" layer="51"/>
 </package>
 </packages>
+<packages3d>
+<package3d name="MSOP8" urn="urn:adsk.eagle:package:4468863/1" type="box">
+<description>8M, 8-Lead, 0.118" Wide, Miniature Small Outline Package
+MSOP
+8M-Package doc1097.pdf</description>
+<packageinstances>
+<packageinstance name="MSOP8"/>
+</packageinstances>
+</package3d>
+</packages3d>
 <symbols>
 <symbol name="RS485">
 <wire x1="-7.62" y1="7.62" x2="12.7" y2="7.62" width="0.254" layer="94"/>
@@ -3320,40 +3316,22 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <gate name="G$1" symbol="PCA9306" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="PSOP-8">
+<device name="MSOP-8" package="MSOP8">
 <connects>
 <connect gate="G$1" pin="EN" pad="8"/>
-<connect gate="G$1" pin="GND" pad="4"/>
-<connect gate="G$1" pin="SCL1" pad="2"/>
+<connect gate="G$1" pin="GND" pad="1"/>
+<connect gate="G$1" pin="SCL1" pad="3"/>
 <connect gate="G$1" pin="SCL2" pad="6"/>
-<connect gate="G$1" pin="SDA1" pad="3"/>
+<connect gate="G$1" pin="SDA1" pad="4"/>
 <connect gate="G$1" pin="SDA2" pad="5"/>
-<connect gate="G$1" pin="VREF1" pad="1"/>
+<connect gate="G$1" pin="VREF1" pad="2"/>
 <connect gate="G$1" pin="VREF2" pad="7"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:4468863/1"/>
+</package3dinstances>
 <technologies>
-<technology name="">
-<attribute name="PROD_ID" value="IC-10023"/>
-<attribute name="VALUE" value="PCA9306"/>
-</technology>
-</technologies>
-</device>
-<device name="PCA9306DC-1:1" package="PCA9306DC">
-<connects>
-<connect gate="G$1" pin="EN" pad="8"/>
-<connect gate="G$1" pin="GND" pad="4"/>
-<connect gate="G$1" pin="SCL1" pad="2"/>
-<connect gate="G$1" pin="SCL2" pad="6"/>
-<connect gate="G$1" pin="SDA1" pad="3"/>
-<connect gate="G$1" pin="SDA2" pad="5"/>
-<connect gate="G$1" pin="VREF1" pad="1"/>
-<connect gate="G$1" pin="VREF2" pad="7"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="PROD_ID" value="IC-10023"/>
-<attribute name="VALUE" value="PCA9306"/>
-</technology>
+<technology name=""/>
 </technologies>
 </device>
 </devices>
@@ -7211,7 +7189,6 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <part name="C3" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="0.1UF" device="-0603-25V-(+80/-20%)" package3d_urn="urn:adsk.eagle:package:37414/1" value="0.1uF"/>
 <part name="C4" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="10UF-POLAR" device="-RADIAL-2.5MM-25V-20%" package3d_urn="urn:adsk.eagle:package:37423/1" value="10uF"/>
 <part name="U1" library="SparkFun-IC-Comms" deviceset="PCA9615" device=""/>
-<part name="U2" library="SparkFun-IC-Comms" deviceset="PCA9306" device="" value="PCA9306"/>
 <part name="R4" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="100OHM" device="-0603-1/4W-5%" package3d_urn="urn:adsk.eagle:package:39650/1" value="100"/>
 <part name="R5" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="100OHM" device="-0603-1/4W-5%" package3d_urn="urn:adsk.eagle:package:39650/1" value="100"/>
 <part name="R6" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="100OHM" device="-0603-1/4W-5%" package3d_urn="urn:adsk.eagle:package:39650/1" value="100"/>
@@ -7262,6 +7239,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <part name="D1" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED-RGB" device="PLCC-6" package3d_urn="urn:adsk.eagle:package:39373/1" value="RGB"/>
 <part name="J6" library="SparkFun-Connectors" deviceset="CONN_07" device="NO_SILK"/>
 <part name="GND5" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="GND" device=""/>
+<part name="U2" library="SparkFun-IC-Comms" deviceset="PCA9306" device="MSOP-8" package3d_urn="urn:adsk.eagle:package:4468863/1"/>
 </parts>
 <sheets>
 <sheet>
@@ -7295,7 +7273,6 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <instance part="C3" gate="G$1" x="40.64" y="76.2"/>
 <instance part="C4" gate="G$1" x="55.88" y="40.64"/>
 <instance part="U1" gate="G$1" x="124.46" y="154.94"/>
-<instance part="U2" gate="G$1" x="104.14" y="109.22"/>
 <instance part="R4" gate="G$1" x="160.02" y="152.4" rot="R90"/>
 <instance part="R5" gate="G$1" x="172.72" y="152.4" rot="R90"/>
 <instance part="R6" gate="G$1" x="185.42" y="152.4" rot="R90"/>
@@ -7347,6 +7324,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <instance part="D1" gate="G$1" x="106.68" y="83.82"/>
 <instance part="J6" gate="G$1" x="27.94" y="114.3" rot="R180"/>
 <instance part="GND5" gate="1" x="7.62" y="116.84"/>
+<instance part="U2" gate="G$1" x="104.14" y="109.22"/>
 </instances>
 <busses>
 </busses>
@@ -7391,10 +7369,10 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <wire x1="218.44" y1="58.42" x2="218.44" y2="55.88" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="GND"/>
 <wire x1="88.9" y1="106.68" x2="86.36" y2="106.68" width="0.1524" layer="91"/>
 <pinref part="GND6" gate="1" pin="GND"/>
 <wire x1="86.36" y1="106.68" x2="86.36" y2="104.14" width="0.1524" layer="91"/>
+<pinref part="U2" gate="G$1" pin="GND"/>
 </segment>
 <segment>
 <pinref part="J3" gate="G$1" pin="3"/>
@@ -7605,9 +7583,9 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </net>
 <net name="SCL3V3" class="0">
 <segment>
-<pinref part="U2" gate="G$1" pin="SCL1"/>
 <wire x1="88.9" y1="111.76" x2="86.36" y2="111.76" width="0.1524" layer="91"/>
 <label x="86.36" y="111.76" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="SCL1"/>
 </segment>
 <segment>
 <pinref part="J6" gate="G$1" pin="4"/>
@@ -7617,9 +7595,9 @@ This footprint was designed to help hold the alignment of a through-hole compone
 </net>
 <net name="SDA3V3" class="0">
 <segment>
-<pinref part="U2" gate="G$1" pin="SDA1"/>
 <wire x1="88.9" y1="109.22" x2="86.36" y2="109.22" width="0.1524" layer="91"/>
 <label x="86.36" y="109.22" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="SDA1"/>
 </segment>
 <segment>
 <pinref part="J6" gate="G$1" pin="3"/>
@@ -7631,9 +7609,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <segment>
 <pinref part="R10" gate="G$1" pin="1"/>
 <wire x1="121.92" y1="124.46" x2="121.92" y2="116.84" width="0.1524" layer="91"/>
-<pinref part="U2" gate="G$1" pin="EN"/>
 <wire x1="121.92" y1="116.84" x2="119.38" y2="116.84" width="0.1524" layer="91"/>
-<pinref part="U2" gate="G$1" pin="VREF2"/>
 <wire x1="119.38" y1="114.3" x2="121.92" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="121.92" y1="114.3" x2="121.92" y2="116.84" width="0.1524" layer="91"/>
 <junction x="121.92" y="116.84"/>
@@ -7642,13 +7618,15 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <wire x1="116.84" y1="134.62" x2="116.84" y2="124.46" width="0.1524" layer="91"/>
 <wire x1="116.84" y1="124.46" x2="121.92" y2="124.46" width="0.1524" layer="91"/>
 <junction x="121.92" y="124.46"/>
+<pinref part="U2" gate="G$1" pin="EN"/>
+<pinref part="U2" gate="G$1" pin="VREF2"/>
 </segment>
 </net>
 <net name="3V3" class="0">
 <segment>
-<pinref part="U2" gate="G$1" pin="VREF1"/>
 <wire x1="88.9" y1="114.3" x2="86.36" y2="114.3" width="0.1524" layer="91"/>
 <label x="86.36" y="114.3" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="VREF1"/>
 </segment>
 <segment>
 <pinref part="J3" gate="G$1" pin="2"/>
@@ -7844,11 +7822,11 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <label x="106.68" y="154.94" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="SDA2"/>
 <wire x1="119.38" y1="109.22" x2="142.24" y2="109.22" width="0.1524" layer="91"/>
 <pinref part="R12" gate="G$1" pin="2"/>
 <wire x1="142.24" y1="109.22" x2="142.24" y2="111.76" width="0.1524" layer="91"/>
 <label x="142.24" y="109.22" size="1.778" layer="95" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="SDA2"/>
 </segment>
 <segment>
 <pinref part="J3" gate="G$1" pin="4"/>
@@ -7868,10 +7846,10 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <label x="106.68" y="152.4" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<pinref part="U2" gate="G$1" pin="SCL2"/>
 <pinref part="R11" gate="G$1" pin="2"/>
 <wire x1="119.38" y1="111.76" x2="129.54" y2="111.76" width="0.1524" layer="91"/>
 <label x="129.54" y="111.76" size="1.778" layer="95" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="SCL2"/>
 </segment>
 <segment>
 <pinref part="J3" gate="G$1" pin="5"/>
