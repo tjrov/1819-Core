@@ -54,7 +54,7 @@ namespace ControlStation
             port.IsOpenChanged += OnIsOpenChanged;
             comms.ExceptionThrown += OnExceptionThrown;
             comms.TenElapsed += OnTenElapsed;
-            comms.HundredElapsed += OnHundredElapsed;
+            comms.FiftyElapsed += OnHundredElapsed;
             comms.ThousandElapsed += OnThousandElapsed;
 
             //construct sensor and actuator objects

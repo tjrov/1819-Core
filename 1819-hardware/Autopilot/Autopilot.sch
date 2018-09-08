@@ -3319,12 +3319,12 @@ MSOP
 <device name="MSOP-8" package="MSOP8">
 <connects>
 <connect gate="G$1" pin="EN" pad="8"/>
-<connect gate="G$1" pin="GND" pad="1"/>
-<connect gate="G$1" pin="SCL1" pad="3"/>
+<connect gate="G$1" pin="GND" pad="4"/>
+<connect gate="G$1" pin="SCL1" pad="2"/>
 <connect gate="G$1" pin="SCL2" pad="6"/>
-<connect gate="G$1" pin="SDA1" pad="4"/>
+<connect gate="G$1" pin="SDA1" pad="3"/>
 <connect gate="G$1" pin="SDA2" pad="5"/>
-<connect gate="G$1" pin="VREF1" pad="2"/>
+<connect gate="G$1" pin="VREF1" pad="1"/>
 <connect gate="G$1" pin="VREF2" pad="7"/>
 </connects>
 <package3dinstances>

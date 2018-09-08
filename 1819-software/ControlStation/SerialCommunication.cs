@@ -77,7 +77,7 @@ namespace ControlStation.Communication
         private Thread thread;
 
         public event EventHandler<Exception> ExceptionThrown;
-        public event EventHandler TenElapsed, HundredElapsed, ThousandElapsed;
+        public event EventHandler TenElapsed, FiftyElapsed, ThousandElapsed;
         public SerialCommunicationProcess(BetterSerialPort port)
         {
             this.port = port;
@@ -100,7 +100,7 @@ namespace ControlStation.Communication
         {
             long prevTime = DateTime.Now.Ticks;
             int thousandCount = 0;
-            int hundredCount = 0;
+            int fiftyCount = 0;
             while (true)
             {
                 //don't tightly loop while port is closed to free CPU
@@ -154,7 +154,7 @@ namespace ControlStation.Communication
                         //System.Diagnostics.Debug.WriteLine(devices.Count);
                         prevTime = DateTime.Now.Ticks;
                         thousandCount++;
-                        hundredCount++;
+                        fiftyCount++;
                         if (thousandCount > 100)
                         {
                             thousandCount = 0;
@@ -163,12 +163,12 @@ namespace ControlStation.Communication
                                 ThousandElapsed(this, null);
                             }
                         }
-                        else if (hundredCount > 10)
+                        else if (fiftyCount > 5)
                         {
-                            hundredCount = 0;
-                            if (HundredElapsed != null)
+                            fiftyCount = 0;
+                            if (FiftyElapsed != null)
                             {
-                                HundredElapsed(this, null);
+                                FiftyElapsed(this, null);
                             }
                         }
                         else
