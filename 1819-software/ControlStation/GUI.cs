@@ -14,10 +14,6 @@ namespace ControlStation
         private SerialCommunicationProcess comms;
         private SerialCommunicationPanel commsPanel;
 
-        private int countSlow = 0;
-        private int countMedium = 0;
-        private Timer timer;
-
         private OrientationSensor imu;
         private DepthSensor depth;
         private PropulsionActuator thrusters;
@@ -47,19 +43,19 @@ namespace ControlStation
         public GUI()
         {
             InitializeComponent();
-            timer = new Timer
-            {
-                Interval = 10
-            };
-            timer.Tick += TimerLoop;
 
             //setup serial port
             BetterSerialPort port = new BetterSerialPort(ControlStation.Properties.Settings.Default.PortName,
                 ControlStation.Properties.Settings.Default.BaudRate);
+            //handles communication thread
             comms = new SerialCommunicationProcess(port);
+            //displays port info and connect/disconnect button
             commsPanel = new SerialCommunicationPanel(port);
             port.IsOpenChanged += OnIsOpenChanged;
             comms.ExceptionThrown += OnExceptionThrown;
+            comms.TenElapsed += OnTenElapsed;
+            comms.HundredElapsed += OnHundredElapsed;
+            comms.ThousandElapsed += OnThousandElapsed;
 
             //construct sensor and actuator objects
             depth = new DepthSensor(new DepthData());
@@ -126,65 +122,50 @@ namespace ControlStation
 
         private void OnExceptionThrown(object sender, Exception e)
         {
-            //show dialog on UI thread
-            this.Invoke(new Action(() => MessageBox.Show(e.Message + " (See log.txt for details)",
-                "Exception in communication thread", MessageBoxButtons.OK, MessageBoxIcon.Error)));
+            //throw exception on UI thread
+            this.Invoke(new Action(() =>
+            {
+                MessageBox.Show(e.Message + " (see log.txt for details)",
+                    "Exception Unhandled in Communication Thread",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }));
         }
+
 
         private void OnIsOpenChanged(object sender, bool isOpen)
         {
-            //enable/disable all device panels
-            foreach (GenericDevice device in devices)
+            this.Invoke(new Action(() =>
             {
-                device.Enabled = isOpen;
-            }
-            //start/stop timer
-            timer.Enabled = isOpen;
-            //ask for new version and diagnostics
-            if(isOpen)
-            {
-                comms.QueueDeviceUpdate(versioning);
-            }
+                //enable/disable all device panels
+                foreach (GenericDevice device in devices)
+                {
+                    device.Enabled = isOpen;
+                }
+                //ask for new versioning
+                if (isOpen)
+                {
+                    comms.QueueDeviceUpdate(versioning);
+                }
+            }));
         }
 
-        private void SlowLoop()
+        private void OnThousandElapsed(object sender, EventArgs eventArgs)
         {
             comms.QueueDeviceUpdate(escs);
             comms.QueueDeviceUpdate(statusControl);
             comms.QueueDeviceUpdate(status);
         }
 
-        private void MediumLoop()
+        private void OnHundredElapsed(object sender, EventArgs eventArgs)
         {
             comms.QueueDeviceUpdate(imu);
             comms.QueueDeviceUpdate(depth);
             comms.QueueDeviceUpdate(tools);
         }
 
-        private void FastLoop()
+        private void OnTenElapsed(object sender, EventArgs eventArgs)
         {
             comms.QueueDeviceUpdate(thrusters);
-        }
-
-        private void TimerLoop(object sender, EventArgs e)
-        {
-
-            countSlow++;
-            countMedium++;
-            if (countSlow > 50)
-            {
-                countSlow = 0;
-                SlowLoop();
-            }
-            else if (countMedium > 5)
-            {
-                countMedium = 0;
-                MediumLoop();
-            }
-            else
-            {
-                FastLoop();
-            }
         }
 
         private void InitializeComponent()
@@ -431,7 +412,7 @@ namespace ControlStation
 
         private void GUI_KeyPress(object sender, KeyPressEventArgs e)
         {
-            switch(e.KeyChar)
+            switch (e.KeyChar)
             {
                 case '1':
                     tools.Data[0].Speed++;

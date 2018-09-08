@@ -23,18 +23,19 @@ namespace ControlStation.Communication
     public class BetterSerialPort : SerialPort
     {
         public event EventHandler<bool> IsOpenChanged;
-        private Stack<string> history; //holds transmission and receival history
+        private List<string> history; //holds transmission and receival history
+
         public BetterSerialPort(string portName, int baudRate) : base(portName, baudRate)
         {
-            history = new Stack<string>();
+            history = new List<string>();
         }
         public string GetHistory()
         {
             //remove all tx/rx log from history stack and append to a string
             string result = "";
-            while (history.Count > 0)
+            foreach (string s in history)
             {
-                result += history.Pop() + "\n";
+                result += s + "\n";
             }
             return result;
         }
@@ -55,14 +56,13 @@ namespace ControlStation.Communication
         public new int ReadByte()
         {
             int result = base.ReadByte();
-            if (history.Peek().StartsWith("TX: ")) //if starting a new receive
+            //start a new receive record
+            if (history[history.Count - 1].StartsWith("TX: "))
             {
-                //create a new string in the history
-                history.Push("RX: ");
+                history.Add("RX: ");
             }
-            //add byte to string
-            string s = history.Peek();
-            s += result + ",";
+            //add to history in hex representation
+            history[history.Count - 1] += result.ToString("X2") + ",";
             return result;
         }
         //note each byte transmitted
@@ -71,9 +71,14 @@ namespace ControlStation.Communication
             string temp = "TX: ";
             foreach (byte b in buffer)
             {
-                temp += b + ",";
+                temp += b.ToString("X2") + ",";
             }
-            history.Push(temp);
+            history.Add(temp);
+            //keep history to ten items maximum
+            while(history.Count > 10)
+            {
+                history.RemoveAt(0);
+            }
             base.Write(buffer, start, offset);
         }
         //custom code for rov serial comms

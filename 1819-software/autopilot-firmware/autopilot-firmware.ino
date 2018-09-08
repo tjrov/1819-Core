@@ -578,16 +578,19 @@ void controlLEDs() {
 			//yellow
 			digitalWrite(RED, HIGH);
 			digitalWrite(GREEN, HIGH);
+			digitalWrite(BLUE, LOW);
 			break;
 		case DISARMED:
 			//solid green
 			digitalWrite(RED, LOW);
 			digitalWrite(GREEN, HIGH);
+			digitalWrite(BLUE, LOW);
 			break;
 		case ARMED:
-			//1Hz flashing green
+			//1Hz flashing green / blue
 			digitalWrite(RED, LOW);
-			digitalWrite(GREEN, (millis() % 1000) < 500);
+			digitalWrite(GREEN, (millis() % 500) < 250);
+			digitalWrite(BLUE, (millis() % 500) > 250);
 			break;
 		}
 		//flash blue 5ms for correctly processed messages
@@ -595,7 +598,7 @@ void controlLEDs() {
 	/*}
 	else {
 		//flash red
-		digitalWrite(RED, (millis() % 1000) < 500);
+		digitalWrite(RED, (millis() % 500) < 250);
 		digitalWrite(GREEN, LOW);
 		digitalWrite(BLUE, LOW);
 	}*/

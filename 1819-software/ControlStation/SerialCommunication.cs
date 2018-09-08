@@ -43,16 +43,19 @@ namespace ControlStation.Communication
 
         private void OnIsOpenChanged(object sender, bool e)
         {
-            if (e)
+            this.Invoke(new Action(() =>
             {
-                toggle.BackColor = Color.Green;
-                toggle.Text = "Connected";
-            }
-            else
-            {
-                toggle.BackColor = Color.Yellow;
-                toggle.Text = "Disconnected";
-            }
+                if (e)
+                {
+                    toggle.BackColor = Color.Green;
+                    toggle.Text = "Connected";
+                }
+                else
+                {
+                    toggle.BackColor = Color.Yellow;
+                    toggle.Text = "Disconnected";
+                }
+            }));
         }
 
         private void OnClick(object sender, EventArgs e)
@@ -72,8 +75,9 @@ namespace ControlStation.Communication
         private BetterSerialPort port;
         private ConcurrentQueue<GenericDevice> devices;
         private Thread thread;
-        public event EventHandler<Exception> ExceptionThrown;
 
+        public event EventHandler<Exception> ExceptionThrown;
+        public event EventHandler TenElapsed, HundredElapsed, ThousandElapsed;
         public SerialCommunicationProcess(BetterSerialPort port)
         {
             this.port = port;
@@ -94,13 +98,22 @@ namespace ControlStation.Communication
         //handles communication and processing of queue
         private void BackgroundLoop()
         {
+            long prevTime = DateTime.Now.Ticks;
+            int thousandCount = 0;
+            int hundredCount = 0;
             while (true)
             {
-                try
+                //don't tightly loop while port is closed to free CPU
+                if (!port.IsOpen)
                 {
-                    if (port.IsOpen)
+                    Thread.Sleep(500);
+                }
+                else
+                {
+                    try
                     {
-                        if (devices.Count > 0) //if anything needs updating
+                        //update all queued devices
+                        while (port.IsOpen && devices.Count > 0)
                         {
                             //send the request or command
                             devices.TryDequeue(out GenericDevice device);
@@ -117,26 +130,55 @@ namespace ControlStation.Communication
                             device.Invoke(new Action(device.UpdateControls));
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        //reduce thread's processing time while port is closed
-                        Thread.Sleep(100);
+                        port.Close(); //stop further exceptions
+                                      //empty queue of devices needing update
+                        while (devices.Count > 0)
+                        {
+                            devices.TryDequeue(out GenericDevice trash);
+                        }
+                        //log history before exception for debugging
+                        Logger.LogString("Start Communication Log Dump\n" + port.GetHistory() + "\nEnd Communication Log Dump");
+                        Logger.LogException(ex);
+                        //fire event
+                        if (ExceptionThrown != null)
+                        {
+                            ExceptionThrown(this, ex);
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    port.Close(); //stop further exceptions
-                    //empty queue of devices needing update
-                    while (devices.Count > 0)
+                    //fire timers if necessary
+                    if ((DateTime.Now.Ticks - prevTime) > 10 * TimeSpan.TicksPerMillisecond)
                     {
-                        devices.TryDequeue(out GenericDevice trash);
+                        //System.Diagnostics.Debug.WriteLine(DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
+                        //System.Diagnostics.Debug.WriteLine(devices.Count);
+                        prevTime = DateTime.Now.Ticks;
+                        thousandCount++;
+                        hundredCount++;
+                        if (thousandCount > 100)
+                        {
+                            thousandCount = 0;
+                            if (ThousandElapsed != null)
+                            {
+                                ThousandElapsed(this, null);
+                            }
+                        }
+                        else if (hundredCount > 10)
+                        {
+                            hundredCount = 0;
+                            if (HundredElapsed != null)
+                            {
+                                HundredElapsed(this, null);
+                            }
+                        }
+                        else
+                        {
+                            if (TenElapsed != null)
+                            {
+                                TenElapsed(this, null);
+                            }
+                        }
                     }
-                    //log exception
-                    Logger.LogException(ex);
-                    Logger.LogString("History: " + port.GetHistory());
-                    //fire event
-                    if (ExceptionThrown != null)
-                        ExceptionThrown(this, ex);
                 }
             }
         }

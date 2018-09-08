@@ -26,11 +26,12 @@ namespace ControlStation
             //Application.Run(new ControlStationInterface());
         }
 
+        //log and display exceptions
         private static void OnThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            MessageBox.Show(gui, e.Exception.Message + e.Exception.StackTrace, "Exception in UI thread",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
             Logger.LogException(e.Exception);
+            MessageBox.Show(gui, e.Exception.Message + " (see log.txt for details)", "Exception Unhandled in UI Thread",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
