@@ -117,6 +117,7 @@ namespace ControlStation.Communication
             {
                 throw new Exception("Timed out receiving data");
             }
+            //return ReceiveHelper();
         }
         private ROVMessage ReceiveHelper()
         {
