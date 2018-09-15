@@ -160,8 +160,25 @@ namespace GUI
                 rightTrigger = (yRotValue + 100) / 2;
                 leftTrigger = (xRotValue + 100) / 2;
             }
-            /**/
-        } 
+        
+            //-S-e-b-a-s-t-i-a-n -is- a- -C-r-i-a-d-o-
+            //C-ar-d-d-I-o i-s-s i-NN t-H-Eee Se-bast-iiaan
+            /*
+                ----\
+               | -_- |
+                -----
+               /|\ <----CARDIO of the Sebastian resides here
+                |
+               / \
+               |  \
+
+            SEA BASS tan(CRAYON)
+            */
+
+            /*
+            "Iakimovitch" ====> "Iaki" (nickname proposal)
+            */
+        }
 
         /*
          * runs 1Hz

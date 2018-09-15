@@ -41,7 +41,14 @@ namespace GUI.Communication
         //throw event and log message when port opened or closed
         public new void Open()
         {
-            base.Open();
+            try
+            {
+                base.Open();
+            }
+            catch(Exception)
+            {
+                OnUnhandledException();
+            }
             Logger.LogString(string.Format("Port {0} opened at {1} kbaud", PortName, BaudRate));
         }
         public new void Close()
