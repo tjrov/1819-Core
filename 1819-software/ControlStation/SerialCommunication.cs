@@ -5,10 +5,11 @@ using System.Threading;
 using System.Collections.Concurrent;
 using System.IO;
 using ControlStation.Devices;
+using System.ComponentModel;
 
 namespace ControlStation.Communication
 {
-    public class SerialCommunication : FlowLayoutPanel
+    public class SerialCommunication : Component
     {
         private BetterSerialPort port;
 
