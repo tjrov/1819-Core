@@ -20,7 +20,6 @@ namespace ControlStation
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.ThreadException += OnThreadException;
-            AppDomain.CurrentDomain.ProcessExit += OnApplicationExit;
             Application.ApplicationExit += OnApplicationExit;
             gui = new GUI();
             Application.Run(new GUI());

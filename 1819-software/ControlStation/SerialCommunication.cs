@@ -34,11 +34,7 @@ namespace ControlStation.Communication
                     {
                         port.Open();
                     }
-                    Logger.LogString("Communication started.");
-                    if (Started != null)
-                    {
-                        Started(this, null);
-                    }
+                    Started(this, null);
                 }
                 else
                 {
@@ -47,7 +43,6 @@ namespace ControlStation.Communication
                     {
                         devices.TryDequeue(out GenericAbstractDevice trash);
                     }
-                    Logger.LogString("Communication stopped.");
                     if (Stopped != null)
                     {
                         Stopped(this, null); //notify rest of code with event
@@ -121,18 +116,16 @@ namespace ControlStation.Communication
                     }
                     catch (Exception ex)
                     {
-                        if (ex.GetType().IsAssignableFrom(typeof(System.Threading.ThreadAbortException)))
+
+                        //log history before exception for debugging
+                        Logger.LogString("Start Communication Log Dump\n" + port.GetHistory() + "\nEnd Communication Log Dump");
+                        Logger.LogException(ex);
+                        //cease communication
+                        LinkActive = false;
+                        //show exception dialog
+                        if (CommunicationException != null)
                         {
-                            //log history before exception for debugging
-                            Logger.LogString("Start Communication Log Dump\n" + port.GetHistory() + "\nEnd Communication Log Dump");
-                            Logger.LogException(ex);
-                            //cease communication
-                            LinkActive = false;
-                            //show exception dialog
-                            if (CommunicationException != null)
-                            {
-                                CommunicationException(this, ex);
-                            }
+                            CommunicationException(this, ex);
                         }
                     }
                     //fire timers if necessary
