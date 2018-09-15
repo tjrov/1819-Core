@@ -11,6 +11,7 @@ using GUI.Communication;
 
 namespace GUI.Devices
 {
+    
     public abstract class Actuator<TData> : AbstractDevice<TData> where TData : new()
     {
         public Actuator(byte messageCommand, TData data) : base(messageCommand, data)
@@ -40,10 +41,10 @@ namespace GUI.Devices
          * [0][1] First ESC's speed value (-100 to 100 percent)
          * ... and so on for all 6 ESCs
          */
-        private List<BarGraph> speeds;
+        //private List<BarGraph> speeds;
         public PropulsionActuator(List<ESCData> data) : base(0x81, data)
         {
-            speeds = new List<BarGraph>();
+            /*speeds = new List<BarGraph>();
             Dock = DockStyle.Fill;
             for (int y = 50; y < 410; y+=120)
             {
@@ -55,17 +56,17 @@ namespace GUI.Devices
                 graph2.Location = new Point(520, y);
                 Controls.Add(graph);
                 Controls.Add(graph2);
-            }
+            }*/
 
             UpdateControls();
         }
 
         public override void UpdateControls()
         {
-            for (int i = 0; i < data.Count; i++)
+            /*for (int i = 0; i < data.Count; i++)
             {
                 speeds[i].Value = data[i].Speed;
-            }
+            }*/
         }
 
         protected override byte[] Convert(List<ESCData> controlData)
@@ -84,28 +85,28 @@ namespace GUI.Devices
     }
     public class ToolsActuator : Actuator<List<ToolData>>
     {
-        private List<BarGraph> speeds;
+        //private List<BarGraph> speeds;
         public ToolsActuator(List<ToolData> data) : base(0x82, data)
         {
-            speeds = new List<BarGraph>();
-            for(int i = 0; i < 3; i++)
+            //speeds = new List<BarGraph>();
+           /* for(int i = 0; i < 3; i++)
             {
-                BarGraph graph = new BarGraph("Speed", "{0:##0.0}", "%", Color.Green, -100, 100, 50);
-                speeds.Add(graph);
+                //BarGraph graph = new BarGraph("Speed", "{0:##0.0}", "%", Color.Green, -100, 100, 50);
+                /speeds.Add(graph);
                 Controls.Add(graph);
             }
             speeds[0].Location = new Point(300, 0);
             speeds[1].Location = new Point(0, 0);
-            speeds[2].Location = new Point(350, 350);
+            speeds[2].Location = new Point(350, 350);*/
             UpdateControls();
         }
 
         public override void UpdateControls()
         {
-            for(int i = 0; i < data.Count; i++)
+            /*for(int i = 0; i < data.Count; i++)
             {
                 speeds[i].Value = data[i].Speed;
-            }
+            }*/
         }
 
         protected override byte[] Convert(List<ToolData> controlData)

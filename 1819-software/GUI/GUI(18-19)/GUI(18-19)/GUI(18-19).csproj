@@ -51,6 +51,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Communications\BetterSerialPort.cs" />
+    <Compile Include="Communications\DataStructures.cs" />
     <Compile Include="Communications\Device.cs">
       <SubType>Component</SubType>
     </Compile>
