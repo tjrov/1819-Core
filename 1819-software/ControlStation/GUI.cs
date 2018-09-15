@@ -123,6 +123,10 @@ namespace ControlStation
             {
                 connectionButton.Text = "Link inactive";
                 connectionButton.BackColor = Color.Yellow;
+                foreach (GenericAbstractDevice device in devices)
+                {
+                    device.Enabled = false;
+                }
             }));
         }
 
@@ -132,6 +136,11 @@ namespace ControlStation
             {
                 connectionButton.Text = "Link active";
                 connectionButton.BackColor = Color.Green;
+                foreach(GenericAbstractDevice device in devices)
+                {
+                    device.Enabled = true;
+                }
+                comms.QueueDeviceUpdate(versioning);
             }));
         }
 
@@ -143,24 +152,6 @@ namespace ControlStation
                 MessageBox.Show(e.Message + " (see log.txt for details)",
                     "Exception Unhandled in Communication Thread",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }));
-        }
-
-
-        private void OnIsOpenChanged(object sender, bool isOpen)
-        {
-            this.Invoke(new Action(() =>
-            {
-            //enable/disable all device panels
-            foreach (GenericAbstractDevice device in devices)
-                {
-                    device.Enabled = isOpen;
-                }
-            //ask for new versioning
-            if (isOpen)
-                {
-                    comms.QueueDeviceUpdate(versioning);
-                }
             }));
         }
 
