@@ -17,18 +17,13 @@ namespace ControlStation
         static void Main()
         {
             //empty the log file at the start of each session
+            Logger.ClearLog();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.ThreadException += OnThreadException;
-            Application.ApplicationExit += OnApplicationExit;
+            //Application.ThreadException += OnThreadException;
             gui = new GUI();
             Application.Run(new GUI());
             //Application.Run(new ControlStationInterface());
-        }
-
-        private static void OnApplicationExit(object sender, EventArgs e)
-        {
-            gui.ShutDown();
         }
 
         //log and display exceptions
