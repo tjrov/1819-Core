@@ -84,6 +84,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -102,6 +103,39 @@
   <ItemGroup>
     <Folder Include="Communications\Sensor Code\" />
     <Folder Include="Controller Code\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bezel.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dcmotor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\degrees.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\depth-back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\estop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\heading.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\horizon.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rov-electronics.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rov-thrusters.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rov-tools.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wings.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

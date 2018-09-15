@@ -133,7 +133,7 @@ namespace GUI.Devices
         private Button arm, reboot, upload, estop;
         private Timer flasher;
         private FlowLayoutPanel panel;
-        private Bitmap estopBitmap = new Bitmap(Properties.Resources.estop);
+        private Bitmap estopBitmap = new Bitmap(Properties.GUI_18_19_.Properties.);
         public StatusActuator(StatusData data) : base(0x83, data)
         {
             estopBitmap.MakeTransparent(Color.White);
