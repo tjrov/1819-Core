@@ -5,81 +5,94 @@ using System.Threading;
 using System.Collections.Concurrent;
 using System.IO;
 using ControlStation.Devices;
+using ControlStation.Devices.Sensors;
 
 namespace ControlStation.Communication
 {
     public class SerialCommunication : FlowLayoutPanel
     {
+        private Button toggle;
+        private Label info;
         private BetterSerialPort port;
 
-        private ConcurrentQueue<GenericAbstractDevice> devices;
+        private ConcurrentQueue<GenericDevice> devices;
         private Thread thread;
 
-        private bool linkActive;
-        private bool shuttingDown;
-
-        public bool LinkActive
-        {
-            get
-            {
-                return linkActive;
-            }
-            set
-            {
-                linkActive = value;
-                if (value)
-                {
-                    if (!port.IsOpen)
-                    {
-                        port.Open();
-                    }
-                    Started(this, null);
-                }
-                else
-                {
-                    //empty queue of devices needing update
-                    while (devices.Count > 0)
-                    {
-                        devices.TryDequeue(out GenericAbstractDevice trash);
-                    }
-                    if (Stopped != null)
-                    {
-                        Stopped(this, null); //notify rest of code with event
-                    }
-                }
-            }
-        }
-
-        public event EventHandler<Exception> CommunicationException;
-        public event EventHandler Started, Stopped;
+        public event EventHandler<Exception> ExceptionThrown;
         public event EventHandler TenElapsed, FiftyElapsed, ThousandElapsed;
 
         public SerialCommunication(BetterSerialPort port) : base()
         {
             this.port = port;
+            //setup gui
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BackColor = Color.Transparent;
+            Size = new Size(350, 40);
+            toggle = new Button()
+            {
+                Text = "Disconnected",
+                BackColor = Color.Yellow,
+                AutoSize = true,
+            };
+            toggle.Click += OnClick;
+
+            info = new Label()
+            {
+                AutoSize = true,
+                Text = string.Format("{0}@{1}kbaud", port.PortName, port.BaudRate / 1000.0)
+            };
+            Controls.Add(toggle);
+            Controls.Add(info);
+            port.IsOpenChanged += OnIsOpenChanged;
 
             //Communications Process
             this.port = port;
             //connection between UI and background threads is a queue of Devices that need updating
-            devices = new ConcurrentQueue<GenericAbstractDevice>();
+            devices = new ConcurrentQueue<GenericDevice>();
 
             //background loop runs on this thread
             thread = new Thread(new ThreadStart(BackgroundLoop));
             thread.SetApartmentState(ApartmentState.STA); //for UI compatibility
             thread.IsBackground = true;
+            thread.Start(); //start the background loop
+        }
 
-            //get going
-            thread.Start();
-            //port.Open(); //error when port opened in constructor
-        }
-        public void ShutDown()
+        private void OnIsOpenChanged(object sender, bool e)
         {
-            LinkActive = false;
-            Thread.Sleep(500);
-            shuttingDown = true;
+            this.Invoke(new Action(() =>
+            {
+                if (e)
+                {
+                    toggle.BackColor = Color.Green;
+                    toggle.Text = "Connected";
+                }
+                else
+                {
+                    toggle.BackColor = Color.Yellow;
+                    toggle.Text = "Disconnected";
+                }
+            }));
         }
+
+        private void OnClick(object sender, EventArgs e)
+        {
+            if (!port.IsOpen)
+            {
+                port.Open();
+            }
+            else
+            {
+                while(devices.Count > 0)
+                {
+                    devices.TryDequeue(out GenericDevice trash);
+                }
+                port.Close();
+            }
+        }
+
         //requests update of a device
-        public void QueueDeviceUpdate(GenericAbstractDevice device)
+        public void QueueDeviceUpdate(GenericDevice device)
         {
             devices.Enqueue(device);
         }
@@ -89,17 +102,22 @@ namespace ControlStation.Communication
             long prevTime = DateTime.Now.Ticks;
             int thousandCount = 0;
             int fiftyCount = 0;
-            while (!shuttingDown)
+            while (true)
             {
-                if (linkActive)
+                //don't tightly loop while port is closed to free CPU
+                if (!port.IsOpen)
+                {
+                    Thread.Sleep(500);
+                }
+                else
                 {
                     try
                     {
                         //update all queued devices
-                        while (devices.Count > 0)
+                        while (port.IsOpen && devices.Count > 0)
                         {
                             //send the request or command
-                            devices.TryDequeue(out GenericAbstractDevice device);
+                            devices.TryDequeue(out GenericDevice device);
                             port.TransmitRequestOrCommand(device.GetMessage());
                             //if it's a sensor and needs a reply
                             if (device.NeedsResponse)
@@ -115,16 +133,24 @@ namespace ControlStation.Communication
                     }
                     catch (Exception ex)
                     {
-
-                        //log history before exception for debugging
-                        Logger.LogString("Start Communication Log Dump\n" + port.GetHistory() + "\nEnd Communication Log Dump");
-                        Logger.LogException(ex);
-                        //cease communication
-                        LinkActive = false;
-                        //show exception dialog
-                        if (CommunicationException != null)
+                        if (!port.IsOpen)
                         {
-                            CommunicationException(this, ex);
+                            port.Close(); //stop further exceptions
+                                          //empty queue of devices needing update
+                            while (devices.Count > 0)
+                            {
+                                devices.TryDequeue(out GenericDevice trash);
+                            }
+                           // if (ex.Message !=) {
+                                //log history before exception for debugging
+                                Logger.LogString("Start Communication Log Dump\n" + port.GetHistory() + "\nEnd Communication Log Dump");
+                                Logger.LogException(ex);
+                                //fire event
+                                if (ExceptionThrown != null)
+                                {
+                                    ExceptionThrown(this, ex);
+                                }
+                            //}
                         }
                     }
                     //fire timers if necessary
@@ -159,9 +185,6 @@ namespace ControlStation.Communication
                             }
                         }
                     }
-                } else
-                {
-                    Thread.Sleep(100);
                 }
             }
         }

@@ -10,14 +10,14 @@ using System.Windows.Forms;
 using ControlStation.Devices;
 using ControlStation.Communication;
 
-namespace ControlStation.Devices
+namespace ControlStation.Devices.Sensors
 {
     //All ROV devices that generate information extend from this class
-    public abstract class AbstractSensor<TData> : AbstractDevice<TData> where TData : new()
+    public abstract class Sensor<TData> : Device<TData> where TData : new()
     {
         private byte messageLength;
         //messageCommand is the command byte used to signal a read from this specific type of sensor
-        public AbstractSensor(byte messageCommand, byte messageLength, TData data) : base(messageCommand, data)
+        public Sensor(byte messageCommand, byte messageLength, TData data) : base(messageCommand, data)
         {
             NeedsResponse = true;
             this.messageLength = messageLength;
@@ -55,7 +55,7 @@ namespace ControlStation.Devices
         }
         protected abstract void Convert(byte[] data, ref TData result);
     }
-    public class OrientationSensor : AbstractSensor<OrientationData>
+    public class OrientationSensor : Sensor<OrientationData>
     {
         /*
          * Message format:
@@ -95,7 +95,7 @@ namespace ControlStation.Devices
             result.Yaw = ypr[0]; result.Pitch = ypr[1]; result.Roll = ypr[2];
         }
     }
-    public class PropulsionSensor : AbstractSensor<List<ESCData>>
+    public class PropulsionSensor : Sensor<List<ESCData>>
     {
         /*
          * Message format:
@@ -156,7 +156,7 @@ namespace ControlStation.Devices
             }
         }
     }
-    public class DepthSensor : AbstractSensor<DepthData>
+    public class DepthSensor : Sensor<DepthData>
     {
         /*
          * Message format:
@@ -181,7 +181,7 @@ namespace ControlStation.Devices
             result.DepthValue = ConvertUtils.BytesToDouble(data[0], data[1], 0, 30);
         }
     }
-    public class StatusSensor : AbstractSensor<StatusData>
+    public class StatusSensor : Sensor<StatusData>
     {
         /*
          * Message format:
@@ -233,7 +233,7 @@ namespace ControlStation.Devices
             result.Voltage = ConvertUtils.ByteToDouble(data[2], 0, 20);
         }
     }
-    public class DiagnosticsSensor : AbstractSensor<VersionData>
+    public class DiagnosticsSensor : Sensor<VersionData>
     {
         private DataLabel version;
         public DiagnosticsSensor(VersionData data) : base(0x05, 2, data)
