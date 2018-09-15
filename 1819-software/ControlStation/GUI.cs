@@ -407,6 +407,7 @@ namespace ControlStation
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.Name = "GUI";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GUI_FormClosing);
             this.Load += new System.EventHandler(this.GUI_Load);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GUI_KeyPress);
@@ -437,6 +438,18 @@ namespace ControlStation
                     break;
                 case '2':
                     tools.Data[0].Speed--;
+                    break;
+                case '3':
+                    tools.Data[1].Speed++;
+                    break;
+                case '4':
+                    tools.Data[1].Speed--;
+                    break;
+                case '5':
+                    tools.Data[2].Speed++;
+                    break;
+                case '6':
+                    tools.Data[2].Speed--;
                     break;
             }
         }

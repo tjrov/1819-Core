@@ -123,11 +123,15 @@ bool isTimeout() {
 void setMotor(uint8_t val, uint8_t one, uint8_t two) {
 	if (val < 128) {
 		analogWrite(one, val * 2);
+		//digitalWrite(one, LOW);
+
 		digitalWrite(two, HIGH);
 	}
 	else if (val > 128) {
 		digitalWrite(one, HIGH);
+
 		analogWrite(two, (255 - val) * 2);
+		//digitalWrite(two, LOW);
 	}
 	else {
 		digitalWrite(one, HIGH);
