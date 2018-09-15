@@ -48,7 +48,8 @@ namespace ControlStation.Communication
         }
         public new void Close()
         {
-            while(BytesToRead > 0 || BytesToWrite > 0)
+            //get rid of all transmissions
+            while(IsOpen || BytesToRead > 0 || BytesToWrite > 0)
             {
                 base.DiscardInBuffer();
                 base.DiscardOutBuffer();
