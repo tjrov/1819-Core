@@ -48,6 +48,11 @@ namespace ControlStation.Communication
         }
         public new void Close()
         {
+            while(BytesToRead > 0 || BytesToWrite > 0)
+            {
+                base.DiscardInBuffer();
+                base.DiscardOutBuffer();
+            }
             base.Close();
             Logger.LogString(string.Format("Port {0} closed", PortName));
             IsOpenChanged?.Invoke(this, IsOpen);

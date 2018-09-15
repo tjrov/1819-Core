@@ -9,13 +9,19 @@ using ControlStation.Devices.Sensors;
 
 namespace ControlStation.Communication
 {
-    public class SerialCommunicationPanel : FlowLayoutPanel
+    public class SerialCommunication : FlowLayoutPanel
     {
         private Button toggle;
         private Label info;
         private BetterSerialPort port;
 
-        public SerialCommunicationPanel(BetterSerialPort port) : base()
+        private ConcurrentQueue<GenericDevice> devices;
+        private Thread thread;
+
+        public event EventHandler<Exception> ExceptionThrown;
+        public event EventHandler TenElapsed, FiftyElapsed, ThousandElapsed;
+
+        public SerialCommunication(BetterSerialPort port) : base()
         {
             this.port = port;
             //setup gui
@@ -39,6 +45,17 @@ namespace ControlStation.Communication
             Controls.Add(toggle);
             Controls.Add(info);
             port.IsOpenChanged += OnIsOpenChanged;
+
+            //Communications Process
+            this.port = port;
+            //connection between UI and background threads is a queue of Devices that need updating
+            devices = new ConcurrentQueue<GenericDevice>();
+
+            //background loop runs on this thread
+            thread = new Thread(new ThreadStart(BackgroundLoop));
+            thread.SetApartmentState(ApartmentState.STA); //for UI compatibility
+            thread.IsBackground = true;
+            thread.Start(); //start the background loop
         }
 
         private void OnIsOpenChanged(object sender, bool e)
@@ -66,28 +83,12 @@ namespace ControlStation.Communication
             }
             else
             {
+                while(devices.Count > 0)
+                {
+                    devices.TryDequeue(out GenericDevice trash);
+                }
                 port.Close();
             }
-        }
-    }
-    public class SerialCommunicationProcess
-    {
-        private BetterSerialPort port;
-        private ConcurrentQueue<GenericDevice> devices;
-        private Thread thread;
-
-        public event EventHandler<Exception> ExceptionThrown;
-        public event EventHandler TenElapsed, FiftyElapsed, ThousandElapsed;
-        public SerialCommunicationProcess(BetterSerialPort port)
-        {
-            this.port = port;
-            //connection between UI and background threads is a queue of Devices that need updating
-            devices = new ConcurrentQueue<GenericDevice>();
-
-            //background loop runs on this thread
-            thread = new Thread(new ThreadStart(BackgroundLoop));
-            thread.SetApartmentState(ApartmentState.STA); //for UI compatibility
-            thread.Start(); //start the background loop
         }
 
         //requests update of a device
@@ -132,19 +133,24 @@ namespace ControlStation.Communication
                     }
                     catch (Exception ex)
                     {
-                        port.Close(); //stop further exceptions
-                                      //empty queue of devices needing update
-                        while (devices.Count > 0)
+                        if (!port.IsOpen)
                         {
-                            devices.TryDequeue(out GenericDevice trash);
-                        }
-                        //log history before exception for debugging
-                        Logger.LogString("Start Communication Log Dump\n" + port.GetHistory() + "\nEnd Communication Log Dump");
-                        Logger.LogException(ex);
-                        //fire event
-                        if (ExceptionThrown != null)
-                        {
-                            ExceptionThrown(this, ex);
+                            port.Close(); //stop further exceptions
+                                          //empty queue of devices needing update
+                            while (devices.Count > 0)
+                            {
+                                devices.TryDequeue(out GenericDevice trash);
+                            }
+                           // if (ex.Message !=) {
+                                //log history before exception for debugging
+                                Logger.LogString("Start Communication Log Dump\n" + port.GetHistory() + "\nEnd Communication Log Dump");
+                                Logger.LogException(ex);
+                                //fire event
+                                if (ExceptionThrown != null)
+                                {
+                                    ExceptionThrown(this, ex);
+                                }
+                            //}
                         }
                     }
                     //fire timers if necessary
