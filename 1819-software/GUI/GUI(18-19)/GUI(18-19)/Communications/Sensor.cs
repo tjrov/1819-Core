@@ -1,13 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using GUI.Devices;
 using GUI.Communication;
 
 namespace GUI.Devices
@@ -65,24 +57,24 @@ namespace GUI.Devices
          * [2][3] Pitch ...
          * [4][5] Roll ...
          */
-        private AttitudeIndicator attitudeIndicator;
-        private HeadingIndicator headingIndicator;
+        /*private AttitudeIndicator attitudeIndicator;
+        private HeadingIndicator headingIndicator;*/
         public OrientationSensor(OrientationData data) : base((byte)0x01, (byte)6, data)
         {
-            attitudeIndicator = new AttitudeIndicator();
+            /*attitudeIndicator = new AttitudeIndicator();
             headingIndicator = new HeadingIndicator();
             headingIndicator.Location = new Point(400, 0);
             Controls.Add(attitudeIndicator);
-            Controls.Add(headingIndicator);
+            Controls.Add(headingIndicator);*/
         }
 
         public override void UpdateControls()
         {
-            attitudeIndicator.YawAngle = data.Yaw;
+            /*attitudeIndicator.YawAngle = data.Yaw;
             attitudeIndicator.PitchAngle = data.Pitch;
             attitudeIndicator.RollAngle = data.Roll;
             attitudeIndicator.Invalidate();
-            headingIndicator.Heading = data.Yaw;
+            headingIndicator.Heading = data.Yaw;*/
         }
 
         protected override void Convert(byte[] data, ref OrientationData result)
@@ -106,11 +98,11 @@ namespace GUI.Devices
          * ... and so on for all 6 ESCs
          */
 
-        private List<BarGraph> rpm;
-        private List<DataLabel> temp;
+        //private List<BarGraph> rpm;
+       // private List<DataLabel> temp;
         public PropulsionSensor(List<ESCData> data) : base(0x02, 12, data)
         {
-            rpm = new List<BarGraph>();
+            /*rpm = new List<BarGraph>();
             temp = new List<DataLabel>();
             for (int y = 100; y < 280; y += 30)
             {
@@ -131,18 +123,18 @@ namespace GUI.Devices
                 Controls.Add(rpmGraph);
                 Controls.Add(tempGraph);
             }
-            UpdateControls();
+            UpdateControls();*/
         }
 
         public override void UpdateControls()
         {
-            int i = 0;
+            /*int i = 0;
             foreach (ESCData esc in data)
             {
                 rpm[i].Value = esc.RPM;
                 temp[i].Value = esc.Temperature;
                 i++;
-            }
+            }*/
         }
 
         protected override void Convert(byte[] data, ref List<ESCData> result)
@@ -164,16 +156,16 @@ namespace GUI.Devices
          * LEN: 2
          * [0][2] Vehicle depth (0 to 30 meters)
          */
-        private DepthIndicator depthIndicator;
+        //private DepthIndicator depthIndicator;
         public DepthSensor(DepthData data) : base(0x03, 2, data)
         {
-            depthIndicator = new DepthIndicator();
-            Controls.Add(depthIndicator);
+            //depthIndicator = new DepthIndicator();
+            //Controls.Add(depthIndicator);
         }
 
         public override void UpdateControls()
         {
-            depthIndicator.Depth = data.DepthValue;
+            //depthIndicator.Depth = data.DepthValue;
         }
 
         protected override void Convert(byte[] data, ref DepthData result)
@@ -191,12 +183,12 @@ namespace GUI.Devices
          * [1] error code
          * [2] voltage available at ROV (0 to 20 volts)
          */
-        private Label status, error;
-        private BarGraph voltage;
-        private FlowLayoutPanel panel;
+        //private Label status, error;
+        //private BarGraph voltage;
+        //private FlowLayoutPanel panel;
         public StatusSensor(StatusData data) : base(0x04, 3, data)
         {
-            panel = new FlowLayoutPanel
+            /*panel = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 FlowDirection = FlowDirection.TopDown,
@@ -216,14 +208,14 @@ namespace GUI.Devices
             panel.Controls.Add(error);
             panel.Controls.Add(voltage);
             Controls.Add(panel);
-            UpdateControls();
+            UpdateControls();*/
         }
 
         public override void UpdateControls()
         {
-            status.Text = "" + Data.Status;
+            /*status.Text = "" + Data.Status;
             error.Text = "" + Data.Error;
-            voltage.Value = Data.Voltage;
+            voltage.Value = Data.Voltage;*/
         }
 
         protected override void Convert(byte[] data, ref StatusData result)
@@ -235,22 +227,22 @@ namespace GUI.Devices
     }
     public class DiagnosticsSensor : AbstractSensor<VersionData>
     {
-        private DataLabel version;
+        //private DataLabel version;
         public DiagnosticsSensor(VersionData data) : base(0x05, 2, data)
         {
-            version = new DataLabel
+            /*version = new DataLabel
             {
                 AutoSize = true,
                 Info = "Autopilot Firmware",
                 Location = new Point(0, 0),
                 Text = ""
             };
-            Controls.Add(version);
+            Controls.Add(version);*/
         }
 
         public override void UpdateControls()
         {
-            version.Text = data.VersionString;
+            //version.Text = data.VersionString;
         }
 
         protected override void Convert(byte[] data, ref VersionData result)

@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using GUI.Devices;
 using GUI.Communication;
 
 namespace GUI.Devices
@@ -130,13 +125,13 @@ namespace GUI.Devices
     }
     public class StatusActuator : Actuator<StatusData>
     {
-        private Button arm, reboot, upload, estop;
+        /*private Button arm, reboot, upload, estop;
         private Timer flasher;
         private FlowLayoutPanel panel;
-        private Bitmap estopBitmap = new Bitmap();
-        public StatusActuator(StatusData data) : base(0x83, data)
+        private Bitmap estopBitmap = new Bitmap(GUI.Properties.GUI_18_19_.Properties.);*/
+        public StatusActuator(StatusData data) : base(0x83, data) 
         {
-            estopBitmap.MakeTransparent(Color.White);
+            /*estopBitmap.MakeTransparent(Color.White);
             panel = new FlowLayoutPanel
             {
                 FlowDirection = FlowDirection.TopDown,
@@ -178,7 +173,7 @@ namespace GUI.Devices
             panel.Controls.Add(arm);
             panel.Controls.Add(reboot);
             panel.Controls.Add(upload);
-            Controls.Add(panel);
+            Controls.Add(panel);*/
         }
 
         protected override byte[] Convert(StatusData controlData)
@@ -191,7 +186,7 @@ namespace GUI.Devices
 
         public override void UpdateControls()
         {
-            //flash button for armed state
+            /*//flash button for armed state
             if (Data.Status == ROVStatus.ARMED)
             {
                 estop.Visible = true;
@@ -205,10 +200,10 @@ namespace GUI.Devices
                 arm.Text = "Arm";
                 flasher.Stop();
                 arm.BackColor = Color.Green;
-            }
+            }*/
         }
 
-        private void OnFlasherTick(object sender, EventArgs e)
+        /*private void OnFlasherTick(object sender, EventArgs e)
         {
             if (arm.BackColor == Color.Green)
             {
@@ -252,6 +247,6 @@ namespace GUI.Devices
             Data.DesiredStatus = ROVStatus.DISCONNECTED;
             Data.Status = ROVStatus.DISCONNECTED;
             UpdateControls();
-        }
+        }*/
     }
 }

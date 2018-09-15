@@ -117,10 +117,10 @@ namespace GUI.Communication
                                 //get the reply
                                 ROVMessage msg = port.WaitReceiveData(1000);
                                 //update the device's data on UI thread
-                                device.Invoke(new Action(() => device.UpdateData(msg)));
+                                //device.Invoke(new Action(() => device.UpdateData(msg)));
                             }
                             //redraw the device on UI thread
-                            device.Invoke(new Action(device.UpdateControls));
+                            //device.Invoke(new Action(device.UpdateControls));
                         }
                     }
                     catch (Exception ex)

@@ -10,14 +10,14 @@ using GUI.Communication;
 
 namespace GUI.Devices
 {
-    public abstract class GenericAbstractDevice : Panel
+    public abstract class GenericAbstractDevice
     {
         protected byte messageCommand;
         public GenericAbstractDevice(byte messageCommand)
         {
             //size to fill parents
-            Dock = DockStyle.Fill;
-            BackColor = Color.Transparent;
+            //Dock = DockStyle.Fill;
+            //BackColor = Color.Transparent;
             this.messageCommand = messageCommand;
         }
         public abstract ROVMessage GetMessage();
