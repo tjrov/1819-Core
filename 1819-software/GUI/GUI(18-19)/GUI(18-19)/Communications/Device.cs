@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ControlStation.Communication;
+using GUI.Communication;
 
-namespace ControlStation.Devices
+namespace GUI.Devices
 {
     public abstract class GenericAbstractDevice : Panel
     {

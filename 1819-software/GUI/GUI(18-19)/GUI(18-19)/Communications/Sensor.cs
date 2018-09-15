@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ControlStation.Devices;
-using ControlStation.Communication;
+using GUI.Devices;
+using GUI.Communication;
 
-namespace ControlStation.Devices
+namespace GUI.Devices
 {
     //All ROV devices that generate information extend from this class
     public abstract class AbstractSensor<TData> : AbstractDevice<TData> where TData : new()

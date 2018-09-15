@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ControlStation.Devices;
-using ControlStation.Communication;
+using GUI.Devices;
+using GUI.Communication;
 
-namespace ControlStation.Devices
+namespace GUI.Devices
 {
     public abstract class Actuator<TData> : AbstractDevice<TData> where TData : new()
     {

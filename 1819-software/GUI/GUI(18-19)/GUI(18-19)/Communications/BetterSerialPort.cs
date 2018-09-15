@@ -4,7 +4,7 @@ using System.IO.Ports;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ControlStation.Communication
+namespace GUI.Communication
 {
     /*
     Protocol is as follows:

@@ -4,10 +4,10 @@ using System.Drawing;
 using System.Threading;
 using System.Collections.Concurrent;
 using System.IO;
-using ControlStation.Devices;
+using GUI.Devices;
 using System.ComponentModel;
 
-namespace ControlStation.Communication
+namespace GUI.Communication
 {
     public class SerialCommunication : Component
     {

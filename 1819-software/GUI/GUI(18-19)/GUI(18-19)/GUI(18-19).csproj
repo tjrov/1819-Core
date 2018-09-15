@@ -47,6 +47,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communications\Actuator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Communications\BetterSerialPort.cs" />
+    <Compile Include="Communications\Device.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Communications\Sensor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Communications\SerialCommunication.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Window Code\Main.cs">
       <SubType>Form</SubType>
     </Compile>
