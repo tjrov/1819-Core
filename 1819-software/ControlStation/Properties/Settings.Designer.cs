@@ -37,7 +37,7 @@ namespace ControlStation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM3")]
         public string PortName {
             get {
                 return ((string)(this["PortName"]));

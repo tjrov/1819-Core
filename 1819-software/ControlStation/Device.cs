@@ -10,10 +10,10 @@ using ControlStation.Communication;
 
 namespace ControlStation.Devices
 {
-    public abstract class GenericDevice : Panel
+    public abstract class GenericAbstractDevice : Panel
     {
         protected byte messageCommand;
-        public GenericDevice(byte messageCommand)
+        public GenericAbstractDevice(byte messageCommand)
         {
             //size to fill parents
             Dock = DockStyle.Fill;
@@ -26,7 +26,7 @@ namespace ControlStation.Devices
         public bool NeedsResponse { get; protected set; }
     }
     //class that both sensors and actuators extend from
-    public abstract class Device<TData> : GenericDevice where TData : new()
+    public abstract class AbstractDevice<TData> : GenericAbstractDevice where TData : new()
     {
         protected TData data;
         public TData Data
@@ -39,7 +39,7 @@ namespace ControlStation.Devices
                 data = value;
             }
         }
-        public Device(byte messageCommand, TData data) : base(messageCommand)
+        public AbstractDevice(byte messageCommand, TData data) : base(messageCommand)
         {
             this.data = data;
         }

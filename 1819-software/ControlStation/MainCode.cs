@@ -20,7 +20,7 @@ namespace ControlStation
             Logger.ClearLog();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.ThreadException += OnThreadException;
+            //Application.ThreadException += OnThreadException;
             gui = new GUI();
             Application.Run(new GUI());
             //Application.Run(new ControlStationInterface());

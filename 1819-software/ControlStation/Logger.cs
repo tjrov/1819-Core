@@ -7,7 +7,7 @@ namespace ControlStation {
     {
         public static void ClearLog()
         {
-            File.Create(Properties.Settings.Default.LogFile);
+            //File.Create(Properties.Settings.Default.LogFile);
         }
         public static void LogString(string msg)
         {

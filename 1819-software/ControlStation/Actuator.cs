@@ -9,9 +9,9 @@ using System.Windows.Forms;
 using ControlStation.Devices;
 using ControlStation.Communication;
 
-namespace ControlStation.Devices.Actuators
+namespace ControlStation.Devices
 {
-    public abstract class Actuator<TData> : Device<TData> where TData : new()
+    public abstract class Actuator<TData> : AbstractDevice<TData> where TData : new()
     {
         public Actuator(byte messageCommand, TData data) : base(messageCommand, data)
         {
@@ -19,6 +19,7 @@ namespace ControlStation.Devices.Actuators
         }
         public override ROVMessage GetMessage()
         {
+            FireDataUpdated();
             return new Communication.ROVMessage
             {
                 command = messageCommand,
@@ -28,7 +29,6 @@ namespace ControlStation.Devices.Actuators
         protected abstract byte[] Convert(TData controlData);
         public override void UpdateData(ROVMessage msg)
         {
-            FireDataUpdated();
         }
     }
     public class PropulsionActuator : Actuator<List<ESCData>>
