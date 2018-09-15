@@ -43,12 +43,12 @@ namespace GUI.Devices
         {
             this.data = data;
         }
-        public event EventHandler<TData> DataUpdated;
-        protected void FireDataUpdated()
+        public event EventHandler<TData> Updated;
+        protected void FireUpdated()
         {
-            if(DataUpdated != null)
+            if(Updated != null)
             {
-                DataUpdated(this, data);
+                Updated(this, data);
             }
         }
     }

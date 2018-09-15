@@ -31,7 +31,7 @@ namespace GUI.Devices
                 {
                     //turn the bytes into usable values
                     Convert(msg.data, ref data);
-                    FireDataUpdated();
+                    FireUpdated();
                 }
                 else
                 {

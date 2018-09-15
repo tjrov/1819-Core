@@ -15,7 +15,7 @@ namespace GUI.Devices
         }
         public override ROVMessage GetMessage()
         {
-            FireDataUpdated();
+            FireUpdated();
             return new Communication.ROVMessage
             {
                 command = messageCommand,
