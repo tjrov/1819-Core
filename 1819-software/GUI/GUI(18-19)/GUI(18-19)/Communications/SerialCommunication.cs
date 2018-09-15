@@ -62,7 +62,7 @@ namespace GUI.Communication
 
         public event EventHandler<Exception> CommunicationException;
         public event EventHandler Started, Stopped;
-        public event EventHandler TenElapsed, FiftyElapsed, ThousandElapsed;
+        public event EventHandler TenElapsed, HundredElapsed, ThousandElapsed;
 
         public SerialCommunication(BetterSerialPort port) : base()
         {
@@ -98,7 +98,7 @@ namespace GUI.Communication
         {
             long prevTime = DateTime.Now.Ticks;
             int thousandCount = 0;
-            int fiftyCount = 0;
+            int hundredCount = 0;
             while (!shuttingDown)
             {
                 if (linkActive)
@@ -146,7 +146,7 @@ namespace GUI.Communication
                         //System.Diagnostics.Debug.WriteLine(devices.Count);
                         prevTime = DateTime.Now.Ticks;
                         thousandCount++;
-                        fiftyCount++;
+                        hundredCount++;
                         if (thousandCount > 100)
                         {
                             thousandCount = 0;
@@ -155,12 +155,12 @@ namespace GUI.Communication
                                 ThousandElapsed(this, null);
                             }
                         }
-                        else if (fiftyCount > 5)
+                        else if (hundredCount > 10)
                         {
-                            fiftyCount = 0;
-                            if (FiftyElapsed != null)
+                            hundredCount = 0;
+                            if (HundredElapsed != null)
                             {
-                                FiftyElapsed(this, null);
+                                HundredElapsed(this, null);
                             }
                         }
                         else
