@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -34,8 +34,7 @@ namespace ControlStation.Devices
             get
             {
                 return data;
-            }
-            set
+            } set
             {
                 data = value;
             }
@@ -47,7 +46,7 @@ namespace ControlStation.Devices
         public event EventHandler<TData> DataUpdated;
         protected void FireDataUpdated()
         {
-            if (DataUpdated != null)
+            if(DataUpdated != null)
             {
                 DataUpdated(this, data);
             }

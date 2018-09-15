@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -45,7 +45,7 @@ namespace ControlStation.Devices
         {
             speeds = new List<BarGraph>();
             Dock = DockStyle.Fill;
-            for (int y = 50; y < 410; y += 120)
+            for (int y = 50; y < 410; y+=120)
             {
                 BarGraph graph = new BarGraph("Speed", "{0:##0.0}", "%", Color.Green, -100, 100, 50);
                 speeds.Add(graph);
@@ -88,7 +88,7 @@ namespace ControlStation.Devices
         public ToolsActuator(List<ToolData> data) : base(0x82, data)
         {
             speeds = new List<BarGraph>();
-            for (int i = 0; i < 3; i++)
+            for(int i = 0; i < 3; i++)
             {
                 BarGraph graph = new BarGraph("Speed", "{0:##0.0}", "%", Color.Green, -100, 100, 50);
                 speeds.Add(graph);
@@ -102,7 +102,7 @@ namespace ControlStation.Devices
 
         public override void UpdateControls()
         {
-            for (int i = 0; i < data.Count; i++)
+            for(int i = 0; i < data.Count; i++)
             {
                 speeds[i].Value = data[i].Speed;
             }
@@ -244,7 +244,7 @@ namespace ControlStation.Devices
                 //arm
                 Data.DesiredStatus = ROVStatus.ARMED;
             }
-        }
+        } 
         protected override void OnEnabledChanged(EventArgs e)
         {
             base.OnEnabledChanged(e);

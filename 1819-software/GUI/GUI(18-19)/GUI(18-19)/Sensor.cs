@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -123,7 +123,7 @@ namespace ControlStation.Devices
                 {
                     Info = "T",
                     Format = "{0:000}",
-                    Unit = "�C",
+                    Unit = "°C",
                     Location = new Point(185, y)
                 };
                 rpm.Add(rpmGraph);

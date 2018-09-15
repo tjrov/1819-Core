@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading.Tasks;
@@ -47,7 +47,7 @@ namespace ControlStation.Communication
         public new void Close()
         {
             //get rid of all transmissions
-            while (IsOpen && (BytesToRead > 0 || BytesToWrite > 0))
+            while(IsOpen && (BytesToRead > 0 || BytesToWrite > 0))
             {
                 base.DiscardInBuffer();
                 base.DiscardOutBuffer();
@@ -78,7 +78,7 @@ namespace ControlStation.Communication
             }
             history.Add(temp);
             //keep history to ten items maximum
-            while (history.Count > 10)
+            while(history.Count > 10)
             {
                 history.RemoveAt(0);
             }
@@ -144,4 +144,4 @@ namespace ControlStation.Communication
             return msg;
         }
     }
-} /
+}

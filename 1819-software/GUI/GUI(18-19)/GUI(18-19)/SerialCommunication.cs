@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Threading;
@@ -41,7 +41,7 @@ namespace ControlStation.Communication
                 }
                 else
                 {
-                    if (port.IsOpen)
+                    if(port.IsOpen)
                     {
                         port.Close();
                     }
@@ -171,8 +171,7 @@ namespace ControlStation.Communication
                             }
                         }
                     }
-                }
-                else
+                } else
                 {
                     Thread.Sleep(100);
                 }
