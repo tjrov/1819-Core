@@ -6,7 +6,7 @@
       <Value Profile="(Default)">500000</Value>
     </Setting>
     <Setting Name="PortName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">COM3</Value>
+      <Value Profile="(Default)">COM5</Value>
     </Setting>
     <Setting Name="LogFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">log.txt</Value>
