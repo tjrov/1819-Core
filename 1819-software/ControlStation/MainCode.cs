@@ -16,10 +16,13 @@ namespace ControlStation
         [STAThread]
         static void Main()
         {
+            Logger.ClearLog();
+            Logger.LogString("Application started.");
             //empty the log file at the start of each session
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.ThreadException += OnThreadException;
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
             AppDomain.CurrentDomain.ProcessExit += OnApplicationExit;
             Application.ApplicationExit += OnApplicationExit;
             gui = new GUI();
@@ -27,9 +30,17 @@ namespace ControlStation
             //Application.Run(new ControlStationInterface());
         }
 
+        private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            OnApplicationExit(sender, e);
+            Logger.LogString("Unhandled exception: " + ((Exception)e.ExceptionObject).Message);
+            Logger.LogString("This build is cursed, getting the foh");
+        }
+
         private static void OnApplicationExit(object sender, EventArgs e)
         {
             gui.ShutDown();
+            Logger.LogString("Application exit.");
         }
 
         //log and display exceptions
