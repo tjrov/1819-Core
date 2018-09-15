@@ -137,7 +137,6 @@ void setMotor(uint8_t val, uint8_t one, uint8_t two) {
 		digitalWrite(one, HIGH);
 		digitalWrite(two, HIGH);
 	}
-	//I'm going over to GUI.cs
 }
 
 void idleMotor(int one, int two) {
