@@ -407,6 +407,7 @@ namespace ControlStation
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.Name = "GUI";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GUI_FormClosing);
             this.Load += new System.EventHandler(this.GUI_Load);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GUI_KeyPress);
             this.centerPanel.ResumeLayout(false);
@@ -448,6 +449,11 @@ namespace ControlStation
         public void ShutDown()
         {
             comms.ShutDown();
+        }
+
+        private void GUI_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            ShutDown();
         }
     }
 }
