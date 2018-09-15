@@ -30,6 +30,7 @@ namespace ControlStation
         private Panel toolsPanel;
         private GroupBox groupBox1;
         private TableLayoutPanel attitudeDepthPanel;
+
         private GroupBox depthBox;
         private GroupBox attitudeBox;
         private Button connectionButton;
@@ -93,9 +94,6 @@ namespace ControlStation
             devices.Add(status);
             devices.Add(statusControl);
             devices.Add(versioning);
-
-            //add controls to their respective panels
-            comms.Location = new Point(0, 10);
 
             statusPanel.Controls.Add(status, 0, 0);
             statusPanel.Controls.Add(statusControl, 0, 1);
@@ -409,7 +407,6 @@ namespace ControlStation
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.Name = "GUI";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GUI_FormClosing);
             this.Load += new System.EventHandler(this.GUI_Load);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GUI_KeyPress);
             this.centerPanel.ResumeLayout(false);
@@ -448,9 +445,9 @@ namespace ControlStation
             comms.LinkActive = !comms.LinkActive;
         }
 
-        private void GUI_FormClosing(object sender, FormClosingEventArgs e)
+        public void ShutDown()
         {
-            comms.ShutDown(); //close port and end background thread
+            comms.ShutDown();
         }
     }
 }
