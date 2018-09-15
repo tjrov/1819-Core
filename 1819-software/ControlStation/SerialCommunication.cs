@@ -27,7 +27,6 @@ namespace ControlStation.Communication
             }
             set
             {
-                linkActive = value;
                 if (value)
                 {
                     if (!port.IsOpen)
@@ -42,6 +41,10 @@ namespace ControlStation.Communication
                 }
                 else
                 {
+                    if(port.IsOpen)
+                    {
+                        port.Close();
+                    }
                     //empty queue of devices needing update
                     while (devices.Count > 0)
                     {
@@ -53,6 +56,7 @@ namespace ControlStation.Communication
                         Stopped(this, null); //notify rest of code with event
                     }
                 }
+                linkActive = value;
             }
         }
 

@@ -22,7 +22,6 @@ namespace ControlStation.Communication
     //Has an IsOpenChanged event and logging capabilities
     public class BetterSerialPort : SerialPort
     {
-        public event EventHandler<bool> IsOpenChanged;
         private List<string> history; //holds transmission and receival history
 
         public BetterSerialPort(string portName, int baudRate) : base(portName, baudRate)
@@ -44,19 +43,17 @@ namespace ControlStation.Communication
         {
             base.Open();
             Logger.LogString(string.Format("Port {0} opened at {1} kbaud", PortName, BaudRate));
-            IsOpenChanged?.Invoke(this, IsOpen);
         }
         public new void Close()
         {
             //get rid of all transmissions
-            while(IsOpen || BytesToRead > 0 || BytesToWrite > 0)
+            while(IsOpen && (BytesToRead > 0 || BytesToWrite > 0))
             {
                 base.DiscardInBuffer();
                 base.DiscardOutBuffer();
             }
             base.Close();
             Logger.LogString(string.Format("Port {0} closed", PortName));
-            IsOpenChanged?.Invoke(this, IsOpen);
         }
         //note each byte received
         public new int ReadByte()
