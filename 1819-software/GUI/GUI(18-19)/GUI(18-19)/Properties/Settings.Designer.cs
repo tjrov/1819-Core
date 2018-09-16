@@ -23,21 +23,27 @@ namespace GUI.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("COM3")]
         public string PortName {
             get {
                 return ((string)(this["PortName"]));
             }
+            set {
+                this["PortName"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("500000")]
         public int BaudRate {
             get {
                 return ((int)(this["BaudRate"]));
+            }
+            set {
+                this["BaudRate"] = value;
             }
         }
     }

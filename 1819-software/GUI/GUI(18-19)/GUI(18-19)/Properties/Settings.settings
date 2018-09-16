@@ -1,11 +1,11 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GUI_18_19_.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GUI.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="PortName" Type="System.String" Scope="Application">
+    <Setting Name="PortName" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM3</Value>
     </Setting>
-    <Setting Name="BaudRate" Type="System.Int32" Scope="Application">
+    <Setting Name="BaudRate" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">500000</Value>
     </Setting>
   </Settings>

@@ -34,9 +34,9 @@
             this.comButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.comLabel = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.ControllerTimer = new System.Windows.Forms.Timer(this.components);
+            this.portInfoButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // panel2
@@ -59,11 +59,13 @@
             // 
             // comButton
             // 
+            this.comButton.AutoSize = true;
+            this.comButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.comButton.BackColor = System.Drawing.Color.OrangeRed;
             this.comButton.Location = new System.Drawing.Point(24, 23);
             this.comButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.comButton.Name = "comButton";
-            this.comButton.Size = new System.Drawing.Size(208, 45);
+            this.comButton.Size = new System.Drawing.Size(198, 42);
             this.comButton.TabIndex = 3;
             this.comButton.Text = "Disconnected";
             this.comButton.UseMnemonic = false;
@@ -88,16 +90,6 @@
             this.panel4.Size = new System.Drawing.Size(2316, 957);
             this.panel4.TabIndex = 5;
             // 
-            // comLabel
-            // 
-            this.comLabel.AutoSize = true;
-            this.comLabel.Location = new System.Drawing.Point(244, 23);
-            this.comLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.comLabel.Name = "comLabel";
-            this.comLabel.Size = new System.Drawing.Size(224, 32);
-            this.comLabel.TabIndex = 6;
-            this.comLabel.Text = "COMX@Xkbaud";
-            // 
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.Color.DarkCyan;
@@ -111,14 +103,26 @@
             // 
             this.ControllerTimer.Enabled = true;
             // 
+            // portInfoButton
+            // 
+            this.portInfoButton.AutoSize = true;
+            this.portInfoButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.portInfoButton.Location = new System.Drawing.Point(241, 23);
+            this.portInfoButton.Name = "portInfoButton";
+            this.portInfoButton.Size = new System.Drawing.Size(258, 42);
+            this.portInfoButton.TabIndex = 8;
+            this.portInfoButton.Text = "COMX@XXXbaud";
+            this.portInfoButton.UseVisualStyleBackColor = true;
+            this.portInfoButton.Click += new System.EventHandler(this.portInfoButton_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
             this.ClientSize = new System.Drawing.Size(3528, 1759);
+            this.Controls.Add(this.portInfoButton);
             this.Controls.Add(this.panel5);
-            this.Controls.Add(this.comLabel);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.comButton);
@@ -139,9 +143,9 @@
         private System.Windows.Forms.Button comButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Label comLabel;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Timer ControllerTimer;
+        private System.Windows.Forms.Button portInfoButton;
     }
 }
 

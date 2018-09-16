@@ -55,7 +55,7 @@ namespace GUI
 
             //Custom Window Code 
             //(We cannot alter Designer-generated method InitializeComponent())
-            comLabel.Text = string.Format("{0}@{1}baud", Properties.Settings.Default.PortName,
+            portInfoButton.Text = string.Format("{0}@{1}baud", Properties.Settings.Default.PortName,
                 Properties.Settings.Default.BaudRate);
 
 
@@ -65,6 +65,7 @@ namespace GUI
                 Properties.Settings.Default.BaudRate));
             comms.Started += OnCommsStarted;
             comms.Stopped += OnCommsStopped;
+            comms.CommunicationException += OnCommsException;
             comms.TenElapsed += OnTenElapsed;
             comms.HundredElapsed += OnHundredElapsed;
             comms.ThousandElapsed += OnThousandElapsed;
@@ -90,6 +91,18 @@ namespace GUI
             GetSticks();
             Sticks = GetSticks();
 
+        }
+
+        /*
+         * Method calls on exception in communication thread
+         */
+        private void OnCommsException(object sender, Exception e)
+        {
+            this.BeginInvoke(new Action(() =>
+            {
+                MessageBox.Show(e.Message + "(see log.txt for details)",
+                    "Exception Unhandled in Communication Thread", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }));
         }
 
         /*
@@ -220,8 +233,11 @@ namespace GUI
          */
         private void OnCommsStopped(object sender, EventArgs e)
         {
-            comButton.Text = "Disconnected";
-            comButton.BackColor = Color.OrangeRed;
+            this.BeginInvoke(new Action(() =>
+            {
+                comButton.Text = "Disconnected";
+                comButton.BackColor = Color.OrangeRed;
+            }));
         }
 
         /*
@@ -258,6 +274,17 @@ namespace GUI
         {
             //toggle state of communications
             comms.LinkActive = !comms.LinkActive;
+        }
+
+        private void portInfoButton_Click(object sender, EventArgs e)
+        {
+            //stop communication
+            comms.ShutDown();
+            //show the settings
+            SettingsForm sf = new SettingsForm();
+            sf.ShowDialog();
+            //quit the app
+            Application.Exit();
         }
     }
 }

@@ -41,7 +41,7 @@ namespace GUI.Communication
                 }
                 else
                 {
-                    if(port.IsOpen)
+                    if (port.IsOpen)
                     {
                         port.Close();
                     }
@@ -125,18 +125,15 @@ namespace GUI.Communication
                     }
                     catch (Exception ex)
                     {
-                        if (ex.GetType().IsAssignableFrom(typeof(System.Threading.ThreadAbortException)))
+                        //log history before exception for debugging
+                        Logger.LogString("Start Communication Log Dump\n" + port.GetHistory() + "\nEnd Communication Log Dump");
+                        Logger.LogException(ex);
+                        //cease communication
+                        LinkActive = false;
+                        //show exception dialog
+                        if (CommunicationException != null)
                         {
-                            //log history before exception for debugging
-                            Logger.LogString("Start Communication Log Dump\n" + port.GetHistory() + "\nEnd Communication Log Dump");
-                            Logger.LogException(ex);
-                            //cease communication
-                            LinkActive = false;
-                            //show exception dialog
-                            if (CommunicationException != null)
-                            {
-                                CommunicationException(this, ex);
-                            }
+                            CommunicationException(this, ex);
                         }
                     }
                     //fire timers if necessary
@@ -171,7 +168,8 @@ namespace GUI.Communication
                             }
                         }
                     }
-                } else
+                }
+                else
                 {
                     Thread.Sleep(100);
                 }
