@@ -51,7 +51,7 @@ namespace GUI
         {
             //Create Window
             InitializeComponent();
-            GoFullscreen(true);
+            Fullscreen = true;
 
             //Custom Window Code 
             //(We cannot alter Designer-generated method InitializeComponent())
@@ -206,7 +206,6 @@ namespace GUI
          */
         private void OnThousandElapsed(object sender, EventArgs e)
         {
-            comms.QueueDeviceUpdate(statusActuator);
             comms.QueueDeviceUpdate(statusSensor);
             comms.QueueDeviceUpdate(escSensors);
         }
@@ -253,17 +252,24 @@ namespace GUI
         /*
          * Sets the Program to be a fullscreen window
          */
-        private void GoFullscreen(bool fullscreen)
+        private bool fullscreen;
+        public bool Fullscreen
         {
-            if (fullscreen)
+            get
             {
-                this.WindowState = FormWindowState.Maximized;
-                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            }
-            else
+                return fullscreen;
+            } set
             {
-                this.WindowState = FormWindowState.Maximized;
-                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+                if(value)
+                {
+                    this.WindowState = FormWindowState.Maximized;
+                    this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                } else
+                {
+                    this.WindowState = FormWindowState.Maximized;
+                    this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+                }
+                fullscreen = value;
             }
         }
 
@@ -285,6 +291,39 @@ namespace GUI
             sf.ShowDialog();
             //quit the app
             Application.Exit();
+        }
+
+        /*
+         * Handle Keyboard Input
+         */
+        private void Main_KeyDown(object sender, KeyEventArgs e)
+        {
+            //alt-enter toggles full-screen mode
+            if(e.Alt && e.KeyCode == Keys.Enter)
+            {
+                Fullscreen = !Fullscreen;
+            }
+            //ctrl-a arms/disarms vehicle
+            else if(e.Control && e.KeyCode == Keys.A)
+            {
+                //toggle armed-disarmed
+                statusActuator.Data.DesiredStatus =
+                    (statusActuator.Data.DesiredStatus == ROVStatus.ARMED) ? 
+                    ROVStatus.DISARMED : ROVStatus.ARMED;
+                //update device
+                comms.QueueDeviceUpdate(statusActuator);
+            }
+            //ctrl-c connects/disconnects communications
+            else if(e.Control && e.KeyCode == Keys.C)
+            {
+                comms.LinkActive = !comms.LinkActive;
+            }
+            //ctrl-r reboots computer
+            else if(e.Control && e.KeyCode == Keys.R)
+            {
+                statusActuator.Data.DesiredStatus = ROVStatus.REBOOT;
+                comms.QueueDeviceUpdate(statusActuator);
+            }
         }
     }
 }

@@ -43,7 +43,7 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.Gold;
             this.panel2.Location = new System.Drawing.Point(24, 79);
-            this.panel2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel2.Margin = new System.Windows.Forms.Padding(6);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(736, 688);
             this.panel2.TabIndex = 1;
@@ -52,7 +52,7 @@
             // 
             this.panel3.BackColor = System.Drawing.Color.Cyan;
             this.panel3.Location = new System.Drawing.Point(24, 779);
-            this.panel3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel3.Margin = new System.Windows.Forms.Padding(6);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(736, 957);
             this.panel3.TabIndex = 2;
@@ -63,7 +63,7 @@
             this.comButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.comButton.BackColor = System.Drawing.Color.OrangeRed;
             this.comButton.Location = new System.Drawing.Point(24, 23);
-            this.comButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.comButton.Margin = new System.Windows.Forms.Padding(6);
             this.comButton.Name = "comButton";
             this.comButton.Size = new System.Drawing.Size(198, 42);
             this.comButton.TabIndex = 3;
@@ -76,7 +76,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.OliveDrab;
             this.panel1.Location = new System.Drawing.Point(774, 779);
-            this.panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel1.Margin = new System.Windows.Forms.Padding(6);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(400, 957);
             this.panel1.TabIndex = 4;
@@ -85,7 +85,7 @@
             // 
             this.panel4.BackColor = System.Drawing.Color.DarkCyan;
             this.panel4.Location = new System.Drawing.Point(1188, 779);
-            this.panel4.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel4.Margin = new System.Windows.Forms.Padding(6);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(2316, 957);
             this.panel4.TabIndex = 5;
@@ -94,7 +94,7 @@
             // 
             this.panel5.BackColor = System.Drawing.Color.DarkCyan;
             this.panel5.Location = new System.Drawing.Point(774, 79);
-            this.panel5.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel5.Margin = new System.Windows.Forms.Padding(6);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(2730, 688);
             this.panel5.TabIndex = 7;
@@ -128,10 +128,13 @@
             this.Controls.Add(this.comButton);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "TJROV Control Station";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Main_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
