@@ -61,6 +61,11 @@
     <Compile Include="Communications\SerialCommunication.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Window Code\Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,14 +79,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -97,17 +97,10 @@
     <None Include="Window Code\App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Communications\Sensor Code\" />
     <Folder Include="Controller Code\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\bezel.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\dcmotor.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\degrees.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\depth-back.png" />

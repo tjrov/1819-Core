@@ -121,12 +121,6 @@
   <data name="bezel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bezel.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="dcmotor" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dcmotor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="degrees" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\degrees.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="depth_back" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\depth-back.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

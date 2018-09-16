@@ -15,14 +15,9 @@ namespace GUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            Application.ThreadException += OnThreadException;
+            Application.ApplicationExit += OnApplicationExit;
             Application.Run(new Main());
-        }
-
-        public static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            OnApplicationExit(sender, e);
-            Logger.LogString("Unhandled exception: " + ((Exception)e.ExceptionObject).Message);
-            Logger.LogString("This build is cursed, getting the foh");
         }
 
         private static void OnApplicationExit(object sender, EventArgs e)

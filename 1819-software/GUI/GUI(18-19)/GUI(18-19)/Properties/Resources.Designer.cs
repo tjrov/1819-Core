@@ -73,26 +73,6 @@ namespace GUI_18_19_.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap dcmotor {
-            get {
-                object obj = ResourceManager.GetObject("dcmotor", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap degrees {
-            get {
-                object obj = ResourceManager.GetObject("degrees", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap depth_back {
             get {
                 object obj = ResourceManager.GetObject("depth_back", resourceCulture);
