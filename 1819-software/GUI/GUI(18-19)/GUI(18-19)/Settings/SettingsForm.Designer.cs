@@ -33,6 +33,7 @@
             this.portNameLabel = new System.Windows.Forms.Label();
             this.baudRateLabel = new System.Windows.Forms.Label();
             this.applyButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // portNameBox
@@ -83,12 +84,27 @@
             this.applyButton.UseVisualStyleBackColor = true;
             this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
             // 
+            // cancelButton
+            // 
+            this.cancelButton.AutoSize = true;
+            this.cancelButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButton.Location = new System.Drawing.Point(116, 105);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(114, 42);
+            this.cancelButton.TabIndex = 5;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.applyButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(768, 312);
+            this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.applyButton);
             this.Controls.Add(this.baudRateLabel);
             this.Controls.Add(this.portNameLabel);
@@ -108,5 +124,6 @@
         private System.Windows.Forms.Label portNameLabel;
         private System.Windows.Forms.Label baudRateLabel;
         private System.Windows.Forms.Button applyButton;
+        private System.Windows.Forms.Button cancelButton;
     }
 }

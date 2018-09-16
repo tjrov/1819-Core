@@ -34,9 +34,6 @@ namespace GUI.Devices
             get
             {
                 return data;
-            } set
-            {
-                data = value;
             }
         }
         public AbstractDevice(byte messageCommand, TData data) : base(messageCommand)
@@ -46,7 +43,8 @@ namespace GUI.Devices
         public event EventHandler<TData> Updated;
         protected void FireUpdated()
         {
-            if(Updated != null)
+            //do not allow other threads to access
+            if (Updated != null)
             {
                 Updated(this, data);
             }

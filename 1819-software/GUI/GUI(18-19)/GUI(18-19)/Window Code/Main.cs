@@ -51,7 +51,7 @@ namespace GUI
         {
             //Create Window
             InitializeComponent();
-            Fullscreen = true;
+            //Fullscreen = true; //you can always do alt-enter to go fullscreen
 
             //Custom Window Code 
             //(We cannot alter Designer-generated method InitializeComponent())
@@ -61,7 +61,7 @@ namespace GUI
 
             //Comms Initialization 
             comms = new SerialCommunication(
-                new BetterSerialPort(Properties.Settings.Default.PortName, 
+                new BetterSerialPort(Properties.Settings.Default.PortName,
                 Properties.Settings.Default.BaudRate));
             comms.Started += OnCommsStarted;
             comms.Stopped += OnCommsStopped;
@@ -166,7 +166,7 @@ namespace GUI
             }
             if (id == 1) //User Two Controller input definitions go here
             {
-            
+
             }
         }
 
@@ -181,7 +181,7 @@ namespace GUI
                 rightTrigger = (yRotValue + 100) / 2;
                 leftTrigger = (xRotValue + 100) / 2;
             }
-        
+
             //-S-e-b-a-s-t-i-a-n -is- a- -C-r-i-a-d-o-
             //C-ar-d-d-I-o i-s-s i-NN t-H-Eee Se-bast-iiaan
             /*
@@ -241,7 +241,7 @@ namespace GUI
 
         /*
          * when comms started (this should only happen intentionally, unless there was an oopsie whoopsie)
-         */ 
+         */
         private void OnCommsStarted(object sender, EventArgs e)
         {
             comButton.Text = "Connected";
@@ -258,13 +258,15 @@ namespace GUI
             get
             {
                 return fullscreen;
-            } set
+            }
+            set
             {
-                if(value)
+                if (value)
                 {
                     this.WindowState = FormWindowState.Maximized;
                     this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-                } else
+                }
+                else
                 {
                     this.WindowState = FormWindowState.Maximized;
                     this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
@@ -275,7 +277,7 @@ namespace GUI
 
         /*
          * Enables and disables communications on button click
-         */ 
+         */
         private void ComButton_Click(object sender, EventArgs e)
         {
             //toggle state of communications
@@ -289,8 +291,8 @@ namespace GUI
             //show the settings
             SettingsForm sf = new SettingsForm();
             sf.ShowDialog();
-            //quit the app
-            Application.Exit();
+            //restart the app
+            Application.Restart();
         }
 
         /*
@@ -299,30 +301,39 @@ namespace GUI
         private void Main_KeyDown(object sender, KeyEventArgs e)
         {
             //alt-enter toggles full-screen mode
-            if(e.Alt && e.KeyCode == Keys.Enter)
+            if (e.Alt && e.KeyCode == Keys.Enter)
             {
                 Fullscreen = !Fullscreen;
             }
-            //ctrl-a arms/disarms vehicle
-            else if(e.Control && e.KeyCode == Keys.A)
+            //control+another key
+            else if (e.Control)
             {
-                //toggle armed-disarmed
-                statusActuator.Data.DesiredStatus =
-                    (statusActuator.Data.DesiredStatus == ROVStatus.ARMED) ? 
-                    ROVStatus.DISARMED : ROVStatus.ARMED;
-                //update device
-                comms.QueueDeviceUpdate(statusActuator);
-            }
-            //ctrl-c connects/disconnects communications
-            else if(e.Control && e.KeyCode == Keys.C)
-            {
-                comms.LinkActive = !comms.LinkActive;
-            }
-            //ctrl-r reboots computer
-            else if(e.Control && e.KeyCode == Keys.R)
-            {
-                statusActuator.Data.DesiredStatus = ROVStatus.REBOOT;
-                comms.QueueDeviceUpdate(statusActuator);
+                //these commands only apply while connected
+                if (comms.LinkActive)
+                {
+                    switch (e.KeyCode)
+                    {
+                        //ctrl-a to toggle armed/disarmed
+                        case (Keys.A):
+                            statusActuator.Data.DesiredStatus =
+                                (statusActuator.Data.DesiredStatus == ROVStatus.ARMED) ?
+                                ROVStatus.DISARMED : ROVStatus.ARMED;
+                            comms.QueueDeviceUpdate(statusActuator); //send command
+                            break;
+                        //ctrl-R to reboot ROV computer
+                        case (Keys.R):
+                            statusActuator.Data.DesiredStatus = ROVStatus.REBOOT;
+                            comms.QueueDeviceUpdate(statusActuator); //send command
+                            break;
+                    }
+                }
+                //these commands apply whether or not ROV is connected
+                switch (e.KeyCode)
+                {
+                    case (Keys.C):
+                        comms.LinkActive = !comms.LinkActive;
+                        break;
+                }
             }
         }
     }
