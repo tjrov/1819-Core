@@ -30,29 +30,30 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.comButton = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.ControllerTimer = new System.Windows.Forms.Timer(this.components);
-            this.portInfoButton = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.inputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.portNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.portNameComboBox = new System.Windows.Forms.ToolStripComboBox();
             this.baudRateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.baudRateComboBox = new System.Windows.Forms.ToolStripComboBox();
+            this.inputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.placeholderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.placeholderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.loggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.portNameComboBox = new System.Windows.Forms.ToolStripComboBox();
-            this.baudRateComboBox = new System.Windows.Forms.ToolStripComboBox();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.keyboardShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.comLabel = new System.Windows.Forms.Label();
+            this.inputLabel = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -60,22 +61,14 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Gold;
-            this.panel2.Controls.Add(this.portInfoButton);
+            this.panel2.Controls.Add(this.inputLabel);
+            this.panel2.Controls.Add(this.comLabel);
             this.panel2.Controls.Add(this.comButton);
             this.panel2.Location = new System.Drawing.Point(24, 79);
             this.panel2.Margin = new System.Windows.Forms.Padding(6);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(736, 688);
             this.panel2.TabIndex = 1;
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.Cyan;
-            this.panel3.Location = new System.Drawing.Point(24, 779);
-            this.panel3.Margin = new System.Windows.Forms.Padding(6);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(736, 957);
-            this.panel3.TabIndex = 2;
             // 
             // comButton
             // 
@@ -91,6 +84,15 @@
             this.comButton.UseMnemonic = false;
             this.comButton.UseVisualStyleBackColor = false;
             this.comButton.Click += new System.EventHandler(this.ComButton_Click);
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.Cyan;
+            this.panel3.Location = new System.Drawing.Point(24, 779);
+            this.panel3.Margin = new System.Windows.Forms.Padding(6);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(736, 957);
+            this.panel3.TabIndex = 2;
             // 
             // panel1
             // 
@@ -123,18 +125,6 @@
             // 
             this.ControllerTimer.Enabled = true;
             // 
-            // portInfoButton
-            // 
-            this.portInfoButton.AutoSize = true;
-            this.portInfoButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.portInfoButton.Location = new System.Drawing.Point(198, -12);
-            this.portInfoButton.Name = "portInfoButton";
-            this.portInfoButton.Size = new System.Drawing.Size(258, 42);
-            this.portInfoButton.TabIndex = 8;
-            this.portInfoButton.Text = "COMX@XXXbaud";
-            this.portInfoButton.UseVisualStyleBackColor = true;
-            this.portInfoButton.Click += new System.EventHandler(this.portInfoButton_Click);
-            // 
             // menuStrip
             // 
             this.menuStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
@@ -150,6 +140,20 @@
             this.menuStrip.TabIndex = 9;
             this.menuStrip.Text = "menuStrip1";
             // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.quitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(75, 45);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // quitToolStripMenuItem
+            // 
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(189, 46);
+            this.quitToolStripMenuItem.Text = "Quit";
+            // 
             // connectionToolStripMenuItem
             // 
             this.connectionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -158,23 +162,7 @@
             this.connectionToolStripMenuItem.Name = "connectionToolStripMenuItem";
             this.connectionToolStripMenuItem.Size = new System.Drawing.Size(183, 45);
             this.connectionToolStripMenuItem.Text = "Connection";
-            // 
-            // inputToolStripMenuItem
-            // 
-            this.inputToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.placeholderToolStripMenuItem,
-            this.placeholderToolStripMenuItem1});
-            this.inputToolStripMenuItem.Name = "inputToolStripMenuItem";
-            this.inputToolStripMenuItem.Size = new System.Drawing.Size(100, 48);
-            this.inputToolStripMenuItem.Text = "Input";
-            // 
-            // loggingToolStripMenuItem
-            // 
-            this.loggingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.viewLogToolStripMenuItem});
-            this.loggingToolStripMenuItem.Name = "loggingToolStripMenuItem";
-            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(140, 48);
-            this.loggingToolStripMenuItem.Text = "Logging";
+            this.connectionToolStripMenuItem.DropDownClosed += new System.EventHandler(this.connectionToolStripMenuItem_DropDownClosed);
             // 
             // portNameToolStripMenuItem
             // 
@@ -184,6 +172,13 @@
             this.portNameToolStripMenuItem.Size = new System.Drawing.Size(396, 46);
             this.portNameToolStripMenuItem.Text = "PortName";
             // 
+            // portNameComboBox
+            // 
+            this.portNameComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.portNameComboBox.Name = "portNameComboBox";
+            this.portNameComboBox.Size = new System.Drawing.Size(121, 49);
+            this.portNameComboBox.DropDownClosed += new System.EventHandler(this.portNameComboBox_DropDownClosed);
+            // 
             // baudRateToolStripMenuItem
             // 
             this.baudRateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -192,31 +187,9 @@
             this.baudRateToolStripMenuItem.Size = new System.Drawing.Size(396, 46);
             this.baudRateToolStripMenuItem.Text = "BaudRate";
             // 
-            // placeholderToolStripMenuItem
-            // 
-            this.placeholderToolStripMenuItem.Name = "placeholderToolStripMenuItem";
-            this.placeholderToolStripMenuItem.Size = new System.Drawing.Size(396, 46);
-            this.placeholderToolStripMenuItem.Text = "Placeholder";
-            // 
-            // placeholderToolStripMenuItem1
-            // 
-            this.placeholderToolStripMenuItem1.Name = "placeholderToolStripMenuItem1";
-            this.placeholderToolStripMenuItem1.Size = new System.Drawing.Size(396, 46);
-            this.placeholderToolStripMenuItem1.Text = "Placeholder";
-            // 
-            // viewLogToolStripMenuItem
-            // 
-            this.viewLogToolStripMenuItem.Name = "viewLogToolStripMenuItem";
-            this.viewLogToolStripMenuItem.Size = new System.Drawing.Size(396, 46);
-            this.viewLogToolStripMenuItem.Text = "View Log";
-            // 
-            // portNameComboBox
-            // 
-            this.portNameComboBox.Name = "portNameComboBox";
-            this.portNameComboBox.Size = new System.Drawing.Size(121, 49);
-            // 
             // baudRateComboBox
             // 
+            this.baudRateComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.baudRateComboBox.Items.AddRange(new object[] {
             "9600",
             "19200",
@@ -228,6 +201,42 @@
             "1000000"});
             this.baudRateComboBox.Name = "baudRateComboBox";
             this.baudRateComboBox.Size = new System.Drawing.Size(121, 49);
+            this.baudRateComboBox.DropDownClosed += new System.EventHandler(this.baudRateComboBox_DropDownClosed);
+            // 
+            // inputToolStripMenuItem
+            // 
+            this.inputToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.placeholderToolStripMenuItem,
+            this.placeholderToolStripMenuItem1});
+            this.inputToolStripMenuItem.Name = "inputToolStripMenuItem";
+            this.inputToolStripMenuItem.Size = new System.Drawing.Size(100, 45);
+            this.inputToolStripMenuItem.Text = "Input";
+            // 
+            // placeholderToolStripMenuItem
+            // 
+            this.placeholderToolStripMenuItem.Name = "placeholderToolStripMenuItem";
+            this.placeholderToolStripMenuItem.Size = new System.Drawing.Size(287, 46);
+            this.placeholderToolStripMenuItem.Text = "Placeholder";
+            // 
+            // placeholderToolStripMenuItem1
+            // 
+            this.placeholderToolStripMenuItem1.Name = "placeholderToolStripMenuItem1";
+            this.placeholderToolStripMenuItem1.Size = new System.Drawing.Size(287, 46);
+            this.placeholderToolStripMenuItem1.Text = "Placeholder";
+            // 
+            // loggingToolStripMenuItem
+            // 
+            this.loggingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewLogToolStripMenuItem});
+            this.loggingToolStripMenuItem.Name = "loggingToolStripMenuItem";
+            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(140, 45);
+            this.loggingToolStripMenuItem.Text = "Logging";
+            // 
+            // viewLogToolStripMenuItem
+            // 
+            this.viewLogToolStripMenuItem.Name = "viewLogToolStripMenuItem";
+            this.viewLogToolStripMenuItem.Size = new System.Drawing.Size(254, 46);
+            this.viewLogToolStripMenuItem.Text = "View Log";
             // 
             // helpToolStripMenuItem
             // 
@@ -235,34 +244,38 @@
             this.keyboardShortcutsToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(92, 48);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(92, 45);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // keyboardShortcutsToolStripMenuItem
             // 
             this.keyboardShortcutsToolStripMenuItem.Name = "keyboardShortcutsToolStripMenuItem";
-            this.keyboardShortcutsToolStripMenuItem.Size = new System.Drawing.Size(396, 46);
+            this.keyboardShortcutsToolStripMenuItem.Size = new System.Drawing.Size(392, 46);
             this.keyboardShortcutsToolStripMenuItem.Text = "Keyboard Shortcuts";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(396, 46);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(392, 46);
             this.aboutToolStripMenuItem.Text = "About";
             // 
-            // fileToolStripMenuItem
+            // comLabel
             // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.quitToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(75, 48);
-            this.fileToolStripMenuItem.Text = "File";
+            this.comLabel.AutoSize = true;
+            this.comLabel.Location = new System.Drawing.Point(198, -2);
+            this.comLabel.Name = "comLabel";
+            this.comLabel.Size = new System.Drawing.Size(248, 32);
+            this.comLabel.TabIndex = 10;
+            this.comLabel.Text = "COMX@XXXbaud";
             // 
-            // quitToolStripMenuItem
+            // inputLabel
             // 
-            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(396, 46);
-            this.quitToolStripMenuItem.Text = "Quit";
+            this.inputLabel.AutoSize = true;
+            this.inputLabel.Location = new System.Drawing.Point(466, 8);
+            this.inputLabel.Name = "inputLabel";
+            this.inputLabel.Size = new System.Drawing.Size(352, 32);
+            this.inputLabel.TabIndex = 11;
+            this.inputLabel.Text = "Controller Info Placeholder";
             // 
             // Main
             // 
@@ -301,7 +314,6 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Timer ControllerTimer;
-        private System.Windows.Forms.Button portInfoButton;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
@@ -318,6 +330,8 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem keyboardShortcutsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.Label comLabel;
+        private System.Windows.Forms.Label inputLabel;
     }
 }
 

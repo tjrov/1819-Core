@@ -69,13 +69,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Settings Window Code\Settings.cs" />
-    <Compile Include="Settings Window Code\SettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Settings Window Code\SettingsForm.Designer.cs">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="Main Window Code\Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,9 +78,6 @@
     </Compile>
     <Compile Include="Main Window Code\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Settings Window Code\SettingsForm.resx">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Main Window Code\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>

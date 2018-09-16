@@ -5,7 +5,7 @@
     <Setting Name="PortName" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM3</Value>
     </Setting>
-    <Setting Name="BaudRate" Type="System.Int32" Scope="User">
+    <Setting Name="BaudRate" Type="System.String" Scope="User">
       <Value Profile="(Default)">500000</Value>
     </Setting>
   </Settings>

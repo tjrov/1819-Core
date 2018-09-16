@@ -56,16 +56,18 @@ namespace GUI
 
             //Custom Window Code 
             //(We cannot alter Designer-generated method InitializeComponent())
-            portInfoButton.Text = string.Format("{0}@{1}baud", Properties.Settings.Default.PortName,
+            comLabel.Text = string.Format("{0}@{1}baud", Properties.Settings.Default.PortName,
                 Properties.Settings.Default.BaudRate);
 
-            //Populate serial port names in toolbar options
+            //Setup toolbar menu
             portNameComboBox.Items.AddRange(SerialPort.GetPortNames());
+            portNameComboBox.SelectedItem = Properties.Settings.Default.PortName;
+            baudRateComboBox.SelectedItem = ""+Properties.Settings.Default.BaudRate;
 
             //Comms Initialization 
             comms = new SerialCommunication(
                 new BetterSerialPort(Properties.Settings.Default.PortName,
-                Properties.Settings.Default.BaudRate));
+                int.Parse(Properties.Settings.Default.BaudRate)));
             comms.Started += OnCommsStarted;
             comms.Stopped += OnCommsStopped;
             comms.CommunicationException += OnCommsException;
@@ -285,17 +287,6 @@ namespace GUI
             comms.LinkActive = !comms.LinkActive;
         }
 
-        private void portInfoButton_Click(object sender, EventArgs e)
-        {
-            //stop communication
-            comms.ShutDown();
-            //show the settings
-            SettingsForm sf = new SettingsForm();
-            sf.ShowDialog();
-            //restart the app
-            Application.Restart();
-        }
-
         /*
          * Handle Keyboard Input
          */
@@ -336,6 +327,34 @@ namespace GUI
                         break;
                 }
             }
+        }
+
+        /*
+         * Communication settings menu
+         */
+        private void portNameComboBox_DropDownClosed(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty((string)portNameComboBox.SelectedItem))
+            {
+                Properties.Settings.Default.PortName =
+                    (string)portNameComboBox.SelectedItem;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void baudRateComboBox_DropDownClosed(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty((string)baudRateComboBox.SelectedItem))
+            {
+                Properties.Settings.Default.BaudRate = (string)portNameComboBox.SelectedItem;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void connectionToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
+        {
+            //if anything changed, restart application
+            Application.Restart();
         }
     }
 }

@@ -38,9 +38,9 @@ namespace GUI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("500000")]
-        public int BaudRate {
+        public string BaudRate {
             get {
-                return ((int)(this["BaudRate"]));
+                return ((string)(this["BaudRate"]));
             }
             set {
                 this["BaudRate"] = value;

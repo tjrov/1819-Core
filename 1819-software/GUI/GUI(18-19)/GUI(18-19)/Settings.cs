@@ -1,4 +1,7 @@
-﻿namespace GUI.Properties {
+﻿
+using System.Windows.Forms;
+
+namespace GUI.Properties {
     
     
     // This class allows you to handle specific events on the settings class:
@@ -23,6 +26,9 @@
         
         private void SettingsSavingEventHandler(object sender, System.ComponentModel.CancelEventArgs e) {
             // Add code to handle the SettingsSaving event here.
+
+            //restart the app when settings saved so that they apply
+            Application.Restart();
         }
     }
 }
