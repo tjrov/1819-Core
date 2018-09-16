@@ -69,25 +69,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Settings.cs" />
-    <Compile Include="Settings\SettingsForm.cs">
+    <Compile Include="Settings Window Code\Settings.cs" />
+    <Compile Include="Settings Window Code\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Settings\SettingsForm.Designer.cs">
+    <Compile Include="Settings Window Code\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Window Code\Main.cs">
+    <Compile Include="Main Window Code\Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Window Code\Main.Designer.cs">
+    <Compile Include="Main Window Code\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Window Code\Program.cs" />
+    <Compile Include="Main Window Code\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Settings\SettingsForm.resx">
+    <EmbeddedResource Include="Settings Window Code\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Window Code\Main.resx">
+    <EmbeddedResource Include="Main Window Code\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -108,7 +108,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Window Code\App.config" />
+    <None Include="Main Window Code\App.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controller Code\" />

@@ -11,6 +11,7 @@ using GUI.Communication;
 using GUI.Devices;
 using SlimDX.DirectInput;
 using System.Runtime.InteropServices;
+using System.IO.Ports;
 
 namespace GUI
 {
@@ -58,6 +59,8 @@ namespace GUI
             portInfoButton.Text = string.Format("{0}@{1}baud", Properties.Settings.Default.PortName,
                 Properties.Settings.Default.BaudRate);
 
+            //Populate serial port names in toolbar options
+            portNameComboBox.Items.AddRange(SerialPort.GetPortNames());
 
             //Comms Initialization 
             comms = new SerialCommunication(
@@ -88,9 +91,7 @@ namespace GUI
             toolActuators = new ToolsActuator(toolDataList);
 
             //Controller Method Calls
-            GetSticks();
             Sticks = GetSticks();
-
         }
 
         /*
@@ -110,7 +111,7 @@ namespace GUI
          */
         private void Main_Load(object sender, EventArgs e)
         {
-            Joystick[] joystick = GetSticks();
+            //Joystick[] joystick = GetSticks();
         }
 
         /*
@@ -121,8 +122,8 @@ namespace GUI
             List<SlimDX.DirectInput.Joystick> sticks = new List<SlimDX.DirectInput.Joystick>();
             foreach (DeviceInstance device in Input.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly))
             {
-                try
-                {
+                //try
+                //{
                     stick = new SlimDX.DirectInput.Joystick(Input, device.InstanceGuid);
                     stick.Acquire();
                     foreach (DeviceObjectInstance deviceObject in stick.GetObjects())
@@ -133,11 +134,11 @@ namespace GUI
                         }
                     }
                     sticks.Add(stick);
-                }
-                catch (DirectInputException)
-                {
+                //}
+                //catch (DirectInputException)
+                //{
 
-                }
+                //}
             }
             return sticks.ToArray();
         }
