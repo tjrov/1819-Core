@@ -27,9 +27,9 @@ namespace GUI
         private DiagnosticsSensor versionSensor;
 
         //Actuator Globals
-        private PropulsionActuator escControls;
-        private StatusActuator statusControls;
-        private ToolsActuator toolControls;
+        private PropulsionActuator escActuators;
+        private StatusActuator statusActuator;
+        private ToolsActuator toolActuators;
 
         //Controller Globals
         DirectInput Input = new DirectInput();
@@ -53,8 +53,16 @@ namespace GUI
             InitializeComponent();
             GoFullscreen(true);
 
+            //Custom Window Code 
+            //(We cannot alter Designer-generated method InitializeComponent())
+            comLabel.Text = string.Format("{0}@{1}baud", Properties.Settings.Default.PortName,
+                Properties.Settings.Default.BaudRate);
+
+
             //Comms Initialization 
-            comms = new SerialCommunication(new BetterSerialPort("COM3", 500000));
+            comms = new SerialCommunication(
+                new BetterSerialPort(Properties.Settings.Default.PortName, 
+                Properties.Settings.Default.BaudRate));
             comms.Started += OnCommsStarted;
             comms.Stopped += OnCommsStopped;
             comms.TenElapsed += OnTenElapsed;
@@ -74,9 +82,9 @@ namespace GUI
             versionSensor = new DiagnosticsSensor(new VersionData());
 
             //Actuator Declarations
-            escControls = new PropulsionActuator(escDataList);
-            statusControls = new StatusActuator(status);
-            toolControls = new ToolsActuator(toolDataList);
+            escActuators = new PropulsionActuator(escDataList);
+            statusActuator = new StatusActuator(status);
+            toolActuators = new ToolsActuator(toolDataList);
 
             //Controller Method Calls
             GetSticks();
@@ -185,7 +193,7 @@ namespace GUI
          */
         private void OnThousandElapsed(object sender, EventArgs e)
         {
-            comms.QueueDeviceUpdate(statusControls);
+            comms.QueueDeviceUpdate(statusActuator);
             comms.QueueDeviceUpdate(statusSensor);
             comms.QueueDeviceUpdate(escSensors);
         }
@@ -204,7 +212,7 @@ namespace GUI
          */
         private void OnTenElapsed(object sender, EventArgs e)
         {
-            comms.QueueDeviceUpdate(escControls);
+            comms.QueueDeviceUpdate(escActuators);
         }
 
         /*
@@ -212,8 +220,8 @@ namespace GUI
          */
         private void OnCommsStopped(object sender, EventArgs e)
         {
-            ComButton.Text = "Disconnected";
-            ComButton.BackColor = Color.OrangeRed;
+            comButton.Text = "Disconnected";
+            comButton.BackColor = Color.OrangeRed;
         }
 
         /*
@@ -221,9 +229,9 @@ namespace GUI
          */ 
         private void OnCommsStarted(object sender, EventArgs e)
         {
-            ComButton.Text = "Connected";
-            ComButton.BackColor = Color.Green;
-            comms.QueueDeviceUpdate(versionSensor); //ask for the firmware version
+            comButton.Text = "Connected";
+            comButton.BackColor = Color.Green;
+            comms.QueueDeviceUpdate(versionSensor); //ask for the firmware version when comms first start up
         }
 
         /*

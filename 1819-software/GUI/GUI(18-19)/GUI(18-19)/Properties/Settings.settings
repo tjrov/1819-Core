@@ -1,15 +1,12 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GUI_18_19_.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="PortName" Type="System.String" Scope="User">
+    <Setting Name="PortName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">COM3</Value>
     </Setting>
-    <Setting Name="BaudRate" Type="System.String" Scope="User">
+    <Setting Name="BaudRate" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">500000</Value>
-    </Setting>
-    <Setting Name="LogFile" Type="System.String" Scope="User">
-      <Value Profile="(Default)">log.txt</Value>
     </Setting>
   </Settings>
 </SettingsFile>
