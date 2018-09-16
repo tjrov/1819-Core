@@ -53,16 +53,16 @@ namespace GUI.Devices
                 Controls.Add(graph2);
             }*/
 
-            UpdateControls();
+            //UpdateControls();
         }
 
-        public override void UpdateControls()
+        /*public override void UpdateControls()
         {
-            /*for (int i = 0; i < data.Count; i++)
+            for (int i = 0; i < data.Count; i++)
             {
                 speeds[i].Value = data[i].Speed;
-            }*/
-        }
+            }
+        }*/
 
         protected override byte[] Convert(List<ESCData> controlData)
         {
@@ -93,16 +93,16 @@ namespace GUI.Devices
             speeds[0].Location = new Point(300, 0);
             speeds[1].Location = new Point(0, 0);
             speeds[2].Location = new Point(350, 350);*/
-            UpdateControls();
+            //UpdateControls();
         }
 
-        public override void UpdateControls()
+        /*public override void UpdateControls()
         {
-            /*for(int i = 0; i < data.Count; i++)
+            for(int i = 0; i < data.Count; i++)
             {
                 speeds[i].Value = data[i].Speed;
-            }*/
-        }
+            }
+        }*/
 
         protected override byte[] Convert(List<ToolData> controlData)
         {
@@ -184,9 +184,9 @@ namespace GUI.Devices
             return result;
         }
 
-        public override void UpdateControls()
+        /*public override void UpdateControls()
         {
-            /*//flash button for armed state
+            //flash button for armed state
             if (Data.Status == ROVStatus.ARMED)
             {
                 estop.Visible = true;
@@ -200,8 +200,8 @@ namespace GUI.Devices
                 arm.Text = "Arm";
                 flasher.Stop();
                 arm.BackColor = Color.Green;
-            }*/
-        }
+            }
+        }*/
 
         /*private void OnFlasherTick(object sender, EventArgs e)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,7 +11,7 @@ using GUI.Communication;
 
 namespace GUI.Devices
 {
-    public abstract class GenericAbstractDevice
+    public abstract class GenericAbstractDevice : Component
     {
         protected byte messageCommand;
         public GenericAbstractDevice(byte messageCommand)
@@ -22,7 +23,6 @@ namespace GUI.Devices
         }
         public abstract ROVMessage GetMessage();
         public abstract void UpdateData(ROVMessage msg);
-        public abstract void UpdateControls();
         public bool NeedsResponse { get; protected set; }
     }
     //class that both sensors and actuators extend from

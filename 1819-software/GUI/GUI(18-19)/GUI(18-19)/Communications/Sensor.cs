@@ -68,14 +68,14 @@ namespace GUI.Devices
             Controls.Add(headingIndicator);*/
         }
 
-        public override void UpdateControls()
+        /*public override void UpdateControls()
         {
-            /*attitudeIndicator.YawAngle = data.Yaw;
+            attitudeIndicator.YawAngle = data.Yaw;
             attitudeIndicator.PitchAngle = data.Pitch;
             attitudeIndicator.RollAngle = data.Roll;
             attitudeIndicator.Invalidate();
-            headingIndicator.Heading = data.Yaw;*/
-        }
+            headingIndicator.Heading = data.Yaw;
+        }*/
 
         protected override void Convert(byte[] data, ref OrientationData result)
         {
@@ -126,16 +126,16 @@ namespace GUI.Devices
             UpdateControls();*/
         }
 
-        public override void UpdateControls()
+        /*public override void UpdateControls()
         {
-            /*int i = 0;
+            int i = 0;
             foreach (ESCData esc in data)
             {
                 rpm[i].Value = esc.RPM;
                 temp[i].Value = esc.Temperature;
                 i++;
-            }*/
-        }
+            }
+        }*/
 
         protected override void Convert(byte[] data, ref List<ESCData> result)
         {
@@ -163,10 +163,10 @@ namespace GUI.Devices
             //Controls.Add(depthIndicator);
         }
 
-        public override void UpdateControls()
+        /*public override void UpdateControls()
         {
             //depthIndicator.Depth = data.DepthValue;
-        }
+        }*/
 
         protected override void Convert(byte[] data, ref DepthData result)
         {
@@ -211,12 +211,12 @@ namespace GUI.Devices
             UpdateControls();*/
         }
 
-        public override void UpdateControls()
+        /*public override void UpdateControls()
         {
-            /*status.Text = "" + Data.Status;
+            status.Text = "" + Data.Status;
             error.Text = "" + Data.Error;
-            voltage.Value = Data.Voltage;*/
-        }
+            voltage.Value = Data.Voltage;
+        }*/
 
         protected override void Convert(byte[] data, ref StatusData result)
         {
@@ -240,10 +240,10 @@ namespace GUI.Devices
             Controls.Add(version);*/
         }
 
-        public override void UpdateControls()
+        /*public override void UpdateControls()
         {
             //version.Text = data.VersionString;
-        }
+        }*/
 
         protected override void Convert(byte[] data, ref VersionData result)
         {
