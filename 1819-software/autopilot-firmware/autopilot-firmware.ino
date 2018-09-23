@@ -27,7 +27,7 @@ Import libraries
 Configuration for autopilot board
 */
 
-#define SERIAL_BAUD 500000 //Max tested on tether so far. 500 kbaud possible in theory
+#define SERIAL_BAUD 1000000 //Max tested on tether so far. 500 kbaud possible in theory
 #define MAX_PACKET_LENGTH 64 //maximum possible message is 255 bytes, increase to that if needed
 #define HEADER_BYTE 0x42
 #define SERIAL_TIMEOUT 1000
@@ -125,6 +125,7 @@ void initDepth();
 void readDepth();
 void controlLEDs();
 void initLEDs();
+void flashError();
 
 /*
 the setup function runs once when you press reset or power the board
@@ -146,15 +147,9 @@ void setup() {
 	initTools();
 	initESCs();
 
-	/*if (error != ALL_SYSTEMS_GO) { //if we can't init
-		while (true) {
-			controlLEDs(); //flash out the error code
-		}
-	}*/
-	/*while (true) {
-		readIMU();
-		delay(10);
-	}*/
+	if (error != ALL_SYSTEMS_GO) { //if we can't init
+		flashError(); //flash led with error
+	}
 }
 
 /*
@@ -456,7 +451,8 @@ void emergencyStop() {
 		}
 		Wire.endTransmission();
 		error &= ~TOOLS_FAILURE;
-	} else{
+	}
+	else {
 		error |= TOOLS_FAILURE;
 	}
 }
@@ -570,38 +566,54 @@ Green flashing - armed and connected
 Red blinks - error state
 */
 
-void controlLEDs() {
-	int temp = millis() % 500;
-	//if (error == ALL_SYSTEMS_GO) {
-		switch (status) {
-		case DISCONNECTED:
-			//yellow
-			digitalWrite(RED, temp < 10);
-			digitalWrite(GREEN, temp < 10);
-			digitalWrite(BLUE, LOW);
-			break;
-		case DISARMED:
-			//solid green
-			digitalWrite(RED, LOW);
-			digitalWrite(GREEN, HIGH);
-			digitalWrite(BLUE, LOW);
-			break;
-		case ARMED:
-			//1Hz flashing green / blue
-			digitalWrite(RED, LOW);
-			digitalWrite(GREEN, temp < 250);
-			digitalWrite(BLUE, temp > 250);
-			break;
+void flashError() {
+	//leds off
+	digitalWrite(RED, LOW);
+	digitalWrite(GREEN, LOW);
+	//for each bit in error state
+	for (int i = 0; i < 8; i++) {
+		if (error & (1 << i)) {
+			//if the bit is a 1, there is an error
+			digitalWrite(RED, HIGH);
 		}
-		//flash blue 5ms for correctly processed messages
-		//digitalWrite(BLUE, (millis() - lastComms) < 5); //too slow to show all msgs
-	/*}
-	else {
-		//flash red
-		digitalWrite(RED, (millis() % 500) < 250);
+		else {
+			//else, ok
+			digitalWrite(GREEN, HIGH);
+		}
+		//wait then leds off
+		delay(1000);
+		digitalWrite(RED, LOW);
 		digitalWrite(GREEN, LOW);
+		//blink blue in between bits
+		digitalWrite(BLUE, HIGH);
+		delay(100);
 		digitalWrite(BLUE, LOW);
-	}*/
+	}
+}
+
+void controlLEDs() {
+	switch (status) {
+	case DISCONNECTED:
+		//yellow
+		digitalWrite(RED, millis() % 500 < 10);
+		digitalWrite(GREEN, millis() % 500 < 10);
+		digitalWrite(BLUE, LOW);
+		break;
+	case DISARMED:
+		//solid green
+		digitalWrite(RED, LOW);
+		digitalWrite(GREEN, HIGH);
+		digitalWrite(BLUE, LOW);
+		break;
+	case ARMED:
+		//1Hz flashing green / blue
+		digitalWrite(RED, LOW);
+		digitalWrite(GREEN, millis() % 100 < 10);
+		digitalWrite(BLUE, LOW);
+		break;
+	}
+	//flash blue 5ms for correctly processed messages
+	//digitalWrite(BLUE, (millis() - lastComms) < 5); //too slow to show all msgs
 }
 
 void initLEDs() {

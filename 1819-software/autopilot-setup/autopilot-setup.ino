@@ -22,6 +22,8 @@ void setup() {
 	Serial.begin(500000);
 	delay(1000);
 	Serial.println("Autopilot board setup utility");
+	Serial.println("Press any key to continue");
+	waitInput();
 	Serial.println("Scanning I2C devices");
 
 	Wire.begin();
@@ -52,14 +54,19 @@ void setup() {
 			Serial.println();
 		}
 	}
-	delay(7000);
+	Serial.println("Press any key to continue");
+	waitInput();
 
 	Serial.println("Thruster identification");
-	Serial.println("When the indicated thruster runs, send Y or send N if the direction is inverted");
-	Serial.println("Vertical thrusters should pull the ROV upward, and horizontal thrusters should pull it forward");
-	
-	delay(7000);
-	
+	Serial.println("1) The program will indicate which thruster it is looking for");
+	Serial.println("2) The program will run all available thrusters");
+	Serial.println("3) Send any key to continue if the wrong thruster is running");
+	Serial.println("4) When the right thruster runs, send an I to invert the direction or N to not invert");
+	Serial.println("(Vertical thrusters should generate a force upwards. Horizontal, forwards)");
+
+	Serial.println("Press any key to continue");
+	waitInput();
+
 	Serial.println("Port vertical");
 	identifiedAddresses[0] = identifyThruster();
 	Serial.println("Starboard vertical");
@@ -76,7 +83,7 @@ void setup() {
 	Serial.println("Results (use in configuration section of autopilot-firmware)");
 	Serial.print("#define ESC_ADDRESSES {");
 	for (int i = 0; i < 6; i++) {
-		Serial.print(identifiedAddresses[i]);
+		Serial.print(identifiedAddresses[i], HEX);
 		Serial.print(", ");
 	}
 	Serial.println("}");
@@ -95,33 +102,37 @@ void loop() {
 	}
 }
 
+char waitInput() {
+	while (!Serial.available());
+	char input = Serial.read();
+	delay(10);
+	//clear Serial buffer
+	while (Serial.available()) {
+		Serial.read();
+	}
+	return input;
+}
+
 uint8_t identifyThruster() {
 	//repeatedly try all esc addresses
 	while (true) {
 		for (int i = 0; i < 6; i++) {
 			Serial.print("Running thruster at ");
-			Serial.println(addresses[i]);
+			Serial.println(addresses[i], HEX);
 			//run the thruster at low forward speed for a few seconds
 			escs[i]->set(1000);
-			delay(5000);
-			escs[i]->set(0); //stop
-			//check for a received Y or N
-			if (Serial.available()) {
-				char c = Serial.read();
-				if (c == 'Y' || c == 'y') {
-					Serial.println("Thruster selected (noninverted)");
-					invert[i] = 0;
-				}
-				else if (c == 'N' || c == 'n') {
-					Serial.println("Thruster selected (inverted)");
-					invert[i] = 1;
-				}
-				//clear Serial buffer
-				while (Serial.available()) {
-					Serial.read();
-				}
+			//check for a received C or I or N
+			switch (waitInput()) {
+			case 'N':
+				Serial.println("Thruster selected (noninverted)");
+				invert[i] = 0;
+				return addresses[i];
+			case 'I':
+				Serial.println("Thruster selected (inverted)");
+				invert[i] = 1;
 				return addresses[i];
 			}
+			escs[i]->set(0); //stop
 		}
 	}
 }

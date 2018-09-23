@@ -67,7 +67,7 @@ namespace GUI
             //Comms Initialization 
             comms = new SerialCommunication(
                 new BetterSerialPort(Properties.Settings.Default.PortName,
-                int.Parse(Properties.Settings.Default.BaudRate)));
+                Properties.Settings.Default.BaudRate));
             comms.Started += OnCommsStarted;
             comms.Stopped += OnCommsStopped;
             comms.CommunicationException += OnCommsException;
@@ -334,21 +334,21 @@ namespace GUI
          */
         private void portNameComboBox_DropDownClosed(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty((string)portNameComboBox.SelectedItem))
+            /*if (!string.IsNullOrEmpty((string)portNameComboBox.SelectedItem))
             {
                 Properties.Settings.Default.PortName =
                     (string)portNameComboBox.SelectedItem;
                 Properties.Settings.Default.Save();
-            }
+            }*/
         }
 
         private void baudRateComboBox_DropDownClosed(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty((string)baudRateComboBox.SelectedItem))
+            /*if (!string.IsNullOrEmpty((string)baudRateComboBox.SelectedItem))
             {
                 Properties.Settings.Default.BaudRate = (string)portNameComboBox.SelectedItem;
                 Properties.Settings.Default.Save();
-            }
+            }*/
         }
 
         private void connectionToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
