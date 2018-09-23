@@ -589,8 +589,8 @@ void controlLEDs() {
 		case ARMED:
 			//1Hz flashing green / blue
 			digitalWrite(RED, LOW);
-			digitalWrite(GREEN, temp < 10);
-			digitalWrite(BLUE, LOW);
+			digitalWrite(GREEN, temp < 250);
+			digitalWrite(BLUE, temp > 250);
 			break;
 		}
 		//flash blue 5ms for correctly processed messages
