@@ -50,11 +50,15 @@ Current autopilot revision features:
 - I2C Orientation sensor gives compass heading, pitch, and roll angles
 - I2C Pressure sensor provides a depth reading
 
-Motorcontroller planned features:
+Motorcontroller current features:
 - Arduino Pro Mini
 - RGB status led
 - PCA-9615 differential I2C transceiver (connects to the ROV i2c bus)
-- Bus termination (see autopilot board schematic)
-- 3x DRV8871 motor drivers. (wired as they are on the adafruit breakouts)
 See the autopilot board schematic for how to wire the I2C circuits, since they
 are the same on that board.
+- Bus termination (see autopilot board schematic)
+- 3x DRV8871 motor drivers. (wired as they are on the adafruit breakouts)
+
+Motorcontroller planned additional features (need to be drawn in schematic and board files):
+- I2C device that can generate PWM control signals for at least six ESCs (PCA-9685, perhaps)
+- MOSFET switches (1-2Amp, at least 2 or 3 of them) controlled by these PWM signals
