@@ -12,16 +12,22 @@ Firmware for main board
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 3
 
+#define PWM_ESC //new ROV //do NOT leave both uncommented in one compilation
+#define I2C_ESC //old ROV
+
 /*
 Import libraries
 */
 
 #include <Wire.h>
-#include <SPI.h>
 
 #include "Adafruit_BNO055.h"
 #include "SparkFun_MS5803_I2C.h"
 #include "Arduino_I2C_ESC.h"
+
+#ifdef PWM_ESC //library only needed when using pwm esc signals
+#include "Adafruit_PWMServoDriver.h"
+#endif
 
 /*
 Configuration for autopilot board
@@ -38,8 +44,12 @@ Configuration for autopilot board
 #define ESC_INVERT {0,0,0,0,0,0}
 #define NUM_POLES 6
 
+#define PCA_9685_ADDRESS 0x40
+#define PWM_FREQ 200
+#define PWM_MIN 150 //signal on-time values out of a 4096-step period
+#define PWM_MAX 600
+
 #define NUM_TOOLS 3
-#define TOOLS_ADDRESS 0x1A
 
 #define DEPTH_ADDRESS ADDRESS_LOW
 
@@ -85,11 +95,19 @@ enum COMMAND {
 //#define TX_EN 2
 
 /*Variable declarations*/
+Adafruit_BNO055 bno055;
+MS5803 ms5803(DEPTH_ADDRESS);
+
+#ifdef PWM_ESC
+Adafruit_PWMServoDriver pca9685 = Adafruit_PWMServoDriver();
+#endif
+
+#ifdef I2C_ESC
 Arduino_I2C_ESC *escs[NUM_ESCS];
 const uint8_t addresses[] = ESC_ADDRESSES;
+#endif
+
 const uint8_t invert[] = ESC_INVERT;
-Adafruit_BNO055 imuSensor;
-MS5803 depth(DEPTH_ADDRESS);
 
 struct MESSAGE {
 	COMMAND command;
@@ -321,6 +339,16 @@ digitalWrite(TX_EN, LOW);
 
 /*ESCs*/
 void initESCs() {
+#ifdef PWM_ESC //pwm setup
+	if (checkI2C(PCA_9685_ADDRESS)) {
+		pca9685.begin();
+		pca9685.setPWMFreq(PWM_FREQ);
+	}
+	else {
+		error |= ESC_FAILURE;
+	}
+#endif
+#ifdef I2C_ESC
 	for (int i = 0; i < NUM_ESCS; i++) {
 		if (checkI2C(addresses[i])) {
 			escs[i] = new Arduino_I2C_ESC(addresses[i], NUM_POLES); //T100 has 12 poles. Is the default of 6 correct?
@@ -330,11 +358,15 @@ void initESCs() {
 			return;
 		}
 	}
+#endif
 }
 
 void readESCs() {
+	//none of this works with the pwm escs on the new rov
+	//but set the txData so that a proper response is sent, even if the data in it is random
 	txData.command = ESC_REQ;
 	txData.length = 12;
+#ifdef I2C_ESC 
 	//refresh data from ESCs
 	for (int i = 0; i < 6; i++) {
 		if (checkI2C(addresses[i])) {
@@ -348,9 +380,22 @@ void readESCs() {
 			return;
 		}
 	}
+#endif
 }
 
 void writeESCs() {
+#ifdef PWM_ESC
+	for (int i = 0; i < NUM_ESCS; i++) {
+		if (checkI2C(PCA_9685_ADDRESS)) {
+			//convert pairs of bytes into 16-bit int
+			uint16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
+			//now convert to pulse time length out of 4096
+			speed = map(speed, -32768, 32767, PWM_MIN, PWM_MAX);
+			pca9685.setPWM(i, 0, speed);
+		}
+	}
+#endif
+#ifdef I2C_ESC
 	for (int i = 0; i < NUM_ESCS; i++) {
 		if (checkI2C(addresses[i])) {
 			//convert pairs of bytes into 16-bit int for control of ESC
@@ -368,24 +413,33 @@ void writeESCs() {
 			return;
 		}
 	}
+#endif
 }
 
 /*Tools*/
 void initTools() {
-	if (!checkI2C(TOOLS_ADDRESS)) {
+	if (checkI2C(PCA_9685_ADDRESS)) {
+		pca9685.begin();
+		pca9685.setPWMFreq(PWM_FREQ);
+	}
+	else {
 		error |= TOOLS_FAILURE;
 	}
 }
 
 void writeTools() {
-	if (checkI2C(TOOLS_ADDRESS)) {
-		Wire.beginTransmission(TOOLS_ADDRESS);
-		Wire.write(HEADER_BYTE);
+	if (checkI2C(PCA_9685_ADDRESS)) {
 		for (int i = 0; i < NUM_TOOLS; i++) {
-			Wire.write(rxData.data[i]);
+			int8_t speed = (int8_t)rxData.data[i];
+			if (speed == 0) {
+				pca9685.setPWM(15 - i, 0, 0);
+				pca9685.setPWM(14 - i, 0, 0);
+			}
+			else {
+				pca9685.setPWM(15 - i, 0, map(speed, -128, 127, 0, 4096));
+				pca9685.setPWM(14 - i, 0, map(-speed, -128, 127, 0, 4096));
+			}
 		}
-		Wire.endTransmission();
-
 		error &= ~(TOOLS_FAILURE);
 	}
 	else {
@@ -433,6 +487,8 @@ void writeStatus() {
 
 //call to stop all movement of actuators
 void emergencyStop() {
+	//write 0 to all ESCs
+#ifdef I2C_ESC
 	for (int i = 0; i < NUM_ESCS; i++) {
 		if (checkI2C(addresses[i])) {
 			escs[i]->set(0);
@@ -443,17 +499,20 @@ void emergencyStop() {
 			break;
 		}
 	}
-	if (checkI2C(TOOLS_ADDRESS)) {
-		Wire.beginTransmission(TOOLS_ADDRESS);
-		Wire.write(HEADER_BYTE);
-		for (int i = 0; i < 3; i++) {
-			Wire.write(128);
-		}
-		Wire.endTransmission();
+#endif
+	//reset PCA-9685 to set all PWM signals to permanent logic LOW
+	if (checkI2C(PCA_9685_ADDRESS)) {
+		pca9685.reset();
 		error &= ~TOOLS_FAILURE;
+#ifdef PWM_ESC
+		error &= ~ESC_FAILURE;
+#endif
 	}
 	else {
 		error |= TOOLS_FAILURE;
+#ifdef PWM_ESC
+		error |= ESC_FAILURE;
+#endif
 	}
 }
 
@@ -463,11 +522,11 @@ double mapDouble(double val, double minVal, double maxVal, double minResult, dou
 /*IMU*/
 void initIMU() {
 	//try to setup IMU
-	if (!imuSensor.begin()) {
+	if (!bno055.begin()) {
 		error |= IMU_FAILURE;
 		return;
 	}
-	imuSensor.setExtCrystalUse(true);
+	bno055.setExtCrystalUse(true);
 	//do any configuration of imu here
 }
 
@@ -476,7 +535,7 @@ void readIMU() {
 	txData.length = 6;
 	//refresh data from imu
 	sensors_event_t imuData;
-	imuSensor.getEvent(&imuData);
+	bno055.getEvent(&imuData);
 
 	/* Display the data */
 	/*Serial.print("Heading: ");
@@ -514,9 +573,9 @@ void readIMU() {
 void initDepth() {
 	//attempt to contact sensor to check if it's available
 	if (checkI2C(DEPTH_ADDRESS)) {
-		depth.reset();
-		depth.begin();
-		depth.getTemperature(CELSIUS, ADC_256);
+		ms5803.reset();
+		ms5803.begin();
+		ms5803.getTemperature(CELSIUS, ADC_256);
 	}
 	else {
 		error |= PRESSURE_SENSOR_FAILURE;
@@ -531,7 +590,7 @@ void readDepth() {
 		//1mm resolution of depth with a 0.5ms response time
 		//subtract pressure of air on surface; it doesn't factor
 		//into the pressure caused by the water column
-		double depthDouble = depth.getPressure(ADC_256) - 101300;
+		double depthDouble = ms5803.getPressure(ADC_256) - 101300;
 		//depth = pressure / (density * acceleration)
 		//where depth is in meters, pressure is in Pascals (N/m^2)
 		//density is in kilograms per cubic meter,
