@@ -24,6 +24,8 @@ namespace GUI
 
         private SerialCommunication comms;
 
+        private Boolean Fullscreen = false;
+
         public MainForm()
         {
             //setup window
@@ -49,6 +51,26 @@ namespace GUI
 
             //get ROV firmware version info
             comms.Queue.Enqueue(versionSensor);
+
+            //go Fullscreen
+            GoFullscreen();
+        }
+
+        public void GoFullscreen()
+        {
+            if (!Fullscreen)
+            {
+                this.WindowState = FormWindowState.Normal;
+                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                this.Bounds = Screen.PrimaryScreen.Bounds;
+                Fullscreen = !Fullscreen;
+            }
+            else
+            {
+                this.WindowState = FormWindowState.Maximized;
+                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+                Fullscreen = !Fullscreen;
+            }
         }
 
         private void comms_Started(object sender, EventArgs e)
@@ -109,6 +131,11 @@ namespace GUI
             {
                 statusActuator.Data.DesiredStatus = ROVStatus.ARMED;
             }
+        }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            Form.ActiveForm.Close();
         }
     }
 }
