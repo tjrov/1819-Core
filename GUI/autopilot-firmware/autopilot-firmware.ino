@@ -12,7 +12,7 @@ Firmware for main board
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 3
 
-#define PWM_ESC //new ROV //do NOT leave both uncommented in one compilation
+//#define PWM_ESC //new ROV //do NOT leave both uncommented in one compilation
 #define I2C_ESC //old ROV
 
 /*
@@ -25,9 +25,7 @@ Import libraries
 #include "SparkFun_MS5803_I2C.h"
 #include "Arduino_I2C_ESC.h"
 
-#ifdef PWM_ESC //library only needed when using pwm esc signals
 #include "Adafruit_PWMServoDriver.h"
-#endif
 
 /*
 Configuration for autopilot board
@@ -98,9 +96,7 @@ enum COMMAND {
 Adafruit_BNO055 bno055;
 MS5803 ms5803(DEPTH_ADDRESS);
 
-#ifdef PWM_ESC
 Adafruit_PWMServoDriver pca9685 = Adafruit_PWMServoDriver();
-#endif
 
 #ifdef I2C_ESC
 Arduino_I2C_ESC *escs[NUM_ESCS];
@@ -189,6 +185,7 @@ void loop() {
 			status = DISARMED;
 		}
 	}
+
 	//stop all actuators every .25 sec if the robot is disarmed or disconnected
 	if (status != ARMED && millis() % 250 == 0) {
 		emergencyStop();
@@ -629,24 +626,11 @@ void flashError() {
 	//leds off
 	digitalWrite(RED, LOW);
 	digitalWrite(GREEN, LOW);
-	//for each bit in error state
-	for (int i = 0; i < 8; i++) {
-		if (error & (1 << i)) {
-			//if the bit is a 1, there is an error
-			digitalWrite(RED, HIGH);
-		}
-		else {
-			//else, ok
-			digitalWrite(GREEN, HIGH);
-		}
-		//wait then leds off
-		delay(200);
+	for (int i = 0; i < 5; i++) {
+		digitalWrite(RED, HIGH);
+		delay(100);
 		digitalWrite(RED, LOW);
-		digitalWrite(GREEN, LOW);
-		//blink blue in between bits
-		digitalWrite(BLUE, HIGH);
-		delay(50);
-		digitalWrite(BLUE, LOW);
+		delay(100);
 	}
 }
 
@@ -654,19 +638,19 @@ void controlLEDs() {
 	switch (status) {
 	case DISCONNECTED:
 		//yellow
-		digitalWrite(RED, millis() % 500 < 10);
-		digitalWrite(GREEN, millis() % 500 < 10);
+		digitalWrite(RED, millis() % 2000 < 10);
+		digitalWrite(GREEN, millis() % 2000 < 10);
 		digitalWrite(BLUE, LOW);
 		break;
 	case DISARMED:
 		//solid green
-		digitalWrite(RED, LOW);
-		digitalWrite(GREEN, HIGH);
+		//digitalWrite(RED, LOW);
+		digitalWrite(GREEN, millis() % 500 < 10);
 		digitalWrite(BLUE, LOW);
 		break;
 	case ARMED:
 		//1Hz flashing green / blue
-		digitalWrite(RED, LOW);
+		//digitalWrite(RED, LOW);
 		digitalWrite(GREEN, millis() % 100 < 10);
 		digitalWrite(BLUE, LOW);
 		break;

@@ -75,17 +75,19 @@ namespace GUI
 
         private void timer500_Tick(object sender, EventArgs e)
         {
+            //statusActuator.Data.DesiredStatus = ROVStatus.ARMED;
             comms.Queue.Enqueue(statusSensor);
             comms.Queue.Enqueue(propulsionSensor);
             comms.Queue.Enqueue(statusActuator);
             label1.Text = "Queue length: " + comms.Queue.Count;
+            button2.Text = statusSensor.Data.Status == ROVStatus.ARMED ? "Armed" : "Disarmed";
         }
 
         private void timer50_Tick(object sender, EventArgs e)
         {
             comms.Queue.Enqueue(depthSensor);
             comms.Queue.Enqueue(orientationSensor);
-            comms.Queue.Enqueue(toolsActuator);
+            //comms.Queue.Enqueue(toolsActuator);
         }
 
         private void timer10_Tick(object sender, EventArgs e)
@@ -96,6 +98,17 @@ namespace GUI
         private void button1_Click(object sender, EventArgs e)
         {
             comms.LinkActive = !comms.LinkActive;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if(statusSensor.Data.Status == ROVStatus.ARMED)
+            {
+                statusActuator.Data.DesiredStatus = ROVStatus.DISARMED;
+            } else if(statusSensor.Data.Status == ROVStatus.DISARMED)
+            {
+                statusActuator.Data.DesiredStatus = ROVStatus.ARMED;
+            }
         }
     }
 }
