@@ -15,7 +15,7 @@
 #define __AVR_ATmega328p__
 #define __AVR_ATmega328P__
 #define F_CPU 16000000L
-#define ARDUINO 10807
+#define ARDUINO 10805
 #define ARDUINO_AVR_PRO
 #define ARDUINO_ARCH_AVR
 #define __cplusplus 201103L
@@ -75,6 +75,6 @@ typedef void *__builtin_va_list;
 #define pgm_read_float(address_short) float()
 #define pgm_read_ptr(address_short)   short()
 
-#include "motorcontroller.ino"
+#include "autopilot-setup.ino"
 #endif
 #endif
