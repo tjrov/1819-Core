@@ -31,7 +31,10 @@ namespace GUI
 
             //setup devices
             BetterSerialPort port = new BetterSerialPort("COM5", 1000000);
+            port.Open();
             comms = new SerialCommunication(port);
+            comms.Stopped += comms_Stopped;
+            comms.Started += comms_Started;
             //comms.Connect();
 
             depthSensor = new DepthSensor();
@@ -46,6 +49,28 @@ namespace GUI
 
             //get ROV firmware version info
             comms.Queue.Enqueue(versionSensor);
+        }
+
+        private void comms_Started(object sender, EventArgs e)
+        {
+            this.Invoke(new Action(() =>
+            {
+                button1.Text = "Comms Started";
+                timer500.Enabled = true;
+                timer50.Enabled = true;
+                timer10.Enabled = true;
+            }));
+        }
+
+        private void comms_Stopped(object sender, EventArgs e)
+        {
+            this.Invoke(new Action(() =>
+            {
+                button1.Text = "Comms Stopped";
+                timer500.Enabled = false;
+                timer50.Enabled = false;
+                timer10.Enabled = false;
+            }));
         }
 
         private void timer500_Tick(object sender, EventArgs e)
@@ -70,22 +95,7 @@ namespace GUI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (button1.Text == "Connected")
-            {
-                comms.Disconnect();
-                timer10.Enabled = false;
-                timer50.Enabled = false;
-                timer500.Enabled = false;
-                button1.Text = "Disconnected";
-            }
-            else
-            {
-                comms.Connect();
-                timer10.Enabled = true;
-                timer50.Enabled = true;
-                timer500.Enabled = true;
-                button1.Text = "Connected";
-            }
+            comms.LinkActive = !comms.LinkActive;
         }
     }
 }
