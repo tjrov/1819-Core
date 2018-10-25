@@ -5,23 +5,20 @@ namespace GUI
 {
     public class ToolData
     {
-        public double Speed;
+        public double[] Speeds = new double[4];
     }
     public class DepthData
     {
         public double DepthValue;
     }
-    public class ESCData
+    public class ESCSensorData
     {
-        public double Temperature, Speed;
-        public int RPM;
-        public bool IsOvertemp
-        {
-            get
-            {
-                return Temperature > 45;
-            }
-        }
+        public double[] Temperatures = new double[6];
+        public int[] RPMs = new int[6];
+    }
+    public class ESCActuatorData
+    {
+        public double[] Speeds = new double[6];
     }
     public class OrientationData
     {
@@ -45,10 +42,9 @@ namespace GUI
         INVALID_CHECKSUM = 16,
         INVALID_COMMAND = 32
     }
-    public class StatusData
+    public class StatusSensorData
     {
         public ROVStatus Status = ROVStatus.DISCONNECTED;
-        public ROVStatus DesiredStatus = ROVStatus.DISCONNECTED;
         public ROVError Error = ROVError.ALL_SYSTEMS_GO;
         public double Voltage;
         public bool IsUndervolt
@@ -58,6 +54,10 @@ namespace GUI
                 return (Voltage < 7);
             }
         }
+    }
+    public class StatusActuatorData
+    {
+        public ROVStatus DesiredStatus = ROVStatus.DISCONNECTED;
     }
     public class VersionData
     {

@@ -13,7 +13,7 @@ namespace GUI
         private BetterSerialPort port;
 
         private ConcurrentQueue<GenericAbstractDevice> devices;
-        public ConcurrentQueue<GenericAbstractDevice> DeviceQueue
+        public ConcurrentQueue<GenericAbstractDevice> Queue
         {
             get
             {
@@ -33,15 +33,6 @@ namespace GUI
             this.port = port;
             //connection between UI and background threads is a queue of Devices that need updating
             devices = new ConcurrentQueue<GenericAbstractDevice>();
-
-            //background loop runs on this thread
-            thread = new Thread(new ThreadStart(BackgroundLoop));
-            thread.SetApartmentState(ApartmentState.STA); //for UI compatibility
-            thread.IsBackground = true;
-
-            //get going
-            thread.Start();
-            //port.Open(); //error when port opened in constructor
         }
         public void Connect()
         {
@@ -54,14 +45,14 @@ namespace GUI
             {
                 Started(this, null);
             }
+            //background loop runs on this thread
+            thread = new Thread(new ThreadStart(BackgroundLoop));
+            thread.SetApartmentState(ApartmentState.STA); //for UI compatibility
+            thread.IsBackground = true;
             thread.Start();
         }
         public void Disconnect()
         {
-            if (port.IsOpen)
-            {
-                port.Close();
-            }
             //empty queue of devices needing update
             while (devices.Count > 0)
             {
@@ -72,8 +63,14 @@ namespace GUI
             {
                 Stopped(this, null); //notify rest of code with event
             }
+            Thread.Sleep(500);
+            if (port.IsOpen)
+            {
+                port.Close();
+            }
             thread.Abort();
         }
+       
         //handles communication and processing of queue
         private void BackgroundLoop()
         {

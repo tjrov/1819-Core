@@ -32,9 +32,9 @@ namespace GUI
                 return data;
             }
         }
-        public AbstractDevice(byte messageCommand, TData data) : base(messageCommand)
+        public AbstractDevice(byte messageCommand) : base(messageCommand)
         {
-            this.data = data;
+            this.data = new TData();
         }
         public event EventHandler<TData> Updated;
         protected void FireUpdated()

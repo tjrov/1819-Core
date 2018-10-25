@@ -49,7 +49,7 @@ Configuration for autopilot board
 #define PWM_MIN 150 //signal on-time values out of a 4096-step period
 #define PWM_MAX 600
 
-#define NUM_TOOLS 3
+#define NUM_TOOLS 4
 
 #define DEPTH_ADDRESS ADDRESS_LOW
 
@@ -640,12 +640,12 @@ void flashError() {
 			digitalWrite(GREEN, HIGH);
 		}
 		//wait then leds off
-		delay(1000);
+		delay(200);
 		digitalWrite(RED, LOW);
 		digitalWrite(GREEN, LOW);
 		//blink blue in between bits
 		digitalWrite(BLUE, HIGH);
-		delay(100);
+		delay(50);
 		digitalWrite(BLUE, LOW);
 	}
 }

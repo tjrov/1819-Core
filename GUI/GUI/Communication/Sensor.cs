@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GUI;
+using System;
 using System.Collections.Generic;
 
 namespace GUI
@@ -8,7 +9,7 @@ namespace GUI
     {
         private byte messageLength;
         //messageCommand is the command byte used to signal a read from this specific type of sensor
-        public AbstractSensor(byte messageCommand, byte messageLength, TData data) : base(messageCommand, data)
+        public AbstractSensor(byte messageCommand, byte messageLength) : base(messageCommand)
         {
             NeedsResponse = true;
             this.messageLength = messageLength;
@@ -46,6 +47,7 @@ namespace GUI
         }
         protected abstract void Convert(byte[] data, ref TData result);
     }
+
     public class OrientationSensor : AbstractSensor<OrientationData>
     {
         /*
@@ -58,7 +60,7 @@ namespace GUI
          */
         /*private AttitudeIndicator attitudeIndicator;
         private HeadingIndicator headingIndicator;*/
-        public OrientationSensor(OrientationData data) : base((byte)0x01, (byte)6, data)
+        public OrientationSensor() : base((byte)0x01, (byte)6)
         {
             /*attitudeIndicator = new AttitudeIndicator();
             headingIndicator = new HeadingIndicator();
@@ -86,7 +88,7 @@ namespace GUI
             result.Yaw = ypr[0]; result.Pitch = ypr[1]; result.Roll = ypr[2];
         }
     }
-    public class PropulsionSensor : AbstractSensor<List<ESCData>>
+    public class PropulsionSensor : AbstractSensor<ESCSensorData>
     {
         /*
          * Message format:
@@ -98,8 +100,8 @@ namespace GUI
          */
 
         //private List<BarGraph> rpm;
-       // private List<DataLabel> temp;
-        public PropulsionSensor(List<ESCData> data) : base(0x02, 12, data)
+        // private List<DataLabel> temp;
+        public PropulsionSensor() : base(0x02, 12)
         {
             /*rpm = new List<BarGraph>();
             temp = new List<DataLabel>();
@@ -136,15 +138,14 @@ namespace GUI
             }
         }*/
 
-        protected override void Convert(byte[] data, ref List<ESCData> result)
+        protected override void Convert(byte[] data, ref ESCSensorData result)
         {
-            int i = 0;
-            foreach (ESCData esc in result)
+            for (int i = 0; i < result.RPMs.Length; i += 2)
             {
-                esc.RPM = (int)ConvertUtils.ByteToDouble(data[i], 0, 5000);
-                esc.Temperature = (int)ConvertUtils.ByteToDouble(data[i + 1], 0, 100);
-                i += 2;
+                result.RPMs[i] = (int)ConvertUtils.ByteToDouble(data[i], 0, 5000);
             }
+            for (int i = 0; i < result.RPMs.Length; i += 2)
+                result.Temperatures[i] = (int)ConvertUtils.ByteToDouble(data[i + 1], 0, 100);
         }
     }
     public class DepthSensor : AbstractSensor<DepthData>
@@ -156,7 +157,7 @@ namespace GUI
          * [0][2] Vehicle depth (0 to 30 meters)
          */
         //private DepthIndicator depthIndicator;
-        public DepthSensor(DepthData data) : base(0x03, 2, data)
+        public DepthSensor() : base(0x03, 2)
         {
             //depthIndicator = new DepthIndicator();
             //Controls.Add(depthIndicator);
@@ -172,7 +173,7 @@ namespace GUI
             result.DepthValue = ConvertUtils.BytesToDouble(data[0], data[1], 0, 30);
         }
     }
-    public class StatusSensor : AbstractSensor<StatusData>
+    public class StatusSensor : AbstractSensor<StatusSensorData>
     {
         /*
          * Message format:
@@ -185,7 +186,7 @@ namespace GUI
         //private Label status, error;
         //private BarGraph voltage;
         //private FlowLayoutPanel panel;
-        public StatusSensor(StatusData data) : base(0x04, 3, data)
+        public StatusSensor() : base(0x04, 3)
         {
             /*panel = new FlowLayoutPanel
             {
@@ -217,24 +218,24 @@ namespace GUI
             voltage.Value = Data.Voltage;
         }*/
 
-        protected override void Convert(byte[] data, ref StatusData result)
+        protected override void Convert(byte[] data, ref StatusSensorData result)
         {
             result.Status = (ROVStatus)data[0];
             result.Error = (ROVError)data[1];
             result.Voltage = ConvertUtils.ByteToDouble(data[2], 0, 20);
         }
     }
-    public class DiagnosticsSensor : AbstractSensor<VersionData>
+    public class VersionSensor : AbstractSensor<VersionData>
     {
         //private DataLabel version;
-        public DiagnosticsSensor(VersionData data) : base(0x05, 2, data)
+        public VersionSensor() : base(0x05, 2)
         {
             /*version = new DataLabel
             {
                 AutoSize = true,
                 Info = "Autopilot Firmware",
                 Location = new Point(0, 0),
-                Text = ""
+                Text = "
             };
             Controls.Add(version);*/
         }

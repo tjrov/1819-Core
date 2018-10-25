@@ -8,7 +8,7 @@ namespace GUI
     
     public abstract class Actuator<TData> : AbstractDevice<TData> where TData : new()
     {
-        public Actuator(byte messageCommand, TData data) : base(messageCommand, data)
+        public Actuator(byte messageCommand) : base(messageCommand)
         {
             NeedsResponse = false;
         }
@@ -26,7 +26,7 @@ namespace GUI
         {
         }
     }
-    public class PropulsionActuator : Actuator<List<ESCData>>
+    public class PropulsionActuator : Actuator<ESCActuatorData>
     {
         /*
          * Message format:
@@ -36,7 +36,7 @@ namespace GUI
          * ... and so on for all 6 ESCs
          */
         //private List<BarGraph> speeds;
-        public PropulsionActuator(List<ESCData> data) : base(0x81, data)
+        public PropulsionActuator() : base(0x81)
         {
             /*speeds = new List<BarGraph>();
             Dock = DockStyle.Fill;
@@ -63,24 +63,22 @@ namespace GUI
             }
         }*/
 
-        protected override byte[] Convert(List<ESCData> controlData)
+        protected override byte[] Convert(ESCActuatorData controlData)
         {
-            byte[] result = new byte[controlData.Count * 2];
-            int i = 0;
-            foreach (ESCData esc in controlData)
+            byte[] result = new byte[12];
+            for(int i = 0; i < result.Length; i += 2)
             {
-                Tuple<byte, byte> bytes = ConvertUtils.DoubleToBytes(esc.Speed, -100, 100);
+                Tuple<byte, byte> bytes = ConvertUtils.DoubleToBytes(controlData.Speeds[i/2], -100, 100);
                 result[i] = bytes.Item1;
                 result[i + 1] = bytes.Item2;
-                i += 2;
             }
             return result;
         }
     }
-    public class ToolsActuator : Actuator<List<ToolData>>
+    public class ToolsActuator : Actuator<ToolData>
     {
         //private List<BarGraph> speeds;
-        public ToolsActuator(List<ToolData> data) : base(0x82, data)
+        public ToolsActuator() : base(0x82)
         {
             //speeds = new List<BarGraph>();
            /* for(int i = 0; i < 3; i++)
@@ -103,32 +101,30 @@ namespace GUI
             }
         }*/
 
-        protected override byte[] Convert(List<ToolData> controlData)
+        protected override byte[] Convert(ToolData controlData)
         {
-            byte[] result = new byte[controlData.Count];
-            int i = 0;
-            foreach (ToolData tool in controlData)
-            {
-                if (tool.Speed == 0)
+            byte[] result = new byte[4];
+            for(int i = 0; i < result.Length; i++)
+            { 
+                if (controlData.Speeds[i] == 0)
                 {
                     result[i] = 128;
                 }
                 else
                 {
-                    result[i] = ConvertUtils.DoubleToByte(tool.Speed, -100, 100);
+                    result[i] = ConvertUtils.DoubleToByte(controlData.Speeds[i], -100, 100);
                 }
-                i++;
             }
             return result;
         }
     }
-    public class StatusActuator : Actuator<StatusData>
+    public class StatusActuator : Actuator<StatusActuatorData>
     {
         /*private Button arm, reboot, upload, estop;
         private Timer flasher;
         private FlowLayoutPanel panel;
         private Bitmap estopBitmap = new Bitmap(GUI.Properties.GUI_18_19_.Properties.);*/
-        public StatusActuator(StatusData data) : base(0x83, data) 
+        public StatusActuator() : base(0x83) 
         {
             /*estopBitmap.MakeTransparent(Color.White);
             panel = new FlowLayoutPanel
@@ -175,7 +171,7 @@ namespace GUI
             Controls.Add(panel);*/
         }
 
-        protected override byte[] Convert(StatusData controlData)
+        protected override byte[] Convert(StatusActuatorData controlData)
         {
             byte[] result = new byte[1];
             result[0] = (byte)controlData.DesiredStatus;

@@ -29,12 +29,69 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this.timer500 = new System.Windows.Forms.Timer(this.components);
+            this.timer50 = new System.Windows.Forms.Timer(this.components);
+            this.timer10 = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // timer500
+            // 
+            this.timer500.Interval = 500;
+            this.timer500.Tick += new System.EventHandler(this.timer500_Tick);
+            // 
+            // timer50
+            // 
+            this.timer50.Interval = 50;
+            this.timer50.Tick += new System.EventHandler(this.timer50_Tick);
+            // 
+            // timer10
+            // 
+            this.timer10.Interval = 10;
+            this.timer10.Tick += new System.EventHandler(this.timer10_Tick);
+            // 
+            // button1
+            // 
+            this.button1.AutoSize = true;
+            this.button1.Location = new System.Drawing.Point(12, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(153, 35);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Disconnected";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(220, 17);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(153, 25);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Queue length: ";
+            // 
+            // MainForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.button1);
+            this.Name = "MainForm";
             this.Text = "Form1";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer timer500;
+        private System.Windows.Forms.Timer timer50;
+        private System.Windows.Forms.Timer timer10;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label1;
     }
 }
 
