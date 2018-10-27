@@ -31,7 +31,7 @@ Import libraries
 Configuration for autopilot board
 */
 
-#define SERIAL_BAUD 1000000 //Max tested on tether so far. 500 kbaud possible in theory
+#define SERIAL_BAUD 500000 //Max tested on tether so far. 500 kbaud possible in theory
 #define MAX_PACKET_LENGTH 64 //maximum possible message is 255 bytes, increase to that if needed
 #define HEADER_BYTE 0x42
 #define SERIAL_TIMEOUT 1000
@@ -52,6 +52,8 @@ Configuration for autopilot board
 #define DEPTH_ADDRESS ADDRESS_LOW
 
 #define IMU_ADDRESS 0x28
+
+#define RESET_DELAY 600 //increases time between receiving reset command and actual reset occuring so that it can coincide with upload start
 
 enum ERROR {
 	ALL_SYSTEMS_GO = 0,
@@ -88,6 +90,8 @@ enum COMMAND {
 #define RED 11
 #define GREEN 12
 #define BLUE 13
+
+#define RESET 2 //jumper D2 to RST on board
 /*End pin definitions*/
 
 //#define TX_EN 2
@@ -145,6 +149,9 @@ void flashError();
 the setup function runs once when you press reset or power the board
 */
 void setup() {
+	//run this first to prevent auto-reset
+	pinMode(RESET, INPUT_PULLUP); //connect RST to 5V with a 10k internal resistance
+
 	initLEDs();
 
 	//pinMode(TX_EN, OUTPUT);
@@ -476,8 +483,15 @@ void writeStatus() {
 			digitalWrite(RED, LOW);
 			digitalWrite(GREEN, LOW);
 			digitalWrite(BLUE, LOW);
+
+			pinMode(RESET, OUTPUT); //pull RST to GND
+			digitalWrite(RESET, LOW);
+			delay(RESET_DELAY);
+			digitalWrite(RESET, HIGH); //release RST
+			while (1);
+
 			//go to the bootloader address in flash memory
-			asm("jmp 0x3800");
+			//asm("jmp 0x3800");
 		}
 	}
 }

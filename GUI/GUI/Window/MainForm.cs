@@ -32,7 +32,7 @@ namespace GUI
             InitializeComponent();
 
             //setup devices
-            BetterSerialPort port = new BetterSerialPort("COM5", 1000000);
+            BetterSerialPort port = new BetterSerialPort("COM5", 500000);
             port.Open();
             comms = new SerialCommunication(port);
             comms.Stopped += comms_Stopped;
