@@ -433,6 +433,7 @@ void initTools() {
 
 void writeTools() {
 	if (checkI2C(PCA_9685_ADDRESS)) {
+		digitalWrite(RED, HIGH);
 		for (int i = 0; i < NUM_TOOLS; i++) {
 			int8_t speed = (int8_t)rxData.data[i];
 			if (speed == 0) {

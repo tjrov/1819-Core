@@ -58,6 +58,9 @@
     <Compile Include="Communication\Device.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Indicators.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Window\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

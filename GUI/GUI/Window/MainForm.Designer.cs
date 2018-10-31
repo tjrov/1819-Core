@@ -32,10 +32,11 @@
             this.timer500 = new System.Windows.Forms.Timer(this.components);
             this.timer50 = new System.Windows.Forms.Timer(this.components);
             this.timer10 = new System.Windows.Forms.Timer(this.components);
-            this.button1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.exitButton = new System.Windows.Forms.Button();
+            this.connectButton = new System.Windows.Forms.Button();
+            this.queueLabel = new System.Windows.Forms.Label();
+            this.armButton = new System.Windows.Forms.Button();
+            this.portLabel = new System.Windows.Forms.Label();
+            this.resetButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // timer500
@@ -53,66 +54,72 @@
             this.timer10.Interval = 10;
             this.timer10.Tick += new System.EventHandler(this.timer10_Tick);
             // 
-            // button1
+            // connectButton
             // 
-            this.button1.AutoSize = true;
-            this.button1.Location = new System.Drawing.Point(8, 8);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(104, 27);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Disconnected";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.connectButton.AutoSize = true;
+            this.connectButton.Location = new System.Drawing.Point(12, 12);
+            this.connectButton.Name = "connectButton";
+            this.connectButton.Size = new System.Drawing.Size(156, 42);
+            this.connectButton.TabIndex = 0;
+            this.connectButton.Text = "Disconnected";
+            this.connectButton.UseVisualStyleBackColor = true;
+            this.connectButton.Click += new System.EventHandler(this.button1_Click);
             // 
-            // label1
+            // queueLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(147, 11);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(102, 17);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Queue length: ";
+            this.queueLabel.AutoSize = true;
+            this.queueLabel.Location = new System.Drawing.Point(250, 21);
+            this.queueLabel.Name = "queueLabel";
+            this.queueLabel.Size = new System.Drawing.Size(153, 25);
+            this.queueLabel.TabIndex = 1;
+            this.queueLabel.Text = "Queue length: ";
             // 
-            // button2
+            // armButton
             // 
-            this.button2.AutoSize = true;
-            this.button2.Location = new System.Drawing.Point(8, 35);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(63, 27);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Arm";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.armButton.AutoSize = true;
+            this.armButton.Location = new System.Drawing.Point(12, 60);
+            this.armButton.Name = "armButton";
+            this.armButton.Size = new System.Drawing.Size(94, 42);
+            this.armButton.TabIndex = 2;
+            this.armButton.Text = "Arm";
+            this.armButton.UseVisualStyleBackColor = true;
+            this.armButton.Click += new System.EventHandler(this.button2_Click);
             // 
-            // exitButton
+            // portLabel
             // 
-            this.exitButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.exitButton.BackColor = System.Drawing.Color.Maroon;
-            this.exitButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.exitButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.exitButton.Location = new System.Drawing.Point(483, -4);
-            this.exitButton.Name = "exitButton";
-            this.exitButton.Size = new System.Drawing.Size(50, 50);
-            this.exitButton.TabIndex = 3;
-            this.exitButton.Text = "X";
-            this.exitButton.UseVisualStyleBackColor = false;
-            this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
+            this.portLabel.AutoSize = true;
+            this.portLabel.Location = new System.Drawing.Point(174, 21);
+            this.portLabel.Name = "portLabel";
+            this.portLabel.Size = new System.Drawing.Size(0, 25);
+            this.portLabel.TabIndex = 3;
+            // 
+            // resetButton
+            // 
+            this.resetButton.AutoSize = true;
+            this.resetButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.resetButton.Location = new System.Drawing.Point(113, 61);
+            this.resetButton.Name = "resetButton";
+            this.resetButton.Size = new System.Drawing.Size(78, 35);
+            this.resetButton.TabIndex = 4;
+            this.resetButton.Text = "Reset";
+            this.resetButton.UseVisualStyleBackColor = true;
+            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(533, 288);
-            this.Controls.Add(this.exitButton);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(1280, 1024);
+            this.Controls.Add(this.resetButton);
+            this.Controls.Add(this.portLabel);
+            this.Controls.Add(this.armButton);
+            this.Controls.Add(this.queueLabel);
+            this.Controls.Add(this.connectButton);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainForm";
             this.Text = "TJROV - GUI";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -123,10 +130,11 @@
         private System.Windows.Forms.Timer timer500;
         private System.Windows.Forms.Timer timer50;
         private System.Windows.Forms.Timer timer10;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button exitButton;
+        private System.Windows.Forms.Button connectButton;
+        private System.Windows.Forms.Label queueLabel;
+        private System.Windows.Forms.Button armButton;
+        private System.Windows.Forms.Label portLabel;
+        private System.Windows.Forms.Button resetButton;
     }
 }
 

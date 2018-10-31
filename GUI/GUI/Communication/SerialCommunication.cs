@@ -123,8 +123,8 @@ namespace GUI
                             CommunicationException(this, ex);
                         }
                     }
-                    /*//fire timers if necessary
-                    if ((DateTime.Now.Ticks - prevTime) > 10 * TimeSpan.TicksPerMillisecond)
+                    //fire timers if necessary
+                    /*if ((DateTime.Now.Ticks - prevTime) > 10 * TimeSpan.TicksPerMillisecond)
                     {
                         //System.Diagnostics.Debug.WriteLine(DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
                         //System.Diagnostics.Debug.WriteLine(devices.Count);

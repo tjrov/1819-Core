@@ -26,14 +26,26 @@ namespace GUI
 
         private Boolean Fullscreen = false;
 
+        private AttitudeIndicator attitudeIndicator;
+        private HeadingIndicator headingIndicator;
+        private DepthIndicator depthIndicator;
+
         public MainForm()
         {
             //setup window
             InitializeComponent();
 
+            depthIndicator = new DepthIndicator() { Location = new Point(0, 100) };
+            attitudeIndicator = new AttitudeIndicator() { Location = new Point(100, 100) };
+            headingIndicator = new HeadingIndicator() { Location = new Point(600, 100) };
+            Controls.Add(depthIndicator);
+            Controls.Add(attitudeIndicator);
+            Controls.Add(headingIndicator);
+
             //setup devices
             BetterSerialPort port = new BetterSerialPort("COM5", 500000);
             port.Open();
+            portLabel.Text = string.Format("{0}@{1}baud", port.PortName, port.BaudRate);
             comms = new SerialCommunication(port);
             comms.Stopped += comms_Stopped;
             comms.Started += comms_Started;
@@ -49,11 +61,28 @@ namespace GUI
             propulsionActuator = new PropulsionActuator();
             toolsActuator = new ToolsActuator();
 
+            //update displays when sensors polled
+            orientationSensor.Updated += OrientationSensor_Updated;
+            depthSensor.Updated += DepthSensor_Updated;
+
             //get ROV firmware version info
             comms.Queue.Enqueue(versionSensor);
 
             //go Fullscreen
-            GoFullscreen();
+            //GoFullscreen(); //do this in the designer
+        }
+
+        private void DepthSensor_Updated(object sender, DepthData e)
+        {
+            depthIndicator.Depth = depthSensor.Data.DepthValue;
+        }
+
+        private void OrientationSensor_Updated(object sender, OrientationData e)
+        {
+            attitudeIndicator.PitchAngle = orientationSensor.Data.Pitch;
+            attitudeIndicator.RollAngle = orientationSensor.Data.Roll;
+            attitudeIndicator.YawAngle = orientationSensor.Data.Yaw;
+            headingIndicator.Heading = orientationSensor.Data.Yaw;
         }
 
         public void GoFullscreen()
@@ -77,7 +106,7 @@ namespace GUI
         {
             this.Invoke(new Action(() =>
             {
-                button1.Text = "Comms Started";
+                connectButton.Text = "Comms Started";
                 timer500.Enabled = true;
                 timer50.Enabled = true;
                 timer10.Enabled = true;
@@ -88,7 +117,7 @@ namespace GUI
         {
             this.Invoke(new Action(() =>
             {
-                button1.Text = "Comms Stopped";
+                connectButton.Text = "Comms Stopped";
                 timer500.Enabled = false;
                 timer50.Enabled = false;
                 timer10.Enabled = false;
@@ -101,15 +130,15 @@ namespace GUI
             comms.Queue.Enqueue(statusSensor);
             comms.Queue.Enqueue(propulsionSensor);
             comms.Queue.Enqueue(statusActuator);
-            label1.Text = "Queue length: " + comms.Queue.Count;
-            button2.Text = statusSensor.Data.Status == ROVStatus.ARMED ? "Armed" : "Disarmed";
+            queueLabel.Text = "Queue length: " + comms.Queue.Count;
+            armButton.Text = statusSensor.Data.Status == ROVStatus.ARMED ? "Armed" : "Disarmed";
         }
 
         private void timer50_Tick(object sender, EventArgs e)
         {
             comms.Queue.Enqueue(depthSensor);
             comms.Queue.Enqueue(orientationSensor);
-            //comms.Queue.Enqueue(toolsActuator);
+            comms.Queue.Enqueue(toolsActuator);
         }
 
         private void timer10_Tick(object sender, EventArgs e)
@@ -136,6 +165,11 @@ namespace GUI
         private void exitButton_Click(object sender, EventArgs e)
         {
             Form.ActiveForm.Close();
+        }
+
+        private void resetButton_Click(object sender, EventArgs e)
+        {
+            statusActuator.Data.DesiredStatus = ROVStatus.REBOOT;
         }
     }
 }
