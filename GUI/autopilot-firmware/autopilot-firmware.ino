@@ -373,15 +373,11 @@ void readESCs() {
 #ifdef I2C_ESC 
 	//refresh data from ESCs
 	for (int i = 0; i < 6; i++) {
-		if (checkI2C(addresses[i])) {
+		if (!(error&ESC_FAILURE)) {
 			escs[i]->update();
 			txData.data[i * 2] = (uint8_t)mapDouble(escs[i]->rpm(), 0, 5000, 0, 255);
 			txData.data[i * 2 + 1] = (uint8_t)mapDouble(escs[i]->temperature(), 0, 100, 0, 255);
 			error &= ~(ESC_FAILURE);
-		}
-		else {
-			error |= ESC_FAILURE;
-			return;
 		}
 	}
 #endif
@@ -390,7 +386,7 @@ void readESCs() {
 void writeESCs() {
 #ifdef PWM_ESC
 	for (int i = 0; i < NUM_ESCS; i++) {
-		if (checkI2C(PCA_9685_ADDRESS)) {
+		if (!(error&ESC_FAILURE)) {
 			//convert pairs of bytes into 16-bit int
 			uint16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
 			//now convert to pulse time length out of 4096
@@ -401,7 +397,7 @@ void writeESCs() {
 #endif
 #ifdef I2C_ESC
 	for (int i = 0; i < NUM_ESCS; i++) {
-		if (checkI2C(addresses[i])) {
+		if (!(error & ESC_FAILURE)) {
 			//convert pairs of bytes into 16-bit int for control of ESC
 			int16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
 			if (invert[i]) {
@@ -410,11 +406,6 @@ void writeESCs() {
 			else {
 				escs[i]->set(speed);
 			}
-			error &= ~(ESC_FAILURE);
-		}
-		else {
-			error |= ESC_FAILURE;
-			return;
 		}
 	}
 #endif
@@ -432,7 +423,7 @@ void initTools() {
 }
 
 void writeTools() {
-	if (checkI2C(PCA_9685_ADDRESS)) {
+	if (!(error&TOOLS_FAILURE)) {
 		digitalWrite(RED, HIGH);
 		for (int i = 0; i < NUM_TOOLS; i++) {
 			int8_t speed = (int8_t)rxData.data[i];
@@ -445,10 +436,6 @@ void writeTools() {
 				pca9685.setPWM(14 - i, 0, map(-speed, -128, 127, 0, 4096));
 			}
 		}
-		error &= ~(TOOLS_FAILURE);
-	}
-	else {
-		error |= TOOLS_FAILURE;
 	}
 }
 
@@ -502,29 +489,14 @@ void emergencyStop() {
 	//write 0 to all ESCs
 #ifdef I2C_ESC
 	for (int i = 0; i < NUM_ESCS; i++) {
-		if (checkI2C(addresses[i])) {
+		if (!(error&ESC_FAILURE)) {
 			escs[i]->set(0);
-			error &= ~ESC_FAILURE;
-		}
-		else {
-			error |= ESC_FAILURE;
-			break;
 		}
 	}
 #endif
-	//reset PCA-9685 to set all PWM signals to permanent logic LOW
-	if (checkI2C(PCA_9685_ADDRESS)) {
+	//reset PCA-9685 to set all PWM signals to permanent logic LOW (this covers stopping tools and pwm escs)
+	if (!(error&TOOLS_FAILURE)) {
 		pca9685.reset();
-		error &= ~TOOLS_FAILURE;
-#ifdef PWM_ESC
-		error &= ~ESC_FAILURE;
-#endif
-	}
-	else {
-		error |= TOOLS_FAILURE;
-#ifdef PWM_ESC
-		error |= ESC_FAILURE;
-#endif
 	}
 }
 
@@ -597,7 +569,7 @@ void initDepth() {
 void readDepth() {
 	txData.command = DEPTH_REQ;
 	txData.length = 2;
-	if (checkI2C(DEPTH_ADDRESS)) {
+	if (!(error&PRESSURE_SENSOR_FAILURE)) {
 		//8-bit adc reading gives +/-1 mbar, or better than
 		//1mm resolution of depth with a 0.5ms response time
 		//subtract pressure of air on surface; it doesn't factor
@@ -613,10 +585,6 @@ void readDepth() {
 
 		txData.data[0] = intDepth & 0xFF;
 		txData.data[1] = (intDepth >> 8) & 0xFF;
-		error &= ~(IMU_FAILURE);
-	}
-	else {
-		error |= PRESSURE_SENSOR_FAILURE;
 	}
 }
 

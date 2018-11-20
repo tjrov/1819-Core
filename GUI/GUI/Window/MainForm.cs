@@ -138,7 +138,7 @@ namespace GUI
         {
             comms.Queue.Enqueue(depthSensor);
             comms.Queue.Enqueue(orientationSensor);
-            comms.Queue.Enqueue(toolsActuator);
+            //comms.Queue.Enqueue(toolsActuator);
         }
 
         private void timer10_Tick(object sender, EventArgs e)
