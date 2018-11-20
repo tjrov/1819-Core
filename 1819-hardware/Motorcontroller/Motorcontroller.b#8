@@ -1083,13 +1083,13 @@ design rules under a new name.</description>
 <attribute name="NAME" x="22.86" y="24.003" size="0.6096" layer="25" font="vector" ratio="20"/>
 <attribute name="VALUE" x="22.86" y="21.082" size="0.6096" layer="27" font="vector" ratio="20"/>
 </element>
-<element name="J6" library="SparkFun-Connectors" package="1X01_NO_SILK" value="" x="24.13" y="16.51">
-<attribute name="NAME" x="22.86" y="17.653" size="0.6096" layer="25" font="vector" ratio="20"/>
-<attribute name="VALUE" x="22.86" y="14.732" size="0.6096" layer="27" font="vector" ratio="20"/>
+<element name="J6" library="SparkFun-Connectors" package="1X01_NO_SILK" value="" x="-52.07" y="2.54">
+<attribute name="NAME" x="-53.34" y="3.683" size="0.6096" layer="25" font="vector" ratio="20"/>
+<attribute name="VALUE" x="-53.34" y="0.762" size="0.6096" layer="27" font="vector" ratio="20"/>
 </element>
-<element name="J7" library="SparkFun-Connectors" package="1X01_NO_SILK" value="" x="24.13" y="3.81">
-<attribute name="NAME" x="22.86" y="4.953" size="0.6096" layer="25" font="vector" ratio="20"/>
-<attribute name="VALUE" x="22.86" y="2.032" size="0.6096" layer="27" font="vector" ratio="20"/>
+<element name="J7" library="SparkFun-Connectors" package="1X01_NO_SILK" value="" x="-57.15" y="2.54">
+<attribute name="NAME" x="-58.42" y="3.683" size="0.6096" layer="25" font="vector" ratio="20"/>
+<attribute name="VALUE" x="-58.42" y="0.762" size="0.6096" layer="27" font="vector" ratio="20"/>
 </element>
 </elements>
 <signals>
@@ -1136,16 +1136,14 @@ design rules under a new name.</description>
 </polygon>
 <wire x1="24.13" y1="35.56" x2="26.93" y2="36.195" width="0" layer="19" extent="1-1"/>
 <wire x1="26.93" y1="23.495" x2="24.13" y2="22.86" width="0" layer="19" extent="1-1"/>
-<wire x1="26.93" y1="17.145" x2="24.13" y2="16.51" width="0" layer="19" extent="1-1"/>
-<wire x1="26.93" y1="4.445" x2="24.13" y2="3.81" width="0" layer="19" extent="1-1"/>
 <wire x1="21.33" y1="37.465" x2="24.13" y2="35.56" width="0" layer="19" extent="1-1"/>
 <wire x1="21.33" y1="24.765" x2="24.13" y2="22.86" width="0" layer="19" extent="1-1"/>
-<wire x1="21.33" y1="18.415" x2="24.13" y2="16.51" width="0" layer="19" extent="1-1"/>
-<wire x1="21.33" y1="5.715" x2="24.13" y2="3.81" width="0" layer="19" extent="1-1"/>
-<wire x1="17.78" y1="19.47" x2="21.33" y2="18.415" width="0" layer="19" extent="1-1"/>
 <wire x1="20.32" y1="28.36" x2="21.33" y2="24.765" width="0" layer="19" extent="1-1"/>
-<wire x1="20.32" y1="9.31" x2="21.33" y2="5.715" width="0" layer="19" extent="1-1"/>
+<wire x1="20.32" y1="9.31" x2="24.15" y2="10.16" width="0" layer="19" extent="1-1"/>
+<wire x1="21.33" y1="5.715" x2="20.32" y2="9.31" width="0" layer="19" extent="1-1"/>
 <wire x1="16.51" y1="30.9" x2="20.32" y2="28.36" width="0" layer="19" extent="1-1"/>
+<wire x1="21.33" y1="18.415" x2="24.13" y2="22.86" width="0" layer="19" extent="1-1"/>
+<wire x1="17.78" y1="19.47" x2="21.33" y2="18.415" width="0" layer="19" extent="1-1"/>
 <wire x1="9.1186" y1="32.4612" x2="3.81" y2="33.04" width="0" layer="19" extent="1-1"/>
 <wire x1="9.31" y1="29.21" x2="9.1186" y2="32.4612" width="0" layer="19" extent="1-1"/>
 <wire x1="6.96" y1="25.815" x2="9.31" y2="29.21" width="0" layer="19" extent="1-1"/>
@@ -1157,9 +1155,13 @@ design rules under a new name.</description>
 <wire x1="13.36" y1="22.565" x2="17.78" y2="19.47" width="0" layer="19" extent="1-1"/>
 <wire x1="13.36" y1="23.215" x2="13.36" y2="22.565" width="0" layer="19" extent="1-1"/>
 <wire x1="13.36" y1="23.865" x2="13.36" y2="23.215" width="0" layer="19" extent="1-1"/>
+<wire x1="26.93" y1="17.145" x2="21.33" y2="18.415" width="0" layer="19" extent="1-1"/>
+<wire x1="26.93" y1="4.445" x2="21.33" y2="5.715" width="0" layer="19" extent="1-1"/>
 <wire x1="6.96" y1="17.365" x2="6.96" y2="23.215" width="0" layer="19" extent="1-1"/>
 <wire x1="13.97" y1="9.74" x2="20.32" y2="9.31" width="0" layer="19" extent="1-1"/>
 <wire x1="9.1725" y1="11.149" x2="13.97" y2="9.74" width="0" layer="19" extent="1-1"/>
+<wire x1="-52.07" y1="2.54" x2="6.96" y2="17.365" width="0" layer="19" extent="1-1"/>
+<wire x1="-57.15" y1="2.54" x2="-52.07" y2="2.54" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VCC">
 <contactref element="C1" pad="1"/>
