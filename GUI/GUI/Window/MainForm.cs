@@ -3,16 +3,11 @@
 // Darius Kianersi
 //Anish Gorentala
 //Aneesh Boreda
+using SlimDX.DirectInput;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using SlimDX.DirectInput;
 
 namespace GUI
 {
@@ -32,11 +27,12 @@ namespace GUI
 
         //Gampads
         public DirectInput Input = new DirectInput();
-        Joystick stick;
-        Joystick[] Sticks;
+        public Joystick stick;
+        public Joystick[] Sticks;
         int yValue = 0;
         int xValue = 0;
         int zValue = 0;
+        int tickCount = 0;
         public Boolean connected1 = false;
 
         private AttitudeIndicator attitudeIndicator;
@@ -46,7 +42,10 @@ namespace GUI
         public MainForm()
         {
             //setup window
+            this.KeyPreview = true;
             InitializeComponent();
+            Sticks = GetSticks();
+            controllerUpdate.Enabled = true;
 
             depthIndicator = new DepthIndicator() { Location = new Point(0, 100) };
             attitudeIndicator = new AttitudeIndicator() { Location = new Point(100, 100) };
@@ -110,6 +109,8 @@ namespace GUI
             {
                 connected1 = true;
             }
+            else
+                connected1 = false;
             return sticks.ToArray();
         }
 
@@ -187,7 +188,13 @@ namespace GUI
 
         private void timer10_Tick(object sender, EventArgs e)
         {
-            comms.Queue.Enqueue(propulsionActuator);
+            try {
+                comms.Queue.Enqueue(propulsionActuator);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Unhandled Error: " + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -213,12 +220,27 @@ namespace GUI
 
         private void controllerUpdate_Tick(object sender, EventArgs e)
         {
-            if(connected1)
-
+            if(tickCount >= 10)
+            {
+                Sticks = GetSticks();
+                tickCount = 0;
+            }
+            if (connected1)
+                ConnectionLabel.Text = "Controller Connected = True";
+            else
+                ConnectionLabel.Text = "Controller Connected = False";
             for(int i = 0; i < Sticks.Length; i++)
             {
                 StickHandle(Sticks[i], i);
             }
+            Console.WriteLine(tickCount);
+            tickCount++;
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+                Environment.Exit(1);
         }
     }
 }

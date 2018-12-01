@@ -38,8 +38,7 @@
             this.portLabel = new System.Windows.Forms.Label();
             this.resetButton = new System.Windows.Forms.Button();
             this.controllerUpdate = new System.Windows.Forms.Timer(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.ConnectionLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // timer500
@@ -117,13 +116,14 @@
             // 
             this.controllerUpdate.Tick += new System.EventHandler(this.controllerUpdate_Tick);
             // 
-            // pictureBox1
+            // ConnectionLabel
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(529, 80);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(253, 148);
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
+            this.ConnectionLabel.AutoSize = true;
+            this.ConnectionLabel.Location = new System.Drawing.Point(8, 71);
+            this.ConnectionLabel.Name = "ConnectionLabel";
+            this.ConnectionLabel.Size = new System.Drawing.Size(183, 17);
+            this.ConnectionLabel.TabIndex = 5;
+            this.ConnectionLabel.Text = "Controller Connected: False";
             // 
             // MainForm
             // 
@@ -131,7 +131,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(853, 655);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.ConnectionLabel);
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.portLabel);
             this.Controls.Add(this.armButton);
@@ -142,7 +142,7 @@
             this.Name = "MainForm";
             this.Text = "TJROV - GUI";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -159,7 +159,7 @@
         private System.Windows.Forms.Label portLabel;
         private System.Windows.Forms.Button resetButton;
         private System.Windows.Forms.Timer controllerUpdate;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label ConnectionLabel;
     }
 }
 

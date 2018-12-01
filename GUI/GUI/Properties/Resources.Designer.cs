@@ -113,6 +113,16 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ps4controller {
+            get {
+                object obj = ResourceManager.GetObject("ps4controller", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap rov_electronics {
             get {
                 object obj = ResourceManager.GetObject("rov_electronics", resourceCulture);
