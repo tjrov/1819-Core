@@ -342,10 +342,17 @@ namespace GUI
                 tickCount = 0;
             }
             if (connected1)
+            {
                 ConnectionLabel.Text = "Controller Connected = True";
+                ConnectionB.BackColor = Color.LimeGreen;
+            }
             else
+            {
                 ConnectionLabel.Text = "Controller Connected = False";
-            for(int i = 0; i < Sticks.Length; i++)
+                ConnectionB.BackColor = Color.DarkRed;
+            }
+
+            for (int i = 0; i < Sticks.Length; i++)
             {
                 StickHandle(Sticks[i], i);
             }

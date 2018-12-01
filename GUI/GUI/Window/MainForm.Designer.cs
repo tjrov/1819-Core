@@ -60,6 +60,7 @@
             this.button10 = new System.Windows.Forms.Label();
             this.button9 = new System.Windows.Forms.Label();
             this.button15 = new System.Windows.Forms.Label();
+            this.ConnectionB = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // timer500
@@ -356,12 +357,23 @@
             this.button15.TabIndex = 26;
             this.button15.Text = "N/A";
             // 
+            // ConnectionB
+            // 
+            this.ConnectionB.BackColor = System.Drawing.Color.DarkRed;
+            this.ConnectionB.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ConnectionB.Location = new System.Drawing.Point(198, 71);
+            this.ConnectionB.Name = "ConnectionB";
+            this.ConnectionB.Size = new System.Drawing.Size(75, 23);
+            this.ConnectionB.TabIndex = 27;
+            this.ConnectionB.UseVisualStyleBackColor = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(853, 655);
+            this.Controls.Add(this.ConnectionB);
             this.Controls.Add(this.button15);
             this.Controls.Add(this.button14);
             this.Controls.Add(this.button13);
@@ -433,6 +445,7 @@
         private System.Windows.Forms.Label button10;
         private System.Windows.Forms.Label button9;
         private System.Windows.Forms.Label button15;
+        private System.Windows.Forms.Button ConnectionB;
     }
 }
 
