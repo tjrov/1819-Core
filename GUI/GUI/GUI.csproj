@@ -109,6 +109,7 @@
     <Content Include="Resources\estop.png" />
     <Content Include="Resources\heading.bmp" />
     <Content Include="Resources\horizon.bmp" />
+    <Content Include="Resources\ps4controller.jpeg" />
     <Content Include="Resources\rov-electronics.png" />
     <Content Include="Resources\rov-thrusters.png" />
     <Content Include="Resources\rov-tools.png" />

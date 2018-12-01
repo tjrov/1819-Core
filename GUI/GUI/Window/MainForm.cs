@@ -3,7 +3,6 @@
 // Darius Kianersi
 //Anish Gorentala
 //Aneesh Boreda
-//use the command line patrick
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SlimDX.DirectInput;
 
 namespace GUI
 {
@@ -30,7 +30,14 @@ namespace GUI
 
         private SerialCommunication comms;
 
-        private Boolean Fullscreen = false;
+        //Gampads
+        public DirectInput Input = new DirectInput();
+        Joystick stick;
+        Joystick[] Sticks;
+        int yValue = 0;
+        int xValue = 0;
+        int zValue = 0;
+        public Boolean connected1 = false;
 
         private AttitudeIndicator attitudeIndicator;
         private HeadingIndicator headingIndicator;
@@ -73,9 +80,57 @@ namespace GUI
 
             //get ROV firmware version info
             comms.Queue.Enqueue(versionSensor);
+        }
 
-            //go Fullscreen
-            //GoFullscreen(); //do this in the designer
+        public Joystick[] GetSticks()
+        {
+            List<Joystick> sticks = new List<Joystick>();
+            foreach(DeviceInstance device in Input.GetDevices(DeviceClass.GameController,DeviceEnumerationFlags.AttachedOnly))
+            {
+                try
+                {
+                    stick = new Joystick(Input, device.InstanceGuid);
+                    stick.Acquire();
+
+                    foreach(DeviceObjectInstance deviceObject in stick.GetObjects())
+                    {
+                        if((deviceObject.ObjectType & ObjectDeviceType.Axis) != 0)
+                        {
+                            stick.GetObjectPropertiesById((int)deviceObject.ObjectType).SetRange(-100, 100);
+                        }
+                    }
+                    sticks.Add(stick);
+                }
+                catch(DirectInputException ex)
+                {
+                    MessageBox.Show("Controller Error: " + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            if (sticks.Count != 0)
+            {
+                connected1 = true;
+            }
+            return sticks.ToArray();
+        }
+
+        public void StickHandle(Joystick stick, int id)
+        {
+            JoystickState state = new JoystickState();
+            state = stick.GetCurrentState();
+
+            yValue = -state.Y;
+            xValue = state.X;
+            zValue = state.Z;
+
+            bool[] buttons = state.GetButtons();
+
+            if(id == 0)
+            {
+                if(buttons[0])
+                {
+
+                }
+            }
         }
 
         private void DepthSensor_Updated(object sender, DepthData e)
@@ -89,23 +144,6 @@ namespace GUI
             attitudeIndicator.RollAngle = orientationSensor.Data.Roll;
             attitudeIndicator.YawAngle = orientationSensor.Data.Yaw;
             headingIndicator.Heading = orientationSensor.Data.Yaw;
-        }
-
-        public void GoFullscreen()
-        {
-            if (!Fullscreen)
-            {
-                this.WindowState = FormWindowState.Normal;
-                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-                this.Bounds = Screen.PrimaryScreen.Bounds;
-                Fullscreen = !Fullscreen;
-            }
-            else
-            {
-                this.WindowState = FormWindowState.Maximized;
-                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
-                Fullscreen = !Fullscreen;
-            }
         }
 
         private void comms_Started(object sender, EventArgs e)
@@ -168,14 +206,19 @@ namespace GUI
             }
         }
 
-        private void exitButton_Click(object sender, EventArgs e)
-        {
-            Form.ActiveForm.Close();
-        }
-
         private void resetButton_Click(object sender, EventArgs e)
         {
             statusActuator.Data.DesiredStatus = ROVStatus.REBOOT;
+        }
+
+        private void controllerUpdate_Tick(object sender, EventArgs e)
+        {
+            if(connected1)
+
+            for(int i = 0; i < Sticks.Length; i++)
+            {
+                StickHandle(Sticks[i], i);
+            }
         }
     }
 }
