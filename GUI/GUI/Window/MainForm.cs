@@ -29,8 +29,8 @@ namespace GUI
         public DirectInput Input = new DirectInput();
         public Joystick stick;
         public Joystick[] Sticks;
-        int yValue = 0;
-        int xValue = 0;
+        int yValueL = 0;
+        int xValueL = 0;
         int zValue = 0;
         int tickCount = 0;
         public Boolean connected1 = false;
@@ -119,17 +119,133 @@ namespace GUI
             JoystickState state = new JoystickState();
             state = stick.GetCurrentState();
 
-            yValue = -state.Y;
-            xValue = state.X;
+            if (-state.Y != 0)
+            {
+                yValueL = -state.Y;
+                if(yValueL < 9 && yValueL > -9)
+                {
+                    yValueL = 0;
+                }
+                y.Text = "" + yValueL;
+            }
+            if (state.X != 0)
+            {
+                xValueL = state.X;
+                if (xValueL < 9 && xValueL > -9)
+                {
+                    xValueL = 0;
+                }
+                x.Text = "" + xValueL;
+            }
             zValue = state.Z;
 
             bool[] buttons = state.GetButtons();
 
             if(id == 0)
             {
-                if(buttons[0])
+                for(int i = 0; i < buttons.Length; i++)
                 {
-
+                    switch (i)
+                    {
+                        case 0:
+                            if (buttons[0] != false)
+                                button0.Text = "Pressed";
+                            else
+                                button0.Text = "N/A";
+                            break;
+                        case 1:
+                            if (buttons[1] != false)
+                                button1.Text = "Pressed";
+                            else
+                                button1.Text = "N/A";
+                            break;
+                        case 2:
+                            if (buttons[2] != false)
+                                button2.Text = "Pressed";
+                            else
+                                button2.Text = "N/A";
+                            break;
+                        case 3:
+                            if (buttons[3] != false)
+                                button3.Text = "Pressed";
+                            else
+                                button3.Text = "N/A";
+                            break;
+                        case 4:
+                            if (buttons[4] != false)
+                                button4.Text = "Pressed";
+                            else
+                                button4.Text = "N/A";
+                            break;
+                        case 5:
+                            if (buttons[5] != false)
+                                button5.Text = "Pressed";
+                            else
+                                button5.Text = "N/A";
+                            break;
+                        case 6:
+                            if (buttons[6] != false)
+                                button6.Text = "Pressed";
+                            else
+                                button6.Text = "N/A";
+                            break;
+                        case 7:
+                            if (buttons[7] != false)
+                                button7.Text = "Pressed";
+                            else
+                                button7.Text = "N/A";
+                            break;
+                        case 8:
+                            if (buttons[8] != false)
+                                button8.Text = "Pressed";
+                            else
+                                button8.Text = "N/A";
+                            break;
+                        case 9:
+                            if (buttons[9] != false)
+                                button9.Text = "Pressed";
+                            else
+                                button9.Text = "N/A";
+                            break;
+                        case 10:
+                            if (buttons[10] != false)
+                                button10.Text = "Pressed";
+                            else
+                                button10.Text = "N/A";
+                            break;
+                        case 11:
+                            if (buttons[11] != false)
+                                button11.Text = "Pressed";
+                            else
+                                button11.Text = "N/A";
+                            break;
+                        case 12:
+                            if (buttons[12] != false)
+                                button12.Text = "Pressed";
+                            else
+                                button12.Text = "N/A";
+                            break;
+                        case 13:
+                            if (buttons[13] != false)
+                                button13.Text = "Pressed";
+                            else
+                                button13.Text = "N/A";
+                            break;
+                        case 14:
+                            if (buttons[14] != false)
+                                button14.Text = "Pressed";
+                            else
+                                button14.Text = "N/A";
+                            break;
+                        case 15:
+                            if (buttons[15] != false)
+                                button15.Text = "Pressed";
+                            else
+                                button15.Text = "N/A";
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
