@@ -1,3 +1,3 @@
 # autopilot-firmware build property overrides
 # run reset code before uploading
-recipe.hooks.linking.postlink.1.pattern=cmd.exe /c "start {build.project_path}\Resetter.exe COM5 250000 {build.project_path}\avr {build.path}\{build.project_name}.hex"
+recipe.hooks.linking.postlink.1.pattern=cmd.exe /c "start {build.project_path}\Resetter.exe COM5 500000 {build.project_path}\avr {build.path}\{build.project_name}.hex"

@@ -1,8 +1,3 @@
-
-
-
-
-
 /*
 Name:		autopilot.ino
 Created:	7/7/2018 9:44:39 AM
@@ -36,7 +31,7 @@ Import libraries
 Configuration for autopilot board
 */
 
-#define SERIAL_BAUD 250000 //Max tested on tether so far. 500 kbaud possible in theory
+#define SERIAL_BAUD 500000 //Max tested on tether so far. 500 kbaud possible in theory
 #define MAX_PACKET_LENGTH 64 //maximum possible message is 255 bytes, increase to that if needed
 #define HEADER_BYTE 0x42
 #define SERIAL_TIMEOUT 1000
@@ -182,7 +177,6 @@ void setup() {
 the loop function runs over and over again until power down or reset
 */
 void loop() {
-
 	receiveMessage(); //wait for a message
 	processMessage(); //act on it by responding with sensor data or writing to an actuator
 	//handleDataDirection(); //control the RS-485 data direction pin
@@ -361,12 +355,11 @@ void initESCs() {
 #ifdef I2C_ESC
 	for (int i = 0; i < NUM_ESCS; i++) {
 		if (checkI2C(addresses[i])) {
-			Serial.println(i);
 			escs[i] = new Arduino_I2C_ESC(addresses[i], NUM_POLES); //T100 has 12 poles. Is the default of 6 correct?
 		}
 		else {
 			error |= ESC_FAILURE;
-			//return;
+			return;
 		}
 	}
 #endif

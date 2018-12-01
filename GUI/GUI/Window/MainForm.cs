@@ -43,7 +43,7 @@ namespace GUI
             Controls.Add(headingIndicator);
 
             //setup devices
-            BetterSerialPort port = new BetterSerialPort("COM5", 250000);
+            BetterSerialPort port = new BetterSerialPort("COM5", 500000);
             port.Open();
             portLabel.Text = string.Format("{0}@{1}baud", port.PortName, port.BaudRate);
             comms = new SerialCommunication(port);
@@ -130,6 +130,7 @@ namespace GUI
             comms.Queue.Enqueue(statusSensor);
             comms.Queue.Enqueue(propulsionSensor);
             comms.Queue.Enqueue(statusActuator);
+            queueLabel.Text = "Queue length: " + comms.Queue.Count;
             armButton.Text = statusSensor.Data.Status == ROVStatus.ARMED ? "Armed" : "Disarmed";
         }
 
