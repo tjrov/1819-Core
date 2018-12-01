@@ -33,7 +33,6 @@
             this.timer50 = new System.Windows.Forms.Timer(this.components);
             this.timer10 = new System.Windows.Forms.Timer(this.components);
             this.connectButton = new System.Windows.Forms.Button();
-            this.queueLabel = new System.Windows.Forms.Label();
             this.armButton = new System.Windows.Forms.Button();
             this.portLabel = new System.Windows.Forms.Label();
             this.resetButton = new System.Windows.Forms.Button();
@@ -65,15 +64,6 @@
             this.connectButton.UseVisualStyleBackColor = true;
             this.connectButton.Click += new System.EventHandler(this.button1_Click);
             // 
-            // queueLabel
-            // 
-            this.queueLabel.AutoSize = true;
-            this.queueLabel.Location = new System.Drawing.Point(250, 21);
-            this.queueLabel.Name = "queueLabel";
-            this.queueLabel.Size = new System.Drawing.Size(153, 25);
-            this.queueLabel.TabIndex = 1;
-            this.queueLabel.Text = "Queue length: ";
-            // 
             // armButton
             // 
             this.armButton.AutoSize = true;
@@ -88,10 +78,11 @@
             // portLabel
             // 
             this.portLabel.AutoSize = true;
-            this.portLabel.Location = new System.Drawing.Point(174, 21);
+            this.portLabel.Location = new System.Drawing.Point(234, 21);
             this.portLabel.Name = "portLabel";
-            this.portLabel.Size = new System.Drawing.Size(0, 25);
+            this.portLabel.Size = new System.Drawing.Size(124, 25);
             this.portLabel.TabIndex = 3;
+            this.portLabel.Text = "XXXXXXXX";
             // 
             // resetButton
             // 
@@ -109,12 +100,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1280, 1024);
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.portLabel);
             this.Controls.Add(this.armButton);
-            this.Controls.Add(this.queueLabel);
             this.Controls.Add(this.connectButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainForm";
@@ -131,7 +120,6 @@
         private System.Windows.Forms.Timer timer50;
         private System.Windows.Forms.Timer timer10;
         private System.Windows.Forms.Button connectButton;
-        private System.Windows.Forms.Label queueLabel;
         private System.Windows.Forms.Button armButton;
         private System.Windows.Forms.Label portLabel;
         private System.Windows.Forms.Button resetButton;

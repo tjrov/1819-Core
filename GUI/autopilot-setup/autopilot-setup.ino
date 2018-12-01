@@ -19,7 +19,7 @@ uint8_t identifiedAddresses[6];
 uint8_t invert[6];
 
 void setup() {
-	Serial.begin(500000);
+	Serial.begin(250000);
 	delay(1000);
 	Serial.println("Autopilot board setup utility");
 	Serial.println("Press any key to continue");
