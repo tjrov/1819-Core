@@ -1,4 +1,10 @@
-﻿using System;
+﻿//Edward Li
+//Angela Chen
+// Darius Kianersi
+//Anish Gorentala
+//Aneesh Boreda
+//use the command line patrick
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
