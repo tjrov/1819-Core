@@ -3,6 +3,9 @@
 // Darius Kianersi
 //Anish Gorentala
 //Aneesh Boreda
+// Shreepa Parthaje
+// Suhas Nandiraju
+
 using SlimDX.DirectInput;
 using System;
 using System.Collections.Generic;
