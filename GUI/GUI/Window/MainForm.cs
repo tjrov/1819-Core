@@ -3,6 +3,7 @@
 // Darius Kianersi
 //Anish Gorentala
 //Aneesh Boreda
+//Kevin Wu
 using SlimDX.DirectInput;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace GUI
 
         private SerialCommunication comms;
 
-        //Gampads
+        //Gamepads
         public DirectInput Input = new DirectInput();
         public Joystick stick;
         public Joystick[] Sticks;
