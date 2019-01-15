@@ -157,6 +157,7 @@
 <layer number="255" name="routoute" color="7" fill="1" visible="no" active="no"/>
 </layers>
 <board>
+<fusionsync huburn="a.cGVyc29uYWw6dWUyYjgwY2M1" projecturn="a.cGVyc29uYWw6dWUyODFhMmJiIzIwMTcxMjEwMTA3ODgzOTA2" f3durn="urn:adsk.wipprod:dm.lineage:uD4Zcr9FTMO__W5u9QbE6w" pcbguid="134edd82-9e4b-4083-93db-28e6e479e9f3" lastpulledtime="" lastsyncedchangeguid="851b9c67-2b3b-328b-94af-d17c02baa433"/>
 <plain>
 <wire x1="0" y1="0" x2="44.4375" y2="0" width="0" layer="20"/>
 <wire x1="44.4375" y1="0" x2="44.4375" y2="53.965" width="0" layer="20"/>
