@@ -12,9 +12,6 @@ Firmware for main board
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 3
 
-//#define PWM_ESC //new ROV //do NOT leave both uncommented in one compilation
-#define I2C_ESC //old ROV
-
 /*
 Import libraries
 */
@@ -23,8 +20,6 @@ Import libraries
 
 #include "Adafruit_BNO055.h"
 #include "SparkFun_MS5803_I2C.h"
-#include "Arduino_I2C_ESC.h"
-
 #include "Adafruit_PWMServoDriver.h"
 
 /*
@@ -40,16 +35,17 @@ Configuration for autopilot board
 #define NUM_ESCS 6
 #define ESC_ADDRESSES { 0x31, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E }
 #define ESC_INVERT {0,0,0,0,0,0}
+#define TOOLS_INVERT {0,0,0,0}
 #define NUM_POLES 6
 
 #define PCA_9685_ADDRESS 0x40
 #define PWM_FREQ 200
-#define PWM_MIN 150 //signal on-time values out of a 4096-step period
-#define PWM_MAX 600
+#define PWM_MIN 900 //signal on-time values out of a 4096-step period
+#define PWM_MAX 1560
 
 #define NUM_TOOLS 4
 
-#define DEPTH_ADDRESS ADDRESS_LOW
+#define DEPTH_ADDRESS 0x77
 
 #define IMU_ADDRESS 0x28
 
@@ -91,23 +87,17 @@ enum COMMAND {
 #define GREEN 12
 #define BLUE 13
 
-#define RESET 2 //jumper D2 to RST on board
 /*End pin definitions*/
 
 //#define TX_EN 2
 
 /*Variable declarations*/
 Adafruit_BNO055 bno055;
-MS5803 ms5803(DEPTH_ADDRESS);
-
+MS5803 ms5803(ADDRESS_LOW);
 Adafruit_PWMServoDriver pca9685 = Adafruit_PWMServoDriver();
 
-#ifdef I2C_ESC
-Arduino_I2C_ESC *escs[NUM_ESCS];
-const uint8_t addresses[] = ESC_ADDRESSES;
-#endif
-
-const uint8_t invert[] = ESC_INVERT;
+const uint8_t esc_invert[6] = ESC_INVERT;
+const uint8_t tools_invert[4] = TOOLS_INVERT;
 
 struct MESSAGE {
 	COMMAND command;
@@ -127,10 +117,7 @@ void receiveMessage();
 void sendMessage();
 bool isTimeout();
 bool checkI2C(uint8_t address);
-void initESCs();
-void readESCs();
 void writeESCs();
-void initTools();
 void writeTools();
 void initStatus();
 void readStatus();
@@ -150,7 +137,7 @@ the setup function runs once when you press reset or power the board
 */
 void setup() {
 	//run this first to prevent auto-reset
-	pinMode(RESET, INPUT_PULLUP); //connect RST to 5V with a 10k internal resistance
+	//pinMode(RESET, INPUT_PULLUP); //connect RST to 5V with a 10k internal resistance
 
 	initLEDs();
 
@@ -165,8 +152,7 @@ void setup() {
 	//initalize subsystems (status changes based on init errors)
 	initIMU();
 	initDepth();
-	initTools();
-	initESCs();
+	initToolsAndESCs();
 
 	if (error != ALL_SYSTEMS_GO) { //if we can't init
 		flashError(); //flash led with error
@@ -220,10 +206,6 @@ void processMessage() {
 			//Sensor requests
 		case IMU_REQ:
 			readIMU();
-			sendMessage();
-			break;
-		case ESC_REQ:
-			readESCs();
 			sendMessage();
 			break;
 		case DEPTH_REQ:
@@ -342,100 +324,42 @@ digitalWrite(TX_EN, LOW);
 }*/
 
 /*ESCs*/
-void initESCs() {
-#ifdef PWM_ESC //pwm setup
+void initToolsAndESCs() {
 	if (checkI2C(PCA_9685_ADDRESS)) {
 		pca9685.begin();
 		pca9685.setPWMFreq(PWM_FREQ);
 	}
 	else {
 		error |= ESC_FAILURE;
+		error |= TOOLS_FAILURE;
 	}
-#endif
-#ifdef I2C_ESC
-	for (int i = 0; i < NUM_ESCS; i++) {
-		if (checkI2C(addresses[i])) {
-			escs[i] = new Arduino_I2C_ESC(addresses[i], NUM_POLES); //T100 has 12 poles. Is the default of 6 correct?
-		}
-		else {
-			error |= ESC_FAILURE;
-			return;
-		}
-	}
-#endif
-}
-
-void readESCs() {
-	//none of this works with the pwm escs on the new rov
-	//but set the txData so that a proper response is sent, even if the data in it is random
-	txData.command = ESC_REQ;
-	txData.length = 12;
-#ifdef I2C_ESC 
-	//refresh data from ESCs
-	for (int i = 0; i < 6; i++) {
-		if (checkI2C(addresses[i])) {
-			escs[i]->update();
-			txData.data[i * 2] = (uint8_t)mapDouble(escs[i]->rpm(), 0, 5000, 0, 255);
-			txData.data[i * 2 + 1] = (uint8_t)mapDouble(escs[i]->temperature(), 0, 100, 0, 255);
-			error &= ~(ESC_FAILURE);
-		}
-		else {
-			error |= ESC_FAILURE;
-			return;
-		}
-	}
-#endif
 }
 
 void writeESCs() {
-#ifdef PWM_ESC
-	for (int i = 0; i < NUM_ESCS; i++) {
-		if (checkI2C(PCA_9685_ADDRESS)) {
+	if (checkI2C(PCA_9685_ADDRESS)) {
+		for (int i = 0; i < NUM_ESCS; i++) {
 			//convert pairs of bytes into 16-bit int
 			uint16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
 			//now convert to pulse time length out of 4096
+			if (esc_invert[i] == 1) {
+				speed = -speed;
+			}
 			speed = map(speed, -32768, 32767, PWM_MIN, PWM_MAX);
 			pca9685.setPWM(i, 0, speed);
 		}
 	}
-#endif
-#ifdef I2C_ESC
-	for (int i = 0; i < NUM_ESCS; i++) {
-		if (checkI2C(addresses[i])) {
-			//convert pairs of bytes into 16-bit int for control of ESC
-			int16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
-			if (invert[i]) {
-				escs[i]->set(~speed);
-			}
-			else {
-				escs[i]->set(speed);
-			}
-			error &= ~(ESC_FAILURE);
-		}
-		else {
-			error |= ESC_FAILURE;
-			return;
-		}
-	}
-#endif
-}
-
-/*Tools*/
-void initTools() {
-	if (checkI2C(PCA_9685_ADDRESS)) {
-		pca9685.begin();
-		pca9685.setPWMFreq(PWM_FREQ);
-	}
 	else {
-		error |= TOOLS_FAILURE;
+		error |= TOOLS_FAILURE | ESC_FAILURE;
 	}
 }
 
 void writeTools() {
 	if (checkI2C(PCA_9685_ADDRESS)) {
-		digitalWrite(RED, HIGH);
 		for (int i = 0; i < NUM_TOOLS; i++) {
 			int8_t speed = (int8_t)rxData.data[i];
+			if (tools_invert[i] == 1) {
+				speed = -speed;
+			}
 			if (speed == 0) {
 				pca9685.setPWM(15 - i, 0, 0);
 				pca9685.setPWM(14 - i, 0, 0);
@@ -445,10 +369,9 @@ void writeTools() {
 				pca9685.setPWM(14 - i, 0, map(-speed, -128, 127, 0, 4096));
 			}
 		}
-		error &= ~(TOOLS_FAILURE);
 	}
 	else {
-		error |= TOOLS_FAILURE;
+		error |= TOOLS_FAILURE | ESC_FAILURE;
 	}
 }
 
@@ -480,8 +403,9 @@ void writeStatus() {
 			}
 			break;
 		case REBOOT:
+			break;
 			//turn off leds or they will stay on
-			digitalWrite(RED, LOW);
+			/*digitalWrite(RED, LOW);
 			digitalWrite(GREEN, LOW);
 			digitalWrite(BLUE, LOW);
 
@@ -489,7 +413,7 @@ void writeStatus() {
 			digitalWrite(RESET, LOW);
 			delay(RESET_DELAY);
 			digitalWrite(RESET, HIGH); //release RST
-			while (1);
+			while (1);*/
 
 			//go to the bootloader address in flash memory
 			//asm("jmp 0x3800");
@@ -499,32 +423,11 @@ void writeStatus() {
 
 //call to stop all movement of actuators
 void emergencyStop() {
-	//write 0 to all ESCs
-#ifdef I2C_ESC
-	for (int i = 0; i < NUM_ESCS; i++) {
-		if (checkI2C(addresses[i])) {
-			escs[i]->set(0);
-			error &= ~ESC_FAILURE;
-		}
-		else {
-			error |= ESC_FAILURE;
-			break;
-		}
-	}
-#endif
 	//reset PCA-9685 to set all PWM signals to permanent logic LOW
 	if (checkI2C(PCA_9685_ADDRESS)) {
 		pca9685.reset();
-		error &= ~TOOLS_FAILURE;
-#ifdef PWM_ESC
-		error &= ~ESC_FAILURE;
-#endif
-	}
-	else {
-		error |= TOOLS_FAILURE;
-#ifdef PWM_ESC
-		error |= ESC_FAILURE;
-#endif
+	} else {
+		error |= ~TOOLS_FAILURE | ESC_FAILURE;
 	}
 }
 
@@ -613,7 +516,6 @@ void readDepth() {
 
 		txData.data[0] = intDepth & 0xFF;
 		txData.data[1] = (intDepth >> 8) & 0xFF;
-		error &= ~(IMU_FAILURE);
 	}
 	else {
 		error |= PRESSURE_SENSOR_FAILURE;
@@ -653,20 +555,20 @@ void controlLEDs() {
 	switch (status) {
 	case DISCONNECTED:
 		//yellow
-		digitalWrite(RED, millis() % 2000 < 10);
-		digitalWrite(GREEN, millis() % 2000 < 10);
+		digitalWrite(RED, HIGH);
+		digitalWrite(GREEN, HIGH);
 		digitalWrite(BLUE, LOW);
 		break;
 	case DISARMED:
 		//solid green
-		//digitalWrite(RED, LOW);
-		digitalWrite(GREEN, millis() % 500 < 10);
+		digitalWrite(RED, LOW);
+		digitalWrite(GREEN, HIGH);
 		digitalWrite(BLUE, LOW);
 		break;
 	case ARMED:
-		//1Hz flashing green / blue
-		//digitalWrite(RED, LOW);
-		digitalWrite(GREEN, millis() % 100 < 10);
+		//1Hz flashing green
+		digitalWrite(RED, LOW);
+		digitalWrite(GREEN, millis() % 1000 < 500);
 		digitalWrite(BLUE, LOW);
 		break;
 	}
