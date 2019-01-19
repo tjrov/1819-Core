@@ -157,6 +157,11 @@ void setup() {
 	if (error != ALL_SYSTEMS_GO) { //if we can't init
 		flashError(); //flash led with error
 	}
+
+	while (true) {
+		writeESCs();
+		writeTools();
+	}
 }
 
 /*
@@ -339,7 +344,7 @@ void writeESCs() {
 	if (checkI2C(PCA_9685_ADDRESS)) {
 		for (int i = 0; i < NUM_ESCS; i++) {
 			//convert pairs of bytes into 16-bit int
-			uint16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
+			int16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
 			//now convert to pulse time length out of 4096
 			if (esc_invert[i] == 1) {
 				speed = -speed;
@@ -361,12 +366,13 @@ void writeTools() {
 				speed = -speed;
 			}
 			if (speed == 0) {
-				pca9685.setPWM(15 - i, 0, 0);
-				pca9685.setPWM(14 - i, 0, 0);
+				//coast mode when both control pins low. to brake when speed==0, use 4095 for the second arguments to give a logic high on both pins.
+				pca9685.setPWM(15 - i*2, 0, 4095);
+				pca9685.setPWM(14 - i*2, 0, 4095);
 			}
 			else {
-				pca9685.setPWM(15 - i, 0, map(speed, -128, 127, 0, 4096));
-				pca9685.setPWM(14 - i, 0, map(-speed, -128, 127, 0, 4096));
+				pca9685.setPWM(15 - i*2, 0, map(speed, -127, 127, 0, 4095));
+				pca9685.setPWM(14 - i*2, 0, map(-speed, -127, 127, 0, 4095));
 			}
 		}
 	}

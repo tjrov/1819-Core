@@ -162,9 +162,6 @@
     <ClInclude Include="Arduino_I2C_ESC.h" />
     <ClInclude Include="__vm\.autopilot-setup.vsarduino.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="board.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

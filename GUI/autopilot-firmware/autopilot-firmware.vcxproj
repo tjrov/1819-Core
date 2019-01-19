@@ -182,9 +182,6 @@
     <ClCompile Include="SparkFun_MS5803_I2C.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="board.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\autopilot-setup\autopilot-setup.vcxproj">
       <Project>{eb2e6ced-9e63-4526-b0eb-0d749f4240a0}</Project>
     </ProjectReference>
