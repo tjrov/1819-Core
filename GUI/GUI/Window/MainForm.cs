@@ -58,7 +58,7 @@ namespace GUI
             Controls.Add(headingIndicator);
 
             //setup devices
-            BetterSerialPort port = new BetterSerialPort("COM5", 500000);
+            BetterSerialPort port = new BetterSerialPort("COM5", 115200);
             port.Open();
             portLabel.Text = string.Format("{0}@{1}baud", port.PortName, port.BaudRate);
             comms = new SerialCommunication(port);
