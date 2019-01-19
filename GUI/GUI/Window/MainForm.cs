@@ -3,7 +3,13 @@
 // Darius Kianersi
 //Anish Gorentala
 //Aneesh Boreda
+<<<<<<< HEAD
 //Kevin Wu
+=======
+// Shreepa Parthaje
+// Suhas Nandiraju
+
+>>>>>>> d512832f4b01a9e0fa52ba23c963f3b536ba2618
 using SlimDX.DirectInput;
 using System;
 using System.Collections.Generic;
