@@ -1,16 +1,16 @@
 ﻿//Edward Li
 //Angela Chen
-// Darius Kianersi
+//Darius Kianersi
 //Anish Gorentala
 //Aneesh Boreda
-// Shreepa Parthaje
-// Suhas Nandiraju
+//Shreepa Parthaje
+//Suhas Nandiraju
 
-using SlimDX.DirectInput;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using XInput.Wrapper;
+
 
 namespace GUI
 {
@@ -28,26 +28,20 @@ namespace GUI
 
         private SerialCommunication comms;
 
-        //Gampads
-        public DirectInput Input = new DirectInput();
-        public Joystick stick;
-        public Joystick[] Sticks;
-        int yValueL = 0;
-        int xValueL = 0;
-        int zValue = 0;
-        int tickCount = 0;
-        public Boolean connected1 = false;
-
         private AttitudeIndicator attitudeIndicator;
         private HeadingIndicator headingIndicator;
         private DepthIndicator depthIndicator;
+        public X.Gamepad g1;
 
         public MainForm()
         {
+            //controller
+            g1 = X.Gamepad_1;
+            g1.Enable = true;
+
             //setup window
             this.KeyPreview = true;
             InitializeComponent();
-            Sticks = GetSticks();
             controllerUpdate.Enabled = true;
 
             depthIndicator = new DepthIndicator() { Location = new Point(0, 100) };
@@ -82,175 +76,6 @@ namespace GUI
 
             //get ROV firmware version info
             comms.Queue.Enqueue(versionSensor);
-        }
-
-        public Joystick[] GetSticks()
-        {
-            List<Joystick> sticks = new List<Joystick>();
-            foreach(DeviceInstance device in Input.GetDevices(DeviceClass.GameController,DeviceEnumerationFlags.AttachedOnly))
-            {
-                try
-                {
-                    stick = new Joystick(Input, device.InstanceGuid);
-                    stick.Acquire();
-
-                    foreach(DeviceObjectInstance deviceObject in stick.GetObjects())
-                    {
-                        if((deviceObject.ObjectType & ObjectDeviceType.Axis) != 0)
-                        {
-                            stick.GetObjectPropertiesById((int)deviceObject.ObjectType).SetRange(-100, 100);
-                        }
-                    }
-                    sticks.Add(stick);
-                }
-                catch(DirectInputException ex)
-                {
-                    MessageBox.Show("Controller Error: " + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            if (sticks.Count != 0)
-            {
-                connected1 = true;
-            }
-            else
-                connected1 = false;
-            return sticks.ToArray();
-        }
-
-        public void StickHandle(Joystick stick, int id)
-        {
-            JoystickState state = new JoystickState();
-            state = stick.GetCurrentState();
-
-            if (-state.Y != 0)
-            {
-                yValueL = -state.Y;
-                if(yValueL < 9 && yValueL > -9)
-                {
-                    yValueL = 0;
-                }
-                y.Text = "" + yValueL;
-            }
-            if (state.X != 0)
-            {
-                xValueL = state.X;
-                if (xValueL < 9 && xValueL > -9)
-                {
-                    xValueL = 0;
-                }
-                x.Text = "" + xValueL;
-            }
-            zValue = state.Z;
-
-            bool[] buttons = state.GetButtons();
-
-            if(id == 0)
-            {
-                for(int i = 0; i < buttons.Length; i++)
-                {
-                    switch (i)
-                    {
-                        case 0:
-                            if (buttons[0] != false)
-                                button0.Text = "Pressed";
-                            else
-                                button0.Text = "N/A";
-                            break;
-                        case 1:
-                            if (buttons[1] != false)
-                                button1.Text = "Pressed";
-                            else
-                                button1.Text = "N/A";
-                            break;
-                        case 2:
-                            if (buttons[2] != false)
-                                button2.Text = "Pressed";
-                            else
-                                button2.Text = "N/A";
-                            break;
-                        case 3:
-                            if (buttons[3] != false)
-                                button3.Text = "Pressed";
-                            else
-                                button3.Text = "N/A";
-                            break;
-                        case 4:
-                            if (buttons[4] != false)
-                                button4.Text = "Pressed";
-                            else
-                                button4.Text = "N/A";
-                            break;
-                        case 5:
-                            if (buttons[5] != false)
-                                button5.Text = "Pressed";
-                            else
-                                button5.Text = "N/A";
-                            break;
-                        case 6:
-                            if (buttons[6] != false)
-                                button6.Text = "Pressed";
-                            else
-                                button6.Text = "N/A";
-                            break;
-                        case 7:
-                            if (buttons[7] != false)
-                                button7.Text = "Pressed";
-                            else
-                                button7.Text = "N/A";
-                            break;
-                        case 8:
-                            if (buttons[8] != false)
-                                button8.Text = "Pressed";
-                            else
-                                button8.Text = "N/A";
-                            break;
-                        case 9:
-                            if (buttons[9] != false)
-                                button9.Text = "Pressed";
-                            else
-                                button9.Text = "N/A";
-                            break;
-                        case 10:
-                            if (buttons[10] != false)
-                                button10.Text = "Pressed";
-                            else
-                                button10.Text = "N/A";
-                            break;
-                        case 11:
-                            if (buttons[11] != false)
-                                button11.Text = "Pressed";
-                            else
-                                button11.Text = "N/A";
-                            break;
-                        case 12:
-                            if (buttons[12] != false)
-                                button12.Text = "Pressed";
-                            else
-                                button12.Text = "N/A";
-                            break;
-                        case 13:
-                            if (buttons[13] != false)
-                                button13.Text = "Pressed";
-                            else
-                                button13.Text = "N/A";
-                            break;
-                        case 14:
-                            if (buttons[14] != false)
-                                button14.Text = "Pressed";
-                            else
-                                button14.Text = "N/A";
-                            break;
-                        case 15:
-                            if (buttons[15] != false)
-                                button15.Text = "Pressed";
-                            else
-                                button15.Text = "N/A";
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
         }
 
         private void DepthSensor_Updated(object sender, DepthData e)
@@ -337,36 +162,27 @@ namespace GUI
             statusActuator.Data.DesiredStatus = ROVStatus.REBOOT;
         }
 
-        private void controllerUpdate_Tick(object sender, EventArgs e)
-        {
-            if(tickCount >= 10)
-            {
-                Sticks = GetSticks();
-                tickCount = 0;
-            }
-            if (connected1)
-            {
-                ConnectionLabel.Text = "Controller Connected = True";
-                ConnectionB.BackColor = Color.LimeGreen;
-            }
-            else
-            {
-                ConnectionLabel.Text = "Controller Connected = False";
-                ConnectionB.BackColor = Color.DarkRed;
-            }
-
-            for (int i = 0; i < Sticks.Length; i++)
-            {
-                StickHandle(Sticks[i], i);
-            }
-            Console.WriteLine(tickCount);
-            tickCount++;
-        }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
                 Environment.Exit(1);
         }
-    }
+
+        private void controllerUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            g1.Update();
+            if (g1.IsConnected)
+            {
+                ConnectionB.BackColor = Color.Green;
+                ConnectionLabel.Text = "" + g1.LTrigger;
+            }
+            else
+            {
+                ConnectionB.BackColor = Color.DarkRed;
+                ConnectionLabel.Text = "no" + g1.LTrigger;
+            }
+
+        }
+    }   
 }
