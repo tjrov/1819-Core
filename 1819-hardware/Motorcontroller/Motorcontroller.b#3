@@ -162,6 +162,12 @@
 <wire x1="34.27" y1="0" x2="34.27" y2="41.58" width="0" layer="20"/>
 <wire x1="34.27" y1="41.58" x2="0" y2="41.58" width="0" layer="20"/>
 <wire x1="0" y1="41.58" x2="0" y2="0" width="0" layer="20"/>
+<text x="5.08" y="0" size="1.143" layer="21" font="vector">SCL-++-SDA</text>
+<text x="1.27" y="15.24" size="1.143" layer="21" font="vector" rot="R90">5V PWM</text>
+<text x="34.29" y="0" size="1.143" layer="21" font="vector" rot="R90">+12V/MOTOR</text>
+<text x="34.29" y="13.97" size="1.143" layer="21" font="vector" rot="R90">MOTOR</text>
+<text x="34.29" y="21.59" size="1.143" layer="21" font="vector" rot="R90">MOTOR</text>
+<text x="34.29" y="32.385" size="1.143" layer="21" font="vector" rot="R90">MOTOR/GND</text>
 </plain>
 <libraries>
 <library name="SparkFun-Capacitors" urn="urn:adsk.eagle:library:510">
