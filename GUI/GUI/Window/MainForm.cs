@@ -117,7 +117,7 @@ namespace GUI
         {
             //statusActuator.Data.DesiredStatus = ROVStatus.ARMED;
             comms.Queue.Enqueue(statusSensor);
-            comms.Queue.Enqueue(propulsionSensor);
+            //comms.Queue.Enqueue(propulsionSensor);
             comms.Queue.Enqueue(statusActuator);
             queueLabel.Text = "Queue length: " + comms.Queue.Count;
             armButton.Text = statusSensor.Data.Status == ROVStatus.ARMED ? "Armed" : "Disarmed";
@@ -132,13 +132,7 @@ namespace GUI
 
         private void timer10_Tick(object sender, EventArgs e)
         {
-            try {
-                comms.Queue.Enqueue(propulsionActuator);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Unhandled Error: " + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            comms.Queue.Enqueue(propulsionActuator);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -176,6 +170,8 @@ namespace GUI
             {
                 ConnectionB.BackColor = Color.Green;
                 ConnectionLabel.Text = "" + g1.LTrigger;
+                button0.Text = "" + g1.RStick.X;
+                button1.Text = "" + g1.RStick.Y;
             }
             else
             {
@@ -183,6 +179,14 @@ namespace GUI
                 ConnectionLabel.Text = "no" + g1.LTrigger;
             }
 
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                propulsionActuator.Data.Speeds[i] = Int32.Parse(textBox1.Text);
+            }
         }
     }   
 }

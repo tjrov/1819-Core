@@ -62,6 +62,8 @@
             this.button15 = new System.Windows.Forms.Label();
             this.ConnectionB = new System.Windows.Forms.Button();
             this.controllerUpdateTimer = new System.Windows.Forms.Timer(this.components);
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // timer500
@@ -387,12 +389,31 @@
             this.controllerUpdateTimer.Enabled = true;
             this.controllerUpdateTimer.Tick += new System.EventHandler(this.controllerUpdateTimer_Tick);
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(439, 245);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 31);
+            this.textBox1.TabIndex = 28;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(439, 687);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(70, 25);
+            this.label4.TabIndex = 29;
+            this.label4.Text = "label4";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1280, 1023);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.ConnectionB);
             this.Controls.Add(this.button15);
             this.Controls.Add(this.button14);
@@ -466,6 +487,8 @@
         private System.Windows.Forms.Label button15;
         private System.Windows.Forms.Button ConnectionB;
         private System.Windows.Forms.Timer controllerUpdateTimer;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label4;
     }
 }
 
