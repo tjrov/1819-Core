@@ -13,9 +13,14 @@ namespace ControllerTest
     {
         static void Main(string[] args)
         {
-
-            Console.WriteLine(X.Gamepad_1.IsConnected);
-            Console.ReadKey();
+            X.Gamepad g = X.Gamepad_1;
+            g.Enable = true;
+            while(true)
+            {
+                g.Update();
+                Console.WriteLine(g.IsConnected);//g.RStick.X + "\t" + g.RStick.Y);
+                Thread.Sleep(100);
+            }
         }
     }
 }

@@ -31,13 +31,17 @@ namespace GUI
         private AttitudeIndicator attitudeIndicator;
         private HeadingIndicator headingIndicator;
         private DepthIndicator depthIndicator;
-        public X.Gamepad g1;
+        public X.Gamepad pilot, copilot;
 
         public MainForm()
         {
             //controller
-            g1 = X.Gamepad_1;
-            g1.Enable = true;
+            pilot = X.Gamepad_1;
+            pilot.Enable = true;
+            pilot.Update(); //must call update right after setting enable to true in order for it to connect
+
+            //copilot = X.Gamepad_2;
+            //copilot.Enable = false;
 
             //setup window
             this.KeyPreview = true;
@@ -164,18 +168,18 @@ namespace GUI
 
         private void controllerUpdateTimer_Tick(object sender, EventArgs e)
         {
-            g1.Update();
-            if (g1.IsConnected)
+            pilot.Update();
+            if (pilot.IsConnected)
             {
                 ConnectionB.BackColor = Color.Green;
-                ConnectionLabel.Text = "" + g1.LTrigger;
-                button0.Text = "" + g1.RStick.X;
-                button1.Text = "" + g1.RStick.Y;
+                ConnectionLabel.Text = "" + pilot.LTrigger;
+                button0.Text = "" + pilot.RStick.X;
+                button1.Text = "" + pilot.RStick.Y;
             }
             else
             {
                 ConnectionB.BackColor = Color.DarkRed;
-                ConnectionLabel.Text = "no" + g1.LTrigger;
+                ConnectionLabel.Text = "no" + pilot.LTrigger;
             }
 
         }
