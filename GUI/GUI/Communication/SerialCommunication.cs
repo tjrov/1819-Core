@@ -17,54 +17,12 @@ namespace GUI
 
         private Thread thread;
 
-        private bool linkActive;
-        private bool shuttingDown;
-
-        public bool LinkActive
-        {
-            get
-            {
-                return linkActive;
-            }
-            set
-            {
-                linkActive = value;
-                if (value)
-                {
-                    if (Started != null)
-                    {
-                        Started(this, null);
-                    }
-                    if (!port.IsOpen)
-                    {
-                        port.Open();
-                    }
-                    Logger.LogString("Communication started.");
-                }
-                else
-                {
-                    if (Stopped != null)
-                    {
-                        Stopped(this, null); //notify rest of code with event
-                    }
-                    //empty queue of devices needing update
-                    while (devices.Count > 0)
-                    {
-                        devices.TryDequeue(out GenericAbstractDevice trash);
-                    }
-                    Logger.LogString("Communication stopped.");
-                }
-            }
-        }
-
         public event EventHandler<Exception> CommunicationException;
         public event EventHandler Started, Stopped;
         //public event EventHandler TenElapsed, HundredElapsed, ThousandElapsed;
 
         public SerialCommunication(BetterSerialPort port) : base()
         {
-            this.port = port;
-
             //Communications Process
             this.port = port;
             //connection between UI and background threads is a queue of Devices that need updating
@@ -79,18 +37,43 @@ namespace GUI
             thread.Start();
             //port.Open(); //error when port opened in constructor
         }
-        public void ShutDown()
+        private bool linkActive=false;
+        public bool LinkActive
         {
-            LinkActive = false;
-            Thread.Sleep(500);
-            shuttingDown = true;
+            get { return linkActive; }
+            set {
+                if (value)
+                {
+                    port.Open();
+                    if (Started != null)
+                    {
+                        Started(this, null);
+                    }
+                    Logger.LogString("Communication started.");
+                }
+                else
+                {
+                    port.Close();
+                    //empty queue of devices needing update
+                    while (devices.Count > 0)
+                    {
+                        devices.TryDequeue(out GenericAbstractDevice trash);
+                    }
+                    Logger.LogString("Communication stopped.");
+                    if (Stopped != null)
+                    {
+                        Stopped(this, null); //notify rest of code with event
+                    }
+                }
+                linkActive = value;
+            }
         }
         //handles communication and processing of queue
         private void BackgroundLoop()
         {
-            while (!shuttingDown)
+            while (true)
             {
-                if (linkActive)
+                if (LinkActive)
                 {
                     try
                     {
@@ -112,11 +95,11 @@ namespace GUI
                     }
                     catch (Exception ex)
                     {
+                        //stop serial communication code by closing port
+                        LinkActive = false;
                         //log history before exception for debugging
                         Logger.LogString("Start Communication Log Dump\n" + port.GetHistory() + "\nEnd Communication Log Dump");
                         Logger.LogException(ex);
-                        //cease communication
-                        LinkActive = false;
                         //show exception dialog
                         if (CommunicationException != null)
                         {
@@ -158,9 +141,10 @@ namespace GUI
                 }
                 else
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(10);
                 }
             }
         }
     }
 }
+

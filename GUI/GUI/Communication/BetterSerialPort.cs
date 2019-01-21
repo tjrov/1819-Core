@@ -59,7 +59,11 @@ namespace GUI
                 base.DiscardInBuffer();
                 base.DiscardOutBuffer();
             }
-            base.Close();
+            try
+            {
+                base.Close();
+            }
+            catch { }
             Logger.LogString(string.Format("Port {0} closed", PortName));
         }
         //note each byte received

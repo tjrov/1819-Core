@@ -158,10 +158,6 @@ void setup() {
 		flashError(); //flash led with error
 		Serial.println(error);
 	}
-
-	while (true) {
-		writeESCs();
-	}
 }
 
 /*
