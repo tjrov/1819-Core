@@ -67,6 +67,7 @@
     <Compile Include="Indicators.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Vehicle\ROV.cs" />
     <Compile Include="Window\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
