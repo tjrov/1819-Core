@@ -23,7 +23,7 @@ namespace GUI
         private SerialCommunication comms;
         private Timer t500, t50, t10;
 
-        private PidController depthLock, headingLock, rollLock;
+        private PidController depthPID, headingPID, rollPID;
 
         public float VerticalMotion, ForeAftMotion, StrafeMotion, TurnMotion; //ccw positive
         public float DesiredHeading;
@@ -36,8 +36,8 @@ namespace GUI
             ["Forward Starboard"] = 1,
             ["Aft Port"] = 2,
             ["Aft Starboard"] = 3,
-            ["Port Vertical"] = 4,
-            ["Port Starboard"] = 5
+            ["Vertical Port"] = 4,
+            ["Vertical Starboard"] = 5
         };
 
         private double headingAdj;
@@ -84,25 +84,24 @@ namespace GUI
         }
 
         //update loops
+        //fast loop reserved for thruster control only
         private void T10_Tick(object sender, EventArgs e)
         {
             double[] speeds = PropulsionActuator.Data.Speeds; //this might make an array copy instead of a reference idk
-            
+
             //horizontal vector thrusters
             //all thruster speeds are positive for forward/upward thrust
             //ForeAftMotion is positive forward, StrafeMotion is positive rightward, and TurnMotion is positive CCW (think right hand rule)
+            double localTurnMotion = TurnMotion;
+            if (EnableHeadingLock)
+            {
+                localTurnMotion += headingAdj;
+            }
             speeds[key["Forward Port"]] = ForeAftMotion + StrafeMotion - TurnMotion;
             speeds[key["Forward Starboard"]] = ForeAftMotion - StrafeMotion + TurnMotion;
             speeds[key["Aft Port"]] = ForeAftMotion - StrafeMotion - TurnMotion;
             speeds[key["Aft Starboard"]] = ForeAftMotion + StrafeMotion + TurnMotion;
-            if(EnableHeadingLock)
-            {
-                speeds[key["Forward Port"]] += headingAdj;
-                speeds[key["Forward Starboard"]] -= headingAdj;
-                speeds[key["Aft Port"]] += headingAdj;
-                speeds[key["Aft Starboard"]] -= headingAdj;
-            }
-            
+
             //vertical thrusters
             //VerticalMotion is positive upward
             speeds[key["Vertical Port"]] = VerticalMotion;
@@ -118,9 +117,11 @@ namespace GUI
                 speeds[key["Vertical Starboard"]] += rollAdj;
             }
 
+            //send the thruster speeds
             comms.Queue.Enqueue(PropulsionActuator);
         }
 
+        //medium loop for sensors and manipulators/tools
         private void T50_Tick(object sender, EventArgs e)
         {
             comms.Queue.Enqueue(DepthSensor);
@@ -128,6 +129,7 @@ namespace GUI
             comms.Queue.Enqueue(ToolsActuator);
         }
 
+        //slow loop for status and error reports, arming/disarming, etc.
         private void T500_Tick(object sender, EventArgs e)
         {
             comms.Queue.Enqueue(StatusSensor);

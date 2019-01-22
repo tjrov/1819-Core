@@ -16,16 +16,7 @@ namespace GUI
 {
     public partial class MainForm : Form
     {
-        private DepthSensor depthSensor;
-        private OrientationSensor orientationSensor;
-        private StatusSensor statusSensor;
-        private PropulsionSensor propulsionSensor;
-        private VersionSensor versionSensor;
-
-        private StatusActuator statusActuator;
-        private PropulsionActuator propulsionActuator;
-        private ToolsActuator toolsActuator;
-
+        private ROV rov;
         private SerialCommunication comms;
 
         private AttitudeIndicator attitudeIndicator;
@@ -63,35 +54,24 @@ namespace GUI
             comms.Started += comms_Started;
             //comms.Connect();
 
-            depthSensor = new DepthSensor();
-            orientationSensor = new OrientationSensor();
-            statusSensor = new StatusSensor();
-            propulsionSensor = new PropulsionSensor();
-            versionSensor = new VersionSensor();
-
-            statusActuator = new StatusActuator();
-            propulsionActuator = new PropulsionActuator();
-            toolsActuator = new ToolsActuator();
+            rov = new ROV(comms);
 
             //update displays when sensors polled
-            orientationSensor.Updated += OrientationSensor_Updated;
-            depthSensor.Updated += DepthSensor_Updated;
-
-            //get ROV firmware version info
-            comms.Queue.Enqueue(versionSensor);
+            rov.OrientationSensor.Updated += OrientationSensor_Updated;
+            rov.DepthSensor.Updated += DepthSensor_Updated;
         }
 
         private void DepthSensor_Updated(object sender, DepthData e)
         {
-            depthIndicator.Depth = depthSensor.Data.DepthValue;
+            depthIndicator.Depth = rov.DepthSensor.Data.DepthValue;
         }
 
         private void OrientationSensor_Updated(object sender, OrientationData e)
         {
-            attitudeIndicator.PitchAngle = orientationSensor.Data.Pitch;
-            attitudeIndicator.RollAngle = orientationSensor.Data.Roll;
-            attitudeIndicator.YawAngle = orientationSensor.Data.Yaw;
-            headingIndicator.Heading = orientationSensor.Data.Yaw;
+            attitudeIndicator.PitchAngle = rov.OrientationSensor.Data.Pitch;
+            attitudeIndicator.RollAngle = rov.OrientationSensor.Data.Roll;
+            attitudeIndicator.YawAngle = rov.OrientationSensor.Data.Yaw;
+            headingIndicator.Heading = rov.OrientationSensor.Data.Yaw;
         }
 
         private void comms_Started(object sender, EventArgs e)
@@ -118,24 +98,17 @@ namespace GUI
 
         private void timer500_Tick(object sender, EventArgs e)
         {
-            //statusActuator.Data.DesiredStatus = ROVStatus.ARMED;
-            comms.Queue.Enqueue(statusSensor);
-            //comms.Queue.Enqueue(propulsionSensor);
-            comms.Queue.Enqueue(statusActuator);
             queueLabel.Text = "Queue length: " + comms.Queue.Count;
-            armButton.Text = statusSensor.Data.Status == ROVStatus.ARMED ? "Armed" : "Disarmed";
+            armButton.Text = rov.StatusSensor.Data.Status == ROVStatus.ARMED ? "Armed" : "Disarmed";
         }
 
         private void timer50_Tick(object sender, EventArgs e)
         {
-            comms.Queue.Enqueue(depthSensor);
-            comms.Queue.Enqueue(orientationSensor);
-            comms.Queue.Enqueue(toolsActuator);
+            
         }
 
         private void timer10_Tick(object sender, EventArgs e)
         {
-            comms.Queue.Enqueue(propulsionActuator);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -145,18 +118,18 @@ namespace GUI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if(statusSensor.Data.Status == ROVStatus.ARMED)
+            if(rov.StatusSensor.Data.Status == ROVStatus.ARMED)
             {
-                statusActuator.Data.DesiredStatus = ROVStatus.DISARMED;
-            } else if(statusSensor.Data.Status == ROVStatus.DISARMED)
+                rov.StatusActuator.Data.DesiredStatus = ROVStatus.DISARMED;
+            } else if(rov.StatusSensor.Data.Status == ROVStatus.DISARMED)
             {
-                statusActuator.Data.DesiredStatus = ROVStatus.ARMED;
+                rov.StatusActuator.Data.DesiredStatus = ROVStatus.ARMED;
             }
         }
 
         private void resetButton_Click(object sender, EventArgs e)
         {
-            statusActuator.Data.DesiredStatus = ROVStatus.REBOOT;
+            rov.StatusActuator.Data.DesiredStatus = ROVStatus.REBOOT;
         }
 
 
@@ -173,8 +146,24 @@ namespace GUI
             {
                 ConnectionB.BackColor = Color.Green;
                 ConnectionLabel.Text = "" + pilot.LTrigger;
-                button0.Text = "" + pilot.RStick.X;
-                button1.Text = "" + pilot.RStick.Y;
+                button0.Text = "LStick.X" + pilot.LStick.X;
+                button1.Text = "LStick.Y" + pilot.LStick.Y;
+                button2.Text = "LStick" + pilot.LStick_down;
+                button3.Text = "RStick.X" + pilot.RStick.X;
+                button4.Text = "RStick.Y" + pilot.RStick.Y;
+                button5.Text = "DPad up" + pilot.Dpad_Up_down;
+                button6.Text = "DPad down" + pilot.Dpad_Down_down;
+                button7.Text = "DPad left" + pilot.Dpad_Left_down;
+                button8.Text = "DPad right" + pilot.Dpad_Right_down;
+                button9.Text = "A" + pilot.A_down;
+                button10.Text = "B" + pilot.B_down;
+                button11.Text = "X" + pilot.X_down;
+                button12.Text = "Y" + pilot.Y_down;
+                button13.Text = "LBumper" + pilot.LBumper_down;
+                button14.Text = "RBumper" + pilot.RBumper_down;
+                button15.Text = "LTrigger" + pilot.LTrigger;
+                button16.Text = "RTrigger" + pilot.RTrigger;
+                button17.Text = "Start" + pilot.Start_down;
             }
             else
             {
@@ -188,7 +177,7 @@ namespace GUI
         {
             for (int i = 0; i < 6; i++)
             {
-                propulsionActuator.Data.Speeds[i] = Int32.Parse(textBox1.Text);
+                //rov.PropulsionActuator.Data.Speeds[i] = Int32.Parse(textBox1.Text);
             }
         }
     }   
