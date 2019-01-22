@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    
+
     public abstract class Actuator<TData> : AbstractDevice<TData> where TData : new()
     {
         public Actuator(byte messageCommand) : base(messageCommand)
@@ -66,9 +66,9 @@ namespace GUI
         protected override byte[] Convert(ESCActuatorData controlData)
         {
             byte[] result = new byte[12];
-            for(int i = 0; i < result.Length; i += 2)
+            for (int i = 0; i < result.Length; i += 2)
             {
-                Tuple<byte, byte> bytes = ConvertUtils.DoubleToBytes(controlData.Speeds[i/2], -100, 100);
+                Tuple<byte, byte> bytes = ConvertUtils.DoubleToBytes(controlData.Speeds[i / 2], -100, 100);
                 result[i] = bytes.Item1;
                 result[i + 1] = bytes.Item2;
             }
@@ -81,15 +81,15 @@ namespace GUI
         public ToolsActuator() : base(0x82)
         {
             //speeds = new List<BarGraph>();
-           /* for(int i = 0; i < 3; i++)
-            {
-                //BarGraph graph = new BarGraph("Speed", "{0:##0.0}", "%", Color.Green, -100, 100, 50);
-                /speeds.Add(graph);
-                Controls.Add(graph);
-            }
-            speeds[0].Location = new Point(300, 0);
-            speeds[1].Location = new Point(0, 0);
-            speeds[2].Location = new Point(350, 350);*/
+            /* for(int i = 0; i < 3; i++)
+             {
+                 //BarGraph graph = new BarGraph("Speed", "{0:##0.0}", "%", Color.Green, -100, 100, 50);
+                 /speeds.Add(graph);
+                 Controls.Add(graph);
+             }
+             speeds[0].Location = new Point(300, 0);
+             speeds[1].Location = new Point(0, 0);
+             speeds[2].Location = new Point(350, 350);*/
             //UpdateControls();
         }
 
@@ -104,8 +104,8 @@ namespace GUI
         protected override byte[] Convert(ToolData controlData)
         {
             byte[] result = new byte[4];
-            for(int i = 0; i < result.Length; i++)
-            { 
+            for (int i = 0; i < result.Length; i++)
+            {
                 if (controlData.Speeds[i] == 0)
                 {
                     result[i] = 128;
@@ -124,7 +124,7 @@ namespace GUI
         private Timer flasher;
         private FlowLayoutPanel panel;
         private Bitmap estopBitmap = new Bitmap(GUI.Properties.GUI_18_19_.Properties.);*/
-        public StatusActuator() : base(0x83) 
+        public StatusActuator() : base(0x83)
         {
             /*estopBitmap.MakeTransparent(Color.White);
             panel = new FlowLayoutPanel

@@ -23,6 +23,27 @@ namespace GUI
         private SerialCommunication comms;
         private Timer t500, t50, t10;
 
+        private PidController depthLock, headingLock, rollLock;
+
+        public float VerticalMotion, ForeAftMotion, StrafeMotion, TurnMotion; //ccw positive
+        public float DesiredHeading;
+        public bool EnableHeadingLock, EnableRollLock, EnableDepthLock;
+
+        //change as needed
+        private Dictionary<string, int> key = new Dictionary<string, int>()
+        {
+            ["Forward Port"] = 0,
+            ["Forward Starboard"] = 1,
+            ["Aft Port"] = 2,
+            ["Aft Starboard"] = 3,
+            ["Port Vertical"] = 4,
+            ["Port Starboard"] = 5
+        };
+
+        private double headingAdj;
+        private double depthAdj;
+        private double rollAdj;
+
         public ROV(SerialCommunication comms)
         {
             this.comms = comms;
@@ -65,6 +86,38 @@ namespace GUI
         //update loops
         private void T10_Tick(object sender, EventArgs e)
         {
+            double[] speeds = PropulsionActuator.Data.Speeds; //this might make an array copy instead of a reference idk
+            
+            //horizontal vector thrusters
+            //all thruster speeds are positive for forward/upward thrust
+            //ForeAftMotion is positive forward, StrafeMotion is positive rightward, and TurnMotion is positive CCW (think right hand rule)
+            speeds[key["Forward Port"]] = ForeAftMotion + StrafeMotion - TurnMotion;
+            speeds[key["Forward Starboard"]] = ForeAftMotion - StrafeMotion + TurnMotion;
+            speeds[key["Aft Port"]] = ForeAftMotion - StrafeMotion - TurnMotion;
+            speeds[key["Aft Starboard"]] = ForeAftMotion + StrafeMotion + TurnMotion;
+            if(EnableHeadingLock)
+            {
+                speeds[key["Forward Port"]] += headingAdj;
+                speeds[key["Forward Starboard"]] -= headingAdj;
+                speeds[key["Aft Port"]] += headingAdj;
+                speeds[key["Aft Starboard"]] -= headingAdj;
+            }
+            
+            //vertical thrusters
+            //VerticalMotion is positive upward
+            speeds[key["Vertical Port"]] = VerticalMotion;
+            speeds[key["Vertical Starboard"]] = VerticalMotion;
+            if(EnableDepthLock)
+            {
+                speeds[key["Vertical Port"]] += depthAdj;
+                speeds[key["Vertical Starboard"]] += depthAdj;
+            }
+            if (EnableRollLock)
+            {
+                speeds[key["Vertical Port"]] += rollAdj;
+                speeds[key["Vertical Starboard"]] += rollAdj;
+            }
+
             comms.Queue.Enqueue(PropulsionActuator);
         }
 
