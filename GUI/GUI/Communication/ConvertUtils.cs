@@ -38,10 +38,10 @@ namespace GUI
             {
                 throw new Exception("Tried to map value that was not in specified starting range");
             }
-            if (minVal >= maxVal || minResult >= maxResult)
+            /*if (minVal >= maxVal || minResult >= maxResult)
             {
                 throw new Exception("Tried to map with an invalid range specified");
-            }
+            }*/
             return ((val - minVal) / (maxVal - minVal) * (maxResult - minResult)) + minResult;
         }
     }

@@ -30,14 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             this.timer500 = new System.Windows.Forms.Timer(this.components);
-            this.timer50 = new System.Windows.Forms.Timer(this.components);
-            this.timer10 = new System.Windows.Forms.Timer(this.components);
             this.connectButton = new System.Windows.Forms.Button();
             this.queueLabel = new System.Windows.Forms.Label();
             this.armButton = new System.Windows.Forms.Button();
             this.portLabel = new System.Windows.Forms.Label();
             this.resetButton = new System.Windows.Forms.Button();
-            this.controllerUpdate = new System.Windows.Forms.Timer(this.components);
             this.ConnectionLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Label();
@@ -60,24 +57,13 @@
             this.button15 = new System.Windows.Forms.Label();
             this.ConnectionB = new System.Windows.Forms.Button();
             this.controllerUpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // timer500
             // 
             this.timer500.Interval = 500;
             this.timer500.Tick += new System.EventHandler(this.timer500_Tick);
-            // 
-            // timer50
-            // 
-            this.timer50.Interval = 50;
-            this.timer50.Tick += new System.EventHandler(this.timer50_Tick);
-            // 
-            // timer10
-            // 
-            this.timer10.Interval = 10;
-            this.timer10.Tick += new System.EventHandler(this.timer10_Tick);
             // 
             // connectButton
             // 
@@ -363,24 +349,17 @@
             // controllerUpdateTimer
             // 
             this.controllerUpdateTimer.Enabled = true;
+            this.controllerUpdateTimer.Interval = 5;
             this.controllerUpdateTimer.Tick += new System.EventHandler(this.controllerUpdateTimer_Tick);
             // 
-            // textBox1
+            // label2
             // 
-            this.textBox1.Location = new System.Drawing.Point(439, 245);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 31);
-            this.textBox1.TabIndex = 28;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(439, 687);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(70, 25);
-            this.label4.TabIndex = 29;
-            this.label4.Text = "label4";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(995, 539);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(70, 25);
+            this.label2.TabIndex = 28;
+            this.label2.Text = "label2";
             // 
             // MainForm
             // 
@@ -388,8 +367,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1280, 1023);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.ConnectionB);
             this.Controls.Add(this.button15);
             this.Controls.Add(this.button14);
@@ -429,14 +407,11 @@
         #endregion
 
         private System.Windows.Forms.Timer timer500;
-        private System.Windows.Forms.Timer timer50;
-        private System.Windows.Forms.Timer timer10;
         private System.Windows.Forms.Button connectButton;
         private System.Windows.Forms.Label queueLabel;
         private System.Windows.Forms.Button armButton;
         private System.Windows.Forms.Label portLabel;
         private System.Windows.Forms.Button resetButton;
-        private System.Windows.Forms.Timer controllerUpdate;
         private System.Windows.Forms.Label ConnectionLabel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label button1;
@@ -459,8 +434,7 @@
         private System.Windows.Forms.Label button15;
         private System.Windows.Forms.Button ConnectionB;
         private System.Windows.Forms.Timer controllerUpdateTimer;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label2;
     }
 }
 

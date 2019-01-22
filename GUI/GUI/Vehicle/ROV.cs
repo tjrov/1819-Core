@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using XInput.Wrapper;
 
 
 namespace GUI
@@ -25,19 +26,39 @@ namespace GUI
 
         private PidController depthPID, headingPID, rollPID;
 
-        public float VerticalMotion, ForeAftMotion, StrafeMotion, TurnMotion; //ccw positive
-        public float DesiredHeading;
+        public double VerticalMotion, ForeAftMotion, StrafeMotion, TurnMotion; //ccw positive
+        public double DesiredHeading
+        {
+            get
+            {
+                return DesiredHeading;
+            }
+            set
+            {
+                if(value > 360)
+                {
+                    DesiredHeading = value - 360;
+                }
+                else if(value < 0)
+                {
+                    DesiredHeading = 360 - value;
+                } else
+                {
+                    DesiredHeading = value;
+                }
+            }
+        }
         public bool EnableHeadingLock, EnableRollLock, EnableDepthLock;
 
         //change as needed
         private Dictionary<string, int> key = new Dictionary<string, int>()
         {
-            ["Forward Port"] = 0,
-            ["Forward Starboard"] = 1,
-            ["Aft Port"] = 2,
-            ["Aft Starboard"] = 3,
-            ["Vertical Port"] = 4,
-            ["Vertical Starboard"] = 5
+            ["ForwardPort"] = 0,
+            ["ForwardStarboard"] = 1,
+            ["AftPort"] = 2,
+            ["AftStarboard"] = 3,
+            ["VerticalPort"] = 4,
+            ["VerticalStarboard"] = 5
         };
 
         private double headingAdj;
@@ -69,7 +90,7 @@ namespace GUI
             t50.Tick += T50_Tick;
             t10.Tick += T10_Tick;
 
-            //get the firmware version
+            //get the ROV firmware version when connection starts
             comms.Queue.Enqueue(VersionSensor);
         }
 
@@ -97,27 +118,27 @@ namespace GUI
             {
                 localTurnMotion += headingAdj;
             }
-            speeds[key["Forward Port"]] = ForeAftMotion + StrafeMotion - TurnMotion;
-            speeds[key["Forward Starboard"]] = ForeAftMotion - StrafeMotion + TurnMotion;
-            speeds[key["Aft Port"]] = ForeAftMotion - StrafeMotion - TurnMotion;
-            speeds[key["Aft Starboard"]] = ForeAftMotion + StrafeMotion + TurnMotion;
+            speeds[key["ForwardPort"]] = ForeAftMotion + StrafeMotion - TurnMotion;
+            speeds[key["ForwardStarboard"]] = ForeAftMotion - StrafeMotion + TurnMotion;
+            speeds[key["AftPort"]] = ForeAftMotion - StrafeMotion - TurnMotion;
+            speeds[key["AftStarboard"]] = ForeAftMotion + StrafeMotion + TurnMotion;
 
             //vertical thrusters
             //VerticalMotion is positive upward
-            speeds[key["Vertical Port"]] = VerticalMotion;
-            speeds[key["Vertical Starboard"]] = VerticalMotion;
+            speeds[key["VerticalPort"]] = VerticalMotion;
+            speeds[key["VerticalStarboard"]] = VerticalMotion;
             if(EnableDepthLock)
             {
-                speeds[key["Vertical Port"]] += depthAdj;
-                speeds[key["Vertical Starboard"]] += depthAdj;
+                speeds[key["VerticalPort"]] += depthAdj;
+                speeds[key["VerticalStarboard"]] += depthAdj;
             }
             if (EnableRollLock)
             {
-                speeds[key["Vertical Port"]] += rollAdj;
-                speeds[key["Vertical Starboard"]] += rollAdj;
+                speeds[key["VerticalPort"]] += rollAdj;
+                speeds[key["VerticalStarboard"]] += rollAdj;
             }
 
-            //send the thruster speeds
+            //send the thruster speeds to the ROV
             comms.Queue.Enqueue(PropulsionActuator);
         }
 

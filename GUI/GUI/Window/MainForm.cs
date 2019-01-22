@@ -30,6 +30,8 @@ namespace GUI
             pilot = X.Gamepad_1;
             pilot.Enable = true;
             pilot.Update(); //must call update right after setting enable to true in order for it to connect
+            //copilot = X.Gamepad_2;
+            //copilot.Enable = false; //change later on
 
             //copilot = X.Gamepad_2;
             //copilot.Enable = false;
@@ -37,7 +39,6 @@ namespace GUI
             //setup window
             this.KeyPreview = true;
             InitializeComponent();
-            controllerUpdate.Enabled = true;
 
             depthIndicator = new DepthIndicator() { Location = new Point(0, 100) };
             attitudeIndicator = new AttitudeIndicator() { Location = new Point(100, 100) };
@@ -79,9 +80,6 @@ namespace GUI
             this.Invoke(new Action(() =>
             {
                 connectButton.Text = "Comms Started";
-                timer500.Enabled = true;
-                timer50.Enabled = true;
-                timer10.Enabled = true;
             }));
         }
 
@@ -90,9 +88,6 @@ namespace GUI
             this.Invoke(new Action(() =>
             {
                 connectButton.Text = "Comms Stopped";
-                timer500.Enabled = false;
-                timer50.Enabled = false;
-                timer10.Enabled = false;
             }));
         }
 
@@ -100,15 +95,6 @@ namespace GUI
         {
             queueLabel.Text = "Queue length: " + comms.Queue.Count;
             armButton.Text = rov.StatusSensor.Data.Status == ROVStatus.ARMED ? "Armed" : "Disarmed";
-        }
-
-        private void timer50_Tick(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void timer10_Tick(object sender, EventArgs e)
-        {
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -164,6 +150,24 @@ namespace GUI
                 button15.Text = "LTrigger" + pilot.LTrigger;
                 button16.Text = "RTrigger" + pilot.RTrigger;
                 button17.Text = "Start" + pilot.Start_down;
+
+                //Lstick controls horizontal translations
+                rov.ForeAftMotion = ConvertUtils.Map(pilot.LStick.Y, -32768, 32767, -100, 100);
+                rov.StrafeMotion = ConvertUtils.Map(pilot.LStick.X, -32768, 32767, -100, 100);
+                if (rov.EnableHeadingLock)
+                {
+                    //RStick controls desired heading
+                    rov.TurnMotion = 0;
+                    rov.DesiredHeading += ConvertUtils.Map(pilot.RStick.X, -32768, 32767, -100, 100) / 100;
+                }
+                else
+                {
+                    //Rstick controls yaw (turning about vertical axis)
+                    rov.TurnMotion = ConvertUtils.Map(pilot.RStick.X, -32768, 32767, -100, 100);
+                }
+                    
+                //left bumper moves downward, right bumper moves upward
+                rov.VerticalMotion = ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, -100) + ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, 100);
             }
             else
             {
