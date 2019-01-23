@@ -58,6 +58,14 @@
             this.ConnectionB = new System.Windows.Forms.Button();
             this.controllerUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.label2 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.topLeft = new System.Windows.Forms.Label();
+            this.topRight = new System.Windows.Forms.Label();
+            this.midLeft = new System.Windows.Forms.Label();
+            this.midRight = new System.Windows.Forms.Label();
+            this.botLeft = new System.Windows.Forms.Label();
+            this.botRight = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // timer500
@@ -361,12 +369,97 @@
             this.label2.TabIndex = 28;
             this.label2.Text = "label2";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pictureBox1.Image = global::GUI.Properties.Resources.rov_thrusters;
+            this.pictureBox1.InitialImage = global::GUI.Properties.Resources.rov_thrusters;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 97);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(874, 873);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 29;
+            this.pictureBox1.TabStop = false;
+            // 
+            // topLeft
+            // 
+            this.topLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.topLeft.AutoSize = true;
+            this.topLeft.Location = new System.Drawing.Point(163, 259);
+            this.topLeft.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.topLeft.Name = "topLeft";
+            this.topLeft.Size = new System.Drawing.Size(47, 25);
+            this.topLeft.TabIndex = 30;
+            this.topLeft.Text = "N/A";
+            // 
+            // topRight
+            // 
+            this.topRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.topRight.AutoSize = true;
+            this.topRight.Location = new System.Drawing.Point(667, 259);
+            this.topRight.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.topRight.Name = "topRight";
+            this.topRight.Size = new System.Drawing.Size(47, 25);
+            this.topRight.TabIndex = 31;
+            this.topRight.Text = "N/A";
+            // 
+            // midLeft
+            // 
+            this.midLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.midLeft.AutoSize = true;
+            this.midLeft.Location = new System.Drawing.Point(163, 519);
+            this.midLeft.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.midLeft.Name = "midLeft";
+            this.midLeft.Size = new System.Drawing.Size(47, 25);
+            this.midLeft.TabIndex = 32;
+            this.midLeft.Text = "N/A";
+            // 
+            // midRight
+            // 
+            this.midRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.midRight.AutoSize = true;
+            this.midRight.Location = new System.Drawing.Point(667, 519);
+            this.midRight.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.midRight.Name = "midRight";
+            this.midRight.Size = new System.Drawing.Size(47, 25);
+            this.midRight.TabIndex = 33;
+            this.midRight.Text = "N/A";
+            // 
+            // botLeft
+            // 
+            this.botLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.botLeft.AutoSize = true;
+            this.botLeft.Location = new System.Drawing.Point(174, 807);
+            this.botLeft.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.botLeft.Name = "botLeft";
+            this.botLeft.Size = new System.Drawing.Size(47, 25);
+            this.botLeft.TabIndex = 34;
+            this.botLeft.Text = "N/A";
+            // 
+            // botRight
+            // 
+            this.botRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.botRight.AutoSize = true;
+            this.botRight.Location = new System.Drawing.Point(667, 807);
+            this.botRight.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.botRight.Name = "botRight";
+            this.botRight.Size = new System.Drawing.Size(47, 25);
+            this.botRight.TabIndex = 35;
+            this.botRight.Text = "N/A";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1280, 1023);
+            this.Controls.Add(this.botRight);
+            this.Controls.Add(this.botLeft);
+            this.Controls.Add(this.midRight);
+            this.Controls.Add(this.midLeft);
+            this.Controls.Add(this.topRight);
+            this.Controls.Add(this.topLeft);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.ConnectionB);
             this.Controls.Add(this.button15);
@@ -399,6 +492,7 @@
             this.Text = "TJROV - GUI";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -435,6 +529,13 @@
         private System.Windows.Forms.Button ConnectionB;
         private System.Windows.Forms.Timer controllerUpdateTimer;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label topLeft;
+        private System.Windows.Forms.Label topRight;
+        private System.Windows.Forms.Label midLeft;
+        private System.Windows.Forms.Label midRight;
+        private System.Windows.Forms.Label botLeft;
+        private System.Windows.Forms.Label botRight;
     }
 }
 

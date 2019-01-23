@@ -33,9 +33,6 @@ namespace GUI
             //copilot = X.Gamepad_2;
             //copilot.Enable = false; //change later on
 
-            //copilot = X.Gamepad_2;
-            //copilot.Enable = false;
-
             //setup window
             this.KeyPreview = true;
             InitializeComponent();
@@ -128,15 +125,32 @@ namespace GUI
         private void controllerUpdateTimer_Tick(object sender, EventArgs e)
         {
             pilot.Update();
+
+            //Zeroing Code for left joystick
+            int LStickZeroX = pilot.LStick.X;
+            if (Math.Abs(LStickZeroX) < 5000)
+                LStickZeroX = 0;
+            int LStickZeroY = pilot.LStick.Y;
+            if (Math.Abs(LStickZeroY) < 5000)
+                LStickZeroY = 0;
+
+            //Zeroing Code for right joystick
+            int RStickZeroX = pilot.RStick.X;
+            if (Math.Abs(RStickZeroX) < 5000)
+                RStickZeroX = 0;
+            int RStickZeroY = pilot.RStick.Y;
+            if (Math.Abs(RStickZeroY) < 5000)
+                RStickZeroY = 0;
+
             if (pilot.IsConnected)
             {
                 ConnectionB.BackColor = Color.Green;
-                ConnectionLabel.Text = "" + pilot.LTrigger;
-                button0.Text = "LStick.X" + pilot.LStick.X;
-                button1.Text = "LStick.Y" + pilot.LStick.Y;
+                ConnectionLabel.Text = "yes";
+                button0.Text = "LStick.X" + LStickZeroX;
+                button1.Text = "LStick.Y" + LStickZeroY;
                 button2.Text = "LStick" + pilot.LStick_down;
-                button3.Text = "RStick.X" + pilot.RStick.X;
-                button4.Text = "RStick.Y" + pilot.RStick.Y;
+                button3.Text = "RStick.X" + RStickZeroX;
+                button4.Text = "RStick.Y" + RStickZeroY;
                 button5.Text = "DPad up" + pilot.Dpad_Up_down;
                 button6.Text = "DPad down" + pilot.Dpad_Down_down;
                 button7.Text = "DPad left" + pilot.Dpad_Left_down;
@@ -150,29 +164,35 @@ namespace GUI
                 button15.Text = "LTrigger" + pilot.LTrigger;
                 button16.Text = "RTrigger" + pilot.RTrigger;
                 button17.Text = "Start" + pilot.Start_down;
+                topLeft.Text = "" + (rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion);
+                midLeft.Text = "" + rov.VerticalMotion;
+                botLeft.Text = "" + (rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion);
+                topRight.Text = "" + (rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion);
+                midRight.Text = "" + rov.VerticalMotion;
+                botRight.Text = "" + (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion);
 
-                //Lstick controls horizontal translations
-                rov.ForeAftMotion = ConvertUtils.Map(pilot.LStick.Y, -32768, 32767, -100, 100);
-                rov.StrafeMotion = ConvertUtils.Map(pilot.LStick.X, -32768, 32767, -100, 100);
+                //Lstick controls horizontal translations 
+                rov.ForeAftMotion = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, -100, 100));
+                rov.StrafeMotion = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, -100, 100));
                 if (rov.EnableHeadingLock)
                 {
                     //RStick controls desired heading
                     rov.TurnMotion = 0;
-                    rov.DesiredHeading += ConvertUtils.Map(pilot.RStick.X, -32768, 32767, -100, 100) / 100;
+                    rov.DesiredHeading += (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100) / 100);
                 }
                 else
                 {
                     //Rstick controls yaw (turning about vertical axis)
-                    rov.TurnMotion = ConvertUtils.Map(pilot.RStick.X, -32768, 32767, -100, 100);
+                    rov.TurnMotion = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100));
                 }
                     
                 //left bumper moves downward, right bumper moves upward
-                rov.VerticalMotion = ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, -100) + ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, 100);
+                rov.VerticalMotion = (int)(ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, -100) + ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, 100));
             }
             else
             {
                 ConnectionB.BackColor = Color.DarkRed;
-                ConnectionLabel.Text = "no" + pilot.LTrigger;
+                ConnectionLabel.Text = "no";
             }
 
         }
