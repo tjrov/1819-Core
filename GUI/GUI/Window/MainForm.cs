@@ -3,9 +3,8 @@
 //Darius Kianersi
 //Anish Gorentala
 //Aneesh Boreda
-//Kevin Wu
-// Shreepa Parthaje
-// Suhas Nandiraju
+//Shreepa Parthaje
+//Suhas Nandiraju
 
 using System;
 using System.Drawing;
@@ -19,15 +18,6 @@ namespace GUI
     {
         private ROV rov;
         private SerialCommunication comms;
-
-        public DirectInput Input = new DirectInput();
-        public Joystick stick;
-        public Joystick[] Sticks;
-        int yValueL = 0;
-        int xValueL = 0;
-        int zValue = 0;
-        int tickCount = 0;
-        public Boolean connected1 = false;
 
         private AttitudeIndicator attitudeIndicator;
         private HeadingIndicator headingIndicator;
