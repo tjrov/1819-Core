@@ -156,11 +156,7 @@ void setup() {
 
 	if (error != ALL_SYSTEMS_GO) { //if we can't init
 		flashError(); //flash led with error
-	}
-
-	while (true) {
-		writeESCs();
-		writeTools();
+		Serial.println(error);
 	}
 }
 
@@ -429,9 +425,17 @@ void writeStatus() {
 
 //call to stop all movement of actuators
 void emergencyStop() {
-	//reset PCA-9685 to set all PWM signals to permanent logic LOW
 	if (checkI2C(PCA_9685_ADDRESS)) {
-		pca9685.reset();
+		//stop ESCs
+		int stopped = (PWM_MIN + PWM_MAX) / 2; //stopped signal pulse length is halfway between full forward and full reverse
+		for (int i = 0; i < NUM_ESCS; i++) {
+			pca9685.setPWM(i, 0, stopped);
+		}
+		//stop motor outputs (coast to a stop instead of braking so that claws will let go
+		for (int i = 0; i < NUM_TOOLS; i++) {
+			pca9685.setPWM(15 - i * 2, 0, 0);
+			pca9685.setPWM(14 - i * 2, 0, 0);
+		}
 	} else {
 		error |= ~TOOLS_FAILURE | ESC_FAILURE;
 	}

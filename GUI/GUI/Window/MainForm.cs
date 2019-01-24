@@ -1,38 +1,25 @@
 ﻿//Edward Li
 //Angela Chen
-// Darius Kianersi
+//Darius Kianersi
 //Anish Gorentala
 //Aneesh Boreda
-<<<<<<< HEAD
 //Kevin Wu
-=======
 // Shreepa Parthaje
 // Suhas Nandiraju
 
->>>>>>> d512832f4b01a9e0fa52ba23c963f3b536ba2618
-using SlimDX.DirectInput;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using XInput.Wrapper;
+
 
 namespace GUI
 {
     public partial class MainForm : Form
     {
-        private DepthSensor depthSensor;
-        private OrientationSensor orientationSensor;
-        private StatusSensor statusSensor;
-        private PropulsionSensor propulsionSensor;
-        private VersionSensor versionSensor;
-
-        private StatusActuator statusActuator;
-        private PropulsionActuator propulsionActuator;
-        private ToolsActuator toolsActuator;
-
+        private ROV rov;
         private SerialCommunication comms;
 
-        //Gamepads
         public DirectInput Input = new DirectInput();
         public Joystick stick;
         public Joystick[] Sticks;
@@ -45,14 +32,20 @@ namespace GUI
         private AttitudeIndicator attitudeIndicator;
         private HeadingIndicator headingIndicator;
         private DepthIndicator depthIndicator;
+        public X.Gamepad pilot, copilot;
 
         public MainForm()
         {
+            //controller
+            pilot = X.Gamepad_1;
+            pilot.Enable = true;
+            pilot.Update(); //must call update right after setting enable to true in order for it to connect
+            //copilot = X.Gamepad_2;
+            //copilot.Enable = false; //change later on
+
             //setup window
             this.KeyPreview = true;
             InitializeComponent();
-            Sticks = GetSticks();
-            controllerUpdate.Enabled = true;
 
             depthIndicator = new DepthIndicator() { Location = new Point(0, 100) };
             attitudeIndicator = new AttitudeIndicator() { Location = new Point(100, 100) };
@@ -62,212 +55,31 @@ namespace GUI
             Controls.Add(headingIndicator);
 
             //setup devices
-            BetterSerialPort port = new BetterSerialPort("COM5", 115200);
-            port.Open();
+            BetterSerialPort port = new BetterSerialPort("COM6", 115200);
             portLabel.Text = string.Format("{0}@{1}baud", port.PortName, port.BaudRate);
             comms = new SerialCommunication(port);
             comms.Stopped += comms_Stopped;
             comms.Started += comms_Started;
             //comms.Connect();
 
-            depthSensor = new DepthSensor();
-            orientationSensor = new OrientationSensor();
-            statusSensor = new StatusSensor();
-            propulsionSensor = new PropulsionSensor();
-            versionSensor = new VersionSensor();
-
-            statusActuator = new StatusActuator();
-            propulsionActuator = new PropulsionActuator();
-            toolsActuator = new ToolsActuator();
+            rov = new ROV(comms);
 
             //update displays when sensors polled
-            orientationSensor.Updated += OrientationSensor_Updated;
-            depthSensor.Updated += DepthSensor_Updated;
-
-            //get ROV firmware version info
-            comms.Queue.Enqueue(versionSensor);
-        }
-
-        public Joystick[] GetSticks()
-        {
-            List<Joystick> sticks = new List<Joystick>();
-            foreach(DeviceInstance device in Input.GetDevices(DeviceClass.GameController,DeviceEnumerationFlags.AttachedOnly))
-            {
-                try
-                {
-                    stick = new Joystick(Input, device.InstanceGuid);
-                    stick.Acquire();
-
-                    foreach(DeviceObjectInstance deviceObject in stick.GetObjects())
-                    {
-                        if((deviceObject.ObjectType & ObjectDeviceType.Axis) != 0)
-                        {
-                            stick.GetObjectPropertiesById((int)deviceObject.ObjectType).SetRange(-100, 100);
-                        }
-                    }
-                    sticks.Add(stick);
-                }
-                catch(DirectInputException ex)
-                {
-                    MessageBox.Show("Controller Error: " + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            if (sticks.Count != 0)
-            {
-                connected1 = true;
-            }
-            else
-                connected1 = false;
-            return sticks.ToArray();
-        }
-
-        public void StickHandle(Joystick stick, int id)
-        {
-            JoystickState state = new JoystickState();
-            state = stick.GetCurrentState();
-
-            if (-state.Y != 0)
-            {
-                yValueL = -state.Y;
-                if(yValueL < 9 && yValueL > -9)
-                {
-                    yValueL = 0;
-                }
-                y.Text = "" + yValueL;
-            }
-            if (state.X != 0)
-            {
-                xValueL = state.X;
-                if (xValueL < 9 && xValueL > -9)
-                {
-                    xValueL = 0;
-                }
-                x.Text = "" + xValueL;
-            }
-            zValue = state.Z;
-
-            bool[] buttons = state.GetButtons();
-
-            if(id == 0)
-            {
-                for(int i = 0; i < buttons.Length; i++)
-                {
-                    switch (i)
-                    {
-                        case 0:
-                            if (buttons[0] != false)
-                                button0.Text = "Pressed";
-                            else
-                                button0.Text = "N/A";
-                            break;
-                        case 1:
-                            if (buttons[1] != false)
-                                button1.Text = "Pressed";
-                            else
-                                button1.Text = "N/A";
-                            break;
-                        case 2:
-                            if (buttons[2] != false)
-                                button2.Text = "Pressed";
-                            else
-                                button2.Text = "N/A";
-                            break;
-                        case 3:
-                            if (buttons[3] != false)
-                                button3.Text = "Pressed";
-                            else
-                                button3.Text = "N/A";
-                            break;
-                        case 4:
-                            if (buttons[4] != false)
-                                button4.Text = "Pressed";
-                            else
-                                button4.Text = "N/A";
-                            break;
-                        case 5:
-                            if (buttons[5] != false)
-                                button5.Text = "Pressed";
-                            else
-                                button5.Text = "N/A";
-                            break;
-                        case 6:
-                            if (buttons[6] != false)
-                                button6.Text = "Pressed";
-                            else
-                                button6.Text = "N/A";
-                            break;
-                        case 7:
-                            if (buttons[7] != false)
-                                button7.Text = "Pressed";
-                            else
-                                button7.Text = "N/A";
-                            break;
-                        case 8:
-                            if (buttons[8] != false)
-                                button8.Text = "Pressed";
-                            else
-                                button8.Text = "N/A";
-                            break;
-                        case 9:
-                            if (buttons[9] != false)
-                                button9.Text = "Pressed";
-                            else
-                                button9.Text = "N/A";
-                            break;
-                        case 10:
-                            if (buttons[10] != false)
-                                button10.Text = "Pressed";
-                            else
-                                button10.Text = "N/A";
-                            break;
-                        case 11:
-                            if (buttons[11] != false)
-                                button11.Text = "Pressed";
-                            else
-                                button11.Text = "N/A";
-                            break;
-                        case 12:
-                            if (buttons[12] != false)
-                                button12.Text = "Pressed";
-                            else
-                                button12.Text = "N/A";
-                            break;
-                        case 13:
-                            if (buttons[13] != false)
-                                button13.Text = "Pressed";
-                            else
-                                button13.Text = "N/A";
-                            break;
-                        case 14:
-                            if (buttons[14] != false)
-                                button14.Text = "Pressed";
-                            else
-                                button14.Text = "N/A";
-                            break;
-                        case 15:
-                            if (buttons[15] != false)
-                                button15.Text = "Pressed";
-                            else
-                                button15.Text = "N/A";
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
+            rov.OrientationSensor.Updated += OrientationSensor_Updated;
+            rov.DepthSensor.Updated += DepthSensor_Updated;
         }
 
         private void DepthSensor_Updated(object sender, DepthData e)
         {
-            depthIndicator.Depth = depthSensor.Data.DepthValue;
+            depthIndicator.Depth = rov.DepthSensor.Data.DepthValue;
         }
 
         private void OrientationSensor_Updated(object sender, OrientationData e)
         {
-            attitudeIndicator.PitchAngle = orientationSensor.Data.Pitch;
-            attitudeIndicator.RollAngle = orientationSensor.Data.Roll;
-            attitudeIndicator.YawAngle = orientationSensor.Data.Yaw;
-            headingIndicator.Heading = orientationSensor.Data.Yaw;
+            attitudeIndicator.PitchAngle = rov.OrientationSensor.Data.Pitch;
+            attitudeIndicator.RollAngle = rov.OrientationSensor.Data.Roll;
+            attitudeIndicator.YawAngle = rov.OrientationSensor.Data.Yaw;
+            headingIndicator.Heading = rov.OrientationSensor.Data.Yaw;
         }
 
         private void comms_Started(object sender, EventArgs e)
@@ -275,9 +87,6 @@ namespace GUI
             this.Invoke(new Action(() =>
             {
                 connectButton.Text = "Comms Started";
-                timer500.Enabled = true;
-                timer50.Enabled = true;
-                timer10.Enabled = true;
             }));
         }
 
@@ -286,38 +95,13 @@ namespace GUI
             this.Invoke(new Action(() =>
             {
                 connectButton.Text = "Comms Stopped";
-                timer500.Enabled = false;
-                timer50.Enabled = false;
-                timer10.Enabled = false;
             }));
         }
 
         private void timer500_Tick(object sender, EventArgs e)
         {
-            //statusActuator.Data.DesiredStatus = ROVStatus.ARMED;
-            comms.Queue.Enqueue(statusSensor);
-            comms.Queue.Enqueue(propulsionSensor);
-            comms.Queue.Enqueue(statusActuator);
             queueLabel.Text = "Queue length: " + comms.Queue.Count;
-            armButton.Text = statusSensor.Data.Status == ROVStatus.ARMED ? "Armed" : "Disarmed";
-        }
-
-        private void timer50_Tick(object sender, EventArgs e)
-        {
-            comms.Queue.Enqueue(depthSensor);
-            comms.Queue.Enqueue(orientationSensor);
-            comms.Queue.Enqueue(toolsActuator);
-        }
-
-        private void timer10_Tick(object sender, EventArgs e)
-        {
-            try {
-                comms.Queue.Enqueue(propulsionActuator);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Unhandled Error: " + ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            armButton.Text = rov.StatusSensor.Data.Status == ROVStatus.ARMED ? "Armed" : "Disarmed";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -327,50 +111,108 @@ namespace GUI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if(statusSensor.Data.Status == ROVStatus.ARMED)
+            if(rov.StatusSensor.Data.Status == ROVStatus.ARMED)
             {
-                statusActuator.Data.DesiredStatus = ROVStatus.DISARMED;
-            } else if(statusSensor.Data.Status == ROVStatus.DISARMED)
+                rov.StatusActuator.Data.DesiredStatus = ROVStatus.DISARMED;
+            } else if(rov.StatusSensor.Data.Status == ROVStatus.DISARMED)
             {
-                statusActuator.Data.DesiredStatus = ROVStatus.ARMED;
+                rov.StatusActuator.Data.DesiredStatus = ROVStatus.ARMED;
             }
         }
 
         private void resetButton_Click(object sender, EventArgs e)
         {
-            statusActuator.Data.DesiredStatus = ROVStatus.REBOOT;
+            rov.StatusActuator.Data.DesiredStatus = ROVStatus.REBOOT;
         }
 
-        private void controllerUpdate_Tick(object sender, EventArgs e)
-        {
-            if(tickCount >= 10)
-            {
-                Sticks = GetSticks();
-                tickCount = 0;
-            }
-            if (connected1)
-            {
-                ConnectionLabel.Text = "Controller Connected = True";
-                ConnectionB.BackColor = Color.LimeGreen;
-            }
-            else
-            {
-                ConnectionLabel.Text = "Controller Connected = False";
-                ConnectionB.BackColor = Color.DarkRed;
-            }
-
-            for (int i = 0; i < Sticks.Length; i++)
-            {
-                StickHandle(Sticks[i], i);
-            }
-            Console.WriteLine(tickCount);
-            tickCount++;
-        }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
                 Environment.Exit(1);
         }
-    }
+
+        private void controllerUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            pilot.Update();
+
+            //Zeroing Code for left joystick
+            int LStickZeroX = pilot.LStick.X;
+            if (Math.Abs(LStickZeroX) < 5000)
+                LStickZeroX = 0;
+            int LStickZeroY = pilot.LStick.Y;
+            if (Math.Abs(LStickZeroY) < 5000)
+                LStickZeroY = 0;
+
+            //Zeroing Code for right joystick
+            int RStickZeroX = pilot.RStick.X;
+            if (Math.Abs(RStickZeroX) < 5000)
+                RStickZeroX = 0;
+            int RStickZeroY = pilot.RStick.Y;
+            if (Math.Abs(RStickZeroY) < 5000)
+                RStickZeroY = 0;
+
+            if (pilot.IsConnected)
+            {
+                ConnectionB.BackColor = Color.Green;
+                ConnectionLabel.Text = "yes";
+                button0.Text = "LStick.X" + LStickZeroX;
+                button1.Text = "LStick.Y" + LStickZeroY;
+                button2.Text = "LStick" + pilot.LStick_down;
+                button3.Text = "RStick.X" + RStickZeroX;
+                button4.Text = "RStick.Y" + RStickZeroY;
+                button5.Text = "DPad up" + pilot.Dpad_Up_down;
+                button6.Text = "DPad down" + pilot.Dpad_Down_down;
+                button7.Text = "DPad left" + pilot.Dpad_Left_down;
+                button8.Text = "DPad right" + pilot.Dpad_Right_down;
+                button9.Text = "A" + pilot.A_down;
+                button10.Text = "B" + pilot.B_down;
+                button11.Text = "X" + pilot.X_down;
+                button12.Text = "Y" + pilot.Y_down;
+                button13.Text = "LBumper" + pilot.LBumper_down;
+                button14.Text = "RBumper" + pilot.RBumper_down;
+                button15.Text = "LTrigger" + pilot.LTrigger;
+                button16.Text = "RTrigger" + pilot.RTrigger;
+                button17.Text = "Start" + pilot.Start_down;
+                topLeft.Text = "" + (rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion);
+                midLeft.Text = "" + rov.VerticalMotion;
+                botLeft.Text = "" + (rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion);
+                topRight.Text = "" + (rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion);
+                midRight.Text = "" + rov.VerticalMotion;
+                botRight.Text = "" + (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion);
+
+                //Lstick controls horizontal translations 
+                rov.ForeAftMotion = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, -100, 100));
+                rov.StrafeMotion = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, -100, 100));
+                if (rov.EnableHeadingLock)
+                {
+                    //RStick controls desired heading
+                    rov.TurnMotion = 0;
+                    rov.DesiredHeading += (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100) / 100);
+                }
+                else
+                {
+                    //Rstick controls yaw (turning about vertical axis)
+                    rov.TurnMotion = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100));
+                }
+                    
+                //left bumper moves downward, right bumper moves upward
+                rov.VerticalMotion = (int)(ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, -100) + ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, 100));
+            }
+            else
+            {
+                ConnectionB.BackColor = Color.DarkRed;
+                ConnectionLabel.Text = "no";
+            }
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                //rov.PropulsionActuator.Data.Speeds[i] = Int32.Parse(textBox1.Text);
+            }
+        }
+    }   
 }
