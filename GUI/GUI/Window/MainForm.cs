@@ -335,9 +335,17 @@ namespace GUI
                 ConnectionLabel.Text = "no";
                 depthLockButton.BackColor = Color.DarkRed;
             }
-
+            Actuator1.Value = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, 0, 200));
+            Actuator2.Value = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, 0, 200));
+            Actuator3.Value = (int)(ConvertUtils.Map(RStickZeroY, -32768, 32767, 0, 200));
+            Actuator4.Value = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, 0, 200));
+        
         }
 
+        private void Actuator1_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
