@@ -63,6 +63,7 @@
             this.ConnectionB = new System.Windows.Forms.Button();
             this.controllerUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.propulsionSpeedLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // timer500
@@ -372,12 +373,21 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(316, 163);
+            this.textBox1.Location = new System.Drawing.Point(231, 100);
             this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(68, 22);
             this.textBox1.TabIndex = 28;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // propulsionSpeedLabel
+            // 
+            this.propulsionSpeedLabel.AutoSize = true;
+            this.propulsionSpeedLabel.Location = new System.Drawing.Point(5, 100);
+            this.propulsionSpeedLabel.Name = "propulsionSpeedLabel";
+            this.propulsionSpeedLabel.Size = new System.Drawing.Size(221, 17);
+            this.propulsionSpeedLabel.TabIndex = 29;
+            this.propulsionSpeedLabel.Text = "Enter the Propulsion Speed Here:";
             // 
             // MainForm
             // 
@@ -385,6 +395,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(853, 655);
+            this.Controls.Add(this.propulsionSpeedLabel);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.ConnectionB);
             this.Controls.Add(this.button15);
@@ -461,6 +472,7 @@
         private System.Windows.Forms.Button ConnectionB;
         private System.Windows.Forms.Timer controllerUpdateTimer;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label propulsionSpeedLabel;
     }
 }
 
