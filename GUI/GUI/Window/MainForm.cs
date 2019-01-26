@@ -350,8 +350,9 @@ namespace GUI
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             for (int i = 0; i < 6; i++)
-            {
-                //rov.PropulsionActuator.Data.Speeds[i] = Int32.Parse(textBox1.Text);
+            {   
+                //if(Int32.TryParse(textBox1.Text , out int n))
+                   // rov.PropulsionActuator.Data.Speeds[i] = n;
             }
         }
     }   
