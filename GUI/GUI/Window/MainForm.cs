@@ -207,8 +207,109 @@ namespace GUI
                 } else
                 {
                     depthLockButton.BackColor = Color.DarkRed;
-
+                    
                 }
+                    //ACTUATOR CODE for next few lines
+
+                if (pilot.A_down)
+                {
+                    if (rov.ToolsActuator.Data.Speeds[0]-10 > -100)
+                    {
+                        rov.ToolsActuator.Data.Speeds[0] -= 10;
+                    }
+                    else {
+                        rov.ToolsActuator.Data.Speeds[0] = -100;
+                    }
+                }
+
+                if (pilot.B_down)
+                {
+                    if (rov.ToolsActuator.Data.Speeds[0] + 10 < 100)
+                    {
+                        rov.ToolsActuator.Data.Speeds[0] += 10;
+                    }
+                    else
+                    {
+                        rov.ToolsActuator.Data.Speeds[0] = 100;
+                    }
+                }
+
+
+                if (pilot.X_down)
+                {
+                    if (rov.ToolsActuator.Data.Speeds[1] - 10 > -100)
+                    {
+                        rov.ToolsActuator.Data.Speeds[1] -= 10;
+                    }
+                    else
+                    {
+                        rov.ToolsActuator.Data.Speeds[1] = -100;
+                    }
+                }
+
+                if (pilot.Y_down)
+                {
+                    if (rov.ToolsActuator.Data.Speeds[1] + 10 < 100)
+                    {
+                        rov.ToolsActuator.Data.Speeds[1] += 10;
+                    }
+                    else
+                    {
+                        rov.ToolsActuator.Data.Speeds[1] = 100;
+                    }
+                }
+
+
+                if (pilot.Dpad_Down_down)
+                {
+                    if (rov.ToolsActuator.Data.Speeds[2] - 10 > -100)
+                    {
+                        rov.ToolsActuator.Data.Speeds[2] -= 10;
+                    }
+                    else
+                    {
+                        rov.ToolsActuator.Data.Speeds[2] = -100;
+                    }
+                }
+
+                if (pilot.Dpad_Right_down)
+                {
+                    if (rov.ToolsActuator.Data.Speeds[2] + 10 < 100)
+                    {
+                        rov.ToolsActuator.Data.Speeds[2] += 10;
+                    }
+                    else
+                    {
+                        rov.ToolsActuator.Data.Speeds[2] = 100;
+                    }
+                }
+
+
+                if (pilot.Dpad_Left_down)
+                {
+                    if (rov.ToolsActuator.Data.Speeds[3] - 10 > -100)
+                    {
+                        rov.ToolsActuator.Data.Speeds[3] -= 10;
+                    }
+                    else
+                    {
+                        rov.ToolsActuator.Data.Speeds[3] = -100;
+                    }
+                }
+
+                if (pilot.Dpad_Up_down)
+                {
+                    if (rov.ToolsActuator.Data.Speeds[3] + 10 < 100)
+                    {
+                        rov.ToolsActuator.Data.Speeds[3] += 10;
+                    }
+                    else
+                    {
+                        rov.ToolsActuator.Data.Speeds[3] = 100;
+                    }
+                }
+
+                //end of actuator code
 
                 //Lstick controls horizontal translations 
                 rov.ForeAftMotion = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, -100, 100));
