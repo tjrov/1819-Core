@@ -5,6 +5,7 @@
 //Aneesh Boreda
 //Shreepa Parthaje
 //Suhas Nandiraju
+//Kevin Wu
 
 using System;
 using System.Drawing;
@@ -188,7 +189,8 @@ namespace GUI
         {
             for (int i = 0; i < 6; i++)
             {
-                propulsionActuator.Data.Speeds[i] = Int32.Parse(textBox1.Text);
+                if(Int32.TryParse(textBox1.Text, out int n));
+                    propulsionActuator.Data.Speeds[i] = n;
             }
         }
     }   
