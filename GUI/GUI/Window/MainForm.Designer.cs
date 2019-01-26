@@ -65,6 +65,12 @@
             this.botLeft = new System.Windows.Forms.Label();
             this.botRight = new System.Windows.Forms.Label();
             this.depthLockButton = new System.Windows.Forms.Button();
+            this.Actuator2 = new System.Windows.Forms.ProgressBar();
+            this.Actuator3 = new System.Windows.Forms.ProgressBar();
+            this.Actuator1 = new System.Windows.Forms.ProgressBar();
+            this.Actuator4 = new System.Windows.Forms.ProgressBar();
+            this.propulsionActuator1 = new GUI.PropulsionActuator();
+            this.propulsionActuator2 = new GUI.PropulsionActuator();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -441,11 +447,48 @@
             // depthLockButton
             // 
             this.depthLockButton.BackColor = System.Drawing.Color.Red;
-            this.depthLockButton.Location = new System.Drawing.Point(989, 592);
+            this.depthLockButton.Location = new System.Drawing.Point(728, 20);
             this.depthLockButton.Name = "depthLockButton";
             this.depthLockButton.Size = new System.Drawing.Size(122, 54);
             this.depthLockButton.TabIndex = 36;
             this.depthLockButton.UseVisualStyleBackColor = false;
+            // 
+            // Actuator2
+            // 
+            this.Actuator2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Actuator2.Location = new System.Drawing.Point(952, 748);
+            this.Actuator2.Maximum = 200;
+            this.Actuator2.Name = "Actuator2";
+            this.Actuator2.Size = new System.Drawing.Size(237, 43);
+            this.Actuator2.TabIndex = 37;
+            // 
+            // Actuator3
+            // 
+            this.Actuator3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Actuator3.Location = new System.Drawing.Point(952, 827);
+            this.Actuator3.Maximum = 200;
+            this.Actuator3.Name = "Actuator3";
+            this.Actuator3.Size = new System.Drawing.Size(237, 43);
+            this.Actuator3.TabIndex = 38;
+            // 
+            // Actuator1
+            // 
+            this.Actuator1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Actuator1.Location = new System.Drawing.Point(952, 664);
+            this.Actuator1.Maximum = 200;
+            this.Actuator1.Name = "Actuator1";
+            this.Actuator1.Size = new System.Drawing.Size(237, 43);
+            this.Actuator1.TabIndex = 39;
+            this.Actuator1.Visible = false;
+            // 
+            // Actuator4
+            // 
+            this.Actuator4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Actuator4.Location = new System.Drawing.Point(952, 908);
+            this.Actuator4.Maximum = 200;
+            this.Actuator4.Name = "Actuator4";
+            this.Actuator4.Size = new System.Drawing.Size(237, 43);
+            this.Actuator4.TabIndex = 40;
             // 
             // MainForm
             // 
@@ -453,6 +496,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1280, 1023);
+            this.Controls.Add(this.Actuator4);
+            this.Controls.Add(this.Actuator1);
+            this.Controls.Add(this.Actuator3);
+            this.Controls.Add(this.Actuator2);
             this.Controls.Add(this.depthLockButton);
             this.Controls.Add(this.botRight);
             this.Controls.Add(this.botLeft);
@@ -536,6 +583,12 @@
         private System.Windows.Forms.Label botLeft;
         private System.Windows.Forms.Label botRight;
         private System.Windows.Forms.Button depthLockButton;
+        private PropulsionActuator propulsionActuator1;
+        private PropulsionActuator propulsionActuator2;
+        private System.Windows.Forms.ProgressBar Actuator2;
+        private System.Windows.Forms.ProgressBar Actuator3;
+        private System.Windows.Forms.ProgressBar Actuator1;
+        private System.Windows.Forms.ProgressBar Actuator4;
     }
 }
 
