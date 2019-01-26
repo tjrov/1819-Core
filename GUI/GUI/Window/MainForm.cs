@@ -18,11 +18,15 @@ namespace GUI
     {
         private ROV rov;
         private SerialCommunication comms;
-
         private AttitudeIndicator attitudeIndicator;
         private HeadingIndicator headingIndicator;
         private DepthIndicator depthIndicator;
         public X.Gamepad pilot, copilot;
+
+        Boolean isLockClicked = false;
+        int depthvalue = 0;
+
+
 
         public MainForm()
         {
@@ -142,6 +146,8 @@ namespace GUI
             if (Math.Abs(RStickZeroY) < 5000)
                 RStickZeroY = 0;
 
+            
+
             if (pilot.IsConnected)
             {
                 ConnectionB.BackColor = Color.Green;
@@ -170,6 +176,27 @@ namespace GUI
                 topRight.Text = "" + (rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion);
                 midRight.Text = "" + rov.VerticalMotion;
                 botRight.Text = "" + (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion);
+
+                if (pilot.RBumper_down)  //checks if bumper is down
+                {
+                    isLockClicked = !isLockClicked; //turns on lock position
+                    if (isLockClicked)
+                    {
+                        depthvalue = (int)(rov.DepthSensor.Data.DepthValue);
+                    }
+
+                }
+
+                if (isLockClicked == true)
+                {
+                    if (depthvalue < (int)(rov.DepthSensor.Data.DepthValue))
+                    {
+                        rov.VerticalMotion += 1;
+                    } else
+                    {
+                        rov.VerticalMotion -= 1;
+                    }
+                }
 
                 //Lstick controls horizontal translations 
                 rov.ForeAftMotion = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, -100, 100));
