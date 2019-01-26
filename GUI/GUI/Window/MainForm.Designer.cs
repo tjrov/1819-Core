@@ -57,7 +57,6 @@
             this.button15 = new System.Windows.Forms.Label();
             this.ConnectionB = new System.Windows.Forms.Button();
             this.controllerUpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.topLeft = new System.Windows.Forms.Label();
             this.topRight = new System.Windows.Forms.Label();
@@ -65,6 +64,7 @@
             this.midRight = new System.Windows.Forms.Label();
             this.botLeft = new System.Windows.Forms.Label();
             this.botRight = new System.Windows.Forms.Label();
+            this.depthLockButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -360,15 +360,6 @@
             this.controllerUpdateTimer.Interval = 5;
             this.controllerUpdateTimer.Tick += new System.EventHandler(this.controllerUpdateTimer_Tick);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(995, 539);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 25);
-            this.label2.TabIndex = 28;
-            this.label2.Text = "label2";
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -447,12 +438,22 @@
             this.botRight.TabIndex = 35;
             this.botRight.Text = "N/A";
             // 
+            // depthLockButton
+            // 
+            this.depthLockButton.BackColor = System.Drawing.Color.Red;
+            this.depthLockButton.Location = new System.Drawing.Point(989, 592);
+            this.depthLockButton.Name = "depthLockButton";
+            this.depthLockButton.Size = new System.Drawing.Size(122, 54);
+            this.depthLockButton.TabIndex = 36;
+            this.depthLockButton.UseVisualStyleBackColor = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1280, 1023);
+            this.Controls.Add(this.depthLockButton);
             this.Controls.Add(this.botRight);
             this.Controls.Add(this.botLeft);
             this.Controls.Add(this.midRight);
@@ -460,7 +461,6 @@
             this.Controls.Add(this.topRight);
             this.Controls.Add(this.topLeft);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.ConnectionB);
             this.Controls.Add(this.button15);
             this.Controls.Add(this.button14);
@@ -528,7 +528,6 @@
         private System.Windows.Forms.Label button15;
         private System.Windows.Forms.Button ConnectionB;
         private System.Windows.Forms.Timer controllerUpdateTimer;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label topLeft;
         private System.Windows.Forms.Label topRight;
@@ -536,6 +535,7 @@
         private System.Windows.Forms.Label midRight;
         private System.Windows.Forms.Label botLeft;
         private System.Windows.Forms.Label botRight;
+        private System.Windows.Forms.Button depthLockButton;
     }
 }
 

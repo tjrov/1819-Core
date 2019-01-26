@@ -25,7 +25,7 @@ namespace GUI
 
         Boolean isLockClicked = false;
         int depthvalue = 0;
-
+        Boolean RightBumperCheck = false;
 
 
         public MainForm()
@@ -177,25 +177,37 @@ namespace GUI
                 midRight.Text = "" + rov.VerticalMotion;
                 botRight.Text = "" + (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion);
 
-                if (pilot.RBumper_down)  //checks if bumper is down
+                if (pilot.RBumper_down && !RightBumperCheck) //checks if bumper is down
                 {
                     isLockClicked = !isLockClicked; //turns on lock position
                     if (isLockClicked)
                     {
                         depthvalue = (int)(rov.DepthSensor.Data.DepthValue);
                     }
-
+                    RightBumperCheck = true; //disables use of bumper until button is let go
                 }
 
-                if (isLockClicked == true)
+                if (pilot.RBumper_up && RightBumperCheck)
                 {
+                    RightBumperCheck = false; //reenables button if it is let go
+                }
+
+                    if (isLockClicked)
+                {
+                    depthLockButton.BackColor = Color.Green; //edits button in design
+
                     if (depthvalue < (int)(rov.DepthSensor.Data.DepthValue))
                     {
-                        rov.VerticalMotion += 1;
+                        rov.VerticalMotion += 1;  //brings robot up
                     } else
                     {
-                        rov.VerticalMotion -= 1;
+
+                        rov.VerticalMotion -= 1;  //brings robot down
                     }
+                } else
+                {
+                    depthLockButton.BackColor = Color.DarkRed;
+
                 }
 
                 //Lstick controls horizontal translations 
@@ -220,7 +232,13 @@ namespace GUI
             {
                 ConnectionB.BackColor = Color.DarkRed;
                 ConnectionLabel.Text = "no";
+                depthLockButton.BackColor = Color.DarkRed;
             }
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
 
         }
 
