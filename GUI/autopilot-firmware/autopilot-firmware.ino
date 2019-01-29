@@ -39,9 +39,11 @@ Configuration for autopilot board
 #define NUM_POLES 6
 
 #define PCA_9685_ADDRESS 0x40
-#define PWM_FREQ 200
-#define PWM_MIN 900 //signal on-time values out of a 4096-step period
-#define PWM_MAX 1560
+#define PWM_FREQ 100
+//use formula pulse length/period * 4096, must be in [0,4096) to work
+#define PWM_MIN 500 //signal on-time values out of a 4096-step period
+#define PWM_STOP 590
+#define PWM_MAX 680
 
 #define NUM_TOOLS 4
 
@@ -156,7 +158,7 @@ void setup() {
 
 	if (error != ALL_SYSTEMS_GO) { //if we can't init
 		flashError(); //flash led with error
-		Serial.println(error);
+		//Serial.println(error);
 	}
 }
 
@@ -326,6 +328,10 @@ digitalWrite(TX_EN, LOW);
 
 /*ESCs*/
 void initToolsAndESCs() {
+	/*for (int i = 0; i < 6; i++) {
+		escs[i].attach(i + 3);
+		escs[i].writeMicroseconds(1500);
+	}*/
 	if (checkI2C(PCA_9685_ADDRESS)) {
 		pca9685.begin();
 		pca9685.setPWMFreq(PWM_FREQ);
@@ -337,16 +343,47 @@ void initToolsAndESCs() {
 }
 
 void writeESCs() {
+	/*for (int i = 0; i < 6; i++) {
+		//convert pairs of bytes into 16-bit int
+		int16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
+		//now convert to pulse time length out of 4096
+		if (esc_invert[i] == 1) {
+			speed = -speed;
+		}
+		speed = map(speed, -32768, 32767, PWM_MIN, PWM_MAX);
+		speed = PWM_MAX;
+		escs[i].writeMicroseconds(speed);
+	}*/
+
 	if (checkI2C(PCA_9685_ADDRESS)) {
 		for (int i = 0; i < NUM_ESCS; i++) {
-			//convert pairs of bytes into 16-bit int
-			int16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
+			uint8_t speed = rxData.data[i];
+			if (esc_invert[i] == 1) {
+				speed = -speed;
+			}
+			if (speed == 127) {
+				//stop motor
+				pca9685.setPWM(i, 0, PWM_STOP);
+			}
+			else {
+				//run motor forward or reverse
+				pca9685.setPWM(i, 0, map(speed, 0, 255, PWM_MIN, PWM_MAX));
+			}
+			/*//convert pairs of bytes into 16-bit int
+			int16_t speed = rxData.data[i * 2] << 8 | rxData.data[i * 2 + 1];
 			//now convert to pulse time length out of 4096
 			if (esc_invert[i] == 1) {
 				speed = -speed;
 			}
+			//if (speed > 3000) {
+				//digitalWrite(BLUE, HIGH);
+			//}
+			//else {
+				//digitalWrite(BLUE, LOW);
+			//}
 			speed = map(speed, -32768, 32767, PWM_MIN, PWM_MAX);
-			pca9685.setPWM(i, 0, speed);
+			//speed = PWM_MAX;
+			pca9685.setPWM(i, 0, speed);*/
 		}
 	}
 	else {
@@ -425,11 +462,15 @@ void writeStatus() {
 
 //call to stop all movement of actuators
 void emergencyStop() {
+	/*for (int i = 0; i < 6; i++) {
+		escs[i].writeMicroseconds(1500);
+	}*/
 	if (checkI2C(PCA_9685_ADDRESS)) {
 		//stop ESCs
-		int stopped = (PWM_MIN + PWM_MAX) / 2; //stopped signal pulse length is halfway between full forward and full reverse
+		//int stopped = (PWM_MIN + PWM_MAX) / 2; //stopped signal pulse length is halfway between full forward and full reverse
+		//Serial.print(PWM_MIN); Serial.print('\t'); Serial.println(PWM_MAX);
 		for (int i = 0; i < NUM_ESCS; i++) {
-			pca9685.setPWM(i, 0, stopped);
+			pca9685.setPWM(i, 0, PWM_STOP);
 		}
 		//stop motor outputs (coast to a stop instead of braking so that claws will let go
 		for (int i = 0; i < NUM_TOOLS; i++) {
@@ -565,15 +606,15 @@ void controlLEDs() {
 	switch (status) {
 	case DISCONNECTED:
 		//yellow
-		digitalWrite(RED, HIGH);
-		digitalWrite(GREEN, HIGH);
+		digitalWrite(RED, (millis() % 1000) < 100);
+		digitalWrite(GREEN, (millis() % 1000) < 100);
 		digitalWrite(BLUE, LOW);
 		break;
 	case DISARMED:
 		//solid green
 		digitalWrite(RED, LOW);
 		digitalWrite(GREEN, HIGH);
-		digitalWrite(BLUE, LOW);
+		//digitalWrite(BLUE, LOW);
 		break;
 	case ARMED:
 		//1Hz flashing green
