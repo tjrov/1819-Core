@@ -187,6 +187,12 @@ void loop() {
 		emergencyStop();
 	}
 
+	//reset connection to motor driver after power failures
+	if (error & ESC_FAILURE && millis() % 250 == 0) {
+		pca9685.reset();
+		pca9685.setPWMFreq(PWM_FREQ);
+	}
+
 	controlLEDs();
 }
 
@@ -629,20 +635,6 @@ void controlLEDs() {
 
 void initLEDs() {
 	pinMode(RED, OUTPUT);
-	digitalWrite(RED, HIGH);
-	delay(50);
-	digitalWrite(RED, LOW);
-	delay(100);
-
 	pinMode(GREEN, OUTPUT);
-	digitalWrite(GREEN, HIGH);
-	delay(50);
-	digitalWrite(GREEN, LOW);
-	delay(100);
-
 	pinMode(BLUE, OUTPUT);
-	digitalWrite(BLUE, HIGH);
-	delay(50);
-	digitalWrite(BLUE, LOW);
-	delay(100);
 }

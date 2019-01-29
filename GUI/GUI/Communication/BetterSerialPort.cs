@@ -69,7 +69,8 @@ namespace GUI
         //note each byte received
         public new int ReadByte()
         {
-            int result = base.ReadByte();
+            int result = -1;
+            try { result = base.ReadByte(); } catch { }
             //start a new receive record
             if (history[history.Count - 1].StartsWith("TX: "))
             {
