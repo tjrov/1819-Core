@@ -365,7 +365,7 @@ void writeESCs() {
 		for (int i = 0; i < NUM_ESCS; i++) {
 			uint8_t speed = rxData.data[i];
 			if (esc_invert[i] == 1) {
-				speed = -speed;
+				speed = 255-speed;
 			}
 			if (speed == 127) {
 				//stop motor
@@ -400,18 +400,24 @@ void writeESCs() {
 void writeTools() {
 	if (checkI2C(PCA_9685_ADDRESS)) {
 		for (int i = 0; i < NUM_TOOLS; i++) {
-			int8_t speed = (int8_t)rxData.data[i];
+			uint8_t speed = rxData.data[i];
 			if (tools_invert[i] == 1) {
-				speed = -speed;
+				speed = 255 - speed;
 			}
-			if (speed == 0) {
-				//coast mode when both control pins low. to brake when speed==0, use 4095 for the second arguments to give a logic high on both pins.
+			if (speed == 127) {
+				//both pins high to brake when stop requested
 				pca9685.setPWM(15 - i*2, 0, 4095);
 				pca9685.setPWM(14 - i*2, 0, 4095);
 			}
+			else if (speed < 127) {
+				//turn one way
+				pca9685.setPWM(15 - i*2, 0, 0);
+				pca9685.setPWM(14 - i*2, 0, map(speed, 0, 127, 4095, 0));
+			}
 			else {
-				pca9685.setPWM(15 - i*2, 0, map(speed, -127, 127, 0, 4095));
-				pca9685.setPWM(14 - i*2, 0, map(-speed, -127, 127, 0, 4095));
+				//turn other way
+				pca9685.setPWM(15 - i * 2, 0, map(speed, 127, 255, 0, 4095));
+				pca9685.setPWM(14 - i * 2, 0, 0);
 			}
 		}
 	}

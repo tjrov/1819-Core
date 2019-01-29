@@ -26,6 +26,8 @@ namespace GUI
 
         private PidController depthPID, headingPID, rollPID;
 
+        public double ToolMotion;
+
         public double VerticalMotion, ForeAftMotion, StrafeMotion, TurnMotion; //ccw positive
         public double DesiredHeading
         {

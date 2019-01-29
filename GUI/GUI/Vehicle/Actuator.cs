@@ -107,14 +107,7 @@ namespace GUI
             byte[] result = new byte[4];
             for (int i = 0; i < result.Length; i++)
             {
-                if (controlData.Speeds[i] == 0)
-                {
-                    result[i] = 128;
-                }
-                else
-                {
-                    result[i] = ConvertUtils.DoubleToByte(controlData.Speeds[i], -100, 100);
-                }
+                result[i] = ConvertUtils.DoubleToByte(controlData.Speeds[i], -100, 100);
             }
             return result;
         }
