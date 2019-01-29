@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -65,12 +65,13 @@ namespace GUI
 
         protected override byte[] Convert(ESCActuatorData controlData)
         {
-            byte[] result = new byte[12];
-            for (int i = 0; i < result.Length; i += 2)
+            byte[] result = new byte[6]; //[12]
+            for (int i = 0; i < 6; i++) //0...11
             {
-                Tuple<byte, byte> bytes = ConvertUtils.DoubleToBytes(controlData.Speeds[i / 2], -100, 100);
+                /*Tuple<byte, byte> bytes = ConvertUtils.DoubleToBytes(controlData.Speeds[i / 2], -100, 100);
                 result[i] = bytes.Item1;
-                result[i + 1] = bytes.Item2;
+                result[i + 1] = bytes.Item2;*/
+                result[i] = ConvertUtils.DoubleToByte(controlData.Speeds[i], -100, 100);
             }
             return result;
         }
