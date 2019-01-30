@@ -52,7 +52,8 @@ namespace GUI
         {
             //after sending a request for sensor data, the ROV replies with info
             //only allow 100 ms for this to occur
-            var task = Task.Run(() => ReceiveHelper());
+
+            Task<ROVMessage> task = Task.Run(() => ReceiveHelper());
             if (task.Wait(TimeSpan.FromMilliseconds(timeout)))
             {
                 return task.Result;
@@ -65,24 +66,30 @@ namespace GUI
         }
         private ROVMessage ReceiveHelper()
         {
-            ROVMessage msg = new ROVMessage();
-            while (ReadByte() != 0x42) ; //read in until header byte reached
-            msg.command = (byte)ReadByte();
-            msg.data = new byte[ReadByte()];
-            byte calculatedChecksum = (byte)msg.data.Length; //start calculating a checksum
-            for (int i = 0; i < msg.data.Length; i++)
+            try
             {
-                //read in bytes one by one, calculating checksum as we go
-                msg.data[i] = (byte)ReadByte();
-                calculatedChecksum ^= msg.data[i];
-            }
-            byte actualChecksum = (byte)ReadByte();
-            if (calculatedChecksum != actualChecksum) //see if received checksum matches calculated one
+                ROVMessage msg = new ROVMessage();
+                while (ReadByte() != 0x42) ; //read in until header byte reached
+                msg.command = (byte)ReadByte();
+                msg.data = new byte[ReadByte()];
+                byte calculatedChecksum = (byte)msg.data.Length; //start calculating a checksum
+                for (int i = 0; i < msg.data.Length; i++)
+                {
+                    //read in bytes one by one, calculating checksum as we go
+                    msg.data[i] = (byte)ReadByte();
+                    calculatedChecksum ^= msg.data[i];
+                }
+                byte actualChecksum = (byte)ReadByte();
+                if (calculatedChecksum != actualChecksum) //see if received checksum matches calculated one
+                {
+                    throw new Exception(string.Format("Received corrupted data (Calculated checksum" +
+                        " of {0} did not match received {1})", calculatedChecksum, actualChecksum));
+                }
+                return msg;
+            } catch(Exception ex)
             {
-                throw new Exception(string.Format("Received corrupted data (Calculated checksum" +
-                    " of {0} did not match received {1})", calculatedChecksum, actualChecksum));
+                return null;
             }
-            return msg;
         }
     }
 }

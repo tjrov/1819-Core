@@ -188,7 +188,7 @@ void loop() {
 	}
 
 	//reset connection to motor driver after power failures
-	if (error & ESC_FAILURE && millis() % 250 == 0) {
+	if (error & ESC_FAILURE && millis() % 100 == 0) {
 		pca9685.reset();
 		pca9685.setPWMFreq(PWM_FREQ);
 	}
