@@ -22,79 +22,8 @@ namespace GUI
     //Has an IsOpenChanged event and logging capabilities
     public class BetterSerialPort : SerialPort
     {
-        private List<string> history; //holds transmission and receival history
-
         public BetterSerialPort(string portName, int baudRate) : base(portName, baudRate)
         {
-            history = new List<string>();
-        }
-        public string GetHistory()
-        {
-            //remove all tx/rx log from history stack and append to a string
-            string result = "";
-            foreach (string s in history)
-            {
-                result += s + "\n";
-            }
-            return result;
-        }
-        //throw event and log message when port opened or closed
-        public new void Open()
-        {
-            try
-            {
-                base.Open();
-            }
-            catch
-            {
-                MessageBox.Show("Program failed to attach to port: " + PortName, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            Logger.LogString(string.Format("Port {0} opened at {1} kbaud", PortName, BaudRate));
-        }
-        public new void Close()
-        {
-            //get rid of all transmissions
-            while (IsOpen && (BytesToRead > 0 || BytesToWrite > 0))
-            {
-                base.DiscardInBuffer();
-                base.DiscardOutBuffer();
-            }
-            try
-            {
-                base.Close();
-            }
-            catch { }
-            Logger.LogString(string.Format("Port {0} closed", PortName));
-        }
-        //note each byte received
-        public new int ReadByte()
-        {
-            int result = -1;
-            try { result = base.ReadByte(); } catch { }
-            //start a new receive record
-            if (history[history.Count - 1].StartsWith("TX: "))
-            {
-                history.Add("RX: ");
-            }
-            //add to history in hex representation
-            history[history.Count - 1] += result.ToString("X2") + ",";
-            return result;
-        }
-        //note each byte transmitted
-        public new void Write(byte[] buffer, int start, int offset)
-        {
-            string temp = "TX: ";
-            foreach (byte b in buffer)
-            {
-                temp += b.ToString("X2") + ",";
-            }
-            history.Add(temp);
-            //keep history to ten items maximum
-            while (history.Count > 10)
-            {
-                history.RemoveAt(0);
-            }
-            base.Write(buffer, start, offset);
         }
         //custom code for rov serial comms
         public void TransmitRequestOrCommand(ROVMessage msg)

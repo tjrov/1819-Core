@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Threading;
 using System.Collections.Concurrent;
-using System.IO;
+using System.IO.Ports;
 using System.ComponentModel;
 
 namespace GUI
@@ -45,11 +45,15 @@ namespace GUI
                 if (value)
                 {
                     port.Open();
+                    //empty queue of devices needing update
+                    while (devices.Count > 0)
+                    {
+                        devices.TryDequeue(out GenericAbstractDevice trash);
+                    }
                     if (Started != null)
                     {
                         Started(this, null);
                     }
-                    Logger.LogString("Communication started.");
                 }
                 else
                 {
@@ -59,7 +63,6 @@ namespace GUI
                     {
                         devices.TryDequeue(out GenericAbstractDevice trash);
                     }
-                    Logger.LogString("Communication stopped.");
                     if (Stopped != null)
                     {
                         Stopped(this, null); //notify rest of code with event
@@ -97,9 +100,6 @@ namespace GUI
                     {
                         //stop serial communication code by closing port
                         LinkActive = false;
-                        //log history before exception for debugging
-                        Logger.LogString("Start Communication Log Dump\n" + port.GetHistory() + "\nEnd Communication Log Dump");
-                        Logger.LogException(ex);
                         //show exception dialog
                         if (CommunicationException != null)
                         {
