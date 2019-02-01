@@ -54,6 +54,7 @@ namespace GUI
             comms = new SerialCommunication(port);
             comms.Stopped += comms_Stopped;
             comms.Started += comms_Started;
+            comms.CommunicationException += Comms_CommunicationException;
             //comms.Connect();
 
             rov = new ROV(comms);
@@ -61,6 +62,11 @@ namespace GUI
             //update displays when sensors polled
             rov.OrientationSensor.Updated += OrientationSensor_Updated;
             rov.DepthSensor.Updated += DepthSensor_Updated;
+        }
+
+        private void Comms_CommunicationException(object sender, Exception e)
+        {
+            MessageBox.Show(e.Message, "Communication Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void DepthSensor_Updated(object sender, DepthData e)
@@ -209,8 +215,8 @@ namespace GUI
                     depthLockButton.BackColor = Color.DarkRed;
                     
                 }
-                    //ACTUATOR CODE for next few lines
-
+                //ACTUATOR CODE for next few lines
+                rov.ToolsActuator.Data.Speeds[0] = ConvertUtils.Map(pilot.LStick.X, -32768, 32767, -100, 100);
                 if (pilot.A_down)
                 {
                     if (rov.ToolsActuator.Data.Speeds[0]-10 > -100)
