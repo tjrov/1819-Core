@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using XInput.Wrapper;
 
 
 namespace GUI
@@ -24,27 +20,25 @@ namespace GUI
         private SerialCommunication comms;
         private Timer t500, t50, t10;
 
-        private PidController depthPID, headingPID, rollPID;
+        private readonly PidController depthPID, headingPID, rollPID;
 
         public double ToolMotion;
 
         public double VerticalMotion, ForeAftMotion, StrafeMotion, TurnMotion; //ccw positive
         public double DesiredHeading
         {
-            get
-            {
-                return DesiredHeading;
-            }
+            get => DesiredHeading;
             set
             {
-                if(value > 360)
+                if (value > 360)
                 {
                     DesiredHeading = value - 360;
                 }
-                else if(value < 0)
+                else if (value < 0)
                 {
                     DesiredHeading = 360 - value;
-                } else
+                }
+                else
                 {
                     DesiredHeading = value;
                 }
@@ -53,7 +47,7 @@ namespace GUI
         public bool EnableHeadingLock, EnableRollLock, EnableDepthLock;
 
         //change as needed
-        private Dictionary<string, int> key = new Dictionary<string, int>()
+        private readonly Dictionary<string, int> key = new Dictionary<string, int>()
         {
             ["ForwardPort"] = 0,
             ["ForwardStarboard"] = 1,
@@ -63,9 +57,9 @@ namespace GUI
             ["VerticalStarboard"] = 5
         };
 
-        private double headingAdj;
-        private double depthAdj;
-        private double rollAdj;
+        private readonly double headingAdj;
+        private readonly double depthAdj;
+        private readonly double rollAdj;
 
         public ROV(SerialCommunication comms)
         {
@@ -120,16 +114,16 @@ namespace GUI
             {
                 localTurnMotion += headingAdj;
             }
-            speeds[key["ForwardPort"]] = ForeAftMotion + StrafeMotion - TurnMotion;
-            speeds[key["ForwardStarboard"]] = ForeAftMotion - StrafeMotion + TurnMotion;
-            speeds[key["AftPort"]] = ForeAftMotion - StrafeMotion - TurnMotion;
-            speeds[key["AftStarboard"]] = ForeAftMotion + StrafeMotion + TurnMotion;
+            speeds[key["ForwardPort"]] = ForeAftMotion + StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion - TurnMotion, 100) : Math.Max(ForeAftMotion + StrafeMotion - TurnMotion, -100);
+            speeds[key["ForwardStarboard"]] = ForeAftMotion - StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion + TurnMotion, 100) : Math.Max(ForeAftMotion - StrafeMotion + TurnMotion, -100);
+            speeds[key["AftPort"]] = ForeAftMotion - StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion - TurnMotion, 100) : Math.Max(ForeAftMotion - StrafeMotion - TurnMotion, -100);
+            speeds[key["AftStarboard"]] = ForeAftMotion + StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion + TurnMotion, 100) : Math.Max(ForeAftMotion + StrafeMotion + TurnMotion, -100);
 
             //vertical thrusters
             //VerticalMotion is positive upward
             speeds[key["VerticalPort"]] = VerticalMotion;
             speeds[key["VerticalStarboard"]] = VerticalMotion;
-            if(EnableDepthLock)
+            if (EnableDepthLock)
             {
                 speeds[key["VerticalPort"]] += depthAdj;
                 speeds[key["VerticalStarboard"]] += depthAdj;

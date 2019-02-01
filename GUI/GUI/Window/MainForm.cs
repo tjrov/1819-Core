@@ -22,10 +22,9 @@ namespace GUI
         private HeadingIndicator headingIndicator;
         private DepthIndicator depthIndicator;
         public X.Gamepad pilot, copilot;
-
-        Boolean isLockClicked = false;
-        int depthvalue = 0;
-        Boolean RightBumperCheck = false;
+        private bool isLockClicked = false;
+        private int depthvalue = 0;
+        private bool RightBumperCheck = false;
 
 
         public MainForm()
@@ -38,7 +37,7 @@ namespace GUI
             //copilot.Enable = false; //change later on
 
             //setup window
-            this.KeyPreview = true;
+            KeyPreview = true;
             InitializeComponent();
 
             depthIndicator = new DepthIndicator() { Location = new Point(0, 100) };
@@ -84,7 +83,7 @@ namespace GUI
 
         private void comms_Started(object sender, EventArgs e)
         {
-            this.Invoke(new Action(() =>
+            Invoke(new Action(() =>
             {
                 connectButton.Text = "Comms Started";
             }));
@@ -92,7 +91,7 @@ namespace GUI
 
         private void comms_Stopped(object sender, EventArgs e)
         {
-            this.Invoke(new Action(() =>
+            Invoke(new Action(() =>
             {
                 connectButton.Text = "Comms Stopped";
             }));
@@ -111,10 +110,11 @@ namespace GUI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if(rov.StatusSensor.Data.Status == ROVStatus.ARMED)
+            if (rov.StatusSensor.Data.Status == ROVStatus.ARMED)
             {
                 rov.StatusActuator.Data.DesiredStatus = ROVStatus.DISARMED;
-            } else if(rov.StatusSensor.Data.Status == ROVStatus.DISARMED)
+            }
+            else if (rov.StatusSensor.Data.Status == ROVStatus.DISARMED)
             {
                 rov.StatusActuator.Data.DesiredStatus = ROVStatus.ARMED;
             }
@@ -129,7 +129,9 @@ namespace GUI
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
+            {
                 Environment.Exit(1);
+            }
         }
 
         private void controllerUpdateTimer_Tick(object sender, EventArgs e)
@@ -139,25 +141,33 @@ namespace GUI
             //Zeroing Code for left joystick
             int LStickZeroX = pilot.LStick.X;
             if (Math.Abs(LStickZeroX) < 5000)
+            {
                 LStickZeroX = 0;
+            }
+
             int LStickZeroY = pilot.LStick.Y;
             if (Math.Abs(LStickZeroY) < 5000)
+            {
                 LStickZeroY = 0;
+            }
 
             //Zeroing Code for right joystick
             int RStickZeroX = pilot.RStick.X;
             if (Math.Abs(RStickZeroX) < 5000)
+            {
                 RStickZeroX = 0;
+            }
+
             int RStickZeroY = pilot.RStick.Y;
             if (Math.Abs(RStickZeroY) < 5000)
+            {
                 RStickZeroY = 0;
-
-            
+            }
 
             if (pilot.IsConnected)
             {
                 ConnectionB.BackColor = Color.Green;
-                ConnectionLabel.Text = "yes";
+                ConnectionLabel.Text = "Controller Connected : True";
                 button0.Text = "LStick.X" + LStickZeroX;
                 button1.Text = "LStick.Y" + LStickZeroY;
                 button2.Text = "LStick" + pilot.LStick_down;
@@ -176,12 +186,13 @@ namespace GUI
                 button15.Text = "LTrigger" + pilot.LTrigger;
                 button16.Text = "RTrigger" + pilot.RTrigger;
                 button17.Text = "Start" + pilot.Start_down;
-                topLeft.Text = "" + (rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion);
+                //Code for displaying motor values
+                topLeft.Text = (rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, -100);
                 midLeft.Text = "" + rov.VerticalMotion;
-                botLeft.Text = "" + (rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion);
-                topRight.Text = "" + (rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion);
+                botLeft.Text = (rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, -100);
+                topRight.Text = (rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, -100);
                 midRight.Text = "" + rov.VerticalMotion;
-                botRight.Text = "" + (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion);
+                botRight.Text = (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, -100);
 
                 if (pilot.RBumper_down && !RightBumperCheck) //checks if bumper is down
                 {
@@ -198,32 +209,34 @@ namespace GUI
                     RightBumperCheck = false; //reenables button if it is let go
                 }
 
-                    if (isLockClicked)
+                if (isLockClicked)
                 {
                     depthLockButton.BackColor = Color.Green; //edits button in design
 
                     if (depthvalue < (int)(rov.DepthSensor.Data.DepthValue))
                     {
                         rov.VerticalMotion += 1;  //brings robot up
-                    } else
+                    }
+                    else
                     {
 
                         rov.VerticalMotion -= 1;  //brings robot down
                     }
-                } else
+                }
+                else
                 {
                     depthLockButton.BackColor = Color.DarkRed;
-                    
+
                 }
                 //ACTUATOR CODE for next few lines
-                rov.ToolsActuator.Data.Speeds[0] = ConvertUtils.Map(pilot.LStick.X, -32768, 32767, -100, 100);
                 if (pilot.A_down)
                 {
-                    if (rov.ToolsActuator.Data.Speeds[0]-10 > -100)
+                    if (rov.ToolsActuator.Data.Speeds[0] - 10 > -100)
                     {
                         rov.ToolsActuator.Data.Speeds[0] -= 10;
                     }
-                    else {
+                    else
+                    {
                         rov.ToolsActuator.Data.Speeds[0] = -100;
                     }
                 }
@@ -331,35 +344,33 @@ namespace GUI
                     //Rstick controls yaw (turning about vertical axis)
                     rov.TurnMotion = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100));
                 }
-                    
+
                 //left bumper moves downward, right bumper moves upward
                 rov.VerticalMotion = (int)(ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, -100) + ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, 100));
             }
             else
             {
                 ConnectionB.BackColor = Color.DarkRed;
-                ConnectionLabel.Text = "no";
+                ConnectionLabel.Text = "Controller Connected : False";
                 depthLockButton.BackColor = Color.DarkRed;
+                rov.VerticalMotion = 0.0;
+                rov.ForeAftMotion = 0.0;
+                rov.StrafeMotion = 0.0;
+                rov.TurnMotion = 0.0;
             }
             Actuator1.Value = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, 0, 200));
             Actuator2.Value = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, 0, 200));
             Actuator3.Value = (int)(ConvertUtils.Map(RStickZeroY, -32768, 32767, 0, 200));
             Actuator4.Value = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, 0, 200));
-        
-        }
-
-        private void Actuator1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             for (int i = 0; i < 6; i++)
-            {   
+            {
                 //if(Int32.TryParse(textBox1.Text , out int n))
-                   // rov.PropulsionActuator.Data.Speeds[i] = n;
+                // rov.PropulsionActuator.Data.Speeds[i] = n;
             }
         }
-    }   
+    }
 }

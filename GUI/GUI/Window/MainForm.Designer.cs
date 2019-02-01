@@ -71,6 +71,7 @@
             this.Actuator4 = new System.Windows.Forms.ProgressBar();
             this.propulsionActuator1 = new GUI.PropulsionActuator();
             this.propulsionActuator2 = new GUI.PropulsionActuator();
+            this.depthLockEngageLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -83,7 +84,7 @@
             // 
             this.connectButton.AutoSize = true;
             this.connectButton.Location = new System.Drawing.Point(8, 8);
-            this.connectButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.connectButton.Margin = new System.Windows.Forms.Padding(2);
             this.connectButton.Name = "connectButton";
             this.connectButton.Size = new System.Drawing.Size(104, 27);
             this.connectButton.TabIndex = 0;
@@ -105,7 +106,7 @@
             // 
             this.armButton.AutoSize = true;
             this.armButton.Location = new System.Drawing.Point(8, 38);
-            this.armButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.armButton.Margin = new System.Windows.Forms.Padding(2);
             this.armButton.Name = "armButton";
             this.armButton.Size = new System.Drawing.Size(63, 27);
             this.armButton.TabIndex = 2;
@@ -127,7 +128,7 @@
             this.resetButton.AutoSize = true;
             this.resetButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.resetButton.Location = new System.Drawing.Point(75, 39);
-            this.resetButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.resetButton.Margin = new System.Windows.Forms.Padding(2);
             this.resetButton.Name = "resetButton";
             this.resetButton.Size = new System.Drawing.Size(55, 27);
             this.resetButton.TabIndex = 4;
@@ -356,7 +357,7 @@
             this.pictureBox1.Image = global::GUI.Properties.Resources.rov_thrusters;
             this.pictureBox1.InitialImage = global::GUI.Properties.Resources.rov_thrusters;
             this.pictureBox1.Location = new System.Drawing.Point(0, 235);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(583, 559);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -425,9 +426,10 @@
             // 
             // depthLockButton
             // 
+            this.depthLockButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.depthLockButton.BackColor = System.Drawing.Color.Red;
-            this.depthLockButton.Location = new System.Drawing.Point(485, 13);
-            this.depthLockButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.depthLockButton.Location = new System.Drawing.Point(1074, 629);
+            this.depthLockButton.Margin = new System.Windows.Forms.Padding(2);
             this.depthLockButton.Name = "depthLockButton";
             this.depthLockButton.Size = new System.Drawing.Size(81, 35);
             this.depthLockButton.TabIndex = 36;
@@ -437,7 +439,7 @@
             // 
             this.Actuator2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Actuator2.Location = new System.Drawing.Point(997, 479);
-            this.Actuator2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Actuator2.Margin = new System.Windows.Forms.Padding(2);
             this.Actuator2.Maximum = 200;
             this.Actuator2.Name = "Actuator2";
             this.Actuator2.Size = new System.Drawing.Size(158, 28);
@@ -447,7 +449,7 @@
             // 
             this.Actuator3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Actuator3.Location = new System.Drawing.Point(997, 529);
-            this.Actuator3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Actuator3.Margin = new System.Windows.Forms.Padding(2);
             this.Actuator3.Maximum = 200;
             this.Actuator3.Name = "Actuator3";
             this.Actuator3.Size = new System.Drawing.Size(158, 28);
@@ -457,22 +459,32 @@
             // 
             this.Actuator1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Actuator1.Location = new System.Drawing.Point(997, 421);
-            this.Actuator1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Actuator1.Margin = new System.Windows.Forms.Padding(2);
             this.Actuator1.Maximum = 200;
             this.Actuator1.Name = "Actuator1";
             this.Actuator1.Size = new System.Drawing.Size(158, 28);
+            this.Actuator1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.Actuator1.TabIndex = 39;
-            this.Actuator1.Click += new System.EventHandler(this.Actuator1_Click);
             // 
             // Actuator4
             // 
             this.Actuator4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Actuator4.Location = new System.Drawing.Point(997, 581);
-            this.Actuator4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Actuator4.Margin = new System.Windows.Forms.Padding(2);
             this.Actuator4.Maximum = 200;
             this.Actuator4.Name = "Actuator4";
             this.Actuator4.Size = new System.Drawing.Size(158, 28);
             this.Actuator4.TabIndex = 40;
+            // 
+            // depthLockEngageLabel
+            // 
+            this.depthLockEngageLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.depthLockEngageLabel.AutoSize = true;
+            this.depthLockEngageLabel.Location = new System.Drawing.Point(985, 638);
+            this.depthLockEngageLabel.Name = "depthLockEngageLabel";
+            this.depthLockEngageLabel.Size = new System.Drawing.Size(84, 17);
+            this.depthLockEngageLabel.TabIndex = 41;
+            this.depthLockEngageLabel.Text = "Depth Lock:";
             // 
             // MainForm
             // 
@@ -480,6 +492,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1215, 828);
+            this.Controls.Add(this.depthLockEngageLabel);
             this.Controls.Add(this.Actuator4);
             this.Controls.Add(this.Actuator1);
             this.Controls.Add(this.Actuator3);
@@ -519,7 +532,7 @@
             this.Controls.Add(this.queueLabel);
             this.Controls.Add(this.connectButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "TJROV - GUI";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -574,6 +587,7 @@
         private System.Windows.Forms.ProgressBar Actuator3;
         private System.Windows.Forms.ProgressBar Actuator1;
         private System.Windows.Forms.ProgressBar Actuator4;
+        private System.Windows.Forms.Label depthLockEngageLabel;
     }
 }
 
