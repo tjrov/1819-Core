@@ -51,7 +51,7 @@ Configuration for autopilot board
 
 #define IMU_ADDRESS 0x28
 
-#define RESET_DELAY 600 //increases time between receiving reset command and actual reset occuring so that it can coincide with upload start
+//#define RESET_DELAY 600 //increases time between receiving reset command and actual reset occuring so that it can coincide with upload start
 
 enum ERROR {
 	ALL_SYSTEMS_GO = 0,
@@ -121,6 +121,7 @@ bool isTimeout();
 bool checkI2C(uint8_t address);
 void writeESCs();
 void writeTools();
+void checkESCsAndTools();
 void initStatus();
 void readStatus();
 void writeStatus();
@@ -187,10 +188,8 @@ void loop() {
 		emergencyStop();
 	}
 
-	//reset connection to motor driver after power failures
-	if (error & ESC_FAILURE && millis() % 100 == 0) {
-		pca9685.reset();
-		pca9685.setPWMFreq(PWM_FREQ);
+	if (millis() % 100 == 0) {
+		checkESCsAndTools();
 	}
 
 	controlLEDs();
@@ -343,8 +342,23 @@ void initToolsAndESCs() {
 		pca9685.setPWMFreq(PWM_FREQ);
 	}
 	else {
-		error |= ESC_FAILURE;
 		error |= TOOLS_FAILURE;
+	}
+}
+
+void checkESCsAndTools() {
+	if (!checkI2C(PCA_9685_ADDRESS)) {
+		error |= TOOLS_FAILURE;
+	}
+	//reset connection to motor driver after power failures
+	if (error & TOOLS_FAILURE) {
+		pca9685.reset();
+		pca9685.setPWMFreq(PWM_FREQ);
+		//if after reset it works
+		if (checkI2C(PCA_9685_ADDRESS)) {
+			//clear error state
+			error &= ~TOOLS_FAILURE;
+		}
 	}
 }
 
@@ -361,68 +375,43 @@ void writeESCs() {
 		escs[i].writeMicroseconds(speed);
 	}*/
 
-	if (checkI2C(PCA_9685_ADDRESS)) {
-		for (int i = 0; i < NUM_ESCS; i++) {
-			uint8_t speed = rxData.data[i];
-			if (esc_invert[i] == 1) {
-				speed = 255-speed;
-			}
-			if (speed == 127) {
-				//stop motor
-				pca9685.setPWM(i, 0, PWM_STOP);
-			}
-			else {
-				//run motor forward or reverse
-				pca9685.setPWM(i, 0, map(speed, 0, 255, PWM_MIN, PWM_MAX));
-			}
-			/*//convert pairs of bytes into 16-bit int
-			int16_t speed = rxData.data[i * 2] << 8 | rxData.data[i * 2 + 1];
-			//now convert to pulse time length out of 4096
-			if (esc_invert[i] == 1) {
-				speed = -speed;
-			}
-			//if (speed > 3000) {
-				//digitalWrite(BLUE, HIGH);
-			//}
-			//else {
-				//digitalWrite(BLUE, LOW);
-			//}
-			speed = map(speed, -32768, 32767, PWM_MIN, PWM_MAX);
-			//speed = PWM_MAX;
-			pca9685.setPWM(i, 0, speed);*/
+	for (int i = 0; i < NUM_ESCS; i++) {
+		uint8_t speed = rxData.data[i];
+		if (esc_invert[i] == 1) {
+			speed = 255 - speed;
 		}
-	}
-	else {
-		error |= TOOLS_FAILURE | ESC_FAILURE;
+		if (speed == 127) {
+			//stop motor
+			pca9685.setPWM(i, 0, PWM_STOP);
+		}
+		else {
+			//run motor forward or reverse
+			pca9685.setPWM(i, 0, map(speed, 0, 255, PWM_MIN, PWM_MAX));
+		}
 	}
 }
 
 void writeTools() {
-	if (checkI2C(PCA_9685_ADDRESS)) {
-		for (int i = 0; i < NUM_TOOLS; i++) {
-			uint8_t speed = rxData.data[i];
-			if (tools_invert[i] == 1) {
-				speed = 255 - speed;
-			}
-			if (speed == 127) {
-				//both pins high to brake when stop requested
-				pca9685.setPWM(15 - i*2, 0, 4095);
-				pca9685.setPWM(14 - i*2, 0, 4095);
-			}
-			else if (speed < 127) {
-				//turn one way
-				pca9685.setPWM(15 - i*2, 0, 0);
-				pca9685.setPWM(14 - i*2, 0, map(speed, 0, 127, 4095, 0));
-			}
-			else {
-				//turn other way
-				pca9685.setPWM(15 - i * 2, 0, map(speed, 127, 255, 0, 4095));
-				pca9685.setPWM(14 - i * 2, 0, 0);
-			}
+	for (int i = 0; i < NUM_TOOLS; i++) {
+		uint8_t speed = rxData.data[i];
+		if (tools_invert[i] == 1) {
+			speed = 255 - speed;
 		}
-	}
-	else {
-		error |= TOOLS_FAILURE | ESC_FAILURE;
+		if (speed == 127) {
+			//both pins high to brake when stop requested
+			pca9685.setPWM(15 - i * 2, 0, 4095);
+			pca9685.setPWM(14 - i * 2, 0, 4095);
+		}
+		else if (speed < 127) {
+			//turn one way
+			pca9685.setPWM(15 - i * 2, 0, 0);
+			pca9685.setPWM(14 - i * 2, 0, map(speed, 0, 127, 4095, 0));
+		}
+		else {
+			//turn other way
+			pca9685.setPWM(15 - i * 2, 0, map(speed, 127, 255, 0, 4095));
+			pca9685.setPWM(14 - i * 2, 0, 0);
+		}
 	}
 }
 
@@ -477,20 +466,16 @@ void emergencyStop() {
 	/*for (int i = 0; i < 6; i++) {
 		escs[i].writeMicroseconds(1500);
 	}*/
-	if (checkI2C(PCA_9685_ADDRESS)) {
-		//stop ESCs
-		//int stopped = (PWM_MIN + PWM_MAX) / 2; //stopped signal pulse length is halfway between full forward and full reverse
-		//Serial.print(PWM_MIN); Serial.print('\t'); Serial.println(PWM_MAX);
-		for (int i = 0; i < NUM_ESCS; i++) {
-			pca9685.setPWM(i, 0, PWM_STOP);
-		}
-		//stop motor outputs (coast to a stop instead of braking so that claws will let go
-		for (int i = 0; i < NUM_TOOLS; i++) {
-			pca9685.setPWM(15 - i * 2, 0, 0);
-			pca9685.setPWM(14 - i * 2, 0, 0);
-		}
-	} else {
-		error |= ~TOOLS_FAILURE | ESC_FAILURE;
+	//stop ESCs
+	//int stopped = (PWM_MIN + PWM_MAX) / 2; //stopped signal pulse length is halfway between full forward and full reverse
+	//Serial.print(PWM_MIN); Serial.print('\t'); Serial.println(PWM_MAX);
+	for (int i = 0; i < NUM_ESCS; i++) {
+		pca9685.setPWM(i, 0, PWM_STOP);
+	}
+	//stop motor outputs (coast to a stop instead of braking so that claws will let go
+	for (int i = 0; i < NUM_TOOLS; i++) {
+		pca9685.setPWM(15 - i * 2, 0, 0);
+		pca9685.setPWM(14 - i * 2, 0, 0);
 	}
 }
 
@@ -575,7 +560,7 @@ void readDepth() {
 		//and acceleration is in meters per second per second
 		depthDouble /= 1000.0 * 9.81;
 		//now convert to bytes and prepare txData
-		int intDepth = (int)mapDouble(depthDouble, 0, 30, -32768, 32767);
+		uint16_t intDepth = (int)mapDouble(depthDouble, 0, 30, 0, 65535);
 
 		txData.data[0] = intDepth & 0xFF;
 		txData.data[1] = (intDepth >> 8) & 0xFF;
@@ -618,9 +603,9 @@ void controlLEDs() {
 	switch (status) {
 	case DISCONNECTED:
 		//yellow
-		digitalWrite(RED, (millis() % 1000) < 100);
-		digitalWrite(GREEN, (millis() % 1000) < 100);
-		digitalWrite(BLUE, LOW);
+		digitalWrite(RED, (millis() % 2000) < 100);
+		digitalWrite(GREEN, (millis() % 2000) < 100);
+		//digitalWrite(BLUE, LOW);
 		break;
 	case DISARMED:
 		//solid green
@@ -632,7 +617,7 @@ void controlLEDs() {
 		//1Hz flashing green
 		digitalWrite(RED, LOW);
 		digitalWrite(GREEN, millis() % 1000 < 500);
-		digitalWrite(BLUE, LOW);
+		//digitalWrite(BLUE, LOW);
 		break;
 	}
 	//flash blue 5ms for correctly processed messages
