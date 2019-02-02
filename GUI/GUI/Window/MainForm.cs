@@ -48,7 +48,7 @@ namespace GUI
             Controls.Add(headingIndicator);
 
             //setup devices
-            BetterSerialPort port = new BetterSerialPort("COM5", 115200);
+            BetterSerialPort port = new BetterSerialPort("COM10", 115200);
             portLabel.Text = string.Format("{0}@{1}baud", port.PortName, port.BaudRate);
             comms = new SerialCommunication(port);
             comms.Stopped += comms_Stopped;
@@ -187,12 +187,12 @@ namespace GUI
                 button16.Text = "RTrigger" + pilot.RTrigger;
                 button17.Text = "Start" + pilot.Start_down;
                 //Code for displaying motor values
-                topLeft.Text = (rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, -100);
+                topLeft.Text = (rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, 50) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, -50);
                 midLeft.Text = "" + rov.VerticalMotion;
-                botLeft.Text = (rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, -100);
-                topRight.Text = (rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, -100);
+                botLeft.Text = (rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, 50) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, -50);
+                topRight.Text = (rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, 50) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, -50);
                 midRight.Text = "" + rov.VerticalMotion;
-                botRight.Text = (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, -100);
+                botRight.Text = (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, 50) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, -50);
 
                 if (pilot.RBumper_down && !RightBumperCheck) //checks if bumper is down
                 {
