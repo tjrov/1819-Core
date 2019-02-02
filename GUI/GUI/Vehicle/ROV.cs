@@ -114,10 +114,10 @@ namespace GUI
             {
                 localTurnMotion += headingAdj;
             }
-            speeds[key["ForwardPort"]] = ForeAftMotion + StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion - TurnMotion, 100) : Math.Max(ForeAftMotion + StrafeMotion - TurnMotion, -100);
-            speeds[key["ForwardStarboard"]] = ForeAftMotion - StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion + TurnMotion, 100) : Math.Max(ForeAftMotion - StrafeMotion + TurnMotion, -100);
-            speeds[key["AftPort"]] = ForeAftMotion - StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion - TurnMotion, 100) : Math.Max(ForeAftMotion - StrafeMotion - TurnMotion, -100);
-            speeds[key["AftStarboard"]] = ForeAftMotion + StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion + TurnMotion, 100) : Math.Max(ForeAftMotion + StrafeMotion + TurnMotion, -100);
+            speeds[key["ForwardPort"]] = ForeAftMotion + StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion - TurnMotion, 50) : Math.Max(ForeAftMotion + StrafeMotion - TurnMotion, -50);
+            speeds[key["ForwardStarboard"]] = ForeAftMotion - StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion + TurnMotion, 50) : Math.Max(ForeAftMotion - StrafeMotion + TurnMotion, -50);
+            speeds[key["AftPort"]] = ForeAftMotion - StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion - TurnMotion, 50) : Math.Max(ForeAftMotion - StrafeMotion - TurnMotion, -50);
+            speeds[key["AftStarboard"]] = ForeAftMotion + StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion + TurnMotion, 50) : Math.Max(ForeAftMotion + StrafeMotion + TurnMotion, -50);
 
             //vertical thrusters
             //VerticalMotion is positive upward
