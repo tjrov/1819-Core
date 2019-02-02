@@ -364,20 +364,21 @@ namespace GUI
             trackBar4.Value = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, 0, 200));
         }
 
-        private void Actuator4_Click(object sender, EventArgs e)
-        {
-
-        }
-
+       
         private void button18_Click(object sender, EventArgs e)
         {
-
+            float L = Integer.parseFloat(LengthOfBarrel.Text);
+            float R1 = Float.parseFloat(InnerRadius1.Text);
+            float R2 = Float.parseFloat(InnerRadius2.Text);
+            float R3 = Float.parseFloat(InnerRadius3.Text);
+            float hole = Math.PI * (Math.Pow(R2, 2)) * L;
+            float cone = Math.PI * L / 3 * (Math.Pow(R1, 2) + Math.Pow(R3, 2) + R1 * R3);
+            float result = cone - hole;
+            answerBox.Text = result.ToString();
+            
         }
 
-        private void InnerRadius2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
