@@ -358,10 +358,25 @@ namespace GUI
                 rov.StrafeMotion = 0.0;
                 rov.TurnMotion = 0.0;
             }
-            Actuator1.Value = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, 0, 200));
-            Actuator2.Value = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, 0, 200));
-            Actuator3.Value = (int)(ConvertUtils.Map(RStickZeroY, -32768, 32767, 0, 200));
-            Actuator4.Value = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, 0, 200));
+            trackBar1.Value = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, 0, 200));
+            trackBar2.Value = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, 0, 200));
+            trackBar3.Value = (int)(ConvertUtils.Map(RStickZeroY, -32768, 32767, 0, 200));
+            trackBar4.Value = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, 0, 200));
+        }
+
+        private void Actuator4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void InnerRadius2_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
