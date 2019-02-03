@@ -337,104 +337,15 @@ namespace GUI
 
                 }
                 //ACTUATOR CODE for next few lines
-                if (pilot.A_down)
-                {
-                    if (rov.ToolsActuator.Data.Speeds[0] - 10 > -100)
-                    {
-                        rov.ToolsActuator.Data.Speeds[0] -= 10;
-                    }
-                    else
-                    {
-                        rov.ToolsActuator.Data.Speeds[0] = -100;
-                    }
-                }
+                int val0 = Convert.ToInt32(pilot.A_down) - Convert.ToInt32(pilot.B_down);
+                int val1 = Convert.ToInt32(pilot.X_down) - Convert.ToInt32(pilot.Y_down);
+                int val2 = Convert.ToInt32(pilot.Dpad_Down_down) - Convert.ToInt32(pilot.Dpad_Right_down);
+                int val3 = Convert.ToInt32(pilot.Dpad_Left_down) - Convert.ToInt32(pilot.Dpad_Up_down);
 
-                if (pilot.B_down)
-                {
-                    if (rov.ToolsActuator.Data.Speeds[0] + 10 < 100)
-                    {
-                        rov.ToolsActuator.Data.Speeds[0] += 10;
-                    }
-                    else
-                    {
-                        rov.ToolsActuator.Data.Speeds[0] = 100;
-                    }
-                }
-
-
-                if (pilot.X_down)
-                {
-                    if (rov.ToolsActuator.Data.Speeds[1] - 10 > -100)
-                    {
-                        rov.ToolsActuator.Data.Speeds[1] -= 10;
-                    }
-                    else
-                    {
-                        rov.ToolsActuator.Data.Speeds[1] = -100;
-                    }
-                }
-
-                if (pilot.Y_down)
-                {
-                    if (rov.ToolsActuator.Data.Speeds[1] + 10 < 100)
-                    {
-                        rov.ToolsActuator.Data.Speeds[1] += 10;
-                    }
-                    else
-                    {
-                        rov.ToolsActuator.Data.Speeds[1] = 100;
-                    }
-                }
-
-
-                if (pilot.Dpad_Down_down)
-                {
-                    if (rov.ToolsActuator.Data.Speeds[2] - 10 > -100)
-                    {
-                        rov.ToolsActuator.Data.Speeds[2] -= 10;
-                    }
-                    else
-                    {
-                        rov.ToolsActuator.Data.Speeds[2] = -100;
-                    }
-                }
-
-                if (pilot.Dpad_Right_down)
-                {
-                    if (rov.ToolsActuator.Data.Speeds[2] + 10 < 100)
-                    {
-                        rov.ToolsActuator.Data.Speeds[2] += 10;
-                    }
-                    else
-                    {
-                        rov.ToolsActuator.Data.Speeds[2] = 100;
-                    }
-                }
-
-
-                if (pilot.Dpad_Left_down)
-                {
-                    if (rov.ToolsActuator.Data.Speeds[3] - 10 > -100)
-                    {
-                        rov.ToolsActuator.Data.Speeds[3] -= 10;
-                    }
-                    else
-                    {
-                        rov.ToolsActuator.Data.Speeds[3] = -100;
-                    }
-                }
-
-                if (pilot.Dpad_Up_down)
-                {
-                    if (rov.ToolsActuator.Data.Speeds[3] + 10 < 100)
-                    {
-                        rov.ToolsActuator.Data.Speeds[3] += 10;
-                    }
-                    else
-                    {
-                        rov.ToolsActuator.Data.Speeds[3] = 100;
-                    }
-                }
+                rov.ToolsActuator.Data.Speeds[0] = val0 * 100;
+                rov.ToolsActuator.Data.Speeds[1] = val1 * 100;
+                rov.ToolsActuator.Data.Speeds[2] = val2 * 100;
+                rov.ToolsActuator.Data.Speeds[3] = val3 * 100;
 
                 //end of actuator code
 
@@ -484,8 +395,6 @@ namespace GUI
             double result = cone - hole;
             answerBox.Text = result.ToString();  
         }
-
-        
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
