@@ -406,19 +406,33 @@ namespace GUI
         }
         private void backPrefButton_Click(object sender, EventArgs e)
         {
-
+            forPrefButton.BackColor = Color.Red;
+            backPrefButton.BackColor = Color.Green;
+            leftPrefButton.BackColor = Color.Red;
+            rightPrefButton.BackColor = Color.Red;
         }
-        private void forwardPrefButton_Click(object sender, EventArgs e)
+        private void forPrefButton_Click(object sender, EventArgs e)
         {
-
+            
+            forPrefButton.BackColor = Color.Green;
+            backPrefButton.BackColor = Color.Red;
+            leftPrefButton.BackColor = Color.Red;
+            rightPrefButton.BackColor = Color.Red;
         }
         private void leftPrefButton_Click(object sender, EventArgs e)
         {
-
+            forPrefButton.BackColor = Color.Red;
+            backPrefButton.BackColor = Color.Red;
+            leftPrefButton.BackColor = Color.Green;
+            rightPrefButton.BackColor = Color.Red;
         }
+
         private void rightPrefButton_Click(object sender, EventArgs e)
         {
-
+            forPrefButton.BackColor = Color.Red;
+            backPrefButton.BackColor = Color.Red;
+            leftPrefButton.BackColor = Color.Red;
+            rightPrefButton.BackColor = Color.Green;
         }
     }
 }
