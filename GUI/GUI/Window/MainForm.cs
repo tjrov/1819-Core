@@ -404,5 +404,21 @@ namespace GUI
                 // rov.PropulsionActuator.Data.Speeds[i] = n;
             }
         }
+        private void backPrefButton_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void forwardPrefButton_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void leftPrefButton_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void rightPrefButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
