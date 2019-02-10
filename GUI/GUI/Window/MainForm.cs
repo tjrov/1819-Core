@@ -364,7 +364,7 @@ namespace GUI
                     rov.TurnMotion = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100));
                 }
 
-                //left bumper moves downward, right bumper moves upward
+                //left trigger moves downward, right trigger moves upward
                 rov.VerticalMotion = (int)(ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, -100) + ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, 100));
             }
             else
@@ -410,6 +410,8 @@ namespace GUI
             backPrefButton.BackColor = Color.Green;
             leftPrefButton.BackColor = Color.Red;
             rightPrefButton.BackColor = Color.Red;
+            rov.directionPref = 2;
+            
         }
         private void forPrefButton_Click(object sender, EventArgs e)
         {
@@ -418,6 +420,7 @@ namespace GUI
             backPrefButton.BackColor = Color.Red;
             leftPrefButton.BackColor = Color.Red;
             rightPrefButton.BackColor = Color.Red;
+            rov.directionPref = 0;
         }
         private void leftPrefButton_Click(object sender, EventArgs e)
         {
@@ -425,6 +428,7 @@ namespace GUI
             backPrefButton.BackColor = Color.Red;
             leftPrefButton.BackColor = Color.Green;
             rightPrefButton.BackColor = Color.Red;
+            rov.directionPref = 3;
         }
 
         private void rightPrefButton_Click(object sender, EventArgs e)
@@ -433,6 +437,7 @@ namespace GUI
             backPrefButton.BackColor = Color.Red;
             leftPrefButton.BackColor = Color.Red;
             rightPrefButton.BackColor = Color.Green;
+            rov.directionPref = 1;
         }
     }
 }
