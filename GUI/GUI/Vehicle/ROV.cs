@@ -27,6 +27,7 @@ namespace GUI
         public int directionPref;
 
         public double VerticalMotion, ForeAftMotion, StrafeMotion, TurnMotion; //ccw positive
+        private int parityFL, parityFR, parityBL, parityBR;
         public double DesiredHeading
         {
             get => DesiredHeading;
@@ -49,7 +50,7 @@ namespace GUI
         public bool EnableHeadingLock, EnableRollLock, EnableDepthLock;
 
         //change as needed
-        private readonly Dictionary<string, int> key = new Dictionary<string, int>()
+        private Dictionary<string, int> key = new Dictionary<string, int>()
         {
             ["ForwardPort"] = 0,
             ["ForwardStarboard"] = 1,
@@ -159,6 +160,11 @@ namespace GUI
         {
             comms.Queue.Enqueue(StatusSensor);
             comms.Queue.Enqueue(StatusActuator);
+        }
+        public void setDirection(int direction)
+        {
+            directionPref = direction;
+            
         }
     }
 }

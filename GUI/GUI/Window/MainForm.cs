@@ -410,8 +410,7 @@ namespace GUI
             backPrefButton.BackColor = Color.Green;
             leftPrefButton.BackColor = Color.Red;
             rightPrefButton.BackColor = Color.Red;
-            rov.directionPref = 2;
-            
+            rov.setDirection(2);
         }
         private void forPrefButton_Click(object sender, EventArgs e)
         {
@@ -420,7 +419,7 @@ namespace GUI
             backPrefButton.BackColor = Color.Red;
             leftPrefButton.BackColor = Color.Red;
             rightPrefButton.BackColor = Color.Red;
-            rov.directionPref = 0;
+            rov.setDirection(0);
         }
         private void leftPrefButton_Click(object sender, EventArgs e)
         {
@@ -428,8 +427,10 @@ namespace GUI
             backPrefButton.BackColor = Color.Red;
             leftPrefButton.BackColor = Color.Green;
             rightPrefButton.BackColor = Color.Red;
-            rov.directionPref = 3;
+            rov.setDirection(3);
         }
+
+       
 
         private void rightPrefButton_Click(object sender, EventArgs e)
         {
@@ -437,7 +438,7 @@ namespace GUI
             backPrefButton.BackColor = Color.Red;
             leftPrefButton.BackColor = Color.Red;
             rightPrefButton.BackColor = Color.Green;
-            rov.directionPref = 1;
+            rov.setDirection(1);
         }
     }
 }

@@ -76,12 +76,12 @@
             this.calcButton = new System.Windows.Forms.Button();
             this.answerBox = new System.Windows.Forms.TextBox();
             this.InnerRadius2 = new System.Windows.Forms.TextBox();
-            this.propulsionActuator1 = new GUI.PropulsionActuator();
-            this.propulsionActuator2 = new GUI.PropulsionActuator();
             this.forPrefButton = new System.Windows.Forms.Button();
             this.backPrefButton = new System.Windows.Forms.Button();
             this.rightPrefButton = new System.Windows.Forms.Button();
             this.leftPrefButton = new System.Windows.Forms.Button();
+            this.propulsionActuator1 = new GUI.PropulsionActuator();
+            this.propulsionActuator2 = new GUI.PropulsionActuator();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
