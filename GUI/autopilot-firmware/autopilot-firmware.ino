@@ -47,7 +47,7 @@ Configuration for autopilot board
 
 #define NUM_TOOLS 4
 
-#define DEPTH_ADDRESS 0x77
+#define DEPTH_ADDRESS 0x76
 
 #define IMU_ADDRESS 0x28
 
@@ -85,17 +85,15 @@ enum COMMAND {
 //DO NOT CHANGE PIN DEFS ON MASTER BRANCH WITHOUT ASKING AN ELECTRICAL SUBTEAM MEMBER
 #define VOLTAGE_SENSOR A0
 
-#define RED 11
-#define GREEN 12
-#define BLUE 13
+#define LED 13
 
 /*End pin definitions*/
 
 //#define TX_EN 2
 
 /*Variable declarations*/
-Adafruit_BNO055 bno055;
-MS5803 ms5803(ADDRESS_LOW);
+Adafruit_BNO055 bno055 = Adafruit_BNO055();
+MS5803 ms5803(ADDRESS_HIGH);
 Adafruit_PWMServoDriver pca9685 = Adafruit_PWMServoDriver();
 
 const uint8_t esc_invert[6] = ESC_INVERT;
@@ -141,14 +139,14 @@ the setup function runs once when you press reset or power the board
 void setup() {
 	//run this first to prevent auto-reset
 	//pinMode(RESET, INPUT_PULLUP); //connect RST to 5V with a 10k internal resistance
-
-	initLEDs();
-
+	pinMode(LED, OUTPUT);
+	digitalWrite(LED, HIGH);
+	delay(500);
 	//pinMode(TX_EN, OUTPUT);
 	Serial.begin(SERIAL_BAUD);
 
 	Wire.begin();
-	Wire.setClock(I2C_CLOCK);
+    Wire.setClock(I2C_CLOCK);
 
 	initStatus();
 
@@ -156,11 +154,7 @@ void setup() {
 	initIMU();
 	initDepth();
 	initToolsAndESCs();
-
-	if (error != ALL_SYSTEMS_GO) { //if we can't init
-		flashError(); //flash led with error
-		//Serial.println(error);
-	}
+	digitalWrite(LED, LOW);
 }
 
 /*
@@ -347,6 +341,7 @@ void initToolsAndESCs() {
 }
 
 void checkESCsAndTools() {
+	//check for motor controller device
 	if (!checkI2C(PCA_9685_ADDRESS)) {
 		error |= TOOLS_FAILURE;
 	}
@@ -363,54 +358,58 @@ void checkESCsAndTools() {
 }
 
 void writeESCs() {
-	/*for (int i = 0; i < 6; i++) {
-		//convert pairs of bytes into 16-bit int
-		int16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
-		//now convert to pulse time length out of 4096
-		if (esc_invert[i] == 1) {
-			speed = -speed;
-		}
-		speed = map(speed, -32768, 32767, PWM_MIN, PWM_MAX);
-		speed = PWM_MAX;
-		escs[i].writeMicroseconds(speed);
-	}*/
+	if (!(error&ESC_FAILURE)) {
+		/*for (int i = 0; i < 6; i++) {
+			//convert pairs of bytes into 16-bit int
+			int16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
+			//now convert to pulse time length out of 4096
+			if (esc_invert[i] == 1) {
+				speed = -speed;
+			}
+			speed = map(speed, -32768, 32767, PWM_MIN, PWM_MAX);
+			speed = PWM_MAX;
+			escs[i].writeMicroseconds(speed);
+		}*/
 
-	for (int i = 0; i < NUM_ESCS; i++) {
-		uint8_t speed = rxData.data[i];
-		if (esc_invert[i] == 1) {
-			speed = 255 - speed;
-		}
-		if (speed == 127) {
-			//stop motor
-			pca9685.setPWM(i, 0, PWM_STOP);
-		}
-		else {
-			//run motor forward or reverse
-			pca9685.setPWM(i, 0, map(speed, 0, 255, PWM_MIN, PWM_MAX));
+		for (int i = 0; i < NUM_ESCS; i++) {
+			uint8_t speed = rxData.data[i];
+			if (esc_invert[i] == 1) {
+				speed = 255 - speed;
+			}
+			if (speed == 127) {
+				//stop motor
+				pca9685.setPWM(i, 0, PWM_STOP);
+			}
+			else {
+				//run motor forward or reverse
+				pca9685.setPWM(i, 0, map(speed, 0, 255, PWM_MIN, PWM_MAX));
+			}
 		}
 	}
 }
 
 void writeTools() {
-	for (int i = 0; i < NUM_TOOLS; i++) {
-		uint8_t speed = rxData.data[i];
-		if (tools_invert[i] == 1) {
-			speed = 255 - speed;
-		}
-		if (speed == 127) {
-			//both pins high to brake when stop requested
-			pca9685.setPWM(15 - i * 2, 0, 4095);
-			pca9685.setPWM(14 - i * 2, 0, 4095);
-		}
-		else if (speed < 127) {
-			//turn one way
-			pca9685.setPWM(15 - i * 2, 0, 0);
-			pca9685.setPWM(14 - i * 2, 0, map(speed, 0, 127, 4095, 0));
-		}
-		else {
-			//turn other way
-			pca9685.setPWM(15 - i * 2, 0, map(speed, 127, 255, 0, 4095));
-			pca9685.setPWM(14 - i * 2, 0, 0);
+	if (!(error&ESC_FAILURE)) {
+		for (int i = 0; i < NUM_TOOLS; i++) {
+			uint8_t speed = rxData.data[i];
+			if (tools_invert[i] == 1) {
+				speed = 255 - speed;
+			}
+			if (speed == 127) {
+				//both pins high to brake when stop requested
+				pca9685.setPWM(15 - i * 2, 0, 4095);
+				pca9685.setPWM(14 - i * 2, 0, 4095);
+			}
+			else if (speed < 127) {
+				//turn one way
+				pca9685.setPWM(15 - i * 2, 0, 0);
+				pca9685.setPWM(14 - i * 2, 0, map(speed, 0, 127, 4095, 0));
+			}
+			else {
+				//turn other way
+				pca9685.setPWM(15 - i * 2, 0, map(speed, 127, 255, 0, 4095));
+				pca9685.setPWM(14 - i * 2, 0, 0);
+			}
 		}
 	}
 }
@@ -463,19 +462,21 @@ void writeStatus() {
 
 //call to stop all movement of actuators
 void emergencyStop() {
-	/*for (int i = 0; i < 6; i++) {
-		escs[i].writeMicroseconds(1500);
-	}*/
-	//stop ESCs
-	//int stopped = (PWM_MIN + PWM_MAX) / 2; //stopped signal pulse length is halfway between full forward and full reverse
-	//Serial.print(PWM_MIN); Serial.print('\t'); Serial.println(PWM_MAX);
-	for (int i = 0; i < NUM_ESCS; i++) {
-		pca9685.setPWM(i, 0, PWM_STOP);
-	}
-	//stop motor outputs (coast to a stop instead of braking so that claws will let go
-	for (int i = 0; i < NUM_TOOLS; i++) {
-		pca9685.setPWM(15 - i * 2, 0, 0);
-		pca9685.setPWM(14 - i * 2, 0, 0);
+	if (!(error&ESC_FAILURE)) {
+		/*for (int i = 0; i < 6; i++) {
+			escs[i].writeMicroseconds(1500);
+		}*/
+		//stop ESCs
+		//int stopped = (PWM_MIN + PWM_MAX) / 2; //stopped signal pulse length is halfway between full forward and full reverse
+		//Serial.print(PWM_MIN); Serial.print('\t'); Serial.println(PWM_MAX);
+		for (int i = 0; i < NUM_ESCS; i++) {
+			pca9685.setPWM(i, 0, PWM_STOP);
+		}
+		//stop motor outputs (coast to a stop instead of braking so that claws will let go
+		for (int i = 0; i < NUM_TOOLS; i++) {
+			pca9685.setPWM(15 - i * 2, 0, 0);
+			pca9685.setPWM(14 - i * 2, 0, 0);
+		}
 	}
 }
 
@@ -496,77 +497,73 @@ void initIMU() {
 void readIMU() {
 	txData.command = IMU_REQ;
 	txData.length = 6;
-	//refresh data from imu
-	sensors_event_t imuData;
-	bno055.getEvent(&imuData);
+	if (!(error&IMU_FAILURE)) {
+		//refresh data from imu
+		sensors_event_t imuData;
+		bno055.getEvent(&imuData);
 
-	/* Display the data */
-	/*Serial.print("Heading: ");
-	Serial.print(imuData.orientation.x, 4);
-	Serial.print("Pitch: ");
-	Serial.print(imuData.orientation.y, 4);
-	Serial.print("Roll: ");
-	Serial.print(imuData.orientation.z, 4);
-	Serial.println("");*/
+		/* Display the data */
+		/*Serial.print("Heading: ");
+		Serial.print(imuData.orientation.x, 4);
+		Serial.print("Pitch: ");
+		Serial.print(imuData.orientation.y, 4);
+		Serial.print("Roll: ");
+		Serial.print(imuData.orientation.z, 4);
+		Serial.println("");*/
 
-	/* physical axis directions:
-		+----------+
-		|         *| RST   PITCH  ROLL  HEADING
-	ADR |*        *| SCL
-	INT |*        *| SDA     ^            /->
-	PS1 |*        *| GND     |            |
-	PS0 |*        *| 3VO     Y    Z-->    \-X
-		|         *| VIN
-		+----------+
-	*/
+		/* physical axis directions:
+			+----------+
+			|         *| RST   PITCH  ROLL  HEADING
+		ADR |*        *| SCL
+		INT |*        *| SDA     ^            /->
+		PS1 |*        *| GND     |            |
+		PS0 |*        *| 3VO     Y    Z-->    \-X
+			|         *| VIN
+			+----------+
+		*/
 
-	uint16_t rollInt = (int)mapDouble(imuData.orientation.heading, 0, 360, 0, 65535);
-	uint16_t pitchInt = (int)mapDouble(imuData.orientation.pitch, 0, 360, 0, 65535);
-	uint16_t headingInt = (int)mapDouble(imuData.orientation.roll, 0, 360, 0, 65535);
+		uint16_t rollInt = (int)mapDouble(imuData.orientation.heading, 0, 360, 0, 65535);
+		uint16_t pitchInt = (int)mapDouble(imuData.orientation.pitch, 0, 360, 0, 65535);
+		uint16_t headingInt = (int)mapDouble(imuData.orientation.roll, 0, 360, 0, 65535);
 
-	//prepare txData for transmission
-	txData.data[0] = headingInt & 0xFF;
-	txData.data[1] = (headingInt >> 8) & 0xFF;
-	txData.data[2] = pitchInt & 0xFF;
-	txData.data[3] = (pitchInt >> 8) & 0xFF;
-	txData.data[4] = rollInt & 0xFF;
-	txData.data[5] = (rollInt >> 8) & 0xFF;
+		//prepare txData for transmission
+		txData.data[0] = headingInt & 0xFF;
+		txData.data[1] = (headingInt >> 8) & 0xFF;
+		txData.data[2] = pitchInt & 0xFF;
+		txData.data[3] = (pitchInt >> 8) & 0xFF;
+		txData.data[4] = rollInt & 0xFF;
+		txData.data[5] = (rollInt >> 8) & 0xFF;
+	}
 }
 /*Depth*/
 void initDepth() {
 	//attempt to contact sensor to check if it's available
-	if (checkI2C(DEPTH_ADDRESS)) {
+	//if (checkI2C(DEPTH_ADDRESS)) {
 		ms5803.reset();
 		ms5803.begin();
-		ms5803.getTemperature(CELSIUS, ADC_256);
-	}
-	else {
-		error |= PRESSURE_SENSOR_FAILURE;
-	}
+	//}
+	//else {
+		//error |= PRESSURE_SENSOR_FAILURE;
+	//}
 }
 
 void readDepth() {
+	
 	txData.command = DEPTH_REQ;
 	txData.length = 2;
-	if (checkI2C(DEPTH_ADDRESS)) {
-		//8-bit adc reading gives +/-1 mbar, or better than
-		//1mm resolution of depth with a 0.5ms response time
+	if (!(error & PRESSURE_SENSOR_FAILURE)) {
 		//subtract pressure of air on surface; it doesn't factor
 		//into the pressure caused by the water column
-		double depthDouble = ms5803.getPressure(ADC_256) - 101300;
 		//depth = pressure / (density * acceleration)
 		//where depth is in meters, pressure is in Pascals (N/m^2)
 		//density is in kilograms per cubic meter,
 		//and acceleration is in meters per second per second
-		depthDouble /= 1000.0 * 9.81;
+		double depthDouble = (ms5803.getPressure(ADC_1024) - 9230.0) / (1000.0 * 9.81);
 		//now convert to bytes and prepare txData
 		uint16_t intDepth = (int)mapDouble(depthDouble, 0, 30, 0, 65535);
 
 		txData.data[0] = intDepth & 0xFF;
 		txData.data[1] = (intDepth >> 8) & 0xFF;
-	}
-	else {
-		error |= PRESSURE_SENSOR_FAILURE;
 	}
 }
 
@@ -588,13 +585,10 @@ Red blinks - error state
 */
 
 void flashError() {
-	//leds off
-	digitalWrite(RED, LOW);
-	digitalWrite(GREEN, LOW);
 	for (int i = 0; i < 5; i++) {
-		digitalWrite(RED, HIGH);
+		digitalWrite(LED, HIGH);
 		delay(100);
-		digitalWrite(RED, LOW);
+		digitalWrite(LED, LOW);
 		delay(100);
 	}
 }
@@ -602,30 +596,18 @@ void flashError() {
 void controlLEDs() {
 	switch (status) {
 	case DISCONNECTED:
-		//yellow
-		digitalWrite(RED, (millis() % 2000) < 100);
-		digitalWrite(GREEN, (millis() % 2000) < 100);
-		//digitalWrite(BLUE, LOW);
+		//flash every few seconds
+		digitalWrite(LED, (millis() % 2000 < 50));
 		break;
 	case DISARMED:
-		//solid green
-		digitalWrite(RED, LOW);
-		digitalWrite(GREEN, HIGH);
-		//digitalWrite(BLUE, LOW);
+		//LED on
+		digitalWrite(LED, HIGH);
 		break;
 	case ARMED:
-		//1Hz flashing green
-		digitalWrite(RED, LOW);
-		digitalWrite(GREEN, millis() % 1000 < 500);
-		//digitalWrite(BLUE, LOW);
+		//flashing
+		digitalWrite(LED, (millis() % 500 < 250));
 		break;
 	}
 	//flash blue 5ms for correctly processed messages
 	//digitalWrite(BLUE, (millis() - lastComms) < 5); //too slow to show all msgs
-}
-
-void initLEDs() {
-	pinMode(RED, OUTPUT);
-	pinMode(GREEN, OUTPUT);
-	pinMode(BLUE, OUTPUT);
 }
