@@ -24,7 +24,10 @@ namespace GUI
 
         public double ToolMotion;
 
+        public int directionPref;
+
         public double VerticalMotion, ForeAftMotion, StrafeMotion, TurnMotion; //ccw positive
+        private int parityFL, parityFR, parityBL, parityBR;
         public double DesiredHeading
         {
             get => DesiredHeading;
@@ -47,7 +50,16 @@ namespace GUI
         public bool EnableHeadingLock, EnableRollLock, EnableDepthLock;
 
         //change as needed
-        private readonly Dictionary<string, int> key = new Dictionary<string, int>()
+        private readonly Dictionary<string, int> keyDefault = new Dictionary<string, int>()
+        {
+            ["ForwardPort"] = 0,
+            ["ForwardStarboard"] = 1,
+            ["AftPort"] = 2,
+            ["AftStarboard"] = 3,
+            ["VerticalPort"] = 4,
+            ["VerticalStarboard"] = 5
+        };
+        private Dictionary<string, int> key = new Dictionary<string, int>()
         {
             ["ForwardPort"] = 0,
             ["ForwardStarboard"] = 1,
@@ -77,6 +89,8 @@ namespace GUI
             StatusActuator = new StatusActuator();
             PropulsionActuator = new PropulsionActuator();
             ToolsActuator = new ToolsActuator();
+
+            directionPref = 0;
 
             //timer setup
             t500 = new Timer() { Enabled = true, Interval = 500 };
@@ -114,12 +128,18 @@ namespace GUI
             {
                 localTurnMotion += headingAdj;
             }
-            speeds[key["ForwardPort"]] = ForeAftMotion + StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion - TurnMotion, 50) : Math.Max(ForeAftMotion + StrafeMotion - TurnMotion, -50);
-            speeds[key["ForwardStarboard"]] = ForeAftMotion - StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion + TurnMotion, 50) : Math.Max(ForeAftMotion - StrafeMotion + TurnMotion, -50);
-            speeds[key["AftPort"]] = ForeAftMotion - StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion - TurnMotion, 50) : Math.Max(ForeAftMotion - StrafeMotion - TurnMotion, -50);
-            speeds[key["AftStarboard"]] = ForeAftMotion + StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion + TurnMotion, 50) : Math.Max(ForeAftMotion + StrafeMotion + TurnMotion, -50);
+            speeds[key["ForwardPort"]] = ForeAftMotion + StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion - TurnMotion, 100) : Math.Max(ForeAftMotion + StrafeMotion - TurnMotion, -100);
+            speeds[key["ForwardStarboard"]] = ForeAftMotion - StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion + TurnMotion, 100) : Math.Max(ForeAftMotion - StrafeMotion + TurnMotion, -100);
+            speeds[key["AftStarboard"]] = ForeAftMotion + StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion + TurnMotion, 100) : Math.Max(ForeAftMotion + StrafeMotion + TurnMotion, -100);
+            speeds[key["AftPort"]] = ForeAftMotion - StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion - TurnMotion, 100) : Math.Max(ForeAftMotion - StrafeMotion - TurnMotion, -100);
+        
+            // flips the appropriate motors
+            speeds[key["ForwardPort"]] *= parityFL;
+            speeds[key["ForwardStarboard"]] *= parityFR;
+            speeds[key["AftStarboard"]] *= parityBR;
+            speeds[key["AftPort"]] *= parityBL;
 
-            //vertical thrusters
+                //vertical thrusters
             //VerticalMotion is positive upward
             speeds[key["VerticalPort"]] = VerticalMotion;
             speeds[key["VerticalStarboard"]] = VerticalMotion;
@@ -152,5 +172,47 @@ namespace GUI
             comms.Queue.Enqueue(StatusSensor);
             comms.Queue.Enqueue(StatusActuator);
         }
+        public void setDirection(int direction)
+        {
+            directionPref = direction;
+            switch (direction) {
+                case 0:
+                    parityFL = parityFR = parityBL = parityBR = 1;
+                    key["ForwardPort"] = 0;
+                    key["ForwardStarboard"] = 1;
+                    key["AftPort"] = 2;
+                    key["AftStarboard"] = 3;
+                    break;
+                case 1:
+                    parityFR = parityBL = 1;
+                    parityFL = parityBR = -1;
+                    key["ForwardPort"] = 1;
+                    key["ForwardStarboard"] = 3;
+                    key["AftPort"] = 0;
+                    key["AftStarboard"] = 2;
+                    break;
+                case 2:
+                    parityFL = parityFR = parityBL = parityBR = -1;
+                    key["ForwardPort"] = 3;
+                    key["ForwardStarboard"] = 2;
+                    key["AftPort"] = 1;
+                    key["AftStarboard"] = 0;
+                    break;
+                case 3:
+                    parityFR = parityBL = -1;
+                    parityFL = parityBR = 1;
+                    key["ForwardPort"] = 2;
+                    key["ForwardStarboard"] = 0;
+                    key["AftPort"] = 3;
+                    key["AftStarboard"] = 1;
+                    break;
+            }
+        }
     }
 }
+            //["ForwardPort"] = 0,
+            //["ForwardStarboard"] = 1,
+            //["AftPort"] = 2,
+            //["AftStarboard"] = 3,
+            //["VerticalPort"] = 4,
+            //["VerticalStarboard"] = 5
