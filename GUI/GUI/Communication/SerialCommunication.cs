@@ -44,14 +44,7 @@ namespace GUI
             set {
                 if (value)
                 {
-                    try
-                    {
-                        port.Open();
-                    }
-                    catch (Exception ex)
-                    {
-                        CommunicationException(this, ex);
-                    }
+                    port.Open();
                     //empty queue of devices needing update
                     while (devices.Count > 0)
                     {
