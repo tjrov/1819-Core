@@ -31,7 +31,10 @@ namespace GUI
         private bool isLockClicked = false;
         private int depthvalue = 0;
         private bool RightBumperCheck = false;
-
+        private int numberOfSquareShits = 0;
+        private int numberOfCircleShits = 0;
+        private int numberOfTriangleShits = 0;
+        private int numberOfLineShits = 0;
 
         public MainForm()
         {
@@ -118,11 +121,6 @@ namespace GUI
             SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
 
             Graphics g = Graphics.FromImage(bitmap);
-            Pen yellowPen = new Pen(Color.Yellow, 2); // circles
-            Pen redPen = new Pen(Color.Red, 2);       // quadrilateral
-            Pen brownPen = new Pen(Color.Brown, 2);   // quadrilateral with known sub-type
-            Pen greenPen = new Pen(Color.Green, 2);   // known triangle
-            Pen bluePen = new Pen(Color.Blue, 2);     // triangle
 
             for (int i = 0, n = blobs.Length; i < n; i++)
             {
@@ -134,9 +132,7 @@ namespace GUI
                 // is circle ?
                 if (shapeChecker.IsCircle(edgePoints, out center, out radius))
                 {
-                    g.DrawEllipse(yellowPen,
-                        (float)(center.X - radius), (float)(center.Y - radius),
-                        (float)(radius * 2), (float)(radius * 2));
+                    numberOfCircleShits++;
                 }
                 else
                 {
@@ -149,28 +145,22 @@ namespace GUI
                         PolygonSubType subType = shapeChecker.CheckPolygonSubType(corners);
 
                         Pen pen;
-
-                        if (subType == PolygonSubType.Unknown)
+                        if (subType == PolygonSubType.Square)
                         {
-                            pen = (corners.Count == 4) ? redPen : bluePen;
+                            numberOfSquareShits++;
                         }
-                        else
+                        else if (subType == PolygonSubType.EquilateralTriangle)
                         {
-                            pen = (corners.Count == 4) ? brownPen : greenPen;
+                            numberOfTriangleShits++;
                         }
-
-                        g.DrawPolygon(pen, ToPointsArray(corners));
+                        else if (subType == PolygonSubType.Rectangle)
+                        {
+                            numberOfLineShits++;
+                        }
                     }
                 }
             }
-
-            yellowPen.Dispose();
-            redPen.Dispose();
-            greenPen.Dispose();
-            bluePen.Dispose();
-            brownPen.Dispose();
             g.Dispose();
-
             // put new image to clipboard
             Clipboard.SetDataObject(bitmap);
             // and to picture box
