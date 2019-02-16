@@ -20,6 +20,8 @@ namespace GUI
         private SerialCommunication comms;
         private Timer t500, t50, t10;
 
+        private int parityFL, parityFR, parityBL, parityBR;
+        public int directionPref;
         private readonly PidController depthPID, headingPID, rollPID;
 
         public double ToolMotion;
@@ -151,6 +153,43 @@ namespace GUI
         {
             comms.Queue.Enqueue(StatusSensor);
             comms.Queue.Enqueue(StatusActuator);
+        }
+        public void setDirection(int direction)
+        {
+            directionPref = direction;
+            switch (direction)
+            {
+                case 0:
+                    parityFL = parityFR = parityBL = parityBR = 1;
+                    key["ForwardPort"] = 0;
+                    key["ForwardStarboard"] = 1;
+                    key["AftPort"] = 2;
+                    key["AftStarboard"] = 3;
+                    break;
+                case 1:
+                    parityFR = parityBL = 1;
+                    parityFL = parityBR = -1;
+                    key["ForwardPort"] = 1;
+                    key["ForwardStarboard"] = 3;
+                    key["AftPort"] = 0;
+                    key["AftStarboard"] = 2;
+                    break;
+                case 2:
+                    parityFL = parityFR = parityBL = parityBR = -1;
+                    key["ForwardPort"] = 3;
+                    key["ForwardStarboard"] = 2;
+                    key["AftPort"] = 1;
+                    key["AftStarboard"] = 0;
+                    break;
+                case 3:
+                    parityFR = parityBL = -1;
+                    parityFL = parityBR = 1;
+                    key["ForwardPort"] = 2;
+                    key["ForwardStarboard"] = 0;
+                    key["AftPort"] = 3;
+                    key["AftStarboard"] = 1;
+                    break;
+            }
         }
     }
 }

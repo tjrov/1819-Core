@@ -58,7 +58,7 @@ namespace GUI
             Controls.Add(headingIndicator);
 
             //setup devices
-            BetterSerialPort port = new BetterSerialPort("COM10", 115200);
+            BetterSerialPort port = new BetterSerialPort("COM5", 115200);
             portLabel.Text = string.Format("{0}@{1}baud", port.PortName, port.BaudRate);
             comms = new SerialCommunication(port);
             comms.Stopped += comms_Stopped;
@@ -221,6 +221,42 @@ namespace GUI
             }
         }
 
+        private void backPrefButton_Click(object sender, EventArgs e)
+        {
+            forPrefButton.BackColor = Color.Red;
+            backPrefButton.BackColor = Color.Green;
+            leftPrefButton.BackColor = Color.Red;
+            rightPrefButton.BackColor = Color.Red;
+            rov.setDirection(2);
+        }
+        private void forPrefButton_Click(object sender, EventArgs e)
+        {
+
+            forPrefButton.BackColor = Color.Green;
+            backPrefButton.BackColor = Color.Red;
+            leftPrefButton.BackColor = Color.Red;
+            rightPrefButton.BackColor = Color.Red;
+            rov.setDirection(0);
+        }
+        private void leftPrefButton_Click(object sender, EventArgs e)
+        {
+            forPrefButton.BackColor = Color.Red;
+            backPrefButton.BackColor = Color.Red;
+            leftPrefButton.BackColor = Color.Green;
+            rightPrefButton.BackColor = Color.Red;
+            rov.setDirection(3);
+        }
+
+
+
+        private void rightPrefButton_Click(object sender, EventArgs e)
+        {
+            forPrefButton.BackColor = Color.Red;
+            backPrefButton.BackColor = Color.Red;
+            leftPrefButton.BackColor = Color.Red;
+            rightPrefButton.BackColor = Color.Green;
+            rov.setDirection(1);
+        }
         private void resetButton_Click(object sender, EventArgs e)
         {
             rov.StatusActuator.Data.DesiredStatus = ROVStatus.REBOOT;

@@ -85,6 +85,10 @@
             this.SquareCount = new System.Windows.Forms.Label();
             this.CircleCount = new System.Windows.Forms.Label();
             this.benthicButton = new System.Windows.Forms.Button();
+            this.forPrefButton = new System.Windows.Forms.Button();
+            this.backPrefButton = new System.Windows.Forms.Button();
+            this.rightPrefButton = new System.Windows.Forms.Button();
+            this.leftPrefButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
@@ -618,6 +622,54 @@
             this.benthicButton.UseVisualStyleBackColor = true;
             this.benthicButton.Click += new System.EventHandler(this.benthicButton_Click);
             // 
+            // forPrefButton
+            // 
+            this.forPrefButton.BackColor = System.Drawing.Color.Green;
+            this.forPrefButton.Location = new System.Drawing.Point(484, 24);
+            this.forPrefButton.Margin = new System.Windows.Forms.Padding(2);
+            this.forPrefButton.Name = "forPrefButton";
+            this.forPrefButton.Size = new System.Drawing.Size(40, 39);
+            this.forPrefButton.TabIndex = 53;
+            this.forPrefButton.Text = "↑";
+            this.forPrefButton.UseVisualStyleBackColor = false;
+            this.forPrefButton.Click += new System.EventHandler(this.forPrefButton_Click);
+            // 
+            // backPrefButton
+            // 
+            this.backPrefButton.BackColor = System.Drawing.Color.Red;
+            this.backPrefButton.Location = new System.Drawing.Point(484, 81);
+            this.backPrefButton.Margin = new System.Windows.Forms.Padding(2);
+            this.backPrefButton.Name = "backPrefButton";
+            this.backPrefButton.Size = new System.Drawing.Size(40, 36);
+            this.backPrefButton.TabIndex = 54;
+            this.backPrefButton.Text = "↓";
+            this.backPrefButton.UseVisualStyleBackColor = false;
+            this.backPrefButton.Click += new System.EventHandler(this.backPrefButton_Click);
+            // 
+            // rightPrefButton
+            // 
+            this.rightPrefButton.BackColor = System.Drawing.Color.Red;
+            this.rightPrefButton.Location = new System.Drawing.Point(546, 54);
+            this.rightPrefButton.Margin = new System.Windows.Forms.Padding(2);
+            this.rightPrefButton.Name = "rightPrefButton";
+            this.rightPrefButton.Size = new System.Drawing.Size(37, 35);
+            this.rightPrefButton.TabIndex = 55;
+            this.rightPrefButton.Text = "→";
+            this.rightPrefButton.UseVisualStyleBackColor = false;
+            this.rightPrefButton.Click += new System.EventHandler(this.rightPrefButton_Click);
+            // 
+            // leftPrefButton
+            // 
+            this.leftPrefButton.BackColor = System.Drawing.Color.Red;
+            this.leftPrefButton.Location = new System.Drawing.Point(422, 54);
+            this.leftPrefButton.Margin = new System.Windows.Forms.Padding(2);
+            this.leftPrefButton.Name = "leftPrefButton";
+            this.leftPrefButton.Size = new System.Drawing.Size(44, 35);
+            this.leftPrefButton.TabIndex = 56;
+            this.leftPrefButton.Text = "←";
+            this.leftPrefButton.UseVisualStyleBackColor = false;
+            this.leftPrefButton.Click += new System.EventHandler(this.leftPrefButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -676,6 +728,10 @@
             this.Controls.Add(this.armButton);
             this.Controls.Add(this.queueLabel);
             this.Controls.Add(this.connectButton);
+            this.Controls.Add(this.leftPrefButton);
+            this.Controls.Add(this.rightPrefButton);
+            this.Controls.Add(this.backPrefButton);
+            this.Controls.Add(this.forPrefButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainForm";
             this.Text = "TJROV - GUI";
@@ -749,6 +805,10 @@
         private System.Windows.Forms.Label SquareCount;
         private System.Windows.Forms.Label CircleCount;
         private System.Windows.Forms.Button benthicButton;
+        private System.Windows.Forms.Button forPrefButton;
+        private System.Windows.Forms.Button backPrefButton;
+        private System.Windows.Forms.Button rightPrefButton;
+        private System.Windows.Forms.Button leftPrefButton;
     }
 }
 
