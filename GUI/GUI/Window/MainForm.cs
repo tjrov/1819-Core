@@ -13,6 +13,7 @@ using XInput.Wrapper;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Reflection;
+using System.IO;
 
 using AForge;
 using AForge.Imaging;
@@ -143,7 +144,6 @@ namespace GUI
                     {
                         // get sub-type
                         PolygonSubType subType = shapeChecker.CheckPolygonSubType(corners);
-
                         Pen pen;
                         if (subType == PolygonSubType.Square)
                         {
@@ -153,7 +153,7 @@ namespace GUI
                         {
                             numberOfTriangleShits++;
                         }
-                        else if (subType == PolygonSubType.Rectangle)
+                        else
                         {
                             numberOfLineShits++;
                         }
@@ -165,7 +165,10 @@ namespace GUI
             Clipboard.SetDataObject(bitmap);
             // and to picture box
             //pictureBox.Image = bitmap;
-
+            triangleCount.Text = "Triangles: " + numberOfTriangleShits;
+            CircleCount.Text = "Circles: " + numberOfCircleShits;
+            SquareCount.Text = "Squares: " + numberOfSquareShits;
+            RectangleCount.Text = "Lines: " + numberOfLineShits;
             //UpdatePictureBoxPosition();
         }
         private Point[] ToPointsArray(List<IntPoint> points)
@@ -386,6 +389,12 @@ namespace GUI
             answerBox.Text = result.ToString();  
         }
 
+        private void benthicButton_Click(object sender, EventArgs e)
+        {
+            Assembly assembly = this.GetType().Assembly;
+            Bitmap image = new Bitmap(System.Drawing.Image.FromFile(Directory.GetCurrentDirectory() + "\\manyShapes.png"));
+            ProcessImage(image);
+        }
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             for (int i = 0; i < 6; i++)
