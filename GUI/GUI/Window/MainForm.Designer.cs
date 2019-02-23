@@ -607,9 +607,9 @@
             this.CircleCount.AutoSize = true;
             this.CircleCount.Location = new System.Drawing.Point(8, 160);
             this.CircleCount.Name = "CircleCount";
-            this.CircleCount.Size = new System.Drawing.Size(54, 17);
+            this.CircleCount.Size = new System.Drawing.Size(66, 17);
             this.CircleCount.TabIndex = 58;
-            this.CircleCount.Text = "Circles:";
+            this.CircleCount.Text = "Circles: 0";
             // 
             // benthicButton
             // 
