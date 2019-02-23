@@ -3,6 +3,7 @@
  */
 
 using System;
+using System.Timers;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -18,6 +19,7 @@ namespace EmguCVShapeDetectionTest {
         Image<Bgr, byte> source;
         Image<Bgr, byte> original;
         CaptureFrameSource cfs;
+        System.Timers.Timer t;
 
         public MainForm() {
             InitializeComponent();
@@ -25,6 +27,28 @@ namespace EmguCVShapeDetectionTest {
             bottom.PlaceHolderText = "Percent off the bottom";
             left.PlaceHolderText = "Percent off the left";
             right.PlaceHolderText = "Percent offg the right";
+        }
+
+        private void updateFrames(object source, ElapsedEventArgs e) {
+            MethodInvoker mi = delegate () {
+                int vS;
+                int.TryParse(videoSource.Text, out vS);
+
+                int width;
+                int height;
+                int.TryParse(widthText.Text, out width);
+                int.TryParse(heightText.Text, out height);
+
+                try {
+                    cfs = new CaptureFrameSource(new VideoCapture(vS));
+                    Mat nextFrame = cfs.NextFrame();
+                    Image<Bgr, byte> temp = nextFrame.ToImage<Bgr, byte>().Resize(width, height, Inter.Nearest);
+                    imageOriginal.Image = temp.Bitmap;
+                } catch (Exception exc) {
+                    MessageBox.Show(exc.Message);
+                }
+            };
+            this.Invoke(mi);
         }
 
         private void openFile_Click(object sender, EventArgs e) {
@@ -93,17 +117,43 @@ namespace EmguCVShapeDetectionTest {
                 double approxAmount;
                 double.TryParse(approxValue.Text, out approxAmount);
 
-                double ratioAmount;
-                double.TryParse(ratioValue.Text, out ratioAmount);
+                double minRatio;
+                double maxRatio;
+                double minArea;
+                double.TryParse(ratioValue.Text, out minRatio);
+                double.TryParse(marea.Text, out minArea);
+                maxRatio = 1 / minRatio;
+
+                double bx;
+                double.TryParse(bounding.Text, out bx);
 
                 for (int i = 0; i < contours.Size; i++) {
                     var contour = contours[i];
                     double perimeter = CvInvoke.ArcLength(contour, true);
                     VectorOfPoint approx = new VectorOfPoint();
                     CvInvoke.ApproxPolyDP(contour, approx, approxAmount * perimeter, true);
-                    
+
                     CvInvoke.DrawContours(final, contours, i, new MCvScalar(0, 0, 255), 1);
+                    Rectangle bounds = CvInvoke.BoundingRectangle(contour);
+                    final.Draw(bounds, new Bgr(255, 0, 0));
                     finalImage.Image = final.Bitmap;
+
+                    double area = CvInvoke.ContourArea(contour);
+
+                    if (!(bounds.X > bx && bounds.X < final.Width - bx)) {
+                        if (messages.Checked) { MessageBox.Show("Not in bounds"); }
+                        continue;
+                    }
+
+                    if (!(bounds.Y > bx && bounds.Y < final.Height - bx)) {
+                        if (messages.Checked) { MessageBox.Show("Not in bounds"); }
+                        continue;
+                    }
+
+                    if (area < minArea) {
+                        if (messages.Checked) { MessageBox.Show("Not large enough"); }
+                        continue;
+                    }
 
                     if (approx.Size == 3) {
                         int current;
@@ -111,11 +161,18 @@ namespace EmguCVShapeDetectionTest {
                         current += 1;
                         triangleNum.Text = current.ToString();
                     } else if (approx.Size == 4) {
-                        Rectangle rectangle = CvInvoke.BoundingRectangle(contour);
-                        double ratio = ((double)rectangle.Width) / rectangle.Height;
-                        int current;
+                        Point[] test = approx.ToArray();
 
-                        if (ratio > ratioAmount) {
+                        Point a = test[0];
+                        Point b = test[1];
+                        Point c = test[2];
+
+                        double width = Math.Sqrt((((double)(a.X - b.X)) * ((double)(a.X - b.X))) + (((double)(a.Y - b.Y)) * ((double)(a.Y - b.Y))));
+                        double height = Math.Sqrt((((double)(c.X - b.X)) * ((double)(c.X - b.X))) + (((double)(c.Y - b.Y)) * ((double)(c.Y - b.Y))));
+
+                        double ratio = width / height;
+                        int current;
+                        if (ratio > minRatio && ratio < maxRatio) {
                             int.TryParse(squareNum.Text, out current);
                             current += 1;
                             squareNum.Text = current.ToString();
@@ -186,6 +243,13 @@ namespace EmguCVShapeDetectionTest {
             source.ROI = new Rectangle((int) x, (int) y, (int) width, (int) height);
             imageOriginal.Image = source.Bitmap;
 
+        }
+
+        private void record_Click(object sender, EventArgs e) {
+            t = new System.Timers.Timer();
+            t.Elapsed += new ElapsedEventHandler(updateFrames);
+            t.Interval = 100;
+            t.Enabled = true;
         }
     }
 }
