@@ -109,7 +109,7 @@
             // 
             this.connectButton.AutoSize = true;
             this.connectButton.Location = new System.Drawing.Point(6, 6);
-            this.connectButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.connectButton.Margin = new System.Windows.Forms.Padding(2);
             this.connectButton.Name = "connectButton";
             this.connectButton.Size = new System.Drawing.Size(83, 23);
             this.connectButton.TabIndex = 0;
@@ -131,7 +131,7 @@
             // 
             this.armButton.AutoSize = true;
             this.armButton.Location = new System.Drawing.Point(6, 31);
-            this.armButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.armButton.Margin = new System.Windows.Forms.Padding(2);
             this.armButton.Name = "armButton";
             this.armButton.Size = new System.Drawing.Size(47, 23);
             this.armButton.TabIndex = 2;
@@ -153,7 +153,7 @@
             this.resetButton.AutoSize = true;
             this.resetButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.resetButton.Location = new System.Drawing.Point(56, 32);
-            this.resetButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.resetButton.Margin = new System.Windows.Forms.Padding(2);
             this.resetButton.Name = "resetButton";
             this.resetButton.Size = new System.Drawing.Size(45, 23);
             this.resetButton.TabIndex = 4;
@@ -403,7 +403,7 @@
             this.pictureBox1.Image = global::GUI.Properties.Resources.rov_thrusters;
             this.pictureBox1.InitialImage = global::GUI.Properties.Resources.rov_thrusters;
             this.pictureBox1.Location = new System.Drawing.Point(0, 310);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(437, 454);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -481,7 +481,7 @@
             this.depthLockButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.depthLockButton.BackColor = System.Drawing.Color.Red;
             this.depthLockButton.Location = new System.Drawing.Point(865, 275);
-            this.depthLockButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.depthLockButton.Margin = new System.Windows.Forms.Padding(2);
             this.depthLockButton.Name = "depthLockButton";
             this.depthLockButton.Size = new System.Drawing.Size(61, 29);
             this.depthLockButton.TabIndex = 36;
@@ -502,7 +502,7 @@
             // 
             this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar1.Location = new System.Drawing.Point(898, 336);
-            this.trackBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.trackBar1.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar1.Maximum = 200;
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -514,7 +514,7 @@
             // 
             this.trackBar2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar2.Location = new System.Drawing.Point(743, 388);
-            this.trackBar2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.trackBar2.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar2.Maximum = 200;
             this.trackBar2.Name = "trackBar2";
             this.trackBar2.Size = new System.Drawing.Size(136, 45);
@@ -525,7 +525,7 @@
             // 
             this.trackBar3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar3.Location = new System.Drawing.Point(898, 476);
-            this.trackBar3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.trackBar3.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar3.Maximum = 200;
             this.trackBar3.Name = "trackBar3";
             this.trackBar3.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -537,7 +537,7 @@
             // 
             this.trackBar4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar4.Location = new System.Drawing.Point(743, 531);
-            this.trackBar4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.trackBar4.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar4.Maximum = 200;
             this.trackBar4.Name = "trackBar4";
             this.trackBar4.Size = new System.Drawing.Size(136, 45);
@@ -548,7 +548,7 @@
             // 
             this.LengthOfBarrel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.LengthOfBarrel.Location = new System.Drawing.Point(570, 597);
-            this.LengthOfBarrel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.LengthOfBarrel.Margin = new System.Windows.Forms.Padding(2);
             this.LengthOfBarrel.Name = "LengthOfBarrel";
             this.LengthOfBarrel.Size = new System.Drawing.Size(110, 20);
             this.LengthOfBarrel.TabIndex = 46;
@@ -558,7 +558,7 @@
             // 
             this.InnerRadius1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.InnerRadius1.Location = new System.Drawing.Point(570, 616);
-            this.InnerRadius1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.InnerRadius1.Margin = new System.Windows.Forms.Padding(2);
             this.InnerRadius1.Name = "InnerRadius1";
             this.InnerRadius1.Size = new System.Drawing.Size(110, 20);
             this.InnerRadius1.TabIndex = 47;
@@ -568,7 +568,7 @@
             // 
             this.InnerRadius3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.InnerRadius3.Location = new System.Drawing.Point(570, 653);
-            this.InnerRadius3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.InnerRadius3.Margin = new System.Windows.Forms.Padding(2);
             this.InnerRadius3.Name = "InnerRadius3";
             this.InnerRadius3.Size = new System.Drawing.Size(110, 20);
             this.InnerRadius3.TabIndex = 49;
@@ -578,7 +578,7 @@
             // 
             this.calcButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.calcButton.Location = new System.Drawing.Point(699, 639);
-            this.calcButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.calcButton.Margin = new System.Windows.Forms.Padding(2);
             this.calcButton.Name = "calcButton";
             this.calcButton.Size = new System.Drawing.Size(68, 37);
             this.calcButton.TabIndex = 50;
@@ -590,7 +590,7 @@
             // 
             this.answerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.answerBox.Location = new System.Drawing.Point(769, 705);
-            this.answerBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.answerBox.Margin = new System.Windows.Forms.Padding(2);
             this.answerBox.Name = "answerBox";
             this.answerBox.Size = new System.Drawing.Size(52, 20);
             this.answerBox.TabIndex = 51;
@@ -599,7 +599,7 @@
             // 
             this.InnerRadius2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.InnerRadius2.Location = new System.Drawing.Point(570, 634);
-            this.InnerRadius2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.InnerRadius2.Margin = new System.Windows.Forms.Padding(2);
             this.InnerRadius2.Name = "InnerRadius2";
             this.InnerRadius2.Size = new System.Drawing.Size(110, 20);
             this.InnerRadius2.TabIndex = 52;
@@ -668,11 +668,11 @@
             // benthicButton
             // 
             this.benthicButton.Location = new System.Drawing.Point(6, 146);
-            this.benthicButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.benthicButton.Margin = new System.Windows.Forms.Padding(2);
             this.benthicButton.Name = "benthicButton";
             this.benthicButton.Size = new System.Drawing.Size(56, 19);
             this.benthicButton.TabIndex = 59;
-            this.benthicButton.Text = "Count Species";
+            this.benthicButton.Text = "specicieees";
             this.benthicButton.UseMnemonic = false;
             this.benthicButton.UseVisualStyleBackColor = true;
             this.benthicButton.Click += new System.EventHandler(this.benthicButton_Click);
@@ -728,7 +728,7 @@
             // capButton
             // 
             this.capButton.Location = new System.Drawing.Point(6, 172);
-            this.capButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.capButton.Margin = new System.Windows.Forms.Padding(2);
             this.capButton.Name = "capButton";
             this.capButton.Size = new System.Drawing.Size(126, 28);
             this.capButton.TabIndex = 60;
@@ -740,7 +740,7 @@
             // 
             this.picture.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picture.Location = new System.Drawing.Point(0, 0);
-            this.picture.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.picture.Margin = new System.Windows.Forms.Padding(2);
             this.picture.Name = "picture";
             this.picture.Size = new System.Drawing.Size(973, 678);
             this.picture.TabIndex = 63;
@@ -750,7 +750,7 @@
             // ass
             // 
             this.ass.Location = new System.Drawing.Point(76, 136);
-            this.ass.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ass.Margin = new System.Windows.Forms.Padding(2);
             this.ass.Name = "ass";
             this.ass.Size = new System.Drawing.Size(56, 28);
             this.ass.TabIndex = 64;
@@ -765,7 +765,6 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(973, 678);
             this.Controls.Add(this.ass);
-            this.Controls.Add(this.picture);
             this.Controls.Add(this.capButton);
             this.Controls.Add(this.benthicButton);
             this.Controls.Add(this.CircleCount);
@@ -823,8 +822,9 @@
             this.Controls.Add(this.rightPrefButton);
             this.Controls.Add(this.backPrefButton);
             this.Controls.Add(this.forPrefButton);
+            this.Controls.Add(this.picture);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "TJROV - GUI";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
