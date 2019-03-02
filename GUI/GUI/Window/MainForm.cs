@@ -19,6 +19,9 @@ using AForge;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
+using AForge.Video;
+using AForge.Video.DirectShow;
+using AForge.Controls;
 namespace GUI
 {
     public partial class MainForm : Form
@@ -36,6 +39,9 @@ namespace GUI
         private int numberOfCircleShits = 0;
         private int numberOfTriangleShits = 0;
         private int numberOfLineShits = 0;
+        private bool isCapturing = false;
+        private VideoCaptureDevice videoSource;
+        private FilterInfoCollection videoDevices;
 
         public MainForm()
         {
@@ -50,9 +56,9 @@ namespace GUI
             KeyPreview = true;
             InitializeComponent();
 
-            depthIndicator = new DepthIndicator() { Location = new Point(0, 100) };
-            attitudeIndicator = new AttitudeIndicator() { Location = new Point(100, 100) };
-            headingIndicator = new HeadingIndicator() { Location = new Point(600, 100) };
+            depthIndicator = new DepthIndicator() { Location = new System.Drawing.Point(0, 100) };
+            attitudeIndicator = new AttitudeIndicator() { Location = new System.Drawing.Point(100, 100) };
+            headingIndicator = new HeadingIndicator() { Location = new System.Drawing.Point(600, 100) };
             Controls.Add(depthIndicator);
             Controls.Add(attitudeIndicator);
             Controls.Add(headingIndicator);
@@ -71,6 +77,21 @@ namespace GUI
             //update displays when sensors polled
             rov.OrientationSensor.Updated += OrientationSensor_Updated;
             rov.DepthSensor.Updated += DepthSensor_Updated;
+
+            // enumerate video devices
+            videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            for (int i = 0; i < videoDevices.Count; i++)
+            {
+                if (videoDevices[i].Name.Equals("OEM Device"))
+                {
+                    videoSource = new VideoCaptureDevice(videoDevices[i].MonikerString);
+                    videoSource.CrossbarVideoInput = videoSource.AvailableCrossbarVideoInputs[1];
+                    videoSource.VideoResolution = videoSource.VideoCapabilities[1];
+                }
+            }
+            // set NewFrame event handler
+            videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+            picture.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         private void Comms_CommunicationException(object sender, Exception e)
@@ -92,6 +113,12 @@ namespace GUI
         }
         private void ProcessImage(Bitmap bitmap)
         {
+            // reset counters
+            numberOfCircleShits = 0;
+            numberOfLineShits = 0;
+            numberOfSquareShits = 0;
+            numberOfTriangleShits = 0;
+
             // lock image
             BitmapData bitmapData = bitmap.LockBits(
                 new Rectangle(0, 0, bitmap.Width, bitmap.Height),
@@ -127,8 +154,8 @@ namespace GUI
             {
                 List<IntPoint> edgePoints = blobCounter.GetBlobsEdgePoints(blobs[i]);
 
-                DoublePoint center;
-                double radius;
+                AForge.Point center;
+                float radius;
 
                 // is circle ?
                 if (shapeChecker.IsCircle(edgePoints, out center, out radius))
@@ -153,7 +180,7 @@ namespace GUI
                         {
                             numberOfTriangleShits++;
                         }
-                        else
+                        else 
                         {
                             numberOfLineShits++;
                         }
@@ -164,20 +191,19 @@ namespace GUI
             // put new image to clipboard
             Clipboard.SetDataObject(bitmap);
             // and to picture box
-            //pictureBox.Image = bitmap;
+            picture.Image = bitmap;
             triangleCount.Text = "Triangles: " + numberOfTriangleShits;
             CircleCount.Text = "Circles: " + numberOfCircleShits;
             SquareCount.Text = "Squares: " + numberOfSquareShits;
             RectangleCount.Text = "Lines: " + numberOfLineShits;
-            //UpdatePictureBoxPosition();
         }
-        private Point[] ToPointsArray(List<IntPoint> points)
+        private AForge.Point[] ToPointsArray(List<IntPoint> points)
         {
-            Point[] array = new Point[points.Count];
+            AForge.Point[] array = new AForge.Point[points.Count];
 
             for (int i = 0, n = points.Count; i < n; i++)
             {
-                array[i] = new Point(points[i].X, points[i].Y);
+                array[i] = new AForge.Point(points[i].X, points[i].Y);
             }
 
             return array;
@@ -267,7 +293,7 @@ namespace GUI
         {
             if (e.KeyCode == Keys.Escape)
             {
-                Environment.Exit(1);
+                Environment.Exit(0);
             }
         }
 
@@ -427,10 +453,14 @@ namespace GUI
 
         private void benthicButton_Click(object sender, EventArgs e)
         {
-            Assembly assembly = this.GetType().Assembly;
-            Bitmap image = new Bitmap(System.Drawing.Image.FromFile(Directory.GetCurrentDirectory() + "\\manyShapes.png"));
-            ProcessImage(image);
+            ProcessImage(video);
         }
+
+        private void forTestingPurposes_Click(object sender, EventArgs e)
+        {
+            rov.ForeAftMotion = 100;
+        }
+
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             for (int i = 0; i < 6; i++)
@@ -438,6 +468,41 @@ namespace GUI
                 //if(Int32.TryParse(textBox1.Text , out int n))
                 // rov.PropulsionActuator.Data.Speeds[i] = n;
             }
+        }
+
+        private void capButton_Click(object sender, EventArgs e)
+        {
+            if(isCapturing)
+            {
+                isCapturing = false;
+                capButton.Text = "Press to start capturing!";
+                videoSource.SignalToStop();
+            }
+            else
+            {
+                isCapturing = true;
+                capButton.Text = "Capturing!";
+                videoSource.Start();
+            }
+        }
+
+        private void selectVideoDevice_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private Bitmap video;
+        private Boolean isGay = true;
+        private void ass_Click(object sender, EventArgs e)
+        {
+            isGay = !isGay;
+            picture.Visible = isGay;
+        }
+
+        private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        {
+            video = (Bitmap)eventArgs.Frame.Clone();
+            picture.Image = video;
         }
     }
 }
