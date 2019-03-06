@@ -90,7 +90,14 @@ namespace GUI
                 }
             }
             // set NewFrame event handler
-            videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+            try
+            {
+                videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+            }
+            catch (NullReferenceException potato)
+            {
+
+            }
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
