@@ -96,7 +96,7 @@ namespace GUI
             }
             catch (NullReferenceException potato)
             {
-
+                //fill in later, catch made temporarily to ignore NullReferenceException
             }
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
         }
