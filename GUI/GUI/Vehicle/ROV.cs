@@ -52,11 +52,11 @@ namespace GUI
         private readonly Dictionary<string, int> key = new Dictionary<string, int>()
         {
             ["ForwardPort"] = 0,
-            ["ForwardStarboard"] = 1,
+            ["ForwardStarboard"] = 3,
             ["AftPort"] = 2,
-            ["AftStarboard"] = 3,
-            ["VerticalPort"] = 4,
-            ["VerticalStarboard"] = 5
+            ["AftStarboard"] = 5,
+            ["VerticalPort"] = 1,
+            ["VerticalStarboard"] = 4
         };
 
         private readonly double headingAdj;
@@ -106,7 +106,7 @@ namespace GUI
         //fast loop reserved for thruster control only
         private void T10_Tick(object sender, EventArgs e)
         {
-            /*double[] speeds = PropulsionActuator.Data.Speeds; //this might make an array copy instead of a reference idk
+            double[] speeds = PropulsionActuator.Data.Speeds; //this might make an array copy instead of a reference idk
 
             //horizontal vector thrusters
             //all thruster speeds are positive for forward/upward thrust
@@ -116,15 +116,15 @@ namespace GUI
             {
                 localTurnMotion += headingAdj;
             }
-            speeds[key["ForwardPort"]] = ForeAftMotion + StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion - TurnMotion, 50) : Math.Max(ForeAftMotion + StrafeMotion - TurnMotion, -50);
-            speeds[key["ForwardStarboard"]] = ForeAftMotion - StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion + TurnMotion, 50) : Math.Max(ForeAftMotion - StrafeMotion + TurnMotion, -50);
-            speeds[key["AftPort"]] = ForeAftMotion - StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion - TurnMotion, 50) : Math.Max(ForeAftMotion - StrafeMotion - TurnMotion, -50);
-            speeds[key["AftStarboard"]] = ForeAftMotion + StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion + TurnMotion, 50) : Math.Max(ForeAftMotion + StrafeMotion + TurnMotion, -50);
+            speeds[key["ForwardPort"]] = ForeAftMotion + StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion - TurnMotion, 100) : Math.Max(ForeAftMotion + StrafeMotion - TurnMotion, -100);
+            speeds[key["ForwardStarboard"]] = ForeAftMotion - StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion + TurnMotion, 100) : Math.Max(ForeAftMotion - StrafeMotion + TurnMotion, -100);
+            speeds[key["AftPort"]] = ForeAftMotion - StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion - TurnMotion, 100) : Math.Max(ForeAftMotion - StrafeMotion - TurnMotion, -100);
+            speeds[key["AftStarboard"]] = ForeAftMotion + StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion + TurnMotion, 100) : Math.Max(ForeAftMotion + StrafeMotion + TurnMotion, -100);
 
             //vertical thrusters
             //VerticalMotion is positive upward
             speeds[key["VerticalPort"]] = VerticalMotion;
-            speeds[key["VerticalStarboard"]] = VerticalMotion;
+            speeds[key["VerticalStarboard"]] = -VerticalMotion;
             if (EnableDepthLock)
             {
                 speeds[key["VerticalPort"]] += depthAdj;
@@ -135,12 +135,12 @@ namespace GUI
                 speeds[key["VerticalPort"]] += rollAdj;
                 speeds[key["VerticalStarboard"]] += rollAdj;
             }
-            */
-            //send the thruster speeds to the ROV
-            for (int a = 0; a < PropulsionActuator.Data.Speeds.Length; a++)
+            for(int i = 0; i < 6; i++)
             {
-                PropulsionActuator.Data.Speeds[a] = 50;
+            //    PropulsionActuator.Data.Speeds[i] = 100;
             }
+            
+            //send the thruster speeds to the ROV
             comms.Queue.Enqueue(PropulsionActuator);
         }
 

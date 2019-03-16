@@ -667,6 +667,7 @@
             // 
             // benthicButton
             // 
+            this.benthicButton.Enabled = false;
             this.benthicButton.Location = new System.Drawing.Point(6, 146);
             this.benthicButton.Margin = new System.Windows.Forms.Padding(2);
             this.benthicButton.Name = "benthicButton";

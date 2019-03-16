@@ -357,12 +357,12 @@ namespace GUI
                 button16.Text = "RTrigger" + pilot.RTrigger;
                 button17.Text = "Start" + pilot.Start_down;
                 //Code for displaying motor values
-                topLeft.Text = (rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, 50) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, -50);
+                topLeft.Text = (rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, -100);
                 midLeft.Text = "" + rov.VerticalMotion;
-                botLeft.Text = (rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, 50) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, -50);
-                topRight.Text = (rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, 50) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, -50);
+                botLeft.Text = (rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, -100);
+                topRight.Text = (rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, -100);
                 midRight.Text = "" + rov.VerticalMotion;
-                botRight.Text = (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, 50) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, -50);
+                botRight.Text = (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, -100);
 
                 if (pilot.RBumper_down && !RightBumperCheck) //checks if bumper is down
                 {
@@ -427,7 +427,7 @@ namespace GUI
                 }
 
                 //left bumper moves downward, right bumper moves upward
-                rov.VerticalMotion = (int)(ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, -100) + ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, 100));
+                rov.VerticalMotion = (int)(ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, -100) + ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, 100));
             }
             else
             {
@@ -479,18 +479,28 @@ namespace GUI
 
         private void capButton_Click(object sender, EventArgs e)
         {
-            if(isCapturing)
+            if(videoSource == null)
             {
-                isCapturing = false;
-                capButton.Text = "Press to start capturing!";
-                videoSource.SignalToStop();
+                DialogResult res = MessageBox.Show("There isn't a video source connected dipshit. You may no longer click the specieiieieies button.", "Sumting Wong", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                benthicButton.Enabled = false;
             }
             else
             {
-                isCapturing = true;
-                capButton.Text = "Capturing!";
-                videoSource.Start();
+                if (isCapturing)
+                {
+                    isCapturing = false;
+                    capButton.Text = "Press to start capturing!";
+                    videoSource.SignalToStop();
+                }
+                else
+                {
+                    isCapturing = true;
+                    capButton.Text = "Capturing!";
+                    videoSource.Start();
+                }
+                benthicButton.Enabled = true;
             }
+            
         }
 
         private void selectVideoDevice_SelectedIndexChanged(object sender, EventArgs e)
