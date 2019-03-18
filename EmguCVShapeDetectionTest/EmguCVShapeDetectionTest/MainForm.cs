@@ -13,13 +13,18 @@ using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using Emgu.CV.VideoStab;
 
+using AForge.Controls;
+using AForge.Video.DirectShow;
+using AForge.Video;
+
 namespace EmguCVShapeDetectionTest {
     public partial class MainForm : Form {
 
         Image<Bgr, byte> source;
         Image<Bgr, byte> original;
         CaptureFrameSource cfs;
-        System.Timers.Timer t;
+        public Boolean isCapturing = false;
+        VideoCaptureDevice vidSource;
 
         public MainForm() {
             InitializeComponent();
@@ -27,28 +32,10 @@ namespace EmguCVShapeDetectionTest {
             bottom.PlaceHolderText = "Percent off the bottom";
             left.PlaceHolderText = "Percent off the left";
             right.PlaceHolderText = "Percent offg the right";
-        }
 
-        private void updateFrames(object source, ElapsedEventArgs e) {
-            MethodInvoker mi = delegate () {
-                int vS;
-                int.TryParse(videoSource.Text, out vS);
-
-                int width;
-                int height;
-                int.TryParse(widthText.Text, out width);
-                int.TryParse(heightText.Text, out height);
-
-                try {
-                    cfs = new CaptureFrameSource(new VideoCapture(vS));
-                    Mat nextFrame = cfs.NextFrame();
-                    Image<Bgr, byte> temp = nextFrame.ToImage<Bgr, byte>().Resize(width, height, Inter.Nearest);
-                    imageOriginal.Image = temp.Bitmap;
-                } catch (Exception exc) {
-                    MessageBox.Show(exc.Message);
-                }
-            };
-            this.Invoke(mi);
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            vidSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
+            playerAF.VideoSource = vidSource;
         }
 
         private void openFile_Click(object sender, EventArgs e) {
@@ -99,7 +86,7 @@ namespace EmguCVShapeDetectionTest {
                     CvInvoke.PyrUp(temp, temp);
                 }
                 processedImage.Image = temp.Bitmap;
-                
+
                 #endregion
 
                 #region find contours
@@ -107,7 +94,7 @@ namespace EmguCVShapeDetectionTest {
                 VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
 
                 CvInvoke.FindContours(temp, contours, new Mat(), RetrType.External, ChainApproxMethod.ChainApproxSimple);
-                
+
                 #endregion
 
                 #region guess shapes
@@ -192,7 +179,7 @@ namespace EmguCVShapeDetectionTest {
                     }
 
                 }
-                
+
                 #endregion
 
 
@@ -210,8 +197,12 @@ namespace EmguCVShapeDetectionTest {
             int.TryParse(widthText.Text, out width);
             int.TryParse(heightText.Text, out height);
 
+            record_Click(null, null);
+            VideoCapture v = new VideoCapture();
+
             try {
-                cfs = new CaptureFrameSource(new VideoCapture(vS));
+                v = new VideoCapture(vS);
+                cfs = new CaptureFrameSource(v);
                 Mat nextFrame = cfs.NextFrame();
                 source = nextFrame.ToImage<Bgr, byte>().Resize(width, height, Inter.Nearest);
                 original = source.Copy();
@@ -219,6 +210,10 @@ namespace EmguCVShapeDetectionTest {
             } catch (Exception exc) {
                 MessageBox.Show(exc.Message);
             }
+
+            v.Dispose();
+            cfs.Dispose();
+
         }
 
         private void cropByPercentage_Click(object sender, EventArgs e) {
@@ -240,16 +235,48 @@ namespace EmguCVShapeDetectionTest {
             int width = (original.Width - (int)r) - (int)x;
             int height = (original.Height - (int)b) - (int)y;
 
-            source.ROI = new Rectangle((int) x, (int) y, (int) width, (int) height);
+            source.ROI = new Rectangle((int)x, (int)y, (int)width, (int)height);
             imageOriginal.Image = source.Bitmap;
 
         }
 
         private void record_Click(object sender, EventArgs e) {
+            /*
             t = new System.Timers.Timer();
             t.Elapsed += new ElapsedEventHandler(updateFrames);
             t.Interval = 100;
             t.Enabled = true;
+            */
+            // update.Enabled = true;
+            if (!isCapturing) {
+                vidSource.Start();
+                isCapturing = true;
+            } else {
+                vidSource.Stop();
+                isCapturing = false;
+            }
+        }
+
+        private void update_Tick(object sender, EventArgs e) {
+            int vS;
+            int.TryParse(videoSource.Text, out vS);
+
+            int width;
+            int height;
+            int.TryParse(widthText.Text, out width);
+            int.TryParse(heightText.Text, out height);
+
+            try {
+                VideoCapture v = new VideoCapture(vS);
+                cfs = new CaptureFrameSource(v);
+                Mat nextFrame = cfs.NextFrame();
+                Image<Bgr, byte> temp = nextFrame.ToImage<Bgr, byte>().Resize(width, height, Inter.Nearest);
+                imageOriginal.Image = temp.Bitmap;
+                cfs.Dispose();
+                v.Dispose();
+            } catch (Exception exc) {
+                MessageBox.Show(exc.Message);
+            }
         }
     }
 }
