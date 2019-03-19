@@ -49,8 +49,10 @@ namespace GUI
             pilot = X.Gamepad_1;
             pilot.Enable = true;
             pilot.Update(); //must call update right after setting enable to true in order for it to connect
-            //copilot = X.Gamepad_2;
-            //copilot.Enable = false; //change later on
+
+            copilot = X.Gamepad_2;
+            copilot.Enable = false; //change later on
+            copilot.Update();
 
             //setup window
             KeyPreview = true;
@@ -118,6 +120,7 @@ namespace GUI
             attitudeIndicator.YawAngle = rov.OrientationSensor.Data.Yaw;
             headingIndicator.Heading = rov.OrientationSensor.Data.Yaw;
         }
+
         private void ProcessImage(Bitmap bitmap)
         {
             // reset counters
@@ -215,6 +218,7 @@ namespace GUI
 
             return array;
         }
+
         private void comms_Started(object sender, EventArgs e)
         {
             Invoke(new Action(() =>
@@ -509,12 +513,6 @@ namespace GUI
         }
 
         private Bitmap video;
-        private Boolean isGay = true;
-        private void ass_Click(object sender, EventArgs e)
-        {
-            isGay = !isGay;
-            picture.Visible = isGay;
-        }
 
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {

@@ -77,8 +77,6 @@
             this.answerBox = new System.Windows.Forms.TextBox();
             this.InnerRadius2 = new System.Windows.Forms.TextBox();
             this.triangleCount = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.RectangleCount = new System.Windows.Forms.Label();
             this.SquareCount = new System.Windows.Forms.Label();
             this.CircleCount = new System.Windows.Forms.Label();
@@ -89,7 +87,6 @@
             this.leftPrefButton = new System.Windows.Forms.Button();
             this.capButton = new System.Windows.Forms.Button();
             this.picture = new System.Windows.Forms.PictureBox();
-            this.ass = new System.Windows.Forms.Button();
             this.propulsionActuator1 = new GUI.PropulsionActuator();
             this.propulsionActuator2 = new GUI.PropulsionActuator();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -402,7 +399,7 @@
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox1.Image = global::GUI.Properties.Resources.rov_thrusters;
             this.pictureBox1.InitialImage = global::GUI.Properties.Resources.rov_thrusters;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 310);
+            this.pictureBox1.Location = new System.Drawing.Point(6, 213);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(437, 454);
@@ -615,26 +612,6 @@
             this.triangleCount.TabIndex = 53;
             this.triangleCount.Text = "Triangles: 0";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(409, 280);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(13, 13);
-            this.label2.TabIndex = 54;
-            this.label2.Text = "0";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(415, 286);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(13, 13);
-            this.label3.TabIndex = 55;
-            this.label3.Text = "0";
-            // 
             // RectangleCount
             // 
             this.RectangleCount.AutoSize = true;
@@ -748,31 +725,17 @@
             this.picture.TabStop = false;
             this.picture.Visible = false;
             // 
-            // ass
-            // 
-            this.ass.Location = new System.Drawing.Point(76, 136);
-            this.ass.Margin = new System.Windows.Forms.Padding(2);
-            this.ass.Name = "ass";
-            this.ass.Size = new System.Drawing.Size(56, 28);
-            this.ass.TabIndex = 64;
-            this.ass.Text = "eat ass";
-            this.ass.UseVisualStyleBackColor = true;
-            this.ass.Click += new System.EventHandler(this.ass_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(973, 678);
-            this.Controls.Add(this.ass);
             this.Controls.Add(this.capButton);
             this.Controls.Add(this.benthicButton);
             this.Controls.Add(this.CircleCount);
             this.Controls.Add(this.SquareCount);
             this.Controls.Add(this.RectangleCount);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.triangleCount);
             this.Controls.Add(this.InnerRadius2);
             this.Controls.Add(this.answerBox);
@@ -893,8 +856,6 @@
         private System.Windows.Forms.TextBox answerBox;
         private System.Windows.Forms.TextBox InnerRadius2;
         private System.Windows.Forms.Label triangleCount;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label RectangleCount;
         private System.Windows.Forms.Label SquareCount;
         private System.Windows.Forms.Label CircleCount;
@@ -905,7 +866,6 @@
         private System.Windows.Forms.Button leftPrefButton;
         private System.Windows.Forms.Button capButton;
         private System.Windows.Forms.PictureBox picture;
-        private System.Windows.Forms.Button ass;
     }
 }
 
