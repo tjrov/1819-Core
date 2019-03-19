@@ -139,7 +139,7 @@
             // portLabel
             // 
             this.portLabel.AutoSize = true;
-            this.portLabel.Location = new System.Drawing.Point(87, 10);
+            this.portLabel.Location = new System.Drawing.Point(112, -60);
             this.portLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.portLabel.Name = "portLabel";
             this.portLabel.Size = new System.Drawing.Size(0, 13);
@@ -399,7 +399,7 @@
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox1.Image = global::GUI.Properties.Resources.rov_thrusters;
             this.pictureBox1.InitialImage = global::GUI.Properties.Resources.rov_thrusters;
-            this.pictureBox1.Location = new System.Drawing.Point(6, 213);
+            this.pictureBox1.Location = new System.Drawing.Point(25, 213);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(437, 454);
@@ -411,7 +411,7 @@
             // 
             this.topLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.topLeft.AutoSize = true;
-            this.topLeft.Location = new System.Drawing.Point(82, 394);
+            this.topLeft.Location = new System.Drawing.Point(107, 324);
             this.topLeft.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.topLeft.Name = "topLeft";
             this.topLeft.Size = new System.Drawing.Size(27, 13);
@@ -422,7 +422,7 @@
             // 
             this.topRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.topRight.AutoSize = true;
-            this.topRight.Location = new System.Drawing.Point(334, 394);
+            this.topRight.Location = new System.Drawing.Point(359, 324);
             this.topRight.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.topRight.Name = "topRight";
             this.topRight.Size = new System.Drawing.Size(27, 13);
@@ -433,7 +433,7 @@
             // 
             this.midLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.midLeft.AutoSize = true;
-            this.midLeft.Location = new System.Drawing.Point(82, 528);
+            this.midLeft.Location = new System.Drawing.Point(107, 458);
             this.midLeft.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.midLeft.Name = "midLeft";
             this.midLeft.Size = new System.Drawing.Size(27, 13);
@@ -444,7 +444,7 @@
             // 
             this.midRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.midRight.AutoSize = true;
-            this.midRight.Location = new System.Drawing.Point(334, 528);
+            this.midRight.Location = new System.Drawing.Point(359, 458);
             this.midRight.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.midRight.Name = "midRight";
             this.midRight.Size = new System.Drawing.Size(27, 13);
@@ -455,7 +455,7 @@
             // 
             this.botLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.botLeft.AutoSize = true;
-            this.botLeft.Location = new System.Drawing.Point(87, 679);
+            this.botLeft.Location = new System.Drawing.Point(112, 609);
             this.botLeft.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.botLeft.Name = "botLeft";
             this.botLeft.Size = new System.Drawing.Size(27, 13);
@@ -466,7 +466,7 @@
             // 
             this.botRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.botRight.AutoSize = true;
-            this.botRight.Location = new System.Drawing.Point(334, 679);
+            this.botRight.Location = new System.Drawing.Point(359, 609);
             this.botRight.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.botRight.Name = "botRight";
             this.botRight.Size = new System.Drawing.Size(27, 13);
@@ -586,7 +586,7 @@
             // answerBox
             // 
             this.answerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.answerBox.Location = new System.Drawing.Point(769, 705);
+            this.answerBox.Location = new System.Drawing.Point(794, 635);
             this.answerBox.Margin = new System.Windows.Forms.Padding(2);
             this.answerBox.Name = "answerBox";
             this.answerBox.Size = new System.Drawing.Size(52, 20);

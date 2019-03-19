@@ -516,7 +516,7 @@ namespace GUI
 
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            video = (Bitmap)eventArgs.Frame.Clone();
+            video = (Bitmap) eventArgs.Frame.Clone();
             picture.Image = video;
         }
     }
