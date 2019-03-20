@@ -64,7 +64,17 @@ namespace GUI
             Controls.Add(headingIndicator);
 
             //setup devices
-            BetterSerialPort port = new BetterSerialPort("COM5", 115200);
+            string portName = "COM5";
+            try
+            {
+                portName = BetterSerialPort.GetPortNames()[0];
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("No Serial ports available");
+                //Environment.Exit(0);
+            }
+            BetterSerialPort port = new BetterSerialPort(portName, 115200);
             portLabel.Text = string.Format("{0}@{1}baud", port.PortName, port.BaudRate);
             comms = new SerialCommunication(port);
             comms.Stopped += comms_Stopped;
