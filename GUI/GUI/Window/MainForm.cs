@@ -49,7 +49,7 @@ namespace GUI
             pilot = X.Gamepad_1;
             pilot.Enable = true;
             pilot.Update(); //must call update right after setting enable to true in order for it to connect
-
+            
             copilot = X.Gamepad_2;
             copilot.Enable = false; //change later on
             copilot.Update();
@@ -449,7 +449,7 @@ namespace GUI
             trackBar4.Value = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, 0, 200));
         }
 
-       
+       /* code for some mission, commented out for now
         private void button18_Click(object sender, EventArgs e)
         {
             double L = Double.Parse(LengthOfBarrel.Text);
@@ -461,7 +461,7 @@ namespace GUI
             double result = cone - hole;
             answerBox.Text = result.ToString();  
         }
-
+        */
         private void benthicButton_Click(object sender, EventArgs e)
         {
             ProcessImage(video);

@@ -70,12 +70,6 @@
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.trackBar3 = new System.Windows.Forms.TrackBar();
             this.trackBar4 = new System.Windows.Forms.TrackBar();
-            this.LengthOfBarrel = new System.Windows.Forms.TextBox();
-            this.InnerRadius1 = new System.Windows.Forms.TextBox();
-            this.InnerRadius3 = new System.Windows.Forms.TextBox();
-            this.calcButton = new System.Windows.Forms.Button();
-            this.answerBox = new System.Windows.Forms.TextBox();
-            this.InnerRadius2 = new System.Windows.Forms.TextBox();
             this.triangleCount = new System.Windows.Forms.Label();
             this.RectangleCount = new System.Windows.Forms.Label();
             this.SquareCount = new System.Windows.Forms.Label();
@@ -89,12 +83,16 @@
             this.picture = new System.Windows.Forms.PictureBox();
             this.propulsionActuator1 = new GUI.PropulsionActuator();
             this.propulsionActuator2 = new GUI.PropulsionActuator();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture)).BeginInit();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // timer500
@@ -110,7 +108,7 @@
             this.connectButton.Name = "connectButton";
             this.connectButton.Size = new System.Drawing.Size(83, 23);
             this.connectButton.TabIndex = 0;
-            this.connectButton.Text = "Disconnected";
+            this.connectButton.Text = "Connect ROV";
             this.connectButton.UseVisualStyleBackColor = true;
             this.connectButton.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -170,210 +168,210 @@
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(829, 11);
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Location = new System.Drawing.Point(2, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(134, 13);
+            this.label1.Size = new System.Drawing.Size(137, 13);
             this.label1.TabIndex = 6;
             this.label1.Text = "Controller Buttons Pressed:";
             // 
             // button1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.AutoSize = true;
-            this.button1.Location = new System.Drawing.Point(862, 37);
+            this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button1.Location = new System.Drawing.Point(2, 26);
             this.button1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(27, 13);
+            this.button1.Size = new System.Drawing.Size(137, 13);
             this.button1.TabIndex = 7;
             this.button1.Text = "N/A";
             // 
             // button2
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.AutoSize = true;
-            this.button2.Location = new System.Drawing.Point(862, 51);
+            this.button2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button2.Location = new System.Drawing.Point(2, 39);
             this.button2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(27, 13);
+            this.button2.Size = new System.Drawing.Size(137, 13);
             this.button2.TabIndex = 8;
             this.button2.Text = "N/A";
             // 
             // button3
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.AutoSize = true;
-            this.button3.Location = new System.Drawing.Point(862, 67);
+            this.button3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button3.Location = new System.Drawing.Point(2, 52);
             this.button3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(27, 13);
+            this.button3.Size = new System.Drawing.Size(137, 13);
             this.button3.TabIndex = 9;
             this.button3.Text = "N/A";
             // 
             // button4
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button4.AutoSize = true;
-            this.button4.Location = new System.Drawing.Point(862, 81);
+            this.button4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button4.Location = new System.Drawing.Point(2, 65);
             this.button4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(27, 13);
+            this.button4.Size = new System.Drawing.Size(137, 13);
             this.button4.TabIndex = 10;
             this.button4.Text = "N/A";
             // 
             // button5
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button5.AutoSize = true;
-            this.button5.Location = new System.Drawing.Point(862, 96);
+            this.button5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button5.Location = new System.Drawing.Point(2, 78);
             this.button5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(27, 13);
+            this.button5.Size = new System.Drawing.Size(137, 13);
             this.button5.TabIndex = 11;
             this.button5.Text = "N/A";
             // 
             // button6
             // 
-            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button6.AutoSize = true;
-            this.button6.Location = new System.Drawing.Point(862, 109);
+            this.button6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button6.Location = new System.Drawing.Point(2, 91);
             this.button6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(27, 13);
+            this.button6.Size = new System.Drawing.Size(137, 13);
             this.button6.TabIndex = 12;
             this.button6.Text = "N/A";
             // 
             // button7
             // 
-            this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button7.AutoSize = true;
-            this.button7.Location = new System.Drawing.Point(862, 123);
+            this.button7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button7.Location = new System.Drawing.Point(2, 104);
             this.button7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(27, 13);
+            this.button7.Size = new System.Drawing.Size(137, 13);
             this.button7.TabIndex = 13;
             this.button7.Text = "N/A";
             // 
             // button8
             // 
-            this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button8.AutoSize = true;
-            this.button8.Location = new System.Drawing.Point(862, 136);
+            this.button8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button8.Location = new System.Drawing.Point(2, 117);
             this.button8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(27, 13);
+            this.button8.Size = new System.Drawing.Size(137, 13);
             this.button8.TabIndex = 14;
             this.button8.Text = "N/A";
             // 
             // button16
             // 
-            this.button16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button16.AutoSize = true;
-            this.button16.Location = new System.Drawing.Point(862, 248);
+            this.button16.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button16.Location = new System.Drawing.Point(2, 221);
             this.button16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(27, 13);
+            this.button16.Size = new System.Drawing.Size(137, 13);
             this.button16.TabIndex = 17;
             this.button16.Text = "N/A";
             // 
             // button17
             // 
-            this.button17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button17.AutoSize = true;
-            this.button17.Location = new System.Drawing.Point(862, 261);
+            this.button17.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button17.Location = new System.Drawing.Point(2, 234);
             this.button17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(27, 13);
+            this.button17.Size = new System.Drawing.Size(137, 19);
             this.button17.TabIndex = 18;
             this.button17.Text = "N/A";
             // 
             // button0
             // 
-            this.button0.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button0.AutoSize = true;
-            this.button0.Location = new System.Drawing.Point(862, 24);
+            this.button0.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button0.Location = new System.Drawing.Point(2, 13);
             this.button0.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button0.Name = "button0";
-            this.button0.Size = new System.Drawing.Size(27, 13);
+            this.button0.Size = new System.Drawing.Size(137, 13);
             this.button0.TabIndex = 19;
             this.button0.Text = "N/A";
             // 
             // button14
             // 
-            this.button14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button14.AutoSize = true;
-            this.button14.Location = new System.Drawing.Point(862, 220);
+            this.button14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button14.Location = new System.Drawing.Point(2, 195);
             this.button14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(27, 13);
+            this.button14.Size = new System.Drawing.Size(137, 13);
             this.button14.TabIndex = 25;
             this.button14.Text = "N/A";
             // 
             // button13
             // 
-            this.button13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button13.AutoSize = true;
-            this.button13.Location = new System.Drawing.Point(862, 206);
+            this.button13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button13.Location = new System.Drawing.Point(2, 182);
             this.button13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(27, 13);
+            this.button13.Size = new System.Drawing.Size(137, 13);
             this.button13.TabIndex = 24;
             this.button13.Text = "N/A";
             // 
             // button12
             // 
-            this.button12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button12.AutoSize = true;
-            this.button12.Location = new System.Drawing.Point(862, 193);
+            this.button12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button12.Location = new System.Drawing.Point(2, 169);
             this.button12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(27, 13);
+            this.button12.Size = new System.Drawing.Size(137, 13);
             this.button12.TabIndex = 23;
             this.button12.Text = "N/A";
             // 
             // button11
             // 
-            this.button11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button11.AutoSize = true;
-            this.button11.Location = new System.Drawing.Point(862, 180);
+            this.button11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button11.Location = new System.Drawing.Point(2, 156);
             this.button11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(27, 13);
+            this.button11.Size = new System.Drawing.Size(137, 13);
             this.button11.TabIndex = 22;
             this.button11.Text = "N/A";
             // 
             // button10
             // 
-            this.button10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button10.AutoSize = true;
-            this.button10.Location = new System.Drawing.Point(862, 166);
+            this.button10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button10.Location = new System.Drawing.Point(2, 143);
             this.button10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(27, 13);
+            this.button10.Size = new System.Drawing.Size(137, 13);
             this.button10.TabIndex = 21;
             this.button10.Text = "N/A";
             // 
             // button9
             // 
-            this.button9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button9.AutoSize = true;
-            this.button9.Location = new System.Drawing.Point(862, 151);
+            this.button9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button9.Location = new System.Drawing.Point(2, 130);
             this.button9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(27, 13);
+            this.button9.Size = new System.Drawing.Size(137, 13);
             this.button9.TabIndex = 20;
             this.button9.Text = "N/A";
             // 
             // button15
             // 
-            this.button15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button15.AutoSize = true;
-            this.button15.Location = new System.Drawing.Point(862, 235);
+            this.button15.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button15.Location = new System.Drawing.Point(2, 208);
             this.button15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(27, 13);
+            this.button15.Size = new System.Drawing.Size(137, 13);
             this.button15.TabIndex = 26;
             this.button15.Text = "N/A";
             // 
@@ -396,13 +394,13 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Image = global::GUI.Properties.Resources.rov_thrusters;
             this.pictureBox1.InitialImage = global::GUI.Properties.Resources.rov_thrusters;
-            this.pictureBox1.Location = new System.Drawing.Point(25, 213);
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(437, 454);
+            this.pictureBox1.Size = new System.Drawing.Size(428, 441);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 29;
             this.pictureBox1.TabStop = false;
@@ -411,7 +409,7 @@
             // 
             this.topLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.topLeft.AutoSize = true;
-            this.topLeft.Location = new System.Drawing.Point(107, 324);
+            this.topLeft.Location = new System.Drawing.Point(80, 66);
             this.topLeft.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.topLeft.Name = "topLeft";
             this.topLeft.Size = new System.Drawing.Size(27, 13);
@@ -422,7 +420,7 @@
             // 
             this.topRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.topRight.AutoSize = true;
-            this.topRight.Location = new System.Drawing.Point(359, 324);
+            this.topRight.Location = new System.Drawing.Point(330, 66);
             this.topRight.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.topRight.Name = "topRight";
             this.topRight.Size = new System.Drawing.Size(27, 13);
@@ -433,7 +431,7 @@
             // 
             this.midLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.midLeft.AutoSize = true;
-            this.midLeft.Location = new System.Drawing.Point(107, 458);
+            this.midLeft.Location = new System.Drawing.Point(76, 207);
             this.midLeft.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.midLeft.Name = "midLeft";
             this.midLeft.Size = new System.Drawing.Size(27, 13);
@@ -444,7 +442,7 @@
             // 
             this.midRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.midRight.AutoSize = true;
-            this.midRight.Location = new System.Drawing.Point(359, 458);
+            this.midRight.Location = new System.Drawing.Point(330, 207);
             this.midRight.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.midRight.Name = "midRight";
             this.midRight.Size = new System.Drawing.Size(27, 13);
@@ -455,7 +453,7 @@
             // 
             this.botLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.botLeft.AutoSize = true;
-            this.botLeft.Location = new System.Drawing.Point(112, 609);
+            this.botLeft.Location = new System.Drawing.Point(80, 353);
             this.botLeft.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.botLeft.Name = "botLeft";
             this.botLeft.Size = new System.Drawing.Size(27, 13);
@@ -466,7 +464,7 @@
             // 
             this.botRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.botRight.AutoSize = true;
-            this.botRight.Location = new System.Drawing.Point(359, 609);
+            this.botRight.Location = new System.Drawing.Point(324, 353);
             this.botRight.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.botRight.Name = "botRight";
             this.botRight.Size = new System.Drawing.Size(27, 13);
@@ -498,7 +496,7 @@
             // trackBar1
             // 
             this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBar1.Location = new System.Drawing.Point(898, 336);
+            this.trackBar1.Location = new System.Drawing.Point(748, 476);
             this.trackBar1.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar1.Maximum = 200;
             this.trackBar1.Name = "trackBar1";
@@ -521,7 +519,7 @@
             // trackBar3
             // 
             this.trackBar3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBar3.Location = new System.Drawing.Point(898, 476);
+            this.trackBar3.Location = new System.Drawing.Point(794, 476);
             this.trackBar3.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar3.Maximum = 200;
             this.trackBar3.Name = "trackBar3";
@@ -533,74 +531,13 @@
             // trackBar4
             // 
             this.trackBar4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBar4.Location = new System.Drawing.Point(743, 531);
+            this.trackBar4.Location = new System.Drawing.Point(748, 432);
             this.trackBar4.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar4.Maximum = 200;
             this.trackBar4.Name = "trackBar4";
             this.trackBar4.Size = new System.Drawing.Size(136, 45);
             this.trackBar4.TabIndex = 45;
             this.trackBar4.Value = 100;
-            // 
-            // LengthOfBarrel
-            // 
-            this.LengthOfBarrel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.LengthOfBarrel.Location = new System.Drawing.Point(570, 597);
-            this.LengthOfBarrel.Margin = new System.Windows.Forms.Padding(2);
-            this.LengthOfBarrel.Name = "LengthOfBarrel";
-            this.LengthOfBarrel.Size = new System.Drawing.Size(110, 20);
-            this.LengthOfBarrel.TabIndex = 46;
-            this.LengthOfBarrel.Text = "Length of Barrel";
-            // 
-            // InnerRadius1
-            // 
-            this.InnerRadius1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.InnerRadius1.Location = new System.Drawing.Point(570, 616);
-            this.InnerRadius1.Margin = new System.Windows.Forms.Padding(2);
-            this.InnerRadius1.Name = "InnerRadius1";
-            this.InnerRadius1.Size = new System.Drawing.Size(110, 20);
-            this.InnerRadius1.TabIndex = 47;
-            this.InnerRadius1.Text = "Inner Radius 1";
-            // 
-            // InnerRadius3
-            // 
-            this.InnerRadius3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.InnerRadius3.Location = new System.Drawing.Point(570, 653);
-            this.InnerRadius3.Margin = new System.Windows.Forms.Padding(2);
-            this.InnerRadius3.Name = "InnerRadius3";
-            this.InnerRadius3.Size = new System.Drawing.Size(110, 20);
-            this.InnerRadius3.TabIndex = 49;
-            this.InnerRadius3.Text = "Inner Radius 3";
-            // 
-            // calcButton
-            // 
-            this.calcButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.calcButton.Location = new System.Drawing.Point(699, 639);
-            this.calcButton.Margin = new System.Windows.Forms.Padding(2);
-            this.calcButton.Name = "calcButton";
-            this.calcButton.Size = new System.Drawing.Size(68, 37);
-            this.calcButton.TabIndex = 50;
-            this.calcButton.Text = "Calculate";
-            this.calcButton.UseVisualStyleBackColor = true;
-            this.calcButton.Click += new System.EventHandler(this.button18_Click);
-            // 
-            // answerBox
-            // 
-            this.answerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.answerBox.Location = new System.Drawing.Point(794, 635);
-            this.answerBox.Margin = new System.Windows.Forms.Padding(2);
-            this.answerBox.Name = "answerBox";
-            this.answerBox.Size = new System.Drawing.Size(52, 20);
-            this.answerBox.TabIndex = 51;
-            // 
-            // InnerRadius2
-            // 
-            this.InnerRadius2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.InnerRadius2.Location = new System.Drawing.Point(570, 634);
-            this.InnerRadius2.Margin = new System.Windows.Forms.Padding(2);
-            this.InnerRadius2.Name = "InnerRadius2";
-            this.InnerRadius2.Size = new System.Drawing.Size(110, 20);
-            this.InnerRadius2.TabIndex = 52;
-            this.InnerRadius2.Text = "Inner Radius 2";
             // 
             // triangleCount
             // 
@@ -725,57 +662,89 @@
             this.picture.TabStop = false;
             this.picture.Visible = false;
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.button17, 0, 18);
+            this.tableLayoutPanel1.Controls.Add(this.button16, 0, 17);
+            this.tableLayoutPanel1.Controls.Add(this.button15, 0, 16);
+            this.tableLayoutPanel1.Controls.Add(this.button14, 0, 15);
+            this.tableLayoutPanel1.Controls.Add(this.button13, 0, 14);
+            this.tableLayoutPanel1.Controls.Add(this.button12, 0, 13);
+            this.tableLayoutPanel1.Controls.Add(this.button11, 0, 12);
+            this.tableLayoutPanel1.Controls.Add(this.button10, 0, 11);
+            this.tableLayoutPanel1.Controls.Add(this.button9, 0, 10);
+            this.tableLayoutPanel1.Controls.Add(this.button8, 0, 9);
+            this.tableLayoutPanel1.Controls.Add(this.button7, 0, 8);
+            this.tableLayoutPanel1.Controls.Add(this.button6, 0, 7);
+            this.tableLayoutPanel1.Controls.Add(this.button5, 0, 6);
+            this.tableLayoutPanel1.Controls.Add(this.button4, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.button3, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.button2, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.button1, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.button0, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(802, 17);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 19;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(141, 253);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.topRight);
+            this.panel1.Controls.Add(this.midRight);
+            this.panel1.Controls.Add(this.botRight);
+            this.panel1.Controls.Add(this.botLeft);
+            this.panel1.Controls.Add(this.midLeft);
+            this.panel1.Controls.Add(this.topLeft);
+            this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Location = new System.Drawing.Point(36, 225);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(428, 441);
+            this.panel1.TabIndex = 64;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(973, 678);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.capButton);
             this.Controls.Add(this.benthicButton);
             this.Controls.Add(this.CircleCount);
             this.Controls.Add(this.SquareCount);
             this.Controls.Add(this.RectangleCount);
             this.Controls.Add(this.triangleCount);
-            this.Controls.Add(this.InnerRadius2);
-            this.Controls.Add(this.answerBox);
-            this.Controls.Add(this.calcButton);
-            this.Controls.Add(this.InnerRadius3);
-            this.Controls.Add(this.InnerRadius1);
-            this.Controls.Add(this.LengthOfBarrel);
             this.Controls.Add(this.trackBar4);
             this.Controls.Add(this.trackBar3);
             this.Controls.Add(this.trackBar2);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.depthLockEngageLabel);
             this.Controls.Add(this.depthLockButton);
-            this.Controls.Add(this.botRight);
-            this.Controls.Add(this.botLeft);
-            this.Controls.Add(this.midRight);
-            this.Controls.Add(this.midLeft);
-            this.Controls.Add(this.topRight);
-            this.Controls.Add(this.topLeft);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.ConnectionB);
-            this.Controls.Add(this.button15);
-            this.Controls.Add(this.button14);
-            this.Controls.Add(this.button13);
-            this.Controls.Add(this.button12);
-            this.Controls.Add(this.button11);
-            this.Controls.Add(this.button10);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button0);
-            this.Controls.Add(this.button17);
-            this.Controls.Add(this.button16);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.ConnectionLabel);
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.portLabel);
@@ -799,6 +768,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -849,12 +822,6 @@
         private System.Windows.Forms.TrackBar trackBar2;
         private System.Windows.Forms.TrackBar trackBar3;
         private System.Windows.Forms.TrackBar trackBar4;
-        private System.Windows.Forms.TextBox LengthOfBarrel;
-        private System.Windows.Forms.TextBox InnerRadius1;
-        private System.Windows.Forms.TextBox InnerRadius3;
-        private System.Windows.Forms.Button calcButton;
-        private System.Windows.Forms.TextBox answerBox;
-        private System.Windows.Forms.TextBox InnerRadius2;
         private System.Windows.Forms.Label triangleCount;
         private System.Windows.Forms.Label RectangleCount;
         private System.Windows.Forms.Label SquareCount;
@@ -866,6 +833,8 @@
         private System.Windows.Forms.Button leftPrefButton;
         private System.Windows.Forms.Button capButton;
         private System.Windows.Forms.PictureBox picture;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 
