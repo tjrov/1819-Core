@@ -80,6 +80,7 @@ namespace GUI
             this.propulsionActuator2 = new GUI.PropulsionActuator();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.rovPanel = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.RectangleCount = new System.Windows.Forms.Label();
             this.SquareCount = new System.Windows.Forms.Label();
             this.CircleCount = new System.Windows.Forms.Label();
@@ -87,28 +88,27 @@ namespace GUI
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.pilotPanel = new System.Windows.Forms.Panel();
-            this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.picture = new System.Windows.Forms.PictureBox();
-            this.pilotLTriggerIndicator = new System.Windows.Forms.Button();
-            this.pilotLBumperIndicator = new System.Windows.Forms.Button();
-            this.pilotRBumperIndicator = new System.Windows.Forms.Button();
-            this.pilotRTriggerIndicator = new System.Windows.Forms.Button();
-            this.pilotLStickIndicator = new System.Windows.Forms.Button();
-            this.pilotRStickIndicator = new System.Windows.Forms.Button();
-            this.pilotAIndicator = new System.Windows.Forms.Button();
-            this.pilotXIndicator = new System.Windows.Forms.Button();
-            this.pilotYIndicator = new System.Windows.Forms.Button();
-            this.pilotBIndicator = new System.Windows.Forms.Button();
+            this.pilotPanel = new System.Windows.Forms.Panel();
             this.pilotRightIndicator = new System.Windows.Forms.Button();
             this.pilotUpIndicator = new System.Windows.Forms.Button();
             this.pilotLeftIndicator = new System.Windows.Forms.Button();
             this.pilotDownIndicator = new System.Windows.Forms.Button();
+            this.pilotBIndicator = new System.Windows.Forms.Button();
+            this.pilotYIndicator = new System.Windows.Forms.Button();
+            this.pilotXIndicator = new System.Windows.Forms.Button();
+            this.pilotAIndicator = new System.Windows.Forms.Button();
+            this.pilotRStickIndicator = new System.Windows.Forms.Button();
+            this.pilotLStickIndicator = new System.Windows.Forms.Button();
+            this.pilotRBumperIndicator = new System.Windows.Forms.Button();
+            this.pilotRTriggerIndicator = new System.Windows.Forms.Button();
+            this.pilotLBumperIndicator = new System.Windows.Forms.Button();
+            this.pilotLTriggerIndicator = new System.Windows.Forms.Button();
+            this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.picture = new System.Windows.Forms.PictureBox();
             this.copilotPanel = new System.Windows.Forms.Panel();
             this.copilotRightIndicator = new System.Windows.Forms.Button();
             this.copilotUpIndicator = new System.Windows.Forms.Button();
@@ -131,16 +131,16 @@ namespace GUI
             ((System.ComponentModel.ISupportInitialize)(this.trackBar4)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.rovPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.pilotPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pilotPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture)).BeginInit();
             this.copilotPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
@@ -515,47 +515,43 @@ namespace GUI
             // 
             // trackBar1
             // 
-            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar1.Location = new System.Drawing.Point(2, 2);
             this.trackBar1.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar1.Maximum = 200;
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBar1.Size = new System.Drawing.Size(41, 15);
+            this.trackBar1.Size = new System.Drawing.Size(45, 15);
             this.trackBar1.TabIndex = 42;
             this.trackBar1.Value = 100;
             // 
             // trackBar2
             // 
-            this.trackBar2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBar2.Location = new System.Drawing.Point(47, 2);
+            this.trackBar2.Location = new System.Drawing.Point(129, 2);
             this.trackBar2.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar2.Maximum = 200;
             this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(42, 15);
+            this.trackBar2.Size = new System.Drawing.Size(42, 38);
             this.trackBar2.TabIndex = 43;
             this.trackBar2.Value = 108;
             // 
             // trackBar3
             // 
-            this.trackBar3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBar3.Location = new System.Drawing.Point(2, 21);
+            this.trackBar3.Location = new System.Drawing.Point(2, 44);
             this.trackBar3.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar3.Maximum = 200;
             this.trackBar3.Name = "trackBar3";
             this.trackBar3.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBar3.Size = new System.Drawing.Size(41, 15);
+            this.trackBar3.Size = new System.Drawing.Size(45, 15);
             this.trackBar3.TabIndex = 44;
             this.trackBar3.Value = 100;
             // 
             // trackBar4
             // 
-            this.trackBar4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBar4.Location = new System.Drawing.Point(47, 21);
+            this.trackBar4.Location = new System.Drawing.Point(129, 44);
             this.trackBar4.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar4.Maximum = 200;
             this.trackBar4.Name = "trackBar4";
-            this.trackBar4.Size = new System.Drawing.Size(42, 15);
+            this.trackBar4.Size = new System.Drawing.Size(42, 39);
             this.trackBar4.TabIndex = 45;
             this.trackBar4.Value = 100;
             // 
@@ -576,10 +572,10 @@ namespace GUI
             // 
             this.forPrefButton.BackColor = System.Drawing.Color.Green;
             this.forPrefButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.forPrefButton.Location = new System.Drawing.Point(32, 2);
+            this.forPrefButton.Location = new System.Drawing.Point(86, 2);
             this.forPrefButton.Margin = new System.Windows.Forms.Padding(2);
             this.forPrefButton.Name = "forPrefButton";
-            this.forPrefButton.Size = new System.Drawing.Size(26, 15);
+            this.forPrefButton.Size = new System.Drawing.Size(80, 41);
             this.forPrefButton.TabIndex = 53;
             this.forPrefButton.Text = "↑";
             this.forPrefButton.UseVisualStyleBackColor = false;
@@ -589,10 +585,10 @@ namespace GUI
             // 
             this.backPrefButton.BackColor = System.Drawing.Color.Red;
             this.backPrefButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.backPrefButton.Location = new System.Drawing.Point(32, 21);
+            this.backPrefButton.Location = new System.Drawing.Point(86, 47);
             this.backPrefButton.Margin = new System.Windows.Forms.Padding(2);
             this.backPrefButton.Name = "backPrefButton";
-            this.backPrefButton.Size = new System.Drawing.Size(26, 15);
+            this.backPrefButton.Size = new System.Drawing.Size(80, 42);
             this.backPrefButton.TabIndex = 54;
             this.backPrefButton.Text = "↓";
             this.backPrefButton.UseVisualStyleBackColor = false;
@@ -602,10 +598,10 @@ namespace GUI
             // 
             this.rightPrefButton.BackColor = System.Drawing.Color.Red;
             this.rightPrefButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rightPrefButton.Location = new System.Drawing.Point(62, 21);
+            this.rightPrefButton.Location = new System.Drawing.Point(170, 47);
             this.rightPrefButton.Margin = new System.Windows.Forms.Padding(2);
             this.rightPrefButton.Name = "rightPrefButton";
-            this.rightPrefButton.Size = new System.Drawing.Size(27, 15);
+            this.rightPrefButton.Size = new System.Drawing.Size(82, 42);
             this.rightPrefButton.TabIndex = 55;
             this.rightPrefButton.Text = "→";
             this.rightPrefButton.UseVisualStyleBackColor = false;
@@ -615,10 +611,10 @@ namespace GUI
             // 
             this.leftPrefButton.BackColor = System.Drawing.Color.Red;
             this.leftPrefButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.leftPrefButton.Location = new System.Drawing.Point(2, 21);
+            this.leftPrefButton.Location = new System.Drawing.Point(2, 47);
             this.leftPrefButton.Margin = new System.Windows.Forms.Padding(2);
             this.leftPrefButton.Name = "leftPrefButton";
-            this.leftPrefButton.Size = new System.Drawing.Size(26, 15);
+            this.leftPrefButton.Size = new System.Drawing.Size(80, 42);
             this.leftPrefButton.TabIndex = 56;
             this.leftPrefButton.Text = "←";
             this.leftPrefButton.UseVisualStyleBackColor = false;
@@ -701,6 +697,18 @@ namespace GUI
             this.rovPanel.Size = new System.Drawing.Size(238, 260);
             this.rovPanel.TabIndex = 64;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Image = global::GUI.Properties.Resources.rov_thrusters;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(238, 260);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 29;
+            this.pictureBox1.TabStop = false;
+            // 
             // RectangleCount
             // 
             this.RectangleCount.AutoSize = true;
@@ -751,6 +759,7 @@ namespace GUI
             // 
             // tableLayoutPanel4
             // 
+            this.tableLayoutPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tableLayoutPanel4.ColumnCount = 3;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -759,16 +768,17 @@ namespace GUI
             this.tableLayoutPanel4.Controls.Add(this.leftPrefButton, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.rightPrefButton, 2, 1);
             this.tableLayoutPanel4.Controls.Add(this.forPrefButton, 1, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(192, 103);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(500, 330);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(91, 38);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(254, 91);
             this.tableLayoutPanel4.TabIndex = 67;
             // 
             // tableLayoutPanel5
             // 
+            this.tableLayoutPanel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tableLayoutPanel5.ColumnCount = 2;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -776,12 +786,12 @@ namespace GUI
             this.tableLayoutPanel5.Controls.Add(this.trackBar2, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.trackBar1, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.trackBar4, 1, 1);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(57, 106);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(760, 330);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(91, 38);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(254, 85);
             this.tableLayoutPanel5.TabIndex = 68;
             // 
             // tableLayoutPanel2
@@ -809,40 +819,6 @@ namespace GUI
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(278, 29);
             this.tableLayoutPanel2.TabIndex = 69;
-            // 
-            // pilotPanel
-            // 
-            this.pilotPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pilotPanel.Controls.Add(this.pilotRightIndicator);
-            this.pilotPanel.Controls.Add(this.pilotUpIndicator);
-            this.pilotPanel.Controls.Add(this.pilotLeftIndicator);
-            this.pilotPanel.Controls.Add(this.pilotDownIndicator);
-            this.pilotPanel.Controls.Add(this.pilotBIndicator);
-            this.pilotPanel.Controls.Add(this.pilotYIndicator);
-            this.pilotPanel.Controls.Add(this.pilotXIndicator);
-            this.pilotPanel.Controls.Add(this.pilotAIndicator);
-            this.pilotPanel.Controls.Add(this.pilotRStickIndicator);
-            this.pilotPanel.Controls.Add(this.pilotLStickIndicator);
-            this.pilotPanel.Controls.Add(this.pilotRBumperIndicator);
-            this.pilotPanel.Controls.Add(this.pilotRTriggerIndicator);
-            this.pilotPanel.Controls.Add(this.pilotLBumperIndicator);
-            this.pilotPanel.Controls.Add(this.pilotLTriggerIndicator);
-            this.pilotPanel.Controls.Add(this.pictureBox6);
-            this.pilotPanel.Location = new System.Drawing.Point(500, 427);
-            this.pilotPanel.Name = "pilotPanel";
-            this.pilotPanel.Size = new System.Drawing.Size(254, 174);
-            this.pilotPanel.TabIndex = 71;
-            // 
-            // pictureBox6
-            // 
-            this.pictureBox6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox6.Image = global::GUI.Properties.Resources.ps4controller;
-            this.pictureBox6.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(254, 174);
-            this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox6.TabIndex = 70;
-            this.pictureBox6.TabStop = false;
             // 
             // pictureBox2
             // 
@@ -884,128 +860,28 @@ namespace GUI
             this.pictureBox5.TabIndex = 62;
             this.pictureBox5.TabStop = false;
             // 
-            // pictureBox1
+            // pilotPanel
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Image = global::GUI.Properties.Resources.rov_thrusters;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(238, 260);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 29;
-            this.pictureBox1.TabStop = false;
-            // 
-            // picture
-            // 
-            this.picture.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picture.Location = new System.Drawing.Point(0, 0);
-            this.picture.Margin = new System.Windows.Forms.Padding(2);
-            this.picture.Name = "picture";
-            this.picture.Size = new System.Drawing.Size(1358, 670);
-            this.picture.TabIndex = 63;
-            this.picture.TabStop = false;
-            this.picture.Visible = false;
-            // 
-            // pilotLTriggerIndicator
-            // 
-            this.pilotLTriggerIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.pilotLTriggerIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pilotLTriggerIndicator.Location = new System.Drawing.Point(32, 3);
-            this.pilotLTriggerIndicator.Name = "pilotLTriggerIndicator";
-            this.pilotLTriggerIndicator.Size = new System.Drawing.Size(43, 14);
-            this.pilotLTriggerIndicator.TabIndex = 71;
-            this.pilotLTriggerIndicator.UseVisualStyleBackColor = false;
-            // 
-            // pilotLBumperIndicator
-            // 
-            this.pilotLBumperIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.pilotLBumperIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pilotLBumperIndicator.Location = new System.Drawing.Point(32, 19);
-            this.pilotLBumperIndicator.Name = "pilotLBumperIndicator";
-            this.pilotLBumperIndicator.Size = new System.Drawing.Size(43, 14);
-            this.pilotLBumperIndicator.TabIndex = 72;
-            this.pilotLBumperIndicator.UseVisualStyleBackColor = false;
-            // 
-            // pilotRBumperIndicator
-            // 
-            this.pilotRBumperIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.pilotRBumperIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pilotRBumperIndicator.Location = new System.Drawing.Point(182, 16);
-            this.pilotRBumperIndicator.Name = "pilotRBumperIndicator";
-            this.pilotRBumperIndicator.Size = new System.Drawing.Size(43, 14);
-            this.pilotRBumperIndicator.TabIndex = 74;
-            this.pilotRBumperIndicator.UseVisualStyleBackColor = false;
-            // 
-            // pilotRTriggerIndicator
-            // 
-            this.pilotRTriggerIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.pilotRTriggerIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pilotRTriggerIndicator.Location = new System.Drawing.Point(182, 0);
-            this.pilotRTriggerIndicator.Name = "pilotRTriggerIndicator";
-            this.pilotRTriggerIndicator.Size = new System.Drawing.Size(43, 14);
-            this.pilotRTriggerIndicator.TabIndex = 73;
-            this.pilotRTriggerIndicator.UseVisualStyleBackColor = false;
-            // 
-            // pilotLStickIndicator
-            // 
-            this.pilotLStickIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.pilotLStickIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pilotLStickIndicator.Location = new System.Drawing.Point(71, 81);
-            this.pilotLStickIndicator.Name = "pilotLStickIndicator";
-            this.pilotLStickIndicator.Size = new System.Drawing.Size(32, 27);
-            this.pilotLStickIndicator.TabIndex = 75;
-            this.pilotLStickIndicator.UseVisualStyleBackColor = false;
-            // 
-            // pilotRStickIndicator
-            // 
-            this.pilotRStickIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.pilotRStickIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pilotRStickIndicator.Location = new System.Drawing.Point(151, 81);
-            this.pilotRStickIndicator.Name = "pilotRStickIndicator";
-            this.pilotRStickIndicator.Size = new System.Drawing.Size(32, 27);
-            this.pilotRStickIndicator.TabIndex = 76;
-            this.pilotRStickIndicator.UseVisualStyleBackColor = false;
-            // 
-            // pilotAIndicator
-            // 
-            this.pilotAIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.pilotAIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pilotAIndicator.Location = new System.Drawing.Point(198, 73);
-            this.pilotAIndicator.Name = "pilotAIndicator";
-            this.pilotAIndicator.Size = new System.Drawing.Size(17, 17);
-            this.pilotAIndicator.TabIndex = 77;
-            this.pilotAIndicator.UseVisualStyleBackColor = false;
-            // 
-            // pilotXIndicator
-            // 
-            this.pilotXIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.pilotXIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pilotXIndicator.Location = new System.Drawing.Point(177, 54);
-            this.pilotXIndicator.Name = "pilotXIndicator";
-            this.pilotXIndicator.Size = new System.Drawing.Size(17, 17);
-            this.pilotXIndicator.TabIndex = 78;
-            this.pilotXIndicator.UseVisualStyleBackColor = false;
-            // 
-            // pilotYIndicator
-            // 
-            this.pilotYIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.pilotYIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pilotYIndicator.Location = new System.Drawing.Point(197, 38);
-            this.pilotYIndicator.Name = "pilotYIndicator";
-            this.pilotYIndicator.Size = new System.Drawing.Size(17, 17);
-            this.pilotYIndicator.TabIndex = 79;
-            this.pilotYIndicator.UseVisualStyleBackColor = false;
-            // 
-            // pilotBIndicator
-            // 
-            this.pilotBIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.pilotBIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pilotBIndicator.Location = new System.Drawing.Point(216, 55);
-            this.pilotBIndicator.Name = "pilotBIndicator";
-            this.pilotBIndicator.Size = new System.Drawing.Size(17, 17);
-            this.pilotBIndicator.TabIndex = 80;
-            this.pilotBIndicator.UseVisualStyleBackColor = false;
+            this.pilotPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pilotPanel.Controls.Add(this.pilotRightIndicator);
+            this.pilotPanel.Controls.Add(this.pilotUpIndicator);
+            this.pilotPanel.Controls.Add(this.pilotLeftIndicator);
+            this.pilotPanel.Controls.Add(this.pilotDownIndicator);
+            this.pilotPanel.Controls.Add(this.pilotBIndicator);
+            this.pilotPanel.Controls.Add(this.pilotYIndicator);
+            this.pilotPanel.Controls.Add(this.pilotXIndicator);
+            this.pilotPanel.Controls.Add(this.pilotAIndicator);
+            this.pilotPanel.Controls.Add(this.pilotRStickIndicator);
+            this.pilotPanel.Controls.Add(this.pilotLStickIndicator);
+            this.pilotPanel.Controls.Add(this.pilotRBumperIndicator);
+            this.pilotPanel.Controls.Add(this.pilotRTriggerIndicator);
+            this.pilotPanel.Controls.Add(this.pilotLBumperIndicator);
+            this.pilotPanel.Controls.Add(this.pilotLTriggerIndicator);
+            this.pilotPanel.Controls.Add(this.pictureBox6);
+            this.pilotPanel.Location = new System.Drawing.Point(500, 427);
+            this.pilotPanel.Name = "pilotPanel";
+            this.pilotPanel.Size = new System.Drawing.Size(254, 174);
+            this.pilotPanel.TabIndex = 71;
             // 
             // pilotRightIndicator
             // 
@@ -1046,6 +922,128 @@ namespace GUI
             this.pilotDownIndicator.Size = new System.Drawing.Size(17, 17);
             this.pilotDownIndicator.TabIndex = 81;
             this.pilotDownIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotBIndicator
+            // 
+            this.pilotBIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotBIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotBIndicator.Location = new System.Drawing.Point(216, 55);
+            this.pilotBIndicator.Name = "pilotBIndicator";
+            this.pilotBIndicator.Size = new System.Drawing.Size(17, 17);
+            this.pilotBIndicator.TabIndex = 80;
+            this.pilotBIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotYIndicator
+            // 
+            this.pilotYIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotYIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotYIndicator.Location = new System.Drawing.Point(197, 38);
+            this.pilotYIndicator.Name = "pilotYIndicator";
+            this.pilotYIndicator.Size = new System.Drawing.Size(17, 17);
+            this.pilotYIndicator.TabIndex = 79;
+            this.pilotYIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotXIndicator
+            // 
+            this.pilotXIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotXIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotXIndicator.Location = new System.Drawing.Point(177, 54);
+            this.pilotXIndicator.Name = "pilotXIndicator";
+            this.pilotXIndicator.Size = new System.Drawing.Size(17, 17);
+            this.pilotXIndicator.TabIndex = 78;
+            this.pilotXIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotAIndicator
+            // 
+            this.pilotAIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotAIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotAIndicator.Location = new System.Drawing.Point(198, 73);
+            this.pilotAIndicator.Name = "pilotAIndicator";
+            this.pilotAIndicator.Size = new System.Drawing.Size(17, 17);
+            this.pilotAIndicator.TabIndex = 77;
+            this.pilotAIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotRStickIndicator
+            // 
+            this.pilotRStickIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotRStickIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotRStickIndicator.Location = new System.Drawing.Point(151, 81);
+            this.pilotRStickIndicator.Name = "pilotRStickIndicator";
+            this.pilotRStickIndicator.Size = new System.Drawing.Size(32, 27);
+            this.pilotRStickIndicator.TabIndex = 76;
+            this.pilotRStickIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotLStickIndicator
+            // 
+            this.pilotLStickIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotLStickIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotLStickIndicator.Location = new System.Drawing.Point(71, 81);
+            this.pilotLStickIndicator.Name = "pilotLStickIndicator";
+            this.pilotLStickIndicator.Size = new System.Drawing.Size(32, 27);
+            this.pilotLStickIndicator.TabIndex = 75;
+            this.pilotLStickIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotRBumperIndicator
+            // 
+            this.pilotRBumperIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotRBumperIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotRBumperIndicator.Location = new System.Drawing.Point(182, 16);
+            this.pilotRBumperIndicator.Name = "pilotRBumperIndicator";
+            this.pilotRBumperIndicator.Size = new System.Drawing.Size(43, 14);
+            this.pilotRBumperIndicator.TabIndex = 74;
+            this.pilotRBumperIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotRTriggerIndicator
+            // 
+            this.pilotRTriggerIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotRTriggerIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotRTriggerIndicator.Location = new System.Drawing.Point(182, 0);
+            this.pilotRTriggerIndicator.Name = "pilotRTriggerIndicator";
+            this.pilotRTriggerIndicator.Size = new System.Drawing.Size(43, 14);
+            this.pilotRTriggerIndicator.TabIndex = 73;
+            this.pilotRTriggerIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotLBumperIndicator
+            // 
+            this.pilotLBumperIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotLBumperIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotLBumperIndicator.Location = new System.Drawing.Point(32, 19);
+            this.pilotLBumperIndicator.Name = "pilotLBumperIndicator";
+            this.pilotLBumperIndicator.Size = new System.Drawing.Size(43, 14);
+            this.pilotLBumperIndicator.TabIndex = 72;
+            this.pilotLBumperIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotLTriggerIndicator
+            // 
+            this.pilotLTriggerIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotLTriggerIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotLTriggerIndicator.Location = new System.Drawing.Point(32, 3);
+            this.pilotLTriggerIndicator.Name = "pilotLTriggerIndicator";
+            this.pilotLTriggerIndicator.Size = new System.Drawing.Size(43, 14);
+            this.pilotLTriggerIndicator.TabIndex = 71;
+            this.pilotLTriggerIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pictureBox6
+            // 
+            this.pictureBox6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox6.Image = global::GUI.Properties.Resources.ps4controller;
+            this.pictureBox6.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox6.Name = "pictureBox6";
+            this.pictureBox6.Size = new System.Drawing.Size(254, 174);
+            this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox6.TabIndex = 70;
+            this.pictureBox6.TabStop = false;
+            // 
+            // picture
+            // 
+            this.picture.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picture.Location = new System.Drawing.Point(0, 0);
+            this.picture.Margin = new System.Windows.Forms.Padding(2);
+            this.picture.Name = "picture";
+            this.picture.Size = new System.Drawing.Size(1358, 670);
+            this.picture.TabIndex = 63;
+            this.picture.TabStop = false;
+            this.picture.Visible = false;
             // 
             // copilotPanel
             // 
@@ -1258,18 +1256,18 @@ namespace GUI
             this.tableLayoutPanel1.PerformLayout();
             this.rovPanel.ResumeLayout(false);
             this.rovPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.pilotPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.pilotPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture)).EndInit();
             this.copilotPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
