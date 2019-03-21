@@ -35,10 +35,10 @@ namespace GUI
         private bool isLockClicked = false;
         private int depthvalue = 0;
         private bool RightBumperCheck = false;
-        private int numberOfSquareShits = 0;
-        private int numberOfCircleShits = 0;
-        private int numberOfTriangleShits = 0;
-        private int numberOfLineShits = 0;
+        private int numberOfSquares = 0;
+        private int numberOfCircles = 0;
+        private int numberOfTriangles = 0;
+        private int numberOfLines = 0;
         private bool isCapturing = false;
         private VideoCaptureDevice videoSource;
         private FilterInfoCollection videoDevices;
@@ -58,9 +58,9 @@ namespace GUI
             KeyPreview = true;
             InitializeComponent();
 
-            depthIndicator = new DepthIndicator() { Location = new System.Drawing.Point(0, 100) };
-            attitudeIndicator = new AttitudeIndicator() { Location = new System.Drawing.Point(100, 100) };
-            headingIndicator = new HeadingIndicator() { Location = new System.Drawing.Point(600, 100) };
+            depthIndicator = new DepthIndicator() { Location = new System.Drawing.Point(20, 100) };
+            attitudeIndicator = new AttitudeIndicator() { Location = new System.Drawing.Point(Width - 50, Height) };
+            headingIndicator = new HeadingIndicator() { Location = new System.Drawing.Point(0, Height- 100) };
             Controls.Add(depthIndicator);
             Controls.Add(attitudeIndicator);
             Controls.Add(headingIndicator);
@@ -124,10 +124,10 @@ namespace GUI
         private void ProcessImage(Bitmap bitmap)
         {
             // reset counters
-            numberOfCircleShits = 0;
-            numberOfLineShits = 0;
-            numberOfSquareShits = 0;
-            numberOfTriangleShits = 0;
+            numberOfCircles = 0;
+            numberOfLines = 0;
+            numberOfSquares = 0;
+            numberOfTriangles = 0;
 
             // lock image
             BitmapData bitmapData = bitmap.LockBits(
@@ -170,7 +170,7 @@ namespace GUI
                 // is circle ?
                 if (shapeChecker.IsCircle(edgePoints, out center, out radius))
                 {
-                    numberOfCircleShits++;
+                    numberOfCircles++;
                 }
                 else
                 {
@@ -181,18 +181,17 @@ namespace GUI
                     {
                         // get sub-type
                         PolygonSubType subType = shapeChecker.CheckPolygonSubType(corners);
-                        Pen pen;
                         if (subType == PolygonSubType.Square)
                         {
-                            numberOfSquareShits++;
+                            numberOfSquares++;
                         }
                         else if (subType == PolygonSubType.EquilateralTriangle)
                         {
-                            numberOfTriangleShits++;
+                            numberOfTriangles++;
                         }
                         else 
                         {
-                            numberOfLineShits++;
+                            numberOfLines++;
                         }
                     }
                 }
@@ -202,10 +201,10 @@ namespace GUI
             Clipboard.SetDataObject(bitmap);
             // and to picture box
             picture.Image = bitmap;
-            triangleCount.Text = "Triangles: " + numberOfTriangleShits;
-            CircleCount.Text = "Circles: " + numberOfCircleShits;
-            SquareCount.Text = "Squares: " + numberOfSquareShits;
-            RectangleCount.Text = "Lines: " + numberOfLineShits;
+            triangleCount.Text = "" + numberOfTriangles;
+            CircleCount.Text = "" + numberOfCircles;
+            SquareCount.Text = "" + numberOfSquares;
+            RectangleCount.Text = "" + numberOfLines;
         }
         private AForge.Point[] ToPointsArray(List<IntPoint> points)
         {
@@ -340,8 +339,9 @@ namespace GUI
 
             if (pilot.IsConnected)
             {
-                ConnectionB.BackColor = Color.Green;
-                ConnectionLabel.Text = "Controller Connected : True";
+                ConnectionLabel.Text = "Controller Connected";
+                ConnectionLabel.ForeColor = Color.Green;
+
                 button0.Text = "LStick.X" + LStickZeroX;
                 button1.Text = "LStick.Y" + LStickZeroY;
                 button2.Text = "LStick" + pilot.LStick_down;
@@ -385,7 +385,8 @@ namespace GUI
 
                 if (isLockClicked)
                 {
-                    depthLockButton.BackColor = Color.Green; //edits button in design
+                    depthLockEngageLabel.ForeColor = Color.Green;
+                    depthLockEngageLabel.Text = "Depth Lock Engaged";
 
                     if (depthvalue < (int)(rov.DepthSensor.Data.DepthValue))
                     {
@@ -399,7 +400,8 @@ namespace GUI
                 }
                 else
                 {
-                    depthLockButton.BackColor = Color.DarkRed;
+                    depthLockEngageLabel.ForeColor = Color.DarkRed;
+                    depthLockEngageLabel.Text = "Depth Lock Disengaged";
 
                 }
                 //ACTUATOR CODE for next few lines
@@ -435,9 +437,10 @@ namespace GUI
             }
             else
             {
-                ConnectionB.BackColor = Color.DarkRed;
-                ConnectionLabel.Text = "Controller Connected : False";
-                depthLockButton.BackColor = Color.DarkRed;
+                ConnectionLabel.Text = "Controller Not Connected";
+                ConnectionLabel.ForeColor = Color.DarkRed;
+                depthLockEngageLabel.ForeColor = Color.DarkRed;
+                depthLockEngageLabel.Text = "Depth Lock Disengaged";
                 rov.VerticalMotion = 0.0;
                 rov.ForeAftMotion = 0.0;
                 rov.StrafeMotion = 0.0;
