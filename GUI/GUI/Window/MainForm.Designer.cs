@@ -95,10 +95,36 @@ namespace GUI
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.picture = new System.Windows.Forms.PictureBox();
-            this.button18 = new System.Windows.Forms.Button();
-            this.button19 = new System.Windows.Forms.Button();
-            this.button20 = new System.Windows.Forms.Button();
-            this.button21 = new System.Windows.Forms.Button();
+            this.pilotLTriggerIndicator = new System.Windows.Forms.Button();
+            this.pilotLBumperIndicator = new System.Windows.Forms.Button();
+            this.pilotRBumperIndicator = new System.Windows.Forms.Button();
+            this.pilotRTriggerIndicator = new System.Windows.Forms.Button();
+            this.pilotLStickIndicator = new System.Windows.Forms.Button();
+            this.pilotRStickIndicator = new System.Windows.Forms.Button();
+            this.pilotAIndicator = new System.Windows.Forms.Button();
+            this.pilotXIndicator = new System.Windows.Forms.Button();
+            this.pilotYIndicator = new System.Windows.Forms.Button();
+            this.pilotBIndicator = new System.Windows.Forms.Button();
+            this.pilotRightIndicator = new System.Windows.Forms.Button();
+            this.pilotUpIndicator = new System.Windows.Forms.Button();
+            this.pilotLeftIndicator = new System.Windows.Forms.Button();
+            this.pilotDownIndicator = new System.Windows.Forms.Button();
+            this.copilotPanel = new System.Windows.Forms.Panel();
+            this.copilotRightIndicator = new System.Windows.Forms.Button();
+            this.copilotUpIndicator = new System.Windows.Forms.Button();
+            this.copilotLeftIndicator = new System.Windows.Forms.Button();
+            this.copilotDownIndicator = new System.Windows.Forms.Button();
+            this.copilotBIndicator = new System.Windows.Forms.Button();
+            this.copilotYIndicator = new System.Windows.Forms.Button();
+            this.copilotXIndicator = new System.Windows.Forms.Button();
+            this.copilotAIndicator = new System.Windows.Forms.Button();
+            this.copilotRStickIndicator = new System.Windows.Forms.Button();
+            this.copilotLStickIndicator = new System.Windows.Forms.Button();
+            this.copilotRBumperIndicator = new System.Windows.Forms.Button();
+            this.copilotRTriggerIndicator = new System.Windows.Forms.Button();
+            this.copilotLBumperIndicator = new System.Windows.Forms.Button();
+            this.copilotLTriggerIndicator = new System.Windows.Forms.Button();
+            this.pictureBox7 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
@@ -116,6 +142,8 @@ namespace GUI
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture)).BeginInit();
+            this.copilotPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             this.SuspendLayout();
             // 
             // timer500
@@ -785,10 +813,20 @@ namespace GUI
             // pilotPanel
             // 
             this.pilotPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pilotPanel.Controls.Add(this.button20);
-            this.pilotPanel.Controls.Add(this.button21);
-            this.pilotPanel.Controls.Add(this.button19);
-            this.pilotPanel.Controls.Add(this.button18);
+            this.pilotPanel.Controls.Add(this.pilotRightIndicator);
+            this.pilotPanel.Controls.Add(this.pilotUpIndicator);
+            this.pilotPanel.Controls.Add(this.pilotLeftIndicator);
+            this.pilotPanel.Controls.Add(this.pilotDownIndicator);
+            this.pilotPanel.Controls.Add(this.pilotBIndicator);
+            this.pilotPanel.Controls.Add(this.pilotYIndicator);
+            this.pilotPanel.Controls.Add(this.pilotXIndicator);
+            this.pilotPanel.Controls.Add(this.pilotAIndicator);
+            this.pilotPanel.Controls.Add(this.pilotRStickIndicator);
+            this.pilotPanel.Controls.Add(this.pilotLStickIndicator);
+            this.pilotPanel.Controls.Add(this.pilotRBumperIndicator);
+            this.pilotPanel.Controls.Add(this.pilotRTriggerIndicator);
+            this.pilotPanel.Controls.Add(this.pilotLBumperIndicator);
+            this.pilotPanel.Controls.Add(this.pilotLTriggerIndicator);
             this.pilotPanel.Controls.Add(this.pictureBox6);
             this.pilotPanel.Location = new System.Drawing.Point(500, 427);
             this.pilotPanel.Name = "pilotPanel";
@@ -869,45 +907,319 @@ namespace GUI
             this.picture.TabStop = false;
             this.picture.Visible = false;
             // 
-            // button18
+            // pilotLTriggerIndicator
             // 
-            this.button18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.button18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button18.Location = new System.Drawing.Point(32, 3);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(43, 14);
-            this.button18.TabIndex = 71;
-            this.button18.UseVisualStyleBackColor = false;
+            this.pilotLTriggerIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotLTriggerIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotLTriggerIndicator.Location = new System.Drawing.Point(32, 3);
+            this.pilotLTriggerIndicator.Name = "pilotLTriggerIndicator";
+            this.pilotLTriggerIndicator.Size = new System.Drawing.Size(43, 14);
+            this.pilotLTriggerIndicator.TabIndex = 71;
+            this.pilotLTriggerIndicator.UseVisualStyleBackColor = false;
             // 
-            // button19
+            // pilotLBumperIndicator
             // 
-            this.button19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.button19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button19.Location = new System.Drawing.Point(32, 19);
-            this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(43, 14);
-            this.button19.TabIndex = 72;
-            this.button19.UseVisualStyleBackColor = false;
+            this.pilotLBumperIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotLBumperIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotLBumperIndicator.Location = new System.Drawing.Point(32, 19);
+            this.pilotLBumperIndicator.Name = "pilotLBumperIndicator";
+            this.pilotLBumperIndicator.Size = new System.Drawing.Size(43, 14);
+            this.pilotLBumperIndicator.TabIndex = 72;
+            this.pilotLBumperIndicator.UseVisualStyleBackColor = false;
             // 
-            // button20
+            // pilotRBumperIndicator
             // 
-            this.button20.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.button20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button20.Location = new System.Drawing.Point(182, 16);
-            this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(43, 14);
-            this.button20.TabIndex = 74;
-            this.button20.UseVisualStyleBackColor = false;
+            this.pilotRBumperIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotRBumperIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotRBumperIndicator.Location = new System.Drawing.Point(182, 16);
+            this.pilotRBumperIndicator.Name = "pilotRBumperIndicator";
+            this.pilotRBumperIndicator.Size = new System.Drawing.Size(43, 14);
+            this.pilotRBumperIndicator.TabIndex = 74;
+            this.pilotRBumperIndicator.UseVisualStyleBackColor = false;
             // 
-            // button21
+            // pilotRTriggerIndicator
             // 
-            this.button21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.button21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button21.Location = new System.Drawing.Point(182, 0);
-            this.button21.Name = "button21";
-            this.button21.Size = new System.Drawing.Size(43, 14);
-            this.button21.TabIndex = 73;
-            this.button21.UseVisualStyleBackColor = false;
+            this.pilotRTriggerIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotRTriggerIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotRTriggerIndicator.Location = new System.Drawing.Point(182, 0);
+            this.pilotRTriggerIndicator.Name = "pilotRTriggerIndicator";
+            this.pilotRTriggerIndicator.Size = new System.Drawing.Size(43, 14);
+            this.pilotRTriggerIndicator.TabIndex = 73;
+            this.pilotRTriggerIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotLStickIndicator
+            // 
+            this.pilotLStickIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotLStickIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotLStickIndicator.Location = new System.Drawing.Point(71, 81);
+            this.pilotLStickIndicator.Name = "pilotLStickIndicator";
+            this.pilotLStickIndicator.Size = new System.Drawing.Size(32, 27);
+            this.pilotLStickIndicator.TabIndex = 75;
+            this.pilotLStickIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotRStickIndicator
+            // 
+            this.pilotRStickIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotRStickIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotRStickIndicator.Location = new System.Drawing.Point(151, 81);
+            this.pilotRStickIndicator.Name = "pilotRStickIndicator";
+            this.pilotRStickIndicator.Size = new System.Drawing.Size(32, 27);
+            this.pilotRStickIndicator.TabIndex = 76;
+            this.pilotRStickIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotAIndicator
+            // 
+            this.pilotAIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotAIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotAIndicator.Location = new System.Drawing.Point(198, 73);
+            this.pilotAIndicator.Name = "pilotAIndicator";
+            this.pilotAIndicator.Size = new System.Drawing.Size(17, 17);
+            this.pilotAIndicator.TabIndex = 77;
+            this.pilotAIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotXIndicator
+            // 
+            this.pilotXIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotXIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotXIndicator.Location = new System.Drawing.Point(177, 54);
+            this.pilotXIndicator.Name = "pilotXIndicator";
+            this.pilotXIndicator.Size = new System.Drawing.Size(17, 17);
+            this.pilotXIndicator.TabIndex = 78;
+            this.pilotXIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotYIndicator
+            // 
+            this.pilotYIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotYIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotYIndicator.Location = new System.Drawing.Point(197, 38);
+            this.pilotYIndicator.Name = "pilotYIndicator";
+            this.pilotYIndicator.Size = new System.Drawing.Size(17, 17);
+            this.pilotYIndicator.TabIndex = 79;
+            this.pilotYIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotBIndicator
+            // 
+            this.pilotBIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotBIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotBIndicator.Location = new System.Drawing.Point(216, 55);
+            this.pilotBIndicator.Name = "pilotBIndicator";
+            this.pilotBIndicator.Size = new System.Drawing.Size(17, 17);
+            this.pilotBIndicator.TabIndex = 80;
+            this.pilotBIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotRightIndicator
+            // 
+            this.pilotRightIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotRightIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotRightIndicator.Location = new System.Drawing.Point(59, 55);
+            this.pilotRightIndicator.Name = "pilotRightIndicator";
+            this.pilotRightIndicator.Size = new System.Drawing.Size(17, 17);
+            this.pilotRightIndicator.TabIndex = 84;
+            this.pilotRightIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotUpIndicator
+            // 
+            this.pilotUpIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotUpIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotUpIndicator.Location = new System.Drawing.Point(40, 38);
+            this.pilotUpIndicator.Name = "pilotUpIndicator";
+            this.pilotUpIndicator.Size = new System.Drawing.Size(17, 17);
+            this.pilotUpIndicator.TabIndex = 83;
+            this.pilotUpIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotLeftIndicator
+            // 
+            this.pilotLeftIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotLeftIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotLeftIndicator.Location = new System.Drawing.Point(20, 54);
+            this.pilotLeftIndicator.Name = "pilotLeftIndicator";
+            this.pilotLeftIndicator.Size = new System.Drawing.Size(17, 17);
+            this.pilotLeftIndicator.TabIndex = 82;
+            this.pilotLeftIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pilotDownIndicator
+            // 
+            this.pilotDownIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pilotDownIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotDownIndicator.Location = new System.Drawing.Point(41, 73);
+            this.pilotDownIndicator.Name = "pilotDownIndicator";
+            this.pilotDownIndicator.Size = new System.Drawing.Size(17, 17);
+            this.pilotDownIndicator.TabIndex = 81;
+            this.pilotDownIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotPanel
+            // 
+            this.copilotPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.copilotPanel.Controls.Add(this.copilotRightIndicator);
+            this.copilotPanel.Controls.Add(this.copilotUpIndicator);
+            this.copilotPanel.Controls.Add(this.copilotLeftIndicator);
+            this.copilotPanel.Controls.Add(this.copilotDownIndicator);
+            this.copilotPanel.Controls.Add(this.copilotBIndicator);
+            this.copilotPanel.Controls.Add(this.copilotYIndicator);
+            this.copilotPanel.Controls.Add(this.copilotXIndicator);
+            this.copilotPanel.Controls.Add(this.copilotAIndicator);
+            this.copilotPanel.Controls.Add(this.copilotRStickIndicator);
+            this.copilotPanel.Controls.Add(this.copilotLStickIndicator);
+            this.copilotPanel.Controls.Add(this.copilotRBumperIndicator);
+            this.copilotPanel.Controls.Add(this.copilotRTriggerIndicator);
+            this.copilotPanel.Controls.Add(this.copilotLBumperIndicator);
+            this.copilotPanel.Controls.Add(this.copilotLTriggerIndicator);
+            this.copilotPanel.Controls.Add(this.pictureBox7);
+            this.copilotPanel.Location = new System.Drawing.Point(760, 427);
+            this.copilotPanel.Name = "copilotPanel";
+            this.copilotPanel.Size = new System.Drawing.Size(254, 174);
+            this.copilotPanel.TabIndex = 85;
+            // 
+            // copilotRightIndicator
+            // 
+            this.copilotRightIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotRightIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotRightIndicator.Location = new System.Drawing.Point(59, 55);
+            this.copilotRightIndicator.Name = "copilotRightIndicator";
+            this.copilotRightIndicator.Size = new System.Drawing.Size(17, 17);
+            this.copilotRightIndicator.TabIndex = 84;
+            this.copilotRightIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotUpIndicator
+            // 
+            this.copilotUpIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotUpIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotUpIndicator.Location = new System.Drawing.Point(40, 38);
+            this.copilotUpIndicator.Name = "copilotUpIndicator";
+            this.copilotUpIndicator.Size = new System.Drawing.Size(17, 17);
+            this.copilotUpIndicator.TabIndex = 83;
+            this.copilotUpIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotLeftIndicator
+            // 
+            this.copilotLeftIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotLeftIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotLeftIndicator.Location = new System.Drawing.Point(20, 54);
+            this.copilotLeftIndicator.Name = "copilotLeftIndicator";
+            this.copilotLeftIndicator.Size = new System.Drawing.Size(17, 17);
+            this.copilotLeftIndicator.TabIndex = 82;
+            this.copilotLeftIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotDownIndicator
+            // 
+            this.copilotDownIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotDownIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotDownIndicator.Location = new System.Drawing.Point(41, 73);
+            this.copilotDownIndicator.Name = "copilotDownIndicator";
+            this.copilotDownIndicator.Size = new System.Drawing.Size(17, 17);
+            this.copilotDownIndicator.TabIndex = 81;
+            this.copilotDownIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotBIndicator
+            // 
+            this.copilotBIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotBIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotBIndicator.Location = new System.Drawing.Point(216, 55);
+            this.copilotBIndicator.Name = "copilotBIndicator";
+            this.copilotBIndicator.Size = new System.Drawing.Size(17, 17);
+            this.copilotBIndicator.TabIndex = 80;
+            this.copilotBIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotYIndicator
+            // 
+            this.copilotYIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotYIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotYIndicator.Location = new System.Drawing.Point(197, 38);
+            this.copilotYIndicator.Name = "copilotYIndicator";
+            this.copilotYIndicator.Size = new System.Drawing.Size(17, 17);
+            this.copilotYIndicator.TabIndex = 79;
+            this.copilotYIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotXIndicator
+            // 
+            this.copilotXIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotXIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotXIndicator.Location = new System.Drawing.Point(177, 54);
+            this.copilotXIndicator.Name = "copilotXIndicator";
+            this.copilotXIndicator.Size = new System.Drawing.Size(17, 17);
+            this.copilotXIndicator.TabIndex = 78;
+            this.copilotXIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotAIndicator
+            // 
+            this.copilotAIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotAIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotAIndicator.Location = new System.Drawing.Point(198, 73);
+            this.copilotAIndicator.Name = "copilotAIndicator";
+            this.copilotAIndicator.Size = new System.Drawing.Size(17, 17);
+            this.copilotAIndicator.TabIndex = 77;
+            this.copilotAIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotRStickIndicator
+            // 
+            this.copilotRStickIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotRStickIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotRStickIndicator.Location = new System.Drawing.Point(151, 81);
+            this.copilotRStickIndicator.Name = "copilotRStickIndicator";
+            this.copilotRStickIndicator.Size = new System.Drawing.Size(32, 27);
+            this.copilotRStickIndicator.TabIndex = 76;
+            this.copilotRStickIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotLStickIndicator
+            // 
+            this.copilotLStickIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotLStickIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotLStickIndicator.Location = new System.Drawing.Point(71, 81);
+            this.copilotLStickIndicator.Name = "copilotLStickIndicator";
+            this.copilotLStickIndicator.Size = new System.Drawing.Size(32, 27);
+            this.copilotLStickIndicator.TabIndex = 75;
+            this.copilotLStickIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotRBumperIndicator
+            // 
+            this.copilotRBumperIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotRBumperIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotRBumperIndicator.Location = new System.Drawing.Point(182, 16);
+            this.copilotRBumperIndicator.Name = "copilotRBumperIndicator";
+            this.copilotRBumperIndicator.Size = new System.Drawing.Size(43, 14);
+            this.copilotRBumperIndicator.TabIndex = 74;
+            this.copilotRBumperIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotRTriggerIndicator
+            // 
+            this.copilotRTriggerIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotRTriggerIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotRTriggerIndicator.Location = new System.Drawing.Point(182, 0);
+            this.copilotRTriggerIndicator.Name = "copilotRTriggerIndicator";
+            this.copilotRTriggerIndicator.Size = new System.Drawing.Size(43, 14);
+            this.copilotRTriggerIndicator.TabIndex = 73;
+            this.copilotRTriggerIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotLBumperIndicator
+            // 
+            this.copilotLBumperIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotLBumperIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotLBumperIndicator.Location = new System.Drawing.Point(32, 19);
+            this.copilotLBumperIndicator.Name = "copilotLBumperIndicator";
+            this.copilotLBumperIndicator.Size = new System.Drawing.Size(43, 14);
+            this.copilotLBumperIndicator.TabIndex = 72;
+            this.copilotLBumperIndicator.UseVisualStyleBackColor = false;
+            // 
+            // copilotLTriggerIndicator
+            // 
+            this.copilotLTriggerIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.copilotLTriggerIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotLTriggerIndicator.Location = new System.Drawing.Point(32, 3);
+            this.copilotLTriggerIndicator.Name = "copilotLTriggerIndicator";
+            this.copilotLTriggerIndicator.Size = new System.Drawing.Size(43, 14);
+            this.copilotLTriggerIndicator.TabIndex = 71;
+            this.copilotLTriggerIndicator.UseVisualStyleBackColor = false;
+            // 
+            // pictureBox7
+            // 
+            this.pictureBox7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox7.Image = global::GUI.Properties.Resources.ps4controller;
+            this.pictureBox7.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox7.Name = "pictureBox7";
+            this.pictureBox7.Size = new System.Drawing.Size(254, 174);
+            this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox7.TabIndex = 70;
+            this.pictureBox7.TabStop = false;
             // 
             // MainForm
             // 
@@ -915,6 +1227,7 @@ namespace GUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1358, 670);
+            this.Controls.Add(this.copilotPanel);
             this.Controls.Add(this.pilotPanel);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.ConnectionLabel);
@@ -958,6 +1271,8 @@ namespace GUI
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture)).EndInit();
+            this.copilotPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1029,10 +1344,36 @@ namespace GUI
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.PictureBox pictureBox6;
         private System.Windows.Forms.Panel pilotPanel;
-        private System.Windows.Forms.Button button20;
-        private System.Windows.Forms.Button button21;
-        private System.Windows.Forms.Button button19;
-        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button pilotRBumperIndicator;
+        private System.Windows.Forms.Button pilotRTriggerIndicator;
+        private System.Windows.Forms.Button pilotLBumperIndicator;
+        private System.Windows.Forms.Button pilotLTriggerIndicator;
+        private System.Windows.Forms.Button pilotRightIndicator;
+        private System.Windows.Forms.Button pilotUpIndicator;
+        private System.Windows.Forms.Button pilotLeftIndicator;
+        private System.Windows.Forms.Button pilotDownIndicator;
+        private System.Windows.Forms.Button pilotBIndicator;
+        private System.Windows.Forms.Button pilotYIndicator;
+        private System.Windows.Forms.Button pilotXIndicator;
+        private System.Windows.Forms.Button pilotAIndicator;
+        private System.Windows.Forms.Button pilotRStickIndicator;
+        private System.Windows.Forms.Button pilotLStickIndicator;
+        private System.Windows.Forms.Panel copilotPanel;
+        private System.Windows.Forms.Button copilotRightIndicator;
+        private System.Windows.Forms.Button copilotUpIndicator;
+        private System.Windows.Forms.Button copilotLeftIndicator;
+        private System.Windows.Forms.Button copilotDownIndicator;
+        private System.Windows.Forms.Button copilotBIndicator;
+        private System.Windows.Forms.Button copilotYIndicator;
+        private System.Windows.Forms.Button copilotXIndicator;
+        private System.Windows.Forms.Button copilotAIndicator;
+        private System.Windows.Forms.Button copilotRStickIndicator;
+        private System.Windows.Forms.Button copilotLStickIndicator;
+        private System.Windows.Forms.Button copilotRBumperIndicator;
+        private System.Windows.Forms.Button copilotRTriggerIndicator;
+        private System.Windows.Forms.Button copilotLBumperIndicator;
+        private System.Windows.Forms.Button copilotLTriggerIndicator;
+        private System.Windows.Forms.PictureBox pictureBox7;
     }
 }
 
