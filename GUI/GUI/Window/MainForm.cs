@@ -65,6 +65,8 @@ namespace GUI
             Controls.Add(attitudeIndicator);
             Controls.Add(headingIndicator);
 
+            hideAllControllerButtons();
+
             //setup devices
             BetterSerialPort port = new BetterSerialPort("COM5", 115200);
             portLabel.Text = string.Format("{0}@{1}baud", port.PortName, port.BaudRate);
@@ -342,6 +344,8 @@ namespace GUI
                 ConnectionLabel.Text = "Controller Connected";
                 ConnectionLabel.ForeColor = Color.Green;
 
+                updatePilotButtons();
+
                 button0.Text = "LStick.X" + LStickZeroX;
                 button1.Text = "LStick.Y" + LStickZeroY;
                 button2.Text = "LStick" + pilot.LStick_down;
@@ -452,7 +456,74 @@ namespace GUI
             trackBar4.Value = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, 0, 200));
         }
 
-       /* code for some mission, commented out for now
+        private void hideAllControllerButtons()
+        {
+            pilotAIndicator.Visible = false;
+            pilotBIndicator.Visible = false;
+            pilotYIndicator.Visible = false;
+            pilotXIndicator.Visible = false;
+            pilotLBumperIndicator.Visible = false;
+            pilotLTriggerIndicator.Visible = false;
+            pilotRBumperIndicator.Visible = false;
+            pilotRTriggerIndicator.Visible = false;
+            pilotLStickIndicator.Visible = false;
+            pilotRStickIndicator.Visible = false;
+            pilotUpIndicator.Visible = false;
+            pilotRightIndicator.Visible = false;
+            pilotDownIndicator.Visible = false;
+            pilotLeftIndicator.Visible = false;
+
+            copilotAIndicator.Visible = false;
+            copilotBIndicator.Visible = false;
+            copilotYIndicator.Visible = false;
+            copilotXIndicator.Visible = false;
+            copilotLBumperIndicator.Visible = false;
+            copilotLTriggerIndicator.Visible = false;
+            copilotRBumperIndicator.Visible = false;
+            copilotRTriggerIndicator.Visible = false;
+            copilotLStickIndicator.Visible = false;
+            copilotRStickIndicator.Visible = false;
+            copilotUpIndicator.Visible = false;
+            copilotRightIndicator.Visible = false;
+            copilotDownIndicator.Visible = false;
+            copilotLeftIndicator.Visible = false;
+        }
+
+        private void updatePilotButtons() {
+            pilotAIndicator.Visible = pilot.A_down;
+            pilotBIndicator.Visible = pilot.B_down;
+            pilotYIndicator.Visible = pilot.Y_down;
+            pilotXIndicator.Visible = pilot.X_down;
+            pilotLBumperIndicator.Visible = pilot.LBumper_down;
+            //pilotLTriggerIndicator.Visible = pilot.LTrigger;
+            pilotRBumperIndicator.Visible = pilot.RBumper_down;
+            //pilotRTriggerIndicator.Visible = pilot.RTrigger;
+            pilotLStickIndicator.Visible = pilot.LStick_down;
+            pilotRStickIndicator.Visible = pilot.RStick_down;
+            pilotUpIndicator.Visible = pilot.Dpad_Up_down;
+            pilotRightIndicator.Visible = pilot.Dpad_Right_down;
+            pilotDownIndicator.Visible = pilot.Dpad_Down_down;
+            pilotLeftIndicator.Visible = pilot.Dpad_Left_down;
+        }
+
+        private void updateCopilotButtons() {
+            copilotAIndicator.Visible = copilot.A_down;
+            copilotBIndicator.Visible = copilot.B_down;
+            copilotYIndicator.Visible = copilot.Y_down;
+            copilotXIndicator.Visible = copilot.X_down;
+            copilotLBumperIndicator.Visible = copilot.LBumper_down;
+            //copilotLTriggerIndicator.Visible = copilot.LTrigger;
+            copilotRBumperIndicator.Visible = copilot.RBumper_down;
+            //copilotRTriggerIndicator.Visible = copilot.RTrigger;
+            copilotLStickIndicator.Visible = copilot.LStick_down;
+            copilotRStickIndicator.Visible = copilot.RStick_down;
+            copilotUpIndicator.Visible = copilot.Dpad_Up_down;
+            copilotRightIndicator.Visible = copilot.Dpad_Right_down;
+            copilotDownIndicator.Visible = copilot.Dpad_Down_down;
+            copilotLeftIndicator.Visible = copilot.Dpad_Left_down;
+        }
+
+        /* code for some mission, commented out for now
         private void button18_Click(object sender, EventArgs e)
         {
             double L = Double.Parse(LengthOfBarrel.Text);
@@ -464,7 +535,8 @@ namespace GUI
             double result = cone - hole;
             answerBox.Text = result.ToString();  
         }
-        */
+         */
+
         private void benthicButton_Click(object sender, EventArgs e)
         {
             ProcessImage(video);
