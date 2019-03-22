@@ -70,14 +70,12 @@ namespace GUI
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.trackBar3 = new System.Windows.Forms.TrackBar();
             this.trackBar4 = new System.Windows.Forms.TrackBar();
-            this.benthicButton = new System.Windows.Forms.Button();
+            this.cvButton = new System.Windows.Forms.Button();
             this.forPrefButton = new System.Windows.Forms.Button();
             this.backPrefButton = new System.Windows.Forms.Button();
             this.rightPrefButton = new System.Windows.Forms.Button();
             this.leftPrefButton = new System.Windows.Forms.Button();
             this.capButton = new System.Windows.Forms.Button();
-            this.propulsionActuator1 = new GUI.PropulsionActuator();
-            this.propulsionActuator2 = new GUI.PropulsionActuator();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.rovPanel = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -86,7 +84,6 @@ namespace GUI
             this.CircleCount = new System.Windows.Forms.Label();
             this.triangleCount = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -126,6 +123,8 @@ namespace GUI
             this.copilotLTriggerIndicator = new System.Windows.Forms.Button();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.CopilotConnectionLabel = new System.Windows.Forms.Label();
+            this.propulsionActuator1 = new GUI.PropulsionActuator();
+            this.propulsionActuator2 = new GUI.PropulsionActuator();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
@@ -134,7 +133,6 @@ namespace GUI
             this.rovPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
-            this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -162,7 +160,7 @@ namespace GUI
             this.connectButton.TabIndex = 0;
             this.connectButton.Text = "Connect ROV";
             this.connectButton.UseVisualStyleBackColor = true;
-            this.connectButton.Click += new System.EventHandler(this.button1_Click);
+            this.connectButton.Click += new System.EventHandler(this.connectROV_Click);
             // 
             // queueLabel
             // 
@@ -184,7 +182,7 @@ namespace GUI
             this.armButton.TabIndex = 2;
             this.armButton.Text = "Arm";
             this.armButton.UseVisualStyleBackColor = true;
-            this.armButton.Click += new System.EventHandler(this.button2_Click);
+            this.armButton.Click += new System.EventHandler(this.arm_Click);
             // 
             // portLabel
             // 
@@ -517,58 +515,62 @@ namespace GUI
             // 
             // trackBar1
             // 
-            this.trackBar1.Location = new System.Drawing.Point(2, 2);
+            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.trackBar1.Location = new System.Drawing.Point(809, 373);
             this.trackBar1.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar1.Maximum = 200;
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBar1.Size = new System.Drawing.Size(45, 15);
+            this.trackBar1.Size = new System.Drawing.Size(45, 91);
             this.trackBar1.TabIndex = 42;
             this.trackBar1.Value = 100;
             // 
             // trackBar2
             // 
-            this.trackBar2.Location = new System.Drawing.Point(129, 2);
+            this.trackBar2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.trackBar2.Location = new System.Drawing.Point(858, 373);
             this.trackBar2.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar2.Maximum = 200;
             this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(42, 38);
+            this.trackBar2.Size = new System.Drawing.Size(156, 45);
             this.trackBar2.TabIndex = 43;
             this.trackBar2.Value = 108;
             // 
             // trackBar3
             // 
-            this.trackBar3.Location = new System.Drawing.Point(2, 44);
+            this.trackBar3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.trackBar3.Location = new System.Drawing.Point(760, 373);
             this.trackBar3.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar3.Maximum = 200;
             this.trackBar3.Name = "trackBar3";
             this.trackBar3.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBar3.Size = new System.Drawing.Size(45, 15);
+            this.trackBar3.Size = new System.Drawing.Size(45, 91);
             this.trackBar3.TabIndex = 44;
             this.trackBar3.Value = 100;
             // 
             // trackBar4
             // 
-            this.trackBar4.Location = new System.Drawing.Point(129, 44);
+            this.trackBar4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.trackBar4.Location = new System.Drawing.Point(858, 421);
             this.trackBar4.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar4.Maximum = 200;
             this.trackBar4.Name = "trackBar4";
-            this.trackBar4.Size = new System.Drawing.Size(42, 39);
+            this.trackBar4.Size = new System.Drawing.Size(156, 45);
             this.trackBar4.TabIndex = 45;
             this.trackBar4.Value = 100;
             // 
-            // benthicButton
+            // cvButton
             // 
-            this.benthicButton.Enabled = false;
-            this.benthicButton.Location = new System.Drawing.Point(98, 40);
-            this.benthicButton.Margin = new System.Windows.Forms.Padding(2);
-            this.benthicButton.Name = "benthicButton";
-            this.benthicButton.Size = new System.Drawing.Size(92, 19);
-            this.benthicButton.TabIndex = 59;
-            this.benthicButton.Text = "Find Organisms";
-            this.benthicButton.UseMnemonic = false;
-            this.benthicButton.UseVisualStyleBackColor = true;
-            this.benthicButton.Click += new System.EventHandler(this.computerVisionButtonClick);
+            this.cvButton.Enabled = false;
+            this.cvButton.Location = new System.Drawing.Point(98, 40);
+            this.cvButton.Margin = new System.Windows.Forms.Padding(2);
+            this.cvButton.Name = "cvButton";
+            this.cvButton.Size = new System.Drawing.Size(92, 19);
+            this.cvButton.TabIndex = 59;
+            this.cvButton.Text = "Find Organisms";
+            this.cvButton.UseMnemonic = false;
+            this.cvButton.UseVisualStyleBackColor = true;
+            this.cvButton.Click += new System.EventHandler(this.computerVisionButtonClick);
             // 
             // forPrefButton
             // 
@@ -577,7 +579,7 @@ namespace GUI
             this.forPrefButton.Location = new System.Drawing.Point(86, 2);
             this.forPrefButton.Margin = new System.Windows.Forms.Padding(2);
             this.forPrefButton.Name = "forPrefButton";
-            this.forPrefButton.Size = new System.Drawing.Size(80, 41);
+            this.forPrefButton.Size = new System.Drawing.Size(80, 42);
             this.forPrefButton.TabIndex = 53;
             this.forPrefButton.Text = "↑";
             this.forPrefButton.UseVisualStyleBackColor = false;
@@ -587,10 +589,10 @@ namespace GUI
             // 
             this.backPrefButton.BackColor = System.Drawing.Color.Red;
             this.backPrefButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.backPrefButton.Location = new System.Drawing.Point(86, 47);
+            this.backPrefButton.Location = new System.Drawing.Point(86, 48);
             this.backPrefButton.Margin = new System.Windows.Forms.Padding(2);
             this.backPrefButton.Name = "backPrefButton";
-            this.backPrefButton.Size = new System.Drawing.Size(80, 42);
+            this.backPrefButton.Size = new System.Drawing.Size(80, 43);
             this.backPrefButton.TabIndex = 54;
             this.backPrefButton.Text = "↓";
             this.backPrefButton.UseVisualStyleBackColor = false;
@@ -600,10 +602,10 @@ namespace GUI
             // 
             this.rightPrefButton.BackColor = System.Drawing.Color.Red;
             this.rightPrefButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rightPrefButton.Location = new System.Drawing.Point(170, 47);
+            this.rightPrefButton.Location = new System.Drawing.Point(170, 48);
             this.rightPrefButton.Margin = new System.Windows.Forms.Padding(2);
             this.rightPrefButton.Name = "rightPrefButton";
-            this.rightPrefButton.Size = new System.Drawing.Size(82, 42);
+            this.rightPrefButton.Size = new System.Drawing.Size(82, 43);
             this.rightPrefButton.TabIndex = 55;
             this.rightPrefButton.Text = "→";
             this.rightPrefButton.UseVisualStyleBackColor = false;
@@ -613,10 +615,10 @@ namespace GUI
             // 
             this.leftPrefButton.BackColor = System.Drawing.Color.Red;
             this.leftPrefButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.leftPrefButton.Location = new System.Drawing.Point(2, 47);
+            this.leftPrefButton.Location = new System.Drawing.Point(2, 48);
             this.leftPrefButton.Margin = new System.Windows.Forms.Padding(2);
             this.leftPrefButton.Name = "leftPrefButton";
-            this.leftPrefButton.Size = new System.Drawing.Size(80, 42);
+            this.leftPrefButton.Size = new System.Drawing.Size(80, 43);
             this.leftPrefButton.TabIndex = 56;
             this.leftPrefButton.Text = "←";
             this.leftPrefButton.UseVisualStyleBackColor = false;
@@ -770,31 +772,13 @@ namespace GUI
             this.tableLayoutPanel4.Controls.Add(this.leftPrefButton, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.rightPrefButton, 2, 1);
             this.tableLayoutPanel4.Controls.Add(this.forPrefButton, 1, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(500, 375);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(500, 373);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(254, 91);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(254, 93);
             this.tableLayoutPanel4.TabIndex = 67;
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tableLayoutPanel5.ColumnCount = 2;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Controls.Add(this.trackBar3, 0, 1);
-            this.tableLayoutPanel5.Controls.Add(this.trackBar2, 1, 0);
-            this.tableLayoutPanel5.Controls.Add(this.trackBar1, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.trackBar4, 1, 1);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(760, 375);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 2;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(254, 85);
-            this.tableLayoutPanel5.TabIndex = 68;
             // 
             // tableLayoutPanel2
             // 
@@ -826,6 +810,7 @@ namespace GUI
             // 
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox2.Image = global::GUI.Properties.Resources.triangle;
             this.pictureBox2.Location = new System.Drawing.Point(3, 3);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(28, 23);
@@ -836,6 +821,7 @@ namespace GUI
             // 
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox3.Image = global::GUI.Properties.Resources.square;
             this.pictureBox3.Location = new System.Drawing.Point(71, 3);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(28, 23);
@@ -846,6 +832,7 @@ namespace GUI
             // 
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox4.Image = global::GUI.Properties.Resources.line;
             this.pictureBox4.Location = new System.Drawing.Point(139, 3);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(28, 23);
@@ -856,6 +843,7 @@ namespace GUI
             // 
             this.pictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox5.Image = global::GUI.Properties.Resources.circle;
             this.pictureBox5.Location = new System.Drawing.Point(207, 3);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(28, 23);
@@ -1240,16 +1228,19 @@ namespace GUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1358, 670);
+            this.Controls.Add(this.trackBar4);
+            this.Controls.Add(this.trackBar2);
+            this.Controls.Add(this.trackBar3);
             this.Controls.Add(this.CopilotConnectionLabel);
             this.Controls.Add(this.copilotPanel);
+            this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.pilotPanel);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.PilotConnectionLabel);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.rovPanel);
             this.Controls.Add(this.tableLayoutPanel4);
-            this.Controls.Add(this.tableLayoutPanel5);
-            this.Controls.Add(this.benthicButton);
+            this.Controls.Add(this.cvButton);
             this.Controls.Add(this.capButton);
             this.Controls.Add(this.queueLabel);
             this.Controls.Add(this.depthLockEngageLabel);
@@ -1274,8 +1265,6 @@ namespace GUI
             this.rovPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel5.ResumeLayout(false);
-            this.tableLayoutPanel5.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
@@ -1335,7 +1324,7 @@ namespace GUI
         private System.Windows.Forms.TrackBar trackBar2;
         private System.Windows.Forms.TrackBar trackBar3;
         private System.Windows.Forms.TrackBar trackBar4;
-        private System.Windows.Forms.Button benthicButton;
+        private System.Windows.Forms.Button cvButton;
         private System.Windows.Forms.Button forPrefButton;
         private System.Windows.Forms.Button backPrefButton;
         private System.Windows.Forms.Button rightPrefButton;
@@ -1350,7 +1339,6 @@ namespace GUI
         private System.Windows.Forms.Label triangleCount;
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox3;

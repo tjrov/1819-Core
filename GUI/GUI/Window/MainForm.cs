@@ -48,10 +48,11 @@ namespace GUI
             //controller
             pilot = X.Gamepad_1;
             pilot.Enable = true;
-            pilot.Update(); //must call update right after setting enable to true in order for it to connect
+            //must call update right after setting enable to true in order for it to connect
+            pilot.Update(); 
             
             copilot = X.Gamepad_2;
-            copilot.Enable = false; //change later on
+            copilot.Enable = true;
             copilot.Update();
 
             //setup window
@@ -81,6 +82,8 @@ namespace GUI
             //update displays when sensors polled
             rov.OrientationSensor.Updated += OrientationSensor_Updated;
             rov.DepthSensor.Updated += DepthSensor_Updated;
+            // define position for four servos
+            rov.ToolsActuator.Data.Speeds = new double[4] { 100, 100, 100, 100 };
 
             // enumerate video devices
             videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
@@ -98,7 +101,7 @@ namespace GUI
             {
                 videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
             }
-            catch (NullReferenceException potato)
+            catch (NullReferenceException ex)
             {
                 //fill in later, catch made temporarily to ignore NullReferenceException
             }
@@ -242,12 +245,12 @@ namespace GUI
             armButton.Text = rov.StatusSensor.Data.Status == ROVStatus.ARMED ? "Armed" : "Disarmed";
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void connectROV_Click(object sender, EventArgs e)
         {
             comms.LinkActive = !comms.LinkActive;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void arm_Click(object sender, EventArgs e)
         {
             if (rov.StatusSensor.Data.Status == ROVStatus.ARMED)
             {
@@ -257,7 +260,7 @@ namespace GUI
             {
                 rov.StatusActuator.Data.DesiredStatus = ROVStatus.ARMED;
             }
-        }
+        } 
 
         private void backPrefButton_Click(object sender, EventArgs e)
         {
@@ -269,7 +272,6 @@ namespace GUI
         }
         private void forPrefButton_Click(object sender, EventArgs e)
         {
-
             forPrefButton.BackColor = Color.Green;
             backPrefButton.BackColor = Color.Red;
             leftPrefButton.BackColor = Color.Red;
@@ -284,8 +286,6 @@ namespace GUI
             rightPrefButton.BackColor = Color.Red;
             rov.setDirection(3);
         }
-
-
 
         private void rightPrefButton_Click(object sender, EventArgs e)
         {
@@ -377,6 +377,7 @@ namespace GUI
                 botRight.Text = (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, -100);
                 #endregion
 
+
                 #region depth lock
                 if (pilot.RBumper_down && !RightBumperCheck) //checks if bumper is down
                 {
@@ -416,6 +417,7 @@ namespace GUI
                 }
                 #endregion
 
+                /*
                 #region ACTUATOR CODE for next few lines
                 int val0 = Convert.ToInt32(pilot.A_down) - Convert.ToInt32(pilot.B_down);
                 int val1 = Convert.ToInt32(pilot.X_down) - Convert.ToInt32(pilot.Y_down);
@@ -428,6 +430,7 @@ namespace GUI
                 rov.ToolsActuator.Data.Speeds[3] = val3 * 100;
 
                 #endregion
+                */
 
                 #region ROV Motion
                 //Lstick controls horizontal translations 
@@ -447,6 +450,30 @@ namespace GUI
                 //left bumper moves downward, right bumper moves upward
                 rov.VerticalMotion = (int)(ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, -100) + ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, 100));
                 #endregion
+
+                #region Direction Lock
+                if  (pilot.Dpad_Up_down) 
+                {
+                    forPrefButton_Click(null, null);
+                }
+
+                if (pilot.Dpad_Right_down)
+                {
+                    rightPrefButton_Click(null, null);
+                }
+                
+                if (pilot.Dpad_Down_down)
+                {
+                    backPrefButton_Click(null, null);
+                }
+
+                if (pilot.Dpad_Left_down)
+                {
+                    leftPrefButton_Click(null, null);
+                }
+
+                #endregion
+
             } else
             {
                 PilotConnectionLabel.Text = "Pilot Controller Not Connected";
@@ -463,6 +490,7 @@ namespace GUI
             trackBar3.Value = (int)(ConvertUtils.Map(RStickZeroY, -32768, 32767, 0, 200));
             trackBar4.Value = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, 0, 200));
             #endregion
+
             #region Copilot Controller
             copilot.Update();
 
@@ -470,8 +498,33 @@ namespace GUI
             {
                 CopilotConnectionLabel.Text = "Copilot Controller Connected";
                 CopilotConnectionLabel.ForeColor = Color.Green;
-
                 updateCopilotButtons();
+
+                #region Servo Controls
+                if (copilot.Y_down)
+                {
+                    // switch servo one
+                    rov.ToolsActuator.Data.Speeds[0] *= -1;
+                }
+
+                if (copilot.B_down)
+                {
+                    // switch servo two
+                    rov.ToolsActuator.Data.Speeds[1] *= -1;
+                }
+
+                if (copilot.A_down)
+                {
+                    // switch servo three
+                    rov.ToolsActuator.Data.Speeds[2] *= -1;
+                }
+
+                if (copilot.X_down)
+                {
+                    // switch servo four
+                    rov.ToolsActuator.Data.Speeds[4] *= -1;
+                }
+                #endregion
             } else
             {
                 CopilotConnectionLabel.Text = "Copilot Controller Not Connected";
@@ -572,44 +625,30 @@ namespace GUI
             rov.ForeAftMotion = 100;
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                //if(Int32.TryParse(textBox1.Text , out int n))
-                // rov.PropulsionActuator.Data.Speeds[i] = n;
-            }
-        }
-
         private void capButton_Click(object sender, EventArgs e)
         {
             if(videoSource == null)
             {
-                DialogResult res = MessageBox.Show("There isn't a video source connected dipshit. You may no longer click the specieiieieies button.", "Sumting Wong", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                benthicButton.Enabled = false;
+                DialogResult res = MessageBox.Show("There isn't a video source connected.", "No Camera", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                cvButton.Enabled = false;
             }
             else
             {
                 if (isCapturing)
                 {
                     isCapturing = false;
-                    capButton.Text = "Press to start capturing!";
+                    capButton.Text = "Start Camera";
                     videoSource.SignalToStop();
                 }
                 else
                 {
                     isCapturing = true;
-                    capButton.Text = "Capturing!";
+                    capButton.Text = "Stop Camera";
                     videoSource.Start();
                 }
-                benthicButton.Enabled = true;
+                cvButton.Enabled = true;
             }
             
-        }
-
-        private void selectVideoDevice_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private Bitmap video;
