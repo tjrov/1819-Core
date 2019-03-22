@@ -38,7 +38,7 @@ namespace GUI
             this.armButton = new System.Windows.Forms.Button();
             this.portLabel = new System.Windows.Forms.Label();
             this.resetButton = new System.Windows.Forms.Button();
-            this.ConnectionLabel = new System.Windows.Forms.Label();
+            this.PilotConnectionLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Label();
@@ -125,6 +125,7 @@ namespace GUI
             this.copilotLBumperIndicator = new System.Windows.Forms.Button();
             this.copilotLTriggerIndicator = new System.Windows.Forms.Button();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
+            this.CopilotConnectionLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
@@ -207,18 +208,19 @@ namespace GUI
             this.resetButton.UseVisualStyleBackColor = true;
             this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
-            // ConnectionLabel
+            // PilotConnectionLabel
             // 
-            this.ConnectionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ConnectionLabel.AutoSize = true;
-            this.ConnectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ConnectionLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.ConnectionLabel.Location = new System.Drawing.Point(1178, 30);
-            this.ConnectionLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.ConnectionLabel.Name = "ConnectionLabel";
-            this.ConnectionLabel.Size = new System.Drawing.Size(168, 15);
-            this.ConnectionLabel.TabIndex = 5;
-            this.ConnectionLabel.Text = "Controller Not Connected";
+            this.PilotConnectionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.PilotConnectionLabel.AutoSize = true;
+            this.PilotConnectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PilotConnectionLabel.ForeColor = System.Drawing.Color.DarkRed;
+            this.PilotConnectionLabel.Location = new System.Drawing.Point(524, 649);
+            this.PilotConnectionLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.PilotConnectionLabel.Name = "PilotConnectionLabel";
+            this.PilotConnectionLabel.Size = new System.Drawing.Size(201, 15);
+            this.PilotConnectionLabel.TabIndex = 5;
+            this.PilotConnectionLabel.Text = "Pilot Controller Not Connected";
+            this.PilotConnectionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label1
             // 
@@ -566,7 +568,7 @@ namespace GUI
             this.benthicButton.Text = "Find Organisms";
             this.benthicButton.UseMnemonic = false;
             this.benthicButton.UseVisualStyleBackColor = true;
-            this.benthicButton.Click += new System.EventHandler(this.benthicButton_Click);
+            this.benthicButton.Click += new System.EventHandler(this.computerVisionButtonClick);
             // 
             // forPrefButton
             // 
@@ -768,7 +770,7 @@ namespace GUI
             this.tableLayoutPanel4.Controls.Add(this.leftPrefButton, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.rightPrefButton, 2, 1);
             this.tableLayoutPanel4.Controls.Add(this.forPrefButton, 1, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(500, 330);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(500, 375);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -786,7 +788,7 @@ namespace GUI
             this.tableLayoutPanel5.Controls.Add(this.trackBar2, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.trackBar1, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.trackBar4, 1, 1);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(760, 330);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(760, 375);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -878,7 +880,7 @@ namespace GUI
             this.pilotPanel.Controls.Add(this.pilotLBumperIndicator);
             this.pilotPanel.Controls.Add(this.pilotLTriggerIndicator);
             this.pilotPanel.Controls.Add(this.pictureBox6);
-            this.pilotPanel.Location = new System.Drawing.Point(500, 427);
+            this.pilotPanel.Location = new System.Drawing.Point(500, 472);
             this.pilotPanel.Name = "pilotPanel";
             this.pilotPanel.Size = new System.Drawing.Size(254, 174);
             this.pilotPanel.TabIndex = 71;
@@ -1063,7 +1065,7 @@ namespace GUI
             this.copilotPanel.Controls.Add(this.copilotLBumperIndicator);
             this.copilotPanel.Controls.Add(this.copilotLTriggerIndicator);
             this.copilotPanel.Controls.Add(this.pictureBox7);
-            this.copilotPanel.Location = new System.Drawing.Point(760, 427);
+            this.copilotPanel.Location = new System.Drawing.Point(760, 472);
             this.copilotPanel.Name = "copilotPanel";
             this.copilotPanel.Size = new System.Drawing.Size(254, 174);
             this.copilotPanel.TabIndex = 85;
@@ -1219,16 +1221,30 @@ namespace GUI
             this.pictureBox7.TabIndex = 70;
             this.pictureBox7.TabStop = false;
             // 
+            // CopilotConnectionLabel
+            // 
+            this.CopilotConnectionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CopilotConnectionLabel.AutoSize = true;
+            this.CopilotConnectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CopilotConnectionLabel.ForeColor = System.Drawing.Color.DarkRed;
+            this.CopilotConnectionLabel.Location = new System.Drawing.Point(777, 649);
+            this.CopilotConnectionLabel.Name = "CopilotConnectionLabel";
+            this.CopilotConnectionLabel.Size = new System.Drawing.Size(217, 15);
+            this.CopilotConnectionLabel.TabIndex = 86;
+            this.CopilotConnectionLabel.Text = "Copilot Controller Not Connected";
+            this.CopilotConnectionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1358, 670);
+            this.Controls.Add(this.CopilotConnectionLabel);
             this.Controls.Add(this.copilotPanel);
             this.Controls.Add(this.pilotPanel);
             this.Controls.Add(this.tableLayoutPanel2);
-            this.Controls.Add(this.ConnectionLabel);
+            this.Controls.Add(this.PilotConnectionLabel);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.rovPanel);
             this.Controls.Add(this.tableLayoutPanel4);
@@ -1284,7 +1300,7 @@ namespace GUI
         private System.Windows.Forms.Button armButton;
         private System.Windows.Forms.Label portLabel;
         private System.Windows.Forms.Button resetButton;
-        private System.Windows.Forms.Label ConnectionLabel;
+        private System.Windows.Forms.Label PilotConnectionLabel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label button1;
         private System.Windows.Forms.Label button2;
@@ -1372,6 +1388,7 @@ namespace GUI
         private System.Windows.Forms.Button copilotLBumperIndicator;
         private System.Windows.Forms.Button copilotLTriggerIndicator;
         private System.Windows.Forms.PictureBox pictureBox7;
+        private System.Windows.Forms.Label CopilotConnectionLabel;
     }
 }
 

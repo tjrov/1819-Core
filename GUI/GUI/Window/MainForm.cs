@@ -311,6 +311,7 @@ namespace GUI
 
         private void controllerUpdateTimer_Tick(object sender, EventArgs e)
         {
+            #region Pilot Controller
             pilot.Update();
 
             //Zeroing Code for left joystick
@@ -341,11 +342,12 @@ namespace GUI
 
             if (pilot.IsConnected)
             {
-                ConnectionLabel.Text = "Controller Connected";
-                ConnectionLabel.ForeColor = Color.Green;
+                PilotConnectionLabel.Text = "Pilot Controller Connected";
+                PilotConnectionLabel.ForeColor = Color.Green;
 
                 updatePilotButtons();
 
+                #region button update
                 button0.Text = "LStick.X" + LStickZeroX;
                 button1.Text = "LStick.Y" + LStickZeroY;
                 button2.Text = "LStick" + pilot.LStick_down;
@@ -364,14 +366,18 @@ namespace GUI
                 button15.Text = "LTrigger" + pilot.LTrigger;
                 button16.Text = "RTrigger" + pilot.RTrigger;
                 button17.Text = "Start" + pilot.Start_down;
-                //Code for displaying motor values
+                #endregion
+
+                #region Code for displaying motor values
                 topLeft.Text = (rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, -100);
                 midLeft.Text = "" + rov.VerticalMotion;
                 botLeft.Text = (rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, -100);
                 topRight.Text = (rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, -100);
                 midRight.Text = "" + rov.VerticalMotion;
                 botRight.Text = (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, -100);
+                #endregion
 
+                #region depth lock
                 if (pilot.RBumper_down && !RightBumperCheck) //checks if bumper is down
                 {
                     isLockClicked = !isLockClicked; //turns on lock position
@@ -408,7 +414,9 @@ namespace GUI
                     depthLockEngageLabel.Text = "Depth Lock Disengaged";
 
                 }
-                //ACTUATOR CODE for next few lines
+                #endregion
+
+                #region ACTUATOR CODE for next few lines
                 int val0 = Convert.ToInt32(pilot.A_down) - Convert.ToInt32(pilot.B_down);
                 int val1 = Convert.ToInt32(pilot.X_down) - Convert.ToInt32(pilot.Y_down);
                 int val2 = Convert.ToInt32(pilot.Dpad_Down_down) - Convert.ToInt32(pilot.Dpad_Right_down);
@@ -419,8 +427,9 @@ namespace GUI
                 rov.ToolsActuator.Data.Speeds[2] = val2 * 100;
                 rov.ToolsActuator.Data.Speeds[3] = val3 * 100;
 
-                //end of actuator code
+                #endregion
 
+                #region ROV Motion
                 //Lstick controls horizontal translations 
                 rov.ForeAftMotion = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, -100, 100));
                 rov.StrafeMotion = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, -100, 100));
@@ -435,14 +444,13 @@ namespace GUI
                     //Rstick controls yaw (turning about vertical axis)
                     rov.TurnMotion = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100));
                 }
-
                 //left bumper moves downward, right bumper moves upward
                 rov.VerticalMotion = (int)(ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, -100) + ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, 100));
-            }
-            else
+                #endregion
+            } else
             {
-                ConnectionLabel.Text = "Controller Not Connected";
-                ConnectionLabel.ForeColor = Color.DarkRed;
+                PilotConnectionLabel.Text = "Pilot Controller Not Connected";
+                PilotConnectionLabel.ForeColor = Color.DarkRed;
                 depthLockEngageLabel.ForeColor = Color.DarkRed;
                 depthLockEngageLabel.Text = "Depth Lock Disengaged";
                 rov.VerticalMotion = 0.0;
@@ -454,6 +462,23 @@ namespace GUI
             trackBar2.Value = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, 0, 200));
             trackBar3.Value = (int)(ConvertUtils.Map(RStickZeroY, -32768, 32767, 0, 200));
             trackBar4.Value = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, 0, 200));
+            #endregion
+            #region Copilot Controller
+            copilot.Update();
+
+            if (copilot.IsConnected)
+            {
+                CopilotConnectionLabel.Text = "Copilot Controller Connected";
+                CopilotConnectionLabel.ForeColor = Color.Green;
+
+                updateCopilotButtons();
+            } else
+            {
+                CopilotConnectionLabel.Text = "Copilot Controller Not Connected";
+                CopilotConnectionLabel.ForeColor = Color.DarkRed;
+            }
+
+            #endregion
         }
 
         private void hideAllControllerButtons()
@@ -495,9 +520,9 @@ namespace GUI
             pilotYIndicator.Visible = pilot.Y_down;
             pilotXIndicator.Visible = pilot.X_down;
             pilotLBumperIndicator.Visible = pilot.LBumper_down;
-            //pilotLTriggerIndicator.Visible = pilot.LTrigger;
+            pilotLTriggerIndicator.Visible = pilot.LTrigger > 128; // 0 - 255
             pilotRBumperIndicator.Visible = pilot.RBumper_down;
-            //pilotRTriggerIndicator.Visible = pilot.RTrigger;
+            pilotRTriggerIndicator.Visible = pilot.RTrigger > 128;
             pilotLStickIndicator.Visible = pilot.LStick_down;
             pilotRStickIndicator.Visible = pilot.RStick_down;
             pilotUpIndicator.Visible = pilot.Dpad_Up_down;
@@ -512,9 +537,9 @@ namespace GUI
             copilotYIndicator.Visible = copilot.Y_down;
             copilotXIndicator.Visible = copilot.X_down;
             copilotLBumperIndicator.Visible = copilot.LBumper_down;
-            //copilotLTriggerIndicator.Visible = copilot.LTrigger;
+            copilotLTriggerIndicator.Visible = copilot.LTrigger > 128;
             copilotRBumperIndicator.Visible = copilot.RBumper_down;
-            //copilotRTriggerIndicator.Visible = copilot.RTrigger;
+            copilotRTriggerIndicator.Visible = copilot.RTrigger > 128;
             copilotLStickIndicator.Visible = copilot.LStick_down;
             copilotRStickIndicator.Visible = copilot.RStick_down;
             copilotUpIndicator.Visible = copilot.Dpad_Up_down;
@@ -537,7 +562,7 @@ namespace GUI
         }
          */
 
-        private void benthicButton_Click(object sender, EventArgs e)
+        private void computerVisionButtonClick(object sender, EventArgs e)
         {
             ProcessImage(video);
         }
