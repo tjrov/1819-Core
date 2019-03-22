@@ -22,6 +22,12 @@ using AForge.Math.Geometry;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using AForge.Controls;
+
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
+using Emgu.CV.Util;
+
 namespace GUI
 {
     public partial class MainForm : Form
@@ -42,6 +48,7 @@ namespace GUI
         private bool isCapturing = false;
         private VideoCaptureDevice videoSource;
         private FilterInfoCollection videoDevices;
+        private bool EMGU = false;
 
         public MainForm()
         {
@@ -128,84 +135,150 @@ namespace GUI
 
         private void ProcessImage(Bitmap bitmap)
         {
-            // reset counters
             numberOfCircles = 0;
             numberOfLines = 0;
             numberOfSquares = 0;
             numberOfTriangles = 0;
 
-            // lock image
-            BitmapData bitmapData = bitmap.LockBits(
-                new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                ImageLockMode.ReadWrite, bitmap.PixelFormat);
+            if (EMGU) {
+                #region EmguCV
 
-            // step 1 - turn background to black
-            ColorFiltering colorFilter = new ColorFiltering();
+                #region Processing
+                Image<Bgr, Byte> source = new Image<Bgr, Byte>(bitmap);
+                var temp = source.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(88), new Gray(255));
+                #endregion
 
-            colorFilter.Red = new IntRange(0, 64);
-            colorFilter.Green = new IntRange(0, 64);
-            colorFilter.Blue = new IntRange(0, 64);
-            colorFilter.FillOutsideRange = false;
+                #region Find contours
+                VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+                CvInvoke.FindContours(temp, contours, new Mat(), RetrType.External, ChainApproxMethod.ChainApproxSimple);
+                #endregion
 
-            colorFilter.ApplyInPlace(bitmapData);
+                #region guess shapes
+                Image<Bgr, byte> final = source.Copy();
+                double approxAmount = 0.05;
+                double minRatio = 0.8; // 0.973
+                double maxRatio = 1 / minRatio;
+                double minArea = 150;
+                double bx = 5;
 
-            // step 2 - locating objects
-            BlobCounter blobCounter = new BlobCounter();
+                for (int i = 0; i < contours.Size; i++) {
+                    var contour = contours[i];
+                    double perimeter = CvInvoke.ArcLength(contour, true);
+                    VectorOfPoint approx = new VectorOfPoint();
+                    CvInvoke.ApproxPolyDP(contour, approx, approxAmount * perimeter, true);
 
-            blobCounter.FilterBlobs = true;
-            blobCounter.MinHeight = 5;
-            blobCounter.MinWidth = 5;
+                    CvInvoke.DrawContours(final, contours, i, new MCvScalar(0, 0, 255), 1);
+                    Rectangle bounds = CvInvoke.BoundingRectangle(contour);
+                    final.Draw(bounds, new Bgr(255, 0, 0));
 
-            blobCounter.ProcessImage(bitmapData);
-            Blob[] blobs = blobCounter.GetObjectsInformation();
-            bitmap.UnlockBits(bitmapData);
+                    double area = CvInvoke.ContourArea(contour);
 
-            // step 3 - check objects' type and highlight
-            SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
+                    if (!(bounds.X > bx && bounds.X < final.Width - bx)) {
+                        continue;
+                    }
 
-            Graphics g = Graphics.FromImage(bitmap);
+                    if (!(bounds.Y > bx && bounds.Y < final.Height - bx)) {
+                        continue;
+                    }
 
-            for (int i = 0, n = blobs.Length; i < n; i++)
-            {
-                List<IntPoint> edgePoints = blobCounter.GetBlobsEdgePoints(blobs[i]);
+                    if (area < minArea) {
+                        continue;
+                    }
 
-                AForge.Point center;
-                float radius;
+                    if (approx.Size == 3) {
+                        numberOfTriangles += 1;
+                    } else if (approx.Size == 4) {
+                        System.Drawing.Point[] test = approx.ToArray();
 
-                // is circle ?
-                if (shapeChecker.IsCircle(edgePoints, out center, out radius))
-                {
-                    numberOfCircles++;
+                        System.Drawing.Point a = test[0];
+                        System.Drawing.Point b = test[1];
+                        System.Drawing.Point c = test[2];
+
+                        double width = Math.Sqrt((((double)(a.X - b.X)) * ((double)(a.X - b.X))) + (((double)(a.Y - b.Y)) * ((double)(a.Y - b.Y))));
+                        double height = Math.Sqrt((((double)(c.X - b.X)) * ((double)(c.X - b.X))) + (((double)(c.Y - b.Y)) * ((double)(c.Y - b.Y))));
+
+                        double ratio = width / height;
+                        if (ratio > minRatio && ratio < maxRatio) {
+                            numberOfSquares += 1;
+                        } else {
+                            numberOfLines += 1;
+                        }
+                    } else {
+                        numberOfCircles += 1;
+                    }
                 }
-                else
-                {
-                    List<IntPoint> corners;
 
-                    // is triangle or quadrilateral
-                    if (shapeChecker.IsConvexPolygon(edgePoints, out corners))
-                    {
-                        // get sub-type
-                        PolygonSubType subType = shapeChecker.CheckPolygonSubType(corners);
-                        if (subType == PolygonSubType.Square)
-                        {
-                            numberOfSquares++;
-                        }
-                        else if (subType == PolygonSubType.EquilateralTriangle)
-                        {
-                            numberOfTriangles++;
-                        }
-                        else 
-                        {
-                            numberOfLines++;
+                #endregion
+
+                #endregion
+            } else {
+                #region AForge.NET
+                // lock image
+                BitmapData bitmapData = bitmap.LockBits(
+                    new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                    ImageLockMode.ReadWrite, bitmap.PixelFormat);
+
+                // step 1 - turn background to black
+                ColorFiltering colorFilter = new ColorFiltering();
+
+                colorFilter.Red = new IntRange(0, 64);
+                colorFilter.Green = new IntRange(0, 64);
+                colorFilter.Blue = new IntRange(0, 64);
+                colorFilter.FillOutsideRange = false;
+
+                colorFilter.ApplyInPlace(bitmapData);
+
+                // step 2 - locating objects
+                BlobCounter blobCounter = new BlobCounter();
+
+                blobCounter.FilterBlobs = true;
+                blobCounter.MinHeight = 5;
+                blobCounter.MinWidth = 5;
+
+                blobCounter.ProcessImage(bitmapData);
+                Blob[] blobs = blobCounter.GetObjectsInformation();
+                bitmap.UnlockBits(bitmapData);
+
+                // step 3 - check objects' type and highlight
+                SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
+
+                Graphics g = Graphics.FromImage(bitmap);
+
+                for (int i = 0, n = blobs.Length; i < n; i++) {
+                    List<IntPoint> edgePoints = blobCounter.GetBlobsEdgePoints(blobs[i]);
+
+                    AForge.Point center;
+                    float radius;
+
+                    // is circle ?
+                    if (shapeChecker.IsCircle(edgePoints, out center, out radius)) {
+                        numberOfCircles++;
+                    } else {
+                        List<IntPoint> corners;
+
+                        // is triangle or quadrilateral
+                        if (shapeChecker.IsConvexPolygon(edgePoints, out corners)) {
+                            // get sub-type
+                            PolygonSubType subType = shapeChecker.CheckPolygonSubType(corners);
+                            if (subType == PolygonSubType.Square) {
+                                numberOfSquares++;
+                            } else if (subType == PolygonSubType.EquilateralTriangle) {
+                                numberOfTriangles++;
+                            } else {
+                                numberOfLines++;
+                            }
                         }
                     }
                 }
+                g.Dispose();
+
+                // put new image to clipboard
+                Clipboard.SetDataObject(bitmap);
+                // and to picture box
+                picture.Image = bitmap;
+                #endregion
             }
-            g.Dispose();
-            // put new image to clipboard
-            Clipboard.SetDataObject(bitmap);
-            // and to picture box
-            picture.Image = bitmap;
+
             triangleCount.Text = "" + numberOfTriangles;
             CircleCount.Text = "" + numberOfCircles;
             SquareCount.Text = "" + numberOfSquares;
