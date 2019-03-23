@@ -533,7 +533,7 @@ namespace GUI
                 {
                     forPrefButton_Click(null, null);
                     pilotKeysUp[(int)ControllerKeys.Up] = false;
-                } else {
+                } else if (!pilot.Dpad_Up_down) {
                     pilotKeysUp[(int)ControllerKeys.Up] = true;
                 }
 
@@ -541,7 +541,7 @@ namespace GUI
                 {
                     rightPrefButton_Click(null, null);
                     pilotKeysUp[(int)ControllerKeys.Right] = false;
-                } else {
+                } else if (!pilot.Dpad_Right_down) {
                     pilotKeysUp[(int)ControllerKeys.Right] = true;
                 }
                 
@@ -549,7 +549,7 @@ namespace GUI
                 {
                     backPrefButton_Click(null, null);
                     pilotKeysUp[(int)ControllerKeys.Down] = false;
-                } else {
+                } else if (!pilot.Dpad_Down_down){
                     pilotKeysUp[(int)ControllerKeys.Down] = true;
                 }
 
@@ -557,7 +557,7 @@ namespace GUI
                 {
                     leftPrefButton_Click(null, null);
                     pilotKeysUp[(int)ControllerKeys.Left] = false;
-                } else {
+                } else if (!pilot.Dpad_Left_down) {
                     pilotKeysUp[(int)ControllerKeys.Left] = true;
                 }
 
@@ -590,41 +590,60 @@ namespace GUI
                 updateCopilotButtons();
 
                 #region Servo Controls
-                if (copilot.Y_down)
+                if (copilot.Y_down && copilotKeysUp[(int)ControllerKeys.Y])
                 {
                     // switch servo one (active claw)
                     rov.ToolsActuator.Data.Speeds[0] *= -1;
+                    copilotKeysUp[(int)ControllerKeys.Y] = false;
+                } else if (!copilot.Y_down) {
+                    copilotKeysUp[(int)ControllerKeys.Y] = true;
                 }
 
-                if (copilot.B_down)
+                if (copilot.B_down && copilotKeysUp[(int)ControllerKeys.B])
                 {
                     // switch servo two (rock holding container)
                     rov.ToolsActuator.Data.Speeds[1] *= -1;
+                    copilotKeysUp[(int)ControllerKeys.B] = false;
+                } else if (!copilot.B_down) {
+                    copilotKeysUp[(int)ControllerKeys.B] = true;
                 }
 
-                if (copilot.A_down)
+                if (copilot.A_down && copilotKeysUp[(int)ControllerKeys.A])
                 {
                     // switch servo three (deploy mini rov)
                     rov.ToolsActuator.Data.Speeds[2] *= -1;
+                    copilotKeysUp[(int)ControllerKeys.A] = false;
+                } else if (!copilot.A_down) {
+                    copilotKeysUp[(int)ControllerKeys.A] = true;
                 }
 
-                if (copilot.X_down)
+                if (copilot.X_down && copilotKeysUp[(int)ControllerKeys.X])
                 {
                     // switch servo four (?)
                     rov.ToolsActuator.Data.Speeds[3] *= -1;
+                    copilotKeysUp[(int) ControllerKeys.X] = false;
+                } else if (!copilot.X_down) {
+                    copilotKeysUp[(int) ControllerKeys.X] = true;
                 }
                 #endregion
 
                 #region Other Controls
-                if (copilot.Dpad_Up_down)
+                if (copilot.Dpad_Up_down && copilotKeysUp[(int)ControllerKeys.Up])
                 {
                     // start camera
                     capButton_Click(null, null);
+                    copilotKeysUp[(int)ControllerKeys.Up] = false;
+                } else if (!copilot.Dpad_Up_down) {
+                    copilotKeysUp[(int)ControllerKeys.Up] = true;
                 }
-                if (copilot.Dpad_Right_down)
+
+                if (copilot.Dpad_Right_down && copilotKeysUp[(int)ControllerKeys.Right])
                 {
                     // find shapes
                     computerVisionButtonClick(null, null);
+                    copilotKeysUp[(int)ControllerKeys.Right] = false;
+                } else if (!copilot.Dpad_Right_down) {
+                    cocopilotKeysUp[(int)ControllerKeys.Right] = true;
                 }
                 #endregion
 
