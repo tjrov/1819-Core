@@ -611,7 +611,7 @@ namespace GUI
                 if (copilot.X_down)
                 {
                     // switch servo four (?)
-                    rov.ToolsActuator.Data.Speeds[4] *= -1;
+                    rov.ToolsActuator.Data.Speeds[3] *= -1;
                 }
                 #endregion
 
