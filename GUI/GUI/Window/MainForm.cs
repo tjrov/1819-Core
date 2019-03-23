@@ -40,7 +40,6 @@ namespace GUI
         public X.Gamepad pilot, copilot;
         private bool isLockClicked = false;
         private int depthvalue = 0;
-        private bool RightBumperCheck = false;
         private int numberOfSquares = 0;
         private int numberOfCircles = 0;
         private int numberOfTriangles = 0;
@@ -49,6 +48,10 @@ namespace GUI
         private VideoCaptureDevice videoSource;
         private FilterInfoCollection videoDevices;
         private bool EMGU = false;
+
+        private enum ControllerKeys { Y, B, A, X, Up, Right, Left, Down, LeftBumper, RightBumper, LeftJoystick, RightJoystick}
+        private bool[] pilotKeysUp = new bool[12] { true, true, true, true, true, true, true, true, true, true, true, true };
+        private bool[] copilotKeysUp = new bool[12] { true, true, true, true, true, true, true, true, true, true, true, true };
 
         public MainForm()
         {
@@ -113,6 +116,7 @@ namespace GUI
                 //fill in later, catch made temporarily to ignore NullReferenceException
             }
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
+            
         }
 
         private void Comms_CommunicationException(object sender, Exception e)
@@ -452,19 +456,19 @@ namespace GUI
 
 
                 #region depth lock
-                if (pilot.RBumper_down && !RightBumperCheck) //checks if bumper is down
+                if (pilot.RBumper_down && pilotKeysUp[(int) ControllerKeys.RightBumper]) //checks if bumper is down
                 {
                     isLockClicked = !isLockClicked; //turns on lock position
                     if (isLockClicked)
                     {
                         depthvalue = (int)(rov.DepthSensor.Data.DepthValue);
                     }
-                    RightBumperCheck = true; //disables use of bumper until button is let go
+                    pilotKeysUp[(int)ControllerKeys.RightBumper] = false; //disables use of bumper until button is let go
                 }
 
-                if (pilot.RBumper_up && RightBumperCheck)
+                if (pilot.RBumper_up && !pilotKeysUp[(int)ControllerKeys.RightBumper])
                 {
-                    RightBumperCheck = false; //reenables button if it is let go
+                    pilotKeysUp[(int)ControllerKeys.RightBumper] = true; //reenables button if it is let go
                 }
 
                 if (isLockClicked)
@@ -525,24 +529,36 @@ namespace GUI
                 #endregion
 
                 #region Direction Lock
-                if  (pilot.Dpad_Up_down) 
+                if  (pilot.Dpad_Up_down && pilotKeysUp[(int)ControllerKeys.Up]) 
                 {
                     forPrefButton_Click(null, null);
+                    pilotKeysUp[(int)ControllerKeys.Up] = false;
+                } else {
+                    pilotKeysUp[(int)ControllerKeys.Up] = true;
                 }
 
-                if (pilot.Dpad_Right_down)
+                if (pilot.Dpad_Right_down && pilotKeysUp[(int)ControllerKeys.Right])
                 {
                     rightPrefButton_Click(null, null);
+                    pilotKeysUp[(int)ControllerKeys.Right] = false;
+                } else {
+                    pilotKeysUp[(int)ControllerKeys.Right] = true;
                 }
                 
-                if (pilot.Dpad_Down_down)
+                if (pilot.Dpad_Down_down && pilotKeysUp[(int)ControllerKeys.Down])
                 {
                     backPrefButton_Click(null, null);
+                    pilotKeysUp[(int)ControllerKeys.Down] = false;
+                } else {
+                    pilotKeysUp[(int)ControllerKeys.Down] = true;
                 }
 
-                if (pilot.Dpad_Left_down)
+                if (pilot.Dpad_Left_down && pilotKeysUp[(int)ControllerKeys.Left])
                 {
                     leftPrefButton_Click(null, null);
+                    pilotKeysUp[(int)ControllerKeys.Left] = false;
+                } else {
+                    pilotKeysUp[(int)ControllerKeys.Left] = true;
                 }
 
                 #endregion
@@ -576,28 +592,42 @@ namespace GUI
                 #region Servo Controls
                 if (copilot.Y_down)
                 {
-                    // switch servo one
+                    // switch servo one (active claw)
                     rov.ToolsActuator.Data.Speeds[0] *= -1;
                 }
 
                 if (copilot.B_down)
                 {
-                    // switch servo two
+                    // switch servo two (rock holding container)
                     rov.ToolsActuator.Data.Speeds[1] *= -1;
                 }
 
                 if (copilot.A_down)
                 {
-                    // switch servo three
+                    // switch servo three (deploy mini rov)
                     rov.ToolsActuator.Data.Speeds[2] *= -1;
                 }
 
                 if (copilot.X_down)
                 {
-                    // switch servo four
+                    // switch servo four (?)
                     rov.ToolsActuator.Data.Speeds[4] *= -1;
                 }
                 #endregion
+
+                #region Other Controls
+                if (copilot.Dpad_Up_down)
+                {
+                    // start camera
+                    capButton_Click(null, null);
+                }
+                if (copilot.Dpad_Right_down)
+                {
+                    // find shapes
+                    computerVisionButtonClick(null, null);
+                }
+                #endregion
+
             } else
             {
                 CopilotConnectionLabel.Text = "Copilot Controller Not Connected";
