@@ -92,8 +92,9 @@ namespace GUI
             //update displays when sensors polled
             rov.OrientationSensor.Updated += OrientationSensor_Updated;
             rov.DepthSensor.Updated += DepthSensor_Updated;
-            // define position for four servos
-            rov.ToolsActuator.Data.Speeds = new double[4] { 100, 100, 100, 100 };
+
+            // define position for two servos
+            rov.ServoActuator.Data.Positions = new double[2] { 135, 0 };
 
             // enumerate video devices
             videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
@@ -593,7 +594,11 @@ namespace GUI
                 if (copilot.Y_down && copilotKeysUp[(int)ControllerKeys.Y])
                 {
                     // switch servo one (active claw)
-                    rov.ToolsActuator.Data.Speeds[0] *= -1;
+                    if (rov.ServoActuator.Data.Positions[0] == 45) {
+                        rov.ServoActuator.Data.Positions[0] = 135;
+                    } else {
+                        rov.ServoActuator.Data.Positions[0] = 45;
+                    }
                     copilotKeysUp[(int)ControllerKeys.Y] = false;
                 } else if (!copilot.Y_down) {
                     copilotKeysUp[(int)ControllerKeys.Y] = true;
@@ -602,7 +607,11 @@ namespace GUI
                 if (copilot.B_down && copilotKeysUp[(int)ControllerKeys.B])
                 {
                     // switch servo two (rock holding container)
-                    rov.ToolsActuator.Data.Speeds[1] *= -1;
+                    if (rov.ServoActuator.Data.Positions[1] == 0) {
+                        rov.ServoActuator.Data.Positions[1] = 180;
+                    } else {
+                        rov.ServoActuator.Data.Positions[1] = 0;
+                    }                    
                     copilotKeysUp[(int)ControllerKeys.B] = false;
                 } else if (!copilot.B_down) {
                     copilotKeysUp[(int)ControllerKeys.B] = true;
@@ -610,8 +619,7 @@ namespace GUI
 
                 if (copilot.A_down && copilotKeysUp[(int)ControllerKeys.A])
                 {
-                    // switch servo three (deploy mini rov)
-                    rov.ToolsActuator.Data.Speeds[2] *= -1;
+                    // switch servo three (activate MiniROV)
                     copilotKeysUp[(int)ControllerKeys.A] = false;
                 } else if (!copilot.A_down) {
                     copilotKeysUp[(int)ControllerKeys.A] = true;
@@ -619,8 +627,6 @@ namespace GUI
 
                 if (copilot.X_down && copilotKeysUp[(int)ControllerKeys.X])
                 {
-                    // switch servo four (?)
-                    rov.ToolsActuator.Data.Speeds[3] *= -1;
                     copilotKeysUp[(int) ControllerKeys.X] = false;
                 } else if (!copilot.X_down) {
                     copilotKeysUp[(int) ControllerKeys.X] = true;
@@ -643,7 +649,7 @@ namespace GUI
                     computerVisionButtonClick(null, null);
                     copilotKeysUp[(int)ControllerKeys.Right] = false;
                 } else if (!copilot.Dpad_Right_down) {
-                    cocopilotKeysUp[(int)ControllerKeys.Right] = true;
+                    copilotKeysUp[(int)ControllerKeys.Right] = true;
                 }
                 #endregion
 
@@ -779,6 +785,8 @@ namespace GUI
         {
             video = (Bitmap) eventArgs.Frame.Clone();
             picture.Image = video;
+            // note picture does not display image; however, creating a new picturebox in the designer does
+            // TODO: create a new picture box
         }
     }
 }

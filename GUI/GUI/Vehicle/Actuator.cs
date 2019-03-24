@@ -112,6 +112,25 @@ namespace GUI
             return result;
         }
     }
+
+    public class ServoActuator : Actuator<ServoData>
+    {
+        //private List<BarGraph> speeds;
+        public ServoActuator() : base(0x84)
+        {
+        }
+
+        protected override byte[] Convert(ServoData controlData)
+        {
+            byte[] result = new byte[controlData.Positions.Length];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = ConvertUtils.DoubleToByte(controlData.Positions[i], 0, 180);
+            }
+            return result;
+        }
+    }
+
     public class StatusActuator : Actuator<StatusActuatorData>
     {
         /*private Button arm, reboot, upload, estop;

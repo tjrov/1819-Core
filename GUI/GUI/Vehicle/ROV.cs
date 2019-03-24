@@ -17,6 +17,8 @@ namespace GUI
         public PropulsionActuator PropulsionActuator;
         public ToolsActuator ToolsActuator;
 
+        public ServoActuator ServoActuator;
+
         private SerialCommunication comms;
         private Timer t500, t50, t10;
 
@@ -79,6 +81,7 @@ namespace GUI
             StatusActuator = new StatusActuator();
             PropulsionActuator = new PropulsionActuator();
             ToolsActuator = new ToolsActuator();
+            ServoActuator = new ServoActuator();
 
             //timer setup
             t500 = new Timer() { Enabled = true, Interval = 500 };
@@ -150,6 +153,7 @@ namespace GUI
             comms.Queue.Enqueue(DepthSensor);
             comms.Queue.Enqueue(OrientationSensor);
             comms.Queue.Enqueue(ToolsActuator);
+            comms.Queue.Enqueue(ServoActuator);
         }
 
         //slow loop for status and error reports, arming/disarming, etc.

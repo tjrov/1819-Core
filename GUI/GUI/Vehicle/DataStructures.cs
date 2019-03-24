@@ -7,6 +7,10 @@ namespace GUI
     {
         public double[] Speeds = new double[4];
     }
+    public class ServoData
+    {
+        public double[] Positions = new double[2];
+    }
     public class DepthData
     {
         public double DepthValue;

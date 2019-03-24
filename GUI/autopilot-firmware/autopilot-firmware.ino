@@ -46,6 +46,7 @@ Configuration for autopilot board
 #define PWM_MAX 680
 
 #define NUM_TOOLS 4
+#define NUM_SERVO 2
 
 #define DEPTH_ADDRESS 0x76
 
@@ -78,7 +79,8 @@ enum COMMAND {
 	VERSION_REQ = 0x05,
 	ESC_CMD = 0x81,
 	TOOLS_CMD = 0x82,
-	STATUS_CMD = 0x83
+	STATUS_CMD = 0x83,
+	SERVO_CMD = 0x84
 };
 
 /*Pin definitions*/
@@ -119,6 +121,7 @@ bool isTimeout();
 bool checkI2C(uint8_t address);
 void writeESCs();
 void writeTools();
+void writeServo();
 void checkESCsAndTools();
 void initStatus();
 void readStatus();
@@ -202,6 +205,10 @@ void processMessage() {
 			if (status == ARMED)
 				writeTools();
 			break; //ditto
+		case SERVO_CMD:
+			if (status == ARMED)
+				writeServo();
+			break;
 		case STATUS_CMD:
 			writeStatus();
 			break;
@@ -410,6 +417,18 @@ void writeTools() {
 				pca9685.setPWM(15 - i * 2, 0, map(speed, 127, 255, 0, 4095));
 				pca9685.setPWM(14 - i * 2, 0, 0);
 			}
+		}
+	}
+}
+
+void writeServo() {
+	if (!(error&ESC_FAILURE)) {
+		for (int i = 0; i < NUM_SERVO; i++) {
+			unint8_t position = rxData.data[i];
+			Serial.println(position);
+			// not sure exactly what position variable will be here
+			// in theory if it is between 0, 180 it should be mapped so
+			// pca9685.setPWM(i, position / 180 * 4096, 4096 - (position / 180 * 4096))
 		}
 	}
 }
