@@ -43,7 +43,7 @@ Configuration for autopilot board
 #define PWM_FREQ 100
 //use formula pulse length/period * 4096, must be in [0,4096) to work
 #define PWM_MIN 451 //signal on-time values out of a 4096-step period
-#define PWM_STOP 614 //used to be 590
+#define PWM_STOP 590 //used to be 590
 #define PWM_MAX 770
 
 #define NUM_TOOLS 4
@@ -559,7 +559,8 @@ void readDepth() {
 		//where depth is in meters, pressure is in Pascals (N/m^2)
 		//density is in kilograms per cubic meter,
 		//and acceleration is in meters per second per second
-		double depthDouble = (ms5803.getPressure(ADC_1024) - 9230.0) / (1000.0 * 9.81);
+		double depthDouble = constrain((ms5803.getPressure(ADC_1024)*0.00678178)-62.8311, 0.0, 10.0);
+		//Serial.println(depthDouble);
 		//now convert to bytes and prepare txData
 		uint16_t intDepth = (int)mapDouble(depthDouble, 0, 30, 0, 65535);
 

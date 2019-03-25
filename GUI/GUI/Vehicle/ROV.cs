@@ -106,7 +106,7 @@ namespace GUI
         //fast loop reserved for thruster control only
         private void T10_Tick(object sender, EventArgs e)
         {
-            double[] speeds = PropulsionActuator.Data.Speeds; //this might make an array copy instead of a reference idk
+            /*double[] speeds = PropulsionActuator.Data.Speeds; //this might make an array copy instead of a reference idk
 
             //horizontal vector thrusters
             //all thruster speeds are positive for forward/upward thrust
@@ -138,9 +138,10 @@ namespace GUI
             for(int i = 0; i < 6; i++)
             {
             //    PropulsionActuator.Data.Speeds[i] = 100;
-            }
-            
+            }*/
+
             //send the thruster speeds to the ROV
+            PropulsionActuator.Data.Speeds[0] = -100;
             comms.Queue.Enqueue(PropulsionActuator);
         }
 
