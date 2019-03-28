@@ -47,11 +47,14 @@ namespace GUI
         private bool isCapturing = false;
         private VideoCaptureDevice videoSource;
         private FilterInfoCollection videoDevices;
-        private bool EMGU = false;
+        private bool EMGU = true;
 
         private enum ControllerKeys { Y, B, A, X, Up, Right, Left, Down, LeftBumper, RightBumper, LeftJoystick, RightJoystick}
         private bool[] pilotKeysUp = new bool[12] { true, true, true, true, true, true, true, true, true, true, true, true };
         private bool[] copilotKeysUp = new bool[12] { true, true, true, true, true, true, true, true, true, true, true, true };
+
+        private int[] activeClawPositions = new int[] { 45, 135 };
+        private int[] rockContainerPositions = new int[] { 0, 180 };
 
         public MainForm()
         {
@@ -94,7 +97,7 @@ namespace GUI
             rov.DepthSensor.Updated += DepthSensor_Updated;
 
             // define position for two servos
-            rov.ServoActuator.Data.Positions = new double[2] { 135, 0 };
+            rov.ServoActuator.Data.Positions = new double[2] { activeClawPositions[0], rockContainerPositions[0] };
 
             // enumerate video devices
             videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
@@ -145,149 +148,20 @@ namespace GUI
             numberOfSquares = 0;
             numberOfTriangles = 0;
 
+            SpeciesFinder cv;
+
             if (EMGU) {
-                #region EmguCV
-
-                #region Processing
-                Image<Bgr, Byte> source = new Image<Bgr, Byte>(bitmap);
-                var temp = source.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(88), new Gray(255));
-                #endregion
-
-                #region Find contours
-                VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
-                CvInvoke.FindContours(temp, contours, new Mat(), RetrType.External, ChainApproxMethod.ChainApproxSimple);
-                #endregion
-
-                #region guess shapes
-                Image<Bgr, byte> final = source.Copy();
-                double approxAmount = 0.05;
-                double minRatio = 0.8; // 0.973
-                double maxRatio = 1 / minRatio;
-                double minArea = 150;
-                double bx = 5;
-
-                for (int i = 0; i < contours.Size; i++) {
-                    var contour = contours[i];
-                    double perimeter = CvInvoke.ArcLength(contour, true);
-                    VectorOfPoint approx = new VectorOfPoint();
-                    CvInvoke.ApproxPolyDP(contour, approx, approxAmount * perimeter, true);
-
-                    CvInvoke.DrawContours(final, contours, i, new MCvScalar(0, 0, 255), 1);
-                    Rectangle bounds = CvInvoke.BoundingRectangle(contour);
-                    final.Draw(bounds, new Bgr(255, 0, 0));
-
-                    double area = CvInvoke.ContourArea(contour);
-
-                    if (!(bounds.X > bx && bounds.X < final.Width - bx)) {
-                        continue;
-                    }
-
-                    if (!(bounds.Y > bx && bounds.Y < final.Height - bx)) {
-                        continue;
-                    }
-
-                    if (area < minArea) {
-                        continue;
-                    }
-
-                    if (approx.Size == 3) {
-                        numberOfTriangles += 1;
-                    } else if (approx.Size == 4) {
-                        System.Drawing.Point[] test = approx.ToArray();
-
-                        System.Drawing.Point a = test[0];
-                        System.Drawing.Point b = test[1];
-                        System.Drawing.Point c = test[2];
-
-                        double width = Math.Sqrt((((double)(a.X - b.X)) * ((double)(a.X - b.X))) + (((double)(a.Y - b.Y)) * ((double)(a.Y - b.Y))));
-                        double height = Math.Sqrt((((double)(c.X - b.X)) * ((double)(c.X - b.X))) + (((double)(c.Y - b.Y)) * ((double)(c.Y - b.Y))));
-
-                        double ratio = width / height;
-                        if (ratio > minRatio && ratio < maxRatio) {
-                            numberOfSquares += 1;
-                        } else {
-                            numberOfLines += 1;
-                        }
-                    } else {
-                        numberOfCircles += 1;
-                    }
-                }
-
-                #endregion
-
-                #endregion
+                cv = new EmguSpeciesFinder(bitmap);
             } else {
-                #region AForge.NET
-                // lock image
-                BitmapData bitmapData = bitmap.LockBits(
-                    new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                    ImageLockMode.ReadWrite, bitmap.PixelFormat);
-
-                // step 1 - turn background to black
-                ColorFiltering colorFilter = new ColorFiltering();
-
-                colorFilter.Red = new IntRange(0, 64);
-                colorFilter.Green = new IntRange(0, 64);
-                colorFilter.Blue = new IntRange(0, 64);
-                colorFilter.FillOutsideRange = false;
-
-                colorFilter.ApplyInPlace(bitmapData);
-
-                // step 2 - locating objects
-                BlobCounter blobCounter = new BlobCounter();
-
-                blobCounter.FilterBlobs = true;
-                blobCounter.MinHeight = 5;
-                blobCounter.MinWidth = 5;
-
-                blobCounter.ProcessImage(bitmapData);
-                Blob[] blobs = blobCounter.GetObjectsInformation();
-                bitmap.UnlockBits(bitmapData);
-
-                // step 3 - check objects' type and highlight
-                SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
-
-                Graphics g = Graphics.FromImage(bitmap);
-
-                for (int i = 0, n = blobs.Length; i < n; i++) {
-                    List<IntPoint> edgePoints = blobCounter.GetBlobsEdgePoints(blobs[i]);
-
-                    AForge.Point center;
-                    float radius;
-
-                    // is circle ?
-                    if (shapeChecker.IsCircle(edgePoints, out center, out radius)) {
-                        numberOfCircles++;
-                    } else {
-                        List<IntPoint> corners;
-
-                        // is triangle or quadrilateral
-                        if (shapeChecker.IsConvexPolygon(edgePoints, out corners)) {
-                            // get sub-type
-                            PolygonSubType subType = shapeChecker.CheckPolygonSubType(corners);
-                            if (subType == PolygonSubType.Square) {
-                                numberOfSquares++;
-                            } else if (subType == PolygonSubType.EquilateralTriangle) {
-                                numberOfTriangles++;
-                            } else {
-                                numberOfLines++;
-                            }
-                        }
-                    }
-                }
-                g.Dispose();
-
-                // put new image to clipboard
-                Clipboard.SetDataObject(bitmap);
-                // and to picture box
-                picture.Image = bitmap;
-                #endregion
+                cv = new AForgeSpeciesFinder(bitmap);
             }
 
-            triangleCount.Text = "" + numberOfTriangles;
-            CircleCount.Text = "" + numberOfCircles;
-            SquareCount.Text = "" + numberOfSquares;
-            RectangleCount.Text = "" + numberOfLines;
+            Bitmap final = cv.FindSpecies();
+
+            triangleCount.Text = cv.Triangles.ToString();
+            CircleCount.Text = cv.Circles.ToString();
+            SquareCount.Text = cv.Squares.ToString();
+            RectangleCount.Text = cv.Lines.ToString();
         }
         private AForge.Point[] ToPointsArray(List<IntPoint> points)
         {
@@ -455,21 +329,18 @@ namespace GUI
                 botRight.Text = (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, -100);
                 #endregion
 
-
                 #region depth lock
-                if (pilot.RBumper_down && pilotKeysUp[(int) ControllerKeys.RightBumper]) //checks if bumper is down
+                if (pilot.Y_down && pilotKeysUp[(int) ControllerKeys.Y]) //checks if Y is down
                 {
                     isLockClicked = !isLockClicked; //turns on lock position
                     if (isLockClicked)
                     {
                         depthvalue = (int)(rov.DepthSensor.Data.DepthValue);
                     }
-                    pilotKeysUp[(int)ControllerKeys.RightBumper] = false; //disables use of bumper until button is let go
-                }
-
-                if (pilot.RBumper_up && !pilotKeysUp[(int)ControllerKeys.RightBumper])
+                    pilotKeysUp[(int)ControllerKeys.Y] = false; //disables use of bumper until button is let go
+                } else if (!pilot.Y_down)
                 {
-                    pilotKeysUp[(int)ControllerKeys.RightBumper] = true; //reenables button if it is let go
+                    pilotKeysUp[(int)ControllerKeys.Y] = true; //reenables button if it is let go
                 }
 
                 if (isLockClicked)
@@ -495,25 +366,14 @@ namespace GUI
                 }
                 #endregion
 
-                /*
-                #region ACTUATOR CODE for next few lines
-                int val0 = Convert.ToInt32(pilot.A_down) - Convert.ToInt32(pilot.B_down);
-                int val1 = Convert.ToInt32(pilot.X_down) - Convert.ToInt32(pilot.Y_down);
-                int val2 = Convert.ToInt32(pilot.Dpad_Down_down) - Convert.ToInt32(pilot.Dpad_Right_down);
-                int val3 = Convert.ToInt32(pilot.Dpad_Left_down) - Convert.ToInt32(pilot.Dpad_Up_down);
+                #region heading lock
+                if (pilot.B_down && pilotKeysUp[(int) ControllerKeys.B]) {
+                    rov.EnableHeadingLock = !EnableHeadingLock;
+                    pilotKeysUp[(int) ControllerKeys.B] = false;
+                } else if (!pilot.B_down) {
+                    pilotKeysUp[(int) ControllerKeys.B] = true;
+                }
 
-                rov.ToolsActuator.Data.Speeds[0] = val0 * 100;
-                rov.ToolsActuator.Data.Speeds[1] = val1 * 100;
-                rov.ToolsActuator.Data.Speeds[2] = val2 * 100;
-                rov.ToolsActuator.Data.Speeds[3] = val3 * 100;
-
-                #endregion
-                */
-
-                #region ROV Motion
-                //Lstick controls horizontal translations 
-                rov.ForeAftMotion = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, -100, 100));
-                rov.StrafeMotion = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, -100, 100));
                 if (rov.EnableHeadingLock)
                 {
                     //RStick controls desired heading
@@ -525,6 +385,21 @@ namespace GUI
                     //Rstick controls yaw (turning about vertical axis)
                     rov.TurnMotion = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100));
                 }
+                #endregion
+
+                #region roll lock
+                if (pilot.A_down && pilotKeysUp[(int) ControllerKeys.A]) {
+                    rov.EnableRollLock = !rov.EnableRollLock;
+                    pilotKeysUp[(int) ControllerKeys.A] = false;
+                } else if (!pilot.A_down) {
+                    pilotKeysUp[(int) ControllerKeys.A] = true;
+                }
+                #endregion
+
+                #region ROV Motion
+                //Lstick controls horizontal translations 
+                rov.ForeAftMotion = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, -100, 100));
+                rov.StrafeMotion = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, -100, 100));
                 //left bumper moves downward, right bumper moves upward
                 rov.VerticalMotion = (int)(ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, -100) + ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, 100));
                 #endregion
@@ -570,6 +445,7 @@ namespace GUI
                 PilotConnectionLabel.ForeColor = Color.DarkRed;
                 depthLockEngageLabel.ForeColor = Color.DarkRed;
                 depthLockEngageLabel.Text = "Depth Lock Disengaged";
+                // TODO: add a heading lock + depth lock indicator
                 rov.VerticalMotion = 0.0;
                 rov.ForeAftMotion = 0.0;
                 rov.StrafeMotion = 0.0;
@@ -594,10 +470,11 @@ namespace GUI
                 if (copilot.Y_down && copilotKeysUp[(int)ControllerKeys.Y])
                 {
                     // switch servo one (active claw)
-                    if (rov.ServoActuator.Data.Positions[0] == 45) {
-                        rov.ServoActuator.Data.Positions[0] = 135;
+                    // TODO: Display for this
+                    if (rov.ServoActuator.Data.Positions[0] == activeClawPositions[0]) {
+                        rov.ServoActuator.Data.Positions[0] = activeClawPositions[1];
                     } else {
-                        rov.ServoActuator.Data.Positions[0] = 45;
+                        rov.ServoActuator.Data.Positions[0] = activeClawPositions[0];
                     }
                     copilotKeysUp[(int)ControllerKeys.Y] = false;
                 } else if (!copilot.Y_down) {
@@ -607,11 +484,13 @@ namespace GUI
                 if (copilot.B_down && copilotKeysUp[(int)ControllerKeys.B])
                 {
                     // switch servo two (rock holding container)
-                    if (rov.ServoActuator.Data.Positions[1] == 0) {
-                        rov.ServoActuator.Data.Positions[1] = 180;
+                    // TODO: Display for this
+                    // TODO: Remove Chart
+                    if (rov.ServoActuator.Data.Positions[0] == rockContainerPositions[0]) {
+                        rov.ServoActuator.Data.Positions[0] = rockContainerPositions[1];
                     } else {
-                        rov.ServoActuator.Data.Positions[1] = 0;
-                    }                    
+                        rov.ServoActuator.Data.Positions[0] = rockContainerPositions[0];
+                    }        
                     copilotKeysUp[(int)ControllerKeys.B] = false;
                 } else if (!copilot.B_down) {
                     copilotKeysUp[(int)ControllerKeys.B] = true;
@@ -619,7 +498,7 @@ namespace GUI
 
                 if (copilot.A_down && copilotKeysUp[(int)ControllerKeys.A])
                 {
-                    // switch servo three (activate MiniROV)
+                    // activate MiniROV?
                     copilotKeysUp[(int)ControllerKeys.A] = false;
                 } else if (!copilot.A_down) {
                     copilotKeysUp[(int)ControllerKeys.A] = true;
@@ -627,6 +506,7 @@ namespace GUI
 
                 if (copilot.X_down && copilotKeysUp[(int)ControllerKeys.X])
                 {
+                    // nothing
                     copilotKeysUp[(int) ControllerKeys.X] = false;
                 } else if (!copilot.X_down) {
                     copilotKeysUp[(int) ControllerKeys.X] = true;
@@ -701,9 +581,11 @@ namespace GUI
             pilotYIndicator.Visible = pilot.Y_down;
             pilotXIndicator.Visible = pilot.X_down;
             pilotLBumperIndicator.Visible = pilot.LBumper_down;
-            pilotLTriggerIndicator.Visible = pilot.LTrigger > 128; // 0 - 255
+            pilotLTriggerIndicator.Visible = pilot.LTrigger > 0; // 0 - 255
+            // TODO: change button value to actual value
             pilotRBumperIndicator.Visible = pilot.RBumper_down;
-            pilotRTriggerIndicator.Visible = pilot.RTrigger > 128;
+            pilotRTriggerIndicator.Visible = pilot.RTrigger > 0; // 0 - 255
+            // TODO: change button value to actual value
             pilotLStickIndicator.Visible = pilot.LStick_down;
             pilotRStickIndicator.Visible = pilot.RStick_down;
             pilotUpIndicator.Visible = pilot.Dpad_Up_down;
@@ -718,9 +600,11 @@ namespace GUI
             copilotYIndicator.Visible = copilot.Y_down;
             copilotXIndicator.Visible = copilot.X_down;
             copilotLBumperIndicator.Visible = copilot.LBumper_down;
-            copilotLTriggerIndicator.Visible = copilot.LTrigger > 128;
+            copilotLTriggerIndicator.Visible = copilot.LTrigger > 0; // 0 - 255
+            // TODO: change button value to actual value
             copilotRBumperIndicator.Visible = copilot.RBumper_down;
-            copilotRTriggerIndicator.Visible = copilot.RTrigger > 128;
+            copilotRTriggerIndicator.Visible = copilot.RTrigger > 0; // 0 - 255
+            // TODO: change button value to actual value
             copilotLStickIndicator.Visible = copilot.LStick_down;
             copilotRStickIndicator.Visible = copilot.RStick_down;
             copilotUpIndicator.Visible = copilot.Dpad_Up_down;
