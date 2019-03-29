@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
 
+using AForge;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
 using AForge.Math.Geometry;
@@ -19,12 +20,12 @@ using Emgu.CV.Util;
 namespace GUI {
 
     public abstract class SpeciesFinder {
-        abstract Bitmap Bmap;
-        abstract int Triangles;
-        abstract int Squares;
-        abstract int Lines;
-        abstract int Circles;
-        abstract Bitmap FindSpecies();
+        Bitmap Bmap;
+        public int Triangles;
+        public int Squares;
+        public int Lines;
+        public int Circles;
+        public abstract Bitmap FindSpecies();
     }
 
     public class EmguSpeciesFinder : SpeciesFinder {
@@ -48,7 +49,7 @@ namespace GUI {
             Bmap = b;
         }
 
-        public Bitmap FindSpecies() {
+        public override Bitmap FindSpecies() {
             #region Processing
             Image<Bgr, Byte> source = new Image<Bgr, Byte>(Bmap);
             var temp = source.SmoothGaussian(BlurAmount).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(ThresholdMin), new Gray(ThresholdMax));
@@ -127,7 +128,7 @@ namespace GUI {
             Bmap = b;
         }
 
-        public Bitmap FindSpecies() {
+        public override Bitmap FindSpecies() {
             // lock image
             BitmapData bitmapData = Bmap.LockBits(
                 new Rectangle(0, 0, Bmap.Width, Bmap.Height),

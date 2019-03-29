@@ -148,11 +148,9 @@ namespace GUI
             numberOfSquares = 0;
             numberOfTriangles = 0;
 
-            SpeciesFinder cv;
+            SpeciesFinder cv = new EmguSpeciesFinder(bitmap);
 
-            if (EMGU) {
-                cv = new EmguSpeciesFinder(bitmap);
-            } else {
+            if (!EMGU) {
                 cv = new AForgeSpeciesFinder(bitmap);
             }
 
@@ -368,7 +366,7 @@ namespace GUI
 
                 #region heading lock
                 if (pilot.B_down && pilotKeysUp[(int) ControllerKeys.B]) {
-                    rov.EnableHeadingLock = !EnableHeadingLock;
+                    rov.EnableHeadingLock = !rov.EnableHeadingLock;
                     pilotKeysUp[(int) ControllerKeys.B] = false;
                 } else if (!pilot.B_down) {
                     pilotKeysUp[(int) ControllerKeys.B] = true;

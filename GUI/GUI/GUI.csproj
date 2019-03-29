@@ -139,6 +139,7 @@
     </Compile>
     <Compile Include="Communication\BetterSerialPort.cs" />
     <Compile Include="Communication\ConvertUtils.cs" />
+    <Compile Include="Vehicle\ComputerVision.cs" />
     <Compile Include="Vehicle\DataStructures.cs" />
     <Compile Include="Vehicle\Device.cs">
       <SubType>Component</SubType>
