@@ -119,7 +119,7 @@ namespace GUI
             {
                 //fill in later, catch made temporarily to ignore NullReferenceException
             }
-            picture.SizeMode = PictureBoxSizeMode.StretchImage;
+            //picture.SizeMode = PictureBoxSizeMode.StretchImage;
             
         }
 
@@ -148,18 +148,23 @@ namespace GUI
             numberOfSquares = 0;
             numberOfTriangles = 0;
 
-            SpeciesFinder cv = new EmguSpeciesFinder(bitmap);
+            SpeciesFinder cv;
 
-            if (!EMGU) {
+            if (EMGU) {
+                cv = new EmguSpeciesFinder(bitmap);
+            } else {
                 cv = new AForgeSpeciesFinder(bitmap);
             }
 
-            Bitmap final = cv.FindSpecies();
+            Bitmap[] result = cv.FindSpecies();
 
             triangleCount.Text = cv.Triangles.ToString();
             CircleCount.Text = cv.Circles.ToString();
             SquareCount.Text = cv.Squares.ToString();
             RectangleCount.Text = cv.Lines.ToString();
+
+            cvFinalImage.Image = result[0];
+            cvFinalProcessedImage.Image = result[1];
         }
         private AForge.Point[] ToPointsArray(List<IntPoint> points)
         {
@@ -290,33 +295,33 @@ namespace GUI
                 RStickZeroY = 0;
             }
 
+            #region help
+            bool show = pilot.X_down;
+            bool showco = copilot.X_down;
+            l1.Visible = show;
+            l2.Visible = show;
+            l3.Visible = show;
+            l4.Visible = show;
+            l5.Visible = show;
+            l6.Visible = show;
+            l7.Visible = show;
+            l8.Visible = show;
+            l9.Visible = show;
+
+            cl1.Visible = showco;
+            cl2.Visible = showco;
+            cl3.Visible = showco;
+            cl4.Visible = showco;
+            cl5.Visible = showco;
+            cl6.Visible = showco;
+            #endregion
+
             if (pilot.IsConnected)
             {
                 PilotConnectionLabel.Text = "Pilot Controller Connected";
                 PilotConnectionLabel.ForeColor = Color.Green;
 
                 updatePilotButtons();
-
-                #region button update
-                button0.Text = "LStick.X" + LStickZeroX;
-                button1.Text = "LStick.Y" + LStickZeroY;
-                button2.Text = "LStick" + pilot.LStick_down;
-                button3.Text = "RStick.X" + RStickZeroX;
-                button4.Text = "RStick.Y" + RStickZeroY;
-                button5.Text = "DPad up" + pilot.Dpad_Up_down;
-                button6.Text = "DPad down" + pilot.Dpad_Down_down;
-                button7.Text = "DPad left" + pilot.Dpad_Left_down;
-                button8.Text = "DPad right" + pilot.Dpad_Right_down;
-                button9.Text = "A" + pilot.A_down;
-                button10.Text = "B" + pilot.B_down;
-                button11.Text = "X" + pilot.X_down;
-                button12.Text = "Y" + pilot.Y_down;
-                button13.Text = "LBumper" + pilot.LBumper_down;
-                button14.Text = "RBumper" + pilot.RBumper_down;
-                button15.Text = "LTrigger" + pilot.LTrigger;
-                button16.Text = "RTrigger" + pilot.RTrigger;
-                button17.Text = "Start" + pilot.Start_down;
-                #endregion
 
                 #region Code for displaying motor values
                 topLeft.Text = (rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, -100);
@@ -377,17 +382,28 @@ namespace GUI
                     //RStick controls desired heading
                     rov.TurnMotion = 0;
                     rov.DesiredHeading += (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100) / 100);
+                    headingLockEngageLabel.ForeColor = Color.Green;
+                    headingLockEngageLabel.Text = "Heading Lock Engaged";
                 }
                 else
                 {
                     //Rstick controls yaw (turning about vertical axis)
                     rov.TurnMotion = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100));
+                    headingLockEngageLabel.ForeColor = Color.DarkRed;
+                    headingLockEngageLabel.Text = "Heading Lock Disengaged";
                 }
                 #endregion
 
                 #region roll lock
                 if (pilot.A_down && pilotKeysUp[(int) ControllerKeys.A]) {
                     rov.EnableRollLock = !rov.EnableRollLock;
+                    if (rov.EnableRollLock) {
+                        rollLockEngageLabel.ForeColor = Color.Green;
+                        rollLockEngageLabel.Text = "Roll Lock Engaged";
+                    } else {
+                        rollLockEngageLabel.ForeColor = Color.DarkRed;
+                        rollLockEngageLabel.Text = "Roll Lock Disengaged";
+                    }
                     pilotKeysUp[(int) ControllerKeys.A] = false;
                 } else if (!pilot.A_down) {
                     pilotKeysUp[(int) ControllerKeys.A] = true;
@@ -443,7 +459,10 @@ namespace GUI
                 PilotConnectionLabel.ForeColor = Color.DarkRed;
                 depthLockEngageLabel.ForeColor = Color.DarkRed;
                 depthLockEngageLabel.Text = "Depth Lock Disengaged";
-                // TODO: add a heading lock + depth lock indicator
+                headingLockEngageLabel.ForeColor = Color.DarkRed;
+                headingLockEngageLabel.Text = "Heading Lock Disengaged";
+                rollLockEngageLabel.ForeColor = Color.DarkRed;
+                rollLockEngageLabel.Text = "Roll Lock Disengaged";
                 rov.VerticalMotion = 0.0;
                 rov.ForeAftMotion = 0.0;
                 rov.StrafeMotion = 0.0;
@@ -468,11 +487,12 @@ namespace GUI
                 if (copilot.Y_down && copilotKeysUp[(int)ControllerKeys.Y])
                 {
                     // switch servo one (active claw)
-                    // TODO: Display for this
                     if (rov.ServoActuator.Data.Positions[0] == activeClawPositions[0]) {
                         rov.ServoActuator.Data.Positions[0] = activeClawPositions[1];
+                        clawPicture.Image = Properties.Resources.closed_claw;
                     } else {
                         rov.ServoActuator.Data.Positions[0] = activeClawPositions[0];
+                        clawPicture.Image = Properties.Resources.open_claw;
                     }
                     copilotKeysUp[(int)ControllerKeys.Y] = false;
                 } else if (!copilot.Y_down) {
@@ -482,12 +502,12 @@ namespace GUI
                 if (copilot.B_down && copilotKeysUp[(int)ControllerKeys.B])
                 {
                     // switch servo two (rock holding container)
-                    // TODO: Display for this
-                    // TODO: Remove Chart
                     if (rov.ServoActuator.Data.Positions[0] == rockContainerPositions[0]) {
                         rov.ServoActuator.Data.Positions[0] = rockContainerPositions[1];
+                        containerPicture.Image = Properties.Resources.closed_container;
                     } else {
                         rov.ServoActuator.Data.Positions[0] = rockContainerPositions[0];
+                        containerPicture.Image = Properties.Resources.open_container;
                     }        
                     copilotKeysUp[(int)ControllerKeys.B] = false;
                 } else if (!copilot.B_down) {
@@ -500,14 +520,6 @@ namespace GUI
                     copilotKeysUp[(int)ControllerKeys.A] = false;
                 } else if (!copilot.A_down) {
                     copilotKeysUp[(int)ControllerKeys.A] = true;
-                }
-
-                if (copilot.X_down && copilotKeysUp[(int)ControllerKeys.X])
-                {
-                    // nothing
-                    copilotKeysUp[(int) ControllerKeys.X] = false;
-                } else if (!copilot.X_down) {
-                    copilotKeysUp[(int) ControllerKeys.X] = true;
                 }
                 #endregion
 
@@ -580,12 +592,14 @@ namespace GUI
             pilotXIndicator.Visible = pilot.X_down;
             pilotLBumperIndicator.Visible = pilot.LBumper_down;
             pilotLTriggerIndicator.Visible = pilot.LTrigger > 0; // 0 - 255
-            // TODO: change button value to actual value
+            pilotLTriggerIndicator.Text = pilot.LTrigger.ToString();
             pilotRBumperIndicator.Visible = pilot.RBumper_down;
             pilotRTriggerIndicator.Visible = pilot.RTrigger > 0; // 0 - 255
-            // TODO: change button value to actual value
+            pilotRTriggerIndicator.Text = pilot.RTrigger.ToString();
             pilotLStickIndicator.Visible = pilot.LStick_down;
+            pilotLStickIndicator.Text = pilot.LStick.X.ToString() + ", " + pilot.LStick.ToString();
             pilotRStickIndicator.Visible = pilot.RStick_down;
+            pilotRStickIndicator.Text = copilot.RStick.X.ToString() + ", " + pilot.RStick.ToString();
             pilotUpIndicator.Visible = pilot.Dpad_Up_down;
             pilotRightIndicator.Visible = pilot.Dpad_Right_down;
             pilotDownIndicator.Visible = pilot.Dpad_Down_down;
@@ -599,12 +613,14 @@ namespace GUI
             copilotXIndicator.Visible = copilot.X_down;
             copilotLBumperIndicator.Visible = copilot.LBumper_down;
             copilotLTriggerIndicator.Visible = copilot.LTrigger > 0; // 0 - 255
-            // TODO: change button value to actual value
+            copilotLTriggerIndicator.Text = copilot.LTrigger.ToString();
             copilotRBumperIndicator.Visible = copilot.RBumper_down;
             copilotRTriggerIndicator.Visible = copilot.RTrigger > 0; // 0 - 255
-            // TODO: change button value to actual value
+            copilotRTriggerIndicator.Text = copilot.RTrigger.ToString();
             copilotLStickIndicator.Visible = copilot.LStick_down;
+            copilotLStickIndicator.Text = copilot.LStick.X.ToString() + ", " + copilot.LStick.ToString();
             copilotRStickIndicator.Visible = copilot.RStick_down;
+            copilotRStickIndicator.Text = copilot.RStick.X.ToString() + ", " + copilot.RStick.ToString();
             copilotUpIndicator.Visible = copilot.Dpad_Up_down;
             copilotRightIndicator.Visible = copilot.Dpad_Right_down;
             copilotDownIndicator.Visible = copilot.Dpad_Down_down;
@@ -666,9 +682,7 @@ namespace GUI
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             video = (Bitmap) eventArgs.Frame.Clone();
-            picture.Image = video;
-            // note picture does not display image; however, creating a new picturebox in the designer does
-            // TODO: create a new picture box
+            cameraFeed.Image = video;
         }
     }
 }

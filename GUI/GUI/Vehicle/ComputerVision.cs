@@ -20,12 +20,12 @@ using Emgu.CV.Util;
 namespace GUI {
 
     public abstract class SpeciesFinder {
-        Bitmap Bmap;
+        private Bitmap Bmap;
         public int Triangles;
         public int Squares;
         public int Lines;
         public int Circles;
-        public abstract Bitmap FindSpecies();
+        public abstract Bitmap[] FindSpecies();
     }
 
     public class EmguSpeciesFinder : SpeciesFinder {
@@ -49,7 +49,7 @@ namespace GUI {
             Bmap = b;
         }
 
-        public override Bitmap FindSpecies() {
+        public override Bitmap[] FindSpecies() {
             #region Processing
             Image<Bgr, Byte> source = new Image<Bgr, Byte>(Bmap);
             var temp = source.SmoothGaussian(BlurAmount).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(ThresholdMin), new Gray(ThresholdMax));
@@ -62,16 +62,23 @@ namespace GUI {
 
             #region guess shapes
             Image<Bgr, byte> final = source.Copy();
-            
+            Image<Bgr, byte> finalProcessed = new Image<Bgr, byte>(temp.ToBitmap());
+
+            Bgr boundsColor = new Bgr(204, 0, 204);
+            MCvScalar triangleColor = new MCvScalar(0, 0, 255);
+            MCvScalar squareColor = new MCvScalar(0, 255, 0);
+            MCvScalar lineColor = new MCvScalar(255, 0, 0);
+            MCvScalar circleColor = new MCvScalar(128, 255, 0);
+
             for (int i = 0; i < contours.Size; i++) {
                 var contour = contours[i];
                 double perimeter = CvInvoke.ArcLength(contour, true);
                 VectorOfPoint approx = new VectorOfPoint();
                 CvInvoke.ApproxPolyDP(contour, approx, ApproxAmount * perimeter, true);
-
-                CvInvoke.DrawContours(final, contours, i, new MCvScalar(0, 0, 255), 1);
                 Rectangle bounds = CvInvoke.BoundingRectangle(contour);
-                final.Draw(bounds, new Bgr(255, 0, 0));
+
+                final.Draw(bounds, boundsColor);
+                finalProcessed.Draw(bounds, boundsColor);
 
                 double area = CvInvoke.ContourArea(contour);
 
@@ -89,6 +96,8 @@ namespace GUI {
 
                 if (approx.Size == 3) {
                     Triangles += 1;
+                    CvInvoke.DrawContours(final, contour, i, triangleColor, 1);
+                    CvInvoke.DrawContours(finalProcessed, contour, i, triangleColor, 1);
                 } else if (approx.Size == 4) {
                     System.Drawing.Point[] test = approx.ToArray();
 
@@ -102,17 +111,23 @@ namespace GUI {
                     double ratio = width / height;
                     if (ratio > MinRatio && ratio < MaxRatio) {
                         Squares += 1;
+                        CvInvoke.DrawContours(final, contour, i, squareColor, 1);
+                        CvInvoke.DrawContours(finalProcessed, contour, i, squareColor, 1);
                     } else {
                         Lines += 1;
+                        CvInvoke.DrawContours(final, contour, i, lineColor, 1);
+                        CvInvoke.DrawContours(finalProcessed, contour, i, lineColor, 1);
                     }
                 } else {
                     Circles += 1;
+                    CvInvoke.DrawContours(final, contour, i, circleColor, 1);
+                    CvInvoke.DrawContours(finalProcessed, contour, i, circleColor, 1);
                 }
             }
 
             #endregion
 
-            return final.ToBitmap();
+            return new Bitmap[] { final.ToBitmap(), finalProcessed.ToBitmap() };
         }
 
     }
@@ -128,7 +143,7 @@ namespace GUI {
             Bmap = b;
         }
 
-        public override Bitmap FindSpecies() {
+        public override Bitmap[] FindSpecies() {
             // lock image
             BitmapData bitmapData = Bmap.LockBits(
                 new Rectangle(0, 0, Bmap.Width, Bmap.Height),
@@ -188,7 +203,7 @@ namespace GUI {
             }
             g.Dispose();
             
-            return Bmap;
+            return new Bitmap[] { Bmap, Bmap };
         }
 
     }

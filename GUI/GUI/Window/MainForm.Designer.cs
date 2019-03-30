@@ -39,25 +39,6 @@ namespace GUI
             this.portLabel = new System.Windows.Forms.Label();
             this.resetButton = new System.Windows.Forms.Button();
             this.PilotConnectionLabel = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Label();
-            this.button8 = new System.Windows.Forms.Label();
-            this.button16 = new System.Windows.Forms.Label();
-            this.button17 = new System.Windows.Forms.Label();
-            this.button0 = new System.Windows.Forms.Label();
-            this.button14 = new System.Windows.Forms.Label();
-            this.button13 = new System.Windows.Forms.Label();
-            this.button12 = new System.Windows.Forms.Label();
-            this.button11 = new System.Windows.Forms.Label();
-            this.button10 = new System.Windows.Forms.Label();
-            this.button9 = new System.Windows.Forms.Label();
-            this.button15 = new System.Windows.Forms.Label();
             this.controllerUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.topLeft = new System.Windows.Forms.Label();
             this.topRight = new System.Windows.Forms.Label();
@@ -76,7 +57,6 @@ namespace GUI
             this.rightPrefButton = new System.Windows.Forms.Button();
             this.leftPrefButton = new System.Windows.Forms.Button();
             this.capButton = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.rovPanel = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.RectangleCount = new System.Windows.Forms.Label();
@@ -90,6 +70,15 @@ namespace GUI
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pilotPanel = new System.Windows.Forms.Panel();
+            this.l9 = new System.Windows.Forms.Label();
+            this.l8 = new System.Windows.Forms.Label();
+            this.l7 = new System.Windows.Forms.Label();
+            this.l6 = new System.Windows.Forms.Label();
+            this.l5 = new System.Windows.Forms.Label();
+            this.l4 = new System.Windows.Forms.Label();
+            this.l3 = new System.Windows.Forms.Label();
+            this.l2 = new System.Windows.Forms.Label();
+            this.l1 = new System.Windows.Forms.Label();
             this.pilotRightIndicator = new System.Windows.Forms.Button();
             this.pilotUpIndicator = new System.Windows.Forms.Button();
             this.pilotLeftIndicator = new System.Windows.Forms.Button();
@@ -105,8 +94,14 @@ namespace GUI
             this.pilotLBumperIndicator = new System.Windows.Forms.Button();
             this.pilotLTriggerIndicator = new System.Windows.Forms.Button();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
-            this.picture = new System.Windows.Forms.PictureBox();
             this.copilotPanel = new System.Windows.Forms.Panel();
+            this.cl6 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cl3 = new System.Windows.Forms.Label();
+            this.cl5 = new System.Windows.Forms.Label();
+            this.cl4 = new System.Windows.Forms.Label();
+            this.cl2 = new System.Windows.Forms.Label();
+            this.cl1 = new System.Windows.Forms.Label();
             this.copilotRightIndicator = new System.Windows.Forms.Button();
             this.copilotUpIndicator = new System.Windows.Forms.Button();
             this.copilotLeftIndicator = new System.Windows.Forms.Button();
@@ -123,13 +118,19 @@ namespace GUI
             this.copilotLTriggerIndicator = new System.Windows.Forms.Button();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.CopilotConnectionLabel = new System.Windows.Forms.Label();
+            this.headingLockEngageLabel = new System.Windows.Forms.Label();
+            this.rollLockEngageLabel = new System.Windows.Forms.Label();
+            this.containerPicture = new System.Windows.Forms.PictureBox();
+            this.clawPicture = new System.Windows.Forms.PictureBox();
             this.propulsionActuator1 = new GUI.PropulsionActuator();
             this.propulsionActuator2 = new GUI.PropulsionActuator();
+            this.cvFinalImage = new System.Windows.Forms.PictureBox();
+            this.cvFinalProcessedImage = new System.Windows.Forms.PictureBox();
+            this.cameraFeed = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar4)).BeginInit();
-            this.tableLayoutPanel1.SuspendLayout();
             this.rovPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
@@ -140,9 +141,13 @@ namespace GUI
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             this.pilotPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picture)).BeginInit();
             this.copilotPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.containerPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.clawPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cvFinalImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cvFinalProcessedImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraFeed)).BeginInit();
             this.SuspendLayout();
             // 
             // timer500
@@ -219,215 +224,6 @@ namespace GUI
             this.PilotConnectionLabel.TabIndex = 5;
             this.PilotConnectionLabel.Text = "Pilot Controller Not Connected";
             this.PilotConnectionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(2, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(200, 16);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Controller Buttons Pressed:";
-            // 
-            // button1
-            // 
-            this.button1.AutoSize = true;
-            this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button1.Location = new System.Drawing.Point(2, 32);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(200, 16);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "N/A";
-            // 
-            // button2
-            // 
-            this.button2.AutoSize = true;
-            this.button2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button2.Location = new System.Drawing.Point(2, 48);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(200, 16);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "N/A";
-            // 
-            // button3
-            // 
-            this.button3.AutoSize = true;
-            this.button3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button3.Location = new System.Drawing.Point(2, 64);
-            this.button3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(200, 16);
-            this.button3.TabIndex = 9;
-            this.button3.Text = "N/A";
-            // 
-            // button4
-            // 
-            this.button4.AutoSize = true;
-            this.button4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button4.Location = new System.Drawing.Point(2, 80);
-            this.button4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(200, 16);
-            this.button4.TabIndex = 10;
-            this.button4.Text = "N/A";
-            // 
-            // button5
-            // 
-            this.button5.AutoSize = true;
-            this.button5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button5.Location = new System.Drawing.Point(2, 96);
-            this.button5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(200, 16);
-            this.button5.TabIndex = 11;
-            this.button5.Text = "N/A";
-            // 
-            // button6
-            // 
-            this.button6.AutoSize = true;
-            this.button6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button6.Location = new System.Drawing.Point(2, 112);
-            this.button6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(200, 16);
-            this.button6.TabIndex = 12;
-            this.button6.Text = "N/A";
-            // 
-            // button7
-            // 
-            this.button7.AutoSize = true;
-            this.button7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button7.Location = new System.Drawing.Point(2, 128);
-            this.button7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(200, 16);
-            this.button7.TabIndex = 13;
-            this.button7.Text = "N/A";
-            // 
-            // button8
-            // 
-            this.button8.AutoSize = true;
-            this.button8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button8.Location = new System.Drawing.Point(2, 144);
-            this.button8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(200, 16);
-            this.button8.TabIndex = 14;
-            this.button8.Text = "N/A";
-            // 
-            // button16
-            // 
-            this.button16.AutoSize = true;
-            this.button16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button16.Location = new System.Drawing.Point(2, 272);
-            this.button16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(200, 16);
-            this.button16.TabIndex = 17;
-            this.button16.Text = "N/A";
-            // 
-            // button17
-            // 
-            this.button17.AutoSize = true;
-            this.button17.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button17.Location = new System.Drawing.Point(2, 288);
-            this.button17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(200, 25);
-            this.button17.TabIndex = 18;
-            this.button17.Text = "N/A";
-            // 
-            // button0
-            // 
-            this.button0.AutoSize = true;
-            this.button0.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button0.Location = new System.Drawing.Point(2, 16);
-            this.button0.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button0.Name = "button0";
-            this.button0.Size = new System.Drawing.Size(200, 16);
-            this.button0.TabIndex = 19;
-            this.button0.Text = "N/A";
-            // 
-            // button14
-            // 
-            this.button14.AutoSize = true;
-            this.button14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button14.Location = new System.Drawing.Point(2, 240);
-            this.button14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(200, 16);
-            this.button14.TabIndex = 25;
-            this.button14.Text = "N/A";
-            // 
-            // button13
-            // 
-            this.button13.AutoSize = true;
-            this.button13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button13.Location = new System.Drawing.Point(2, 224);
-            this.button13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(200, 16);
-            this.button13.TabIndex = 24;
-            this.button13.Text = "N/A";
-            // 
-            // button12
-            // 
-            this.button12.AutoSize = true;
-            this.button12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button12.Location = new System.Drawing.Point(2, 208);
-            this.button12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(200, 16);
-            this.button12.TabIndex = 23;
-            this.button12.Text = "N/A";
-            // 
-            // button11
-            // 
-            this.button11.AutoSize = true;
-            this.button11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button11.Location = new System.Drawing.Point(2, 192);
-            this.button11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(200, 16);
-            this.button11.TabIndex = 22;
-            this.button11.Text = "N/A";
-            // 
-            // button10
-            // 
-            this.button10.AutoSize = true;
-            this.button10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button10.Location = new System.Drawing.Point(2, 176);
-            this.button10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(200, 16);
-            this.button10.TabIndex = 21;
-            this.button10.Text = "N/A";
-            // 
-            // button9
-            // 
-            this.button9.AutoSize = true;
-            this.button9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button9.Location = new System.Drawing.Point(2, 160);
-            this.button9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(200, 16);
-            this.button9.TabIndex = 20;
-            this.button9.Text = "N/A";
-            // 
-            // button15
-            // 
-            this.button15.AutoSize = true;
-            this.button15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button15.Location = new System.Drawing.Point(2, 256);
-            this.button15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(200, 16);
-            this.button15.TabIndex = 26;
-            this.button15.Text = "N/A";
             // 
             // controllerUpdateTimer
             // 
@@ -512,6 +308,7 @@ namespace GUI
             this.depthLockEngageLabel.Size = new System.Drawing.Size(160, 15);
             this.depthLockEngageLabel.TabIndex = 41;
             this.depthLockEngageLabel.Text = "Depth Lock Disengaged";
+            this.depthLockEngageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // trackBar1
             // 
@@ -634,55 +431,6 @@ namespace GUI
             this.capButton.Text = "Start Camera";
             this.capButton.UseVisualStyleBackColor = true;
             this.capButton.Click += new System.EventHandler(this.capButton_Click);
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.button17, 0, 18);
-            this.tableLayoutPanel1.Controls.Add(this.button16, 0, 17);
-            this.tableLayoutPanel1.Controls.Add(this.button15, 0, 16);
-            this.tableLayoutPanel1.Controls.Add(this.button14, 0, 15);
-            this.tableLayoutPanel1.Controls.Add(this.button13, 0, 14);
-            this.tableLayoutPanel1.Controls.Add(this.button12, 0, 13);
-            this.tableLayoutPanel1.Controls.Add(this.button11, 0, 12);
-            this.tableLayoutPanel1.Controls.Add(this.button10, 0, 11);
-            this.tableLayoutPanel1.Controls.Add(this.button9, 0, 10);
-            this.tableLayoutPanel1.Controls.Add(this.button8, 0, 9);
-            this.tableLayoutPanel1.Controls.Add(this.button7, 0, 8);
-            this.tableLayoutPanel1.Controls.Add(this.button6, 0, 7);
-            this.tableLayoutPanel1.Controls.Add(this.button5, 0, 6);
-            this.tableLayoutPanel1.Controls.Add(this.button4, 0, 5);
-            this.tableLayoutPanel1.Controls.Add(this.button3, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.button2, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.button1, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.button0, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(1142, 74);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 19;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.263157F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(204, 313);
-            this.tableLayoutPanel1.TabIndex = 0;
             // 
             // rovPanel
             // 
@@ -853,6 +601,15 @@ namespace GUI
             // pilotPanel
             // 
             this.pilotPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pilotPanel.Controls.Add(this.l9);
+            this.pilotPanel.Controls.Add(this.l8);
+            this.pilotPanel.Controls.Add(this.l7);
+            this.pilotPanel.Controls.Add(this.l6);
+            this.pilotPanel.Controls.Add(this.l5);
+            this.pilotPanel.Controls.Add(this.l4);
+            this.pilotPanel.Controls.Add(this.l3);
+            this.pilotPanel.Controls.Add(this.l2);
+            this.pilotPanel.Controls.Add(this.l1);
             this.pilotPanel.Controls.Add(this.pilotRightIndicator);
             this.pilotPanel.Controls.Add(this.pilotUpIndicator);
             this.pilotPanel.Controls.Add(this.pilotLeftIndicator);
@@ -872,6 +629,87 @@ namespace GUI
             this.pilotPanel.Name = "pilotPanel";
             this.pilotPanel.Size = new System.Drawing.Size(254, 174);
             this.pilotPanel.TabIndex = 71;
+            // 
+            // l9
+            // 
+            this.l9.AutoSize = true;
+            this.l9.Location = new System.Drawing.Point(164, 55);
+            this.l9.Name = "l9";
+            this.l9.Size = new System.Drawing.Size(27, 13);
+            this.l9.TabIndex = 93;
+            this.l9.Text = "help";
+            // 
+            // l8
+            // 
+            this.l8.AutoSize = true;
+            this.l8.Location = new System.Drawing.Point(3, 55);
+            this.l8.Name = "l8";
+            this.l8.Size = new System.Drawing.Size(111, 13);
+            this.l8.TabIndex = 92;
+            this.l8.Text = "Dpad - Direction Lock";
+            // 
+            // l7
+            // 
+            this.l7.AutoSize = true;
+            this.l7.Location = new System.Drawing.Point(56, 93);
+            this.l7.Name = "l7";
+            this.l7.Size = new System.Drawing.Size(54, 13);
+            this.l7.TabIndex = 91;
+            this.l7.Text = "Horizontal";
+            // 
+            // l6
+            // 
+            this.l6.AutoSize = true;
+            this.l6.Location = new System.Drawing.Point(141, 93);
+            this.l6.Name = "l6";
+            this.l6.Size = new System.Drawing.Size(73, 13);
+            this.l6.TabIndex = 90;
+            this.l6.Text = "Heading/Yaw";
+            // 
+            // l5
+            // 
+            this.l5.AutoSize = true;
+            this.l5.Location = new System.Drawing.Point(200, 56);
+            this.l5.Name = "l5";
+            this.l5.Size = new System.Drawing.Size(56, 13);
+            this.l5.TabIndex = 89;
+            this.l5.Text = "Heading L";
+            // 
+            // l4
+            // 
+            this.l4.AutoSize = true;
+            this.l4.Location = new System.Drawing.Point(162, 73);
+            this.l4.Name = "l4";
+            this.l4.Size = new System.Drawing.Size(52, 13);
+            this.l4.TabIndex = 88;
+            this.l4.Text = "Roll Lock";
+            // 
+            // l3
+            // 
+            this.l3.AutoSize = true;
+            this.l3.Location = new System.Drawing.Point(179, 38);
+            this.l3.Name = "l3";
+            this.l3.Size = new System.Drawing.Size(63, 13);
+            this.l3.TabIndex = 87;
+            this.l3.Text = "Depth Lock";
+            // 
+            // l2
+            // 
+            this.l2.AutoSize = true;
+            this.l2.Location = new System.Drawing.Point(179, 4);
+            this.l2.Name = "l2";
+            this.l2.Size = new System.Drawing.Size(47, 13);
+            this.l2.TabIndex = 86;
+            this.l2.Text = "ROV Up";
+            // 
+            // l1
+            // 
+            this.l1.AutoSize = true;
+            this.l1.Location = new System.Drawing.Point(24, 8);
+            this.l1.Name = "l1";
+            this.l1.Size = new System.Drawing.Size(61, 13);
+            this.l1.TabIndex = 85;
+            this.l1.Text = "ROV Down";
             // 
             // pilotRightIndicator
             // 
@@ -957,6 +795,7 @@ namespace GUI
             // 
             this.pilotRStickIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.pilotRStickIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotRStickIndicator.Font = new System.Drawing.Font("Microsoft Sans Serif", 3.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pilotRStickIndicator.Location = new System.Drawing.Point(151, 81);
             this.pilotRStickIndicator.Name = "pilotRStickIndicator";
             this.pilotRStickIndicator.Size = new System.Drawing.Size(32, 27);
@@ -967,17 +806,19 @@ namespace GUI
             // 
             this.pilotLStickIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.pilotLStickIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotLStickIndicator.Font = new System.Drawing.Font("Microsoft Sans Serif", 3.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pilotLStickIndicator.Location = new System.Drawing.Point(71, 81);
             this.pilotLStickIndicator.Name = "pilotLStickIndicator";
             this.pilotLStickIndicator.Size = new System.Drawing.Size(32, 27);
             this.pilotLStickIndicator.TabIndex = 75;
+            this.pilotLStickIndicator.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.pilotLStickIndicator.UseVisualStyleBackColor = false;
             // 
             // pilotRBumperIndicator
             // 
             this.pilotRBumperIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.pilotRBumperIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pilotRBumperIndicator.Location = new System.Drawing.Point(182, 16);
+            this.pilotRBumperIndicator.Location = new System.Drawing.Point(182, 19);
             this.pilotRBumperIndicator.Name = "pilotRBumperIndicator";
             this.pilotRBumperIndicator.Size = new System.Drawing.Size(43, 14);
             this.pilotRBumperIndicator.TabIndex = 74;
@@ -987,9 +828,10 @@ namespace GUI
             // 
             this.pilotRTriggerIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.pilotRTriggerIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotRTriggerIndicator.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pilotRTriggerIndicator.Location = new System.Drawing.Point(182, 0);
             this.pilotRTriggerIndicator.Name = "pilotRTriggerIndicator";
-            this.pilotRTriggerIndicator.Size = new System.Drawing.Size(43, 14);
+            this.pilotRTriggerIndicator.Size = new System.Drawing.Size(43, 18);
             this.pilotRTriggerIndicator.TabIndex = 73;
             this.pilotRTriggerIndicator.UseVisualStyleBackColor = false;
             // 
@@ -997,7 +839,7 @@ namespace GUI
             // 
             this.pilotLBumperIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.pilotLBumperIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pilotLBumperIndicator.Location = new System.Drawing.Point(32, 19);
+            this.pilotLBumperIndicator.Location = new System.Drawing.Point(32, 22);
             this.pilotLBumperIndicator.Name = "pilotLBumperIndicator";
             this.pilotLBumperIndicator.Size = new System.Drawing.Size(43, 14);
             this.pilotLBumperIndicator.TabIndex = 72;
@@ -1007,16 +849,17 @@ namespace GUI
             // 
             this.pilotLTriggerIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.pilotLTriggerIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pilotLTriggerIndicator.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pilotLTriggerIndicator.Location = new System.Drawing.Point(32, 3);
             this.pilotLTriggerIndicator.Name = "pilotLTriggerIndicator";
-            this.pilotLTriggerIndicator.Size = new System.Drawing.Size(43, 14);
+            this.pilotLTriggerIndicator.Size = new System.Drawing.Size(43, 18);
             this.pilotLTriggerIndicator.TabIndex = 71;
             this.pilotLTriggerIndicator.UseVisualStyleBackColor = false;
             // 
             // pictureBox6
             // 
             this.pictureBox6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox6.Image = global::GUI.Properties.Resources.ps4controller;
+            this.pictureBox6.Image = global::GUI.Properties.Resources.controller;
             this.pictureBox6.Location = new System.Drawing.Point(0, 0);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(254, 174);
@@ -1024,20 +867,16 @@ namespace GUI
             this.pictureBox6.TabIndex = 70;
             this.pictureBox6.TabStop = false;
             // 
-            // picture
-            // 
-            this.picture.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picture.Location = new System.Drawing.Point(0, 0);
-            this.picture.Margin = new System.Windows.Forms.Padding(2);
-            this.picture.Name = "picture";
-            this.picture.Size = new System.Drawing.Size(1358, 670);
-            this.picture.TabIndex = 63;
-            this.picture.TabStop = false;
-            this.picture.Visible = false;
-            // 
             // copilotPanel
             // 
             this.copilotPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.copilotPanel.Controls.Add(this.cl6);
+            this.copilotPanel.Controls.Add(this.label6);
+            this.copilotPanel.Controls.Add(this.cl3);
+            this.copilotPanel.Controls.Add(this.cl5);
+            this.copilotPanel.Controls.Add(this.cl4);
+            this.copilotPanel.Controls.Add(this.cl2);
+            this.copilotPanel.Controls.Add(this.cl1);
             this.copilotPanel.Controls.Add(this.copilotRightIndicator);
             this.copilotPanel.Controls.Add(this.copilotUpIndicator);
             this.copilotPanel.Controls.Add(this.copilotLeftIndicator);
@@ -1057,6 +896,69 @@ namespace GUI
             this.copilotPanel.Name = "copilotPanel";
             this.copilotPanel.Size = new System.Drawing.Size(254, 174);
             this.copilotPanel.TabIndex = 85;
+            // 
+            // cl6
+            // 
+            this.cl6.AutoSize = true;
+            this.cl6.Location = new System.Drawing.Point(167, 54);
+            this.cl6.Name = "cl6";
+            this.cl6.Size = new System.Drawing.Size(27, 13);
+            this.cl6.TabIndex = 91;
+            this.cl6.Text = "help";
+            this.cl6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(103, 81);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(0, 13);
+            this.label6.TabIndex = 90;
+            // 
+            // cl3
+            // 
+            this.cl3.AutoSize = true;
+            this.cl3.Location = new System.Drawing.Point(182, 74);
+            this.cl3.Name = "cl3";
+            this.cl3.Size = new System.Drawing.Size(49, 13);
+            this.cl3.TabIndex = 89;
+            this.cl3.Text = "MiniROV";
+            // 
+            // cl5
+            // 
+            this.cl5.AutoSize = true;
+            this.cl5.Location = new System.Drawing.Point(204, 56);
+            this.cl5.Name = "cl5";
+            this.cl5.Size = new System.Drawing.Size(52, 13);
+            this.cl5.TabIndex = 88;
+            this.cl5.Text = "Container";
+            // 
+            // cl4
+            // 
+            this.cl4.AutoSize = true;
+            this.cl4.Location = new System.Drawing.Point(193, 38);
+            this.cl4.Name = "cl4";
+            this.cl4.Size = new System.Drawing.Size(30, 13);
+            this.cl4.TabIndex = 87;
+            this.cl4.Text = "Claw";
+            // 
+            // cl2
+            // 
+            this.cl2.AutoSize = true;
+            this.cl2.Location = new System.Drawing.Point(56, 56);
+            this.cl2.Name = "cl2";
+            this.cl2.Size = new System.Drawing.Size(21, 13);
+            this.cl2.TabIndex = 86;
+            this.cl2.Text = "CV";
+            // 
+            // cl1
+            // 
+            this.cl1.AutoSize = true;
+            this.cl1.Location = new System.Drawing.Point(17, 38);
+            this.cl1.Name = "cl1";
+            this.cl1.Size = new System.Drawing.Size(68, 13);
+            this.cl1.TabIndex = 85;
+            this.cl1.Text = "Start Camera";
             // 
             // copilotRightIndicator
             // 
@@ -1142,6 +1044,7 @@ namespace GUI
             // 
             this.copilotRStickIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.copilotRStickIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotRStickIndicator.Font = new System.Drawing.Font("Microsoft Sans Serif", 3.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.copilotRStickIndicator.Location = new System.Drawing.Point(151, 81);
             this.copilotRStickIndicator.Name = "copilotRStickIndicator";
             this.copilotRStickIndicator.Size = new System.Drawing.Size(32, 27);
@@ -1152,6 +1055,7 @@ namespace GUI
             // 
             this.copilotLStickIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.copilotLStickIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotLStickIndicator.Font = new System.Drawing.Font("Microsoft Sans Serif", 3.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.copilotLStickIndicator.Location = new System.Drawing.Point(71, 81);
             this.copilotLStickIndicator.Name = "copilotLStickIndicator";
             this.copilotLStickIndicator.Size = new System.Drawing.Size(32, 27);
@@ -1162,7 +1066,7 @@ namespace GUI
             // 
             this.copilotRBumperIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.copilotRBumperIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.copilotRBumperIndicator.Location = new System.Drawing.Point(182, 16);
+            this.copilotRBumperIndicator.Location = new System.Drawing.Point(182, 19);
             this.copilotRBumperIndicator.Name = "copilotRBumperIndicator";
             this.copilotRBumperIndicator.Size = new System.Drawing.Size(43, 14);
             this.copilotRBumperIndicator.TabIndex = 74;
@@ -1172,9 +1076,10 @@ namespace GUI
             // 
             this.copilotRTriggerIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.copilotRTriggerIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotRTriggerIndicator.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.copilotRTriggerIndicator.Location = new System.Drawing.Point(182, 0);
             this.copilotRTriggerIndicator.Name = "copilotRTriggerIndicator";
-            this.copilotRTriggerIndicator.Size = new System.Drawing.Size(43, 14);
+            this.copilotRTriggerIndicator.Size = new System.Drawing.Size(43, 18);
             this.copilotRTriggerIndicator.TabIndex = 73;
             this.copilotRTriggerIndicator.UseVisualStyleBackColor = false;
             // 
@@ -1182,7 +1087,7 @@ namespace GUI
             // 
             this.copilotLBumperIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.copilotLBumperIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.copilotLBumperIndicator.Location = new System.Drawing.Point(32, 19);
+            this.copilotLBumperIndicator.Location = new System.Drawing.Point(32, 22);
             this.copilotLBumperIndicator.Name = "copilotLBumperIndicator";
             this.copilotLBumperIndicator.Size = new System.Drawing.Size(43, 14);
             this.copilotLBumperIndicator.TabIndex = 72;
@@ -1192,16 +1097,17 @@ namespace GUI
             // 
             this.copilotLTriggerIndicator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.copilotLTriggerIndicator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copilotLTriggerIndicator.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.copilotLTriggerIndicator.Location = new System.Drawing.Point(32, 3);
             this.copilotLTriggerIndicator.Name = "copilotLTriggerIndicator";
-            this.copilotLTriggerIndicator.Size = new System.Drawing.Size(43, 14);
+            this.copilotLTriggerIndicator.Size = new System.Drawing.Size(43, 18);
             this.copilotLTriggerIndicator.TabIndex = 71;
             this.copilotLTriggerIndicator.UseVisualStyleBackColor = false;
             // 
             // pictureBox7
             // 
             this.pictureBox7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox7.Image = global::GUI.Properties.Resources.ps4controller;
+            this.pictureBox7.Image = global::GUI.Properties.Resources.controller;
             this.pictureBox7.Location = new System.Drawing.Point(0, 0);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(254, 174);
@@ -1222,12 +1128,97 @@ namespace GUI
             this.CopilotConnectionLabel.Text = "Copilot Controller Not Connected";
             this.CopilotConnectionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // headingLockEngageLabel
+            // 
+            this.headingLockEngageLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.headingLockEngageLabel.AutoSize = true;
+            this.headingLockEngageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.headingLockEngageLabel.ForeColor = System.Drawing.Color.DarkRed;
+            this.headingLockEngageLabel.Location = new System.Drawing.Point(1170, 24);
+            this.headingLockEngageLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.headingLockEngageLabel.Name = "headingLockEngageLabel";
+            this.headingLockEngageLabel.Size = new System.Drawing.Size(176, 15);
+            this.headingLockEngageLabel.TabIndex = 89;
+            this.headingLockEngageLabel.Text = "Heading Lock Disengaged";
+            this.headingLockEngageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // rollLockEngageLabel
+            // 
+            this.rollLockEngageLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rollLockEngageLabel.AutoSize = true;
+            this.rollLockEngageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rollLockEngageLabel.ForeColor = System.Drawing.Color.DarkRed;
+            this.rollLockEngageLabel.Location = new System.Drawing.Point(1198, 41);
+            this.rollLockEngageLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.rollLockEngageLabel.Name = "rollLockEngageLabel";
+            this.rollLockEngageLabel.Size = new System.Drawing.Size(148, 15);
+            this.rollLockEngageLabel.TabIndex = 90;
+            this.rollLockEngageLabel.Text = "Roll Lock Disengaged";
+            this.rollLockEngageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // containerPicture
+            // 
+            this.containerPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.containerPicture.Image = global::GUI.Properties.Resources.open_container;
+            this.containerPicture.Location = new System.Drawing.Point(1108, 319);
+            this.containerPicture.Name = "containerPicture";
+            this.containerPicture.Size = new System.Drawing.Size(91, 74);
+            this.containerPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.containerPicture.TabIndex = 88;
+            this.containerPicture.TabStop = false;
+            // 
+            // clawPicture
+            // 
+            this.clawPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.clawPicture.Image = global::GUI.Properties.Resources.open_claw;
+            this.clawPicture.Location = new System.Drawing.Point(1255, 318);
+            this.clawPicture.Name = "clawPicture";
+            this.clawPicture.Size = new System.Drawing.Size(91, 74);
+            this.clawPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.clawPicture.TabIndex = 87;
+            this.clawPicture.TabStop = false;
+            // 
+            // cvFinalImage
+            // 
+            this.cvFinalImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cvFinalImage.Location = new System.Drawing.Point(1108, 225);
+            this.cvFinalImage.Name = "cvFinalImage";
+            this.cvFinalImage.Size = new System.Drawing.Size(115, 88);
+            this.cvFinalImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.cvFinalImage.TabIndex = 91;
+            this.cvFinalImage.TabStop = false;
+            // 
+            // cvFinalProcessedImage
+            // 
+            this.cvFinalProcessedImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cvFinalProcessedImage.Location = new System.Drawing.Point(1231, 225);
+            this.cvFinalProcessedImage.Name = "cvFinalProcessedImage";
+            this.cvFinalProcessedImage.Size = new System.Drawing.Size(115, 88);
+            this.cvFinalProcessedImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.cvFinalProcessedImage.TabIndex = 92;
+            this.cvFinalProcessedImage.TabStop = false;
+            // 
+            // cameraFeed
+            // 
+            this.cameraFeed.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cameraFeed.Location = new System.Drawing.Point(0, 0);
+            this.cameraFeed.Name = "cameraFeed";
+            this.cameraFeed.Size = new System.Drawing.Size(1358, 670);
+            this.cameraFeed.TabIndex = 93;
+            this.cameraFeed.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1358, 670);
+            this.Controls.Add(this.cvFinalProcessedImage);
+            this.Controls.Add(this.cvFinalImage);
+            this.Controls.Add(this.rollLockEngageLabel);
+            this.Controls.Add(this.headingLockEngageLabel);
+            this.Controls.Add(this.containerPicture);
+            this.Controls.Add(this.clawPicture);
             this.Controls.Add(this.trackBar4);
             this.Controls.Add(this.trackBar2);
             this.Controls.Add(this.trackBar3);
@@ -1237,7 +1228,6 @@ namespace GUI
             this.Controls.Add(this.pilotPanel);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.PilotConnectionLabel);
-            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.rovPanel);
             this.Controls.Add(this.tableLayoutPanel4);
             this.Controls.Add(this.cvButton);
@@ -1248,7 +1238,7 @@ namespace GUI
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.connectButton);
             this.Controls.Add(this.portLabel);
-            this.Controls.Add(this.picture);
+            this.Controls.Add(this.cameraFeed);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
@@ -1259,8 +1249,6 @@ namespace GUI
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar4)).EndInit();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
             this.rovPanel.ResumeLayout(false);
             this.rovPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -1272,10 +1260,16 @@ namespace GUI
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             this.pilotPanel.ResumeLayout(false);
+            this.pilotPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picture)).EndInit();
             this.copilotPanel.ResumeLayout(false);
+            this.copilotPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.containerPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.clawPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cvFinalImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cvFinalProcessedImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cameraFeed)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1290,25 +1284,6 @@ namespace GUI
         private System.Windows.Forms.Label portLabel;
         private System.Windows.Forms.Button resetButton;
         private System.Windows.Forms.Label PilotConnectionLabel;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label button1;
-        private System.Windows.Forms.Label button2;
-        private System.Windows.Forms.Label button3;
-        private System.Windows.Forms.Label button4;
-        private System.Windows.Forms.Label button5;
-        private System.Windows.Forms.Label button6;
-        private System.Windows.Forms.Label button7;
-        private System.Windows.Forms.Label button8;
-        private System.Windows.Forms.Label button16;
-        private System.Windows.Forms.Label button17;
-        private System.Windows.Forms.Label button0;
-        private System.Windows.Forms.Label button14;
-        private System.Windows.Forms.Label button13;
-        private System.Windows.Forms.Label button12;
-        private System.Windows.Forms.Label button11;
-        private System.Windows.Forms.Label button10;
-        private System.Windows.Forms.Label button9;
-        private System.Windows.Forms.Label button15;
         private System.Windows.Forms.Timer controllerUpdateTimer;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label topLeft;
@@ -1330,8 +1305,6 @@ namespace GUI
         private System.Windows.Forms.Button rightPrefButton;
         private System.Windows.Forms.Button leftPrefButton;
         private System.Windows.Forms.Button capButton;
-        private System.Windows.Forms.PictureBox picture;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel rovPanel;
         private System.Windows.Forms.Label SquareCount;
         private System.Windows.Forms.Label CircleCount;
@@ -1377,6 +1350,29 @@ namespace GUI
         private System.Windows.Forms.Button copilotLTriggerIndicator;
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.Label CopilotConnectionLabel;
+        private System.Windows.Forms.PictureBox clawPicture;
+        private System.Windows.Forms.PictureBox containerPicture;
+        private System.Windows.Forms.Label headingLockEngageLabel;
+        private System.Windows.Forms.Label rollLockEngageLabel;
+        private System.Windows.Forms.Label l1;
+        private System.Windows.Forms.Label l4;
+        private System.Windows.Forms.Label l3;
+        private System.Windows.Forms.Label l2;
+        private System.Windows.Forms.Label l9;
+        private System.Windows.Forms.Label l8;
+        private System.Windows.Forms.Label l7;
+        private System.Windows.Forms.Label l6;
+        private System.Windows.Forms.Label l5;
+        private System.Windows.Forms.Label cl2;
+        private System.Windows.Forms.Label cl1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label cl3;
+        private System.Windows.Forms.Label cl5;
+        private System.Windows.Forms.Label cl4;
+        private System.Windows.Forms.Label cl6;
+        private System.Windows.Forms.PictureBox cvFinalImage;
+        private System.Windows.Forms.PictureBox cvFinalProcessedImage;
+        private System.Windows.Forms.PictureBox cameraFeed;
     }
 }
 
