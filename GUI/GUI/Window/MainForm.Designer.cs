@@ -217,7 +217,7 @@ namespace GUI
             this.PilotConnectionLabel.AutoSize = true;
             this.PilotConnectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PilotConnectionLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.PilotConnectionLabel.Location = new System.Drawing.Point(524, 649);
+            this.PilotConnectionLabel.Location = new System.Drawing.Point(544, 649);
             this.PilotConnectionLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.PilotConnectionLabel.Name = "PilotConnectionLabel";
             this.PilotConnectionLabel.Size = new System.Drawing.Size(201, 15);
@@ -313,7 +313,7 @@ namespace GUI
             // trackBar1
             // 
             this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.trackBar1.Location = new System.Drawing.Point(809, 373);
+            this.trackBar1.Location = new System.Drawing.Point(829, 373);
             this.trackBar1.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar1.Maximum = 200;
             this.trackBar1.Name = "trackBar1";
@@ -325,7 +325,7 @@ namespace GUI
             // trackBar2
             // 
             this.trackBar2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.trackBar2.Location = new System.Drawing.Point(858, 373);
+            this.trackBar2.Location = new System.Drawing.Point(878, 373);
             this.trackBar2.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar2.Maximum = 200;
             this.trackBar2.Name = "trackBar2";
@@ -336,7 +336,7 @@ namespace GUI
             // trackBar3
             // 
             this.trackBar3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.trackBar3.Location = new System.Drawing.Point(760, 373);
+            this.trackBar3.Location = new System.Drawing.Point(780, 373);
             this.trackBar3.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar3.Maximum = 200;
             this.trackBar3.Name = "trackBar3";
@@ -348,7 +348,7 @@ namespace GUI
             // trackBar4
             // 
             this.trackBar4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.trackBar4.Location = new System.Drawing.Point(858, 421);
+            this.trackBar4.Location = new System.Drawing.Point(878, 421);
             this.trackBar4.Margin = new System.Windows.Forms.Padding(2);
             this.trackBar4.Maximum = 200;
             this.trackBar4.Name = "trackBar4";
@@ -520,7 +520,7 @@ namespace GUI
             this.tableLayoutPanel4.Controls.Add(this.leftPrefButton, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.rightPrefButton, 2, 1);
             this.tableLayoutPanel4.Controls.Add(this.forPrefButton, 1, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(500, 373);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(520, 373);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -625,7 +625,7 @@ namespace GUI
             this.pilotPanel.Controls.Add(this.pilotLBumperIndicator);
             this.pilotPanel.Controls.Add(this.pilotLTriggerIndicator);
             this.pilotPanel.Controls.Add(this.pictureBox6);
-            this.pilotPanel.Location = new System.Drawing.Point(500, 472);
+            this.pilotPanel.Location = new System.Drawing.Point(520, 472);
             this.pilotPanel.Name = "pilotPanel";
             this.pilotPanel.Size = new System.Drawing.Size(254, 174);
             this.pilotPanel.TabIndex = 71;
@@ -892,7 +892,7 @@ namespace GUI
             this.copilotPanel.Controls.Add(this.copilotLBumperIndicator);
             this.copilotPanel.Controls.Add(this.copilotLTriggerIndicator);
             this.copilotPanel.Controls.Add(this.pictureBox7);
-            this.copilotPanel.Location = new System.Drawing.Point(760, 472);
+            this.copilotPanel.Location = new System.Drawing.Point(781, 472);
             this.copilotPanel.Name = "copilotPanel";
             this.copilotPanel.Size = new System.Drawing.Size(254, 174);
             this.copilotPanel.TabIndex = 85;
@@ -1121,7 +1121,7 @@ namespace GUI
             this.CopilotConnectionLabel.AutoSize = true;
             this.CopilotConnectionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CopilotConnectionLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.CopilotConnectionLabel.Location = new System.Drawing.Point(777, 649);
+            this.CopilotConnectionLabel.Location = new System.Drawing.Point(797, 649);
             this.CopilotConnectionLabel.Name = "CopilotConnectionLabel";
             this.CopilotConnectionLabel.Size = new System.Drawing.Size(217, 15);
             this.CopilotConnectionLabel.TabIndex = 86;
@@ -1181,9 +1181,9 @@ namespace GUI
             // cvFinalImage
             // 
             this.cvFinalImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cvFinalImage.Location = new System.Drawing.Point(1108, 225);
+            this.cvFinalImage.Location = new System.Drawing.Point(1108, 131);
             this.cvFinalImage.Name = "cvFinalImage";
-            this.cvFinalImage.Size = new System.Drawing.Size(115, 88);
+            this.cvFinalImage.Size = new System.Drawing.Size(238, 181);
             this.cvFinalImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.cvFinalImage.TabIndex = 91;
             this.cvFinalImage.TabStop = false;
@@ -1191,9 +1191,9 @@ namespace GUI
             // cvFinalProcessedImage
             // 
             this.cvFinalProcessedImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cvFinalProcessedImage.Location = new System.Drawing.Point(1231, 225);
+            this.cvFinalProcessedImage.Location = new System.Drawing.Point(1108, -57);
             this.cvFinalProcessedImage.Name = "cvFinalProcessedImage";
-            this.cvFinalProcessedImage.Size = new System.Drawing.Size(115, 88);
+            this.cvFinalProcessedImage.Size = new System.Drawing.Size(238, 182);
             this.cvFinalProcessedImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.cvFinalProcessedImage.TabIndex = 92;
             this.cvFinalProcessedImage.TabStop = false;
@@ -1204,6 +1204,7 @@ namespace GUI
             this.cameraFeed.Location = new System.Drawing.Point(0, 0);
             this.cameraFeed.Name = "cameraFeed";
             this.cameraFeed.Size = new System.Drawing.Size(1358, 670);
+            this.cameraFeed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.cameraFeed.TabIndex = 93;
             this.cameraFeed.TabStop = false;
             // 
@@ -1213,7 +1214,6 @@ namespace GUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1358, 670);
-            this.Controls.Add(this.cvFinalProcessedImage);
             this.Controls.Add(this.cvFinalImage);
             this.Controls.Add(this.rollLockEngageLabel);
             this.Controls.Add(this.headingLockEngageLabel);
@@ -1238,6 +1238,7 @@ namespace GUI
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.connectButton);
             this.Controls.Add(this.portLabel);
+            this.Controls.Add(this.cvFinalProcessedImage);
             this.Controls.Add(this.cameraFeed);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(2);

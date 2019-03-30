@@ -21,20 +21,20 @@ namespace GUI {
 
     public abstract class SpeciesFinder {
         private Bitmap Bmap;
-        public int Triangles;
-        public int Squares;
-        public int Lines;
-        public int Circles;
+        public abstract string Triangle();
+        public abstract string Square();
+        public abstract string Line();
+        public abstract string Circle();
         public abstract Bitmap[] FindSpecies();
     }
 
     public class EmguSpeciesFinder : SpeciesFinder {
 
         private Bitmap Bmap;
-        public int Triangles = 0;
-        public int Squares = 0;
-        public int Lines = 0;
-        public int Circles = 0;
+        private int Triangles = 0;
+        private int Squares = 0;
+        private int Lines = 0;
+        private int Circles = 0;
 
         private const int BlurAmount = 5;
         private const int ThresholdMin = 88;
@@ -44,6 +44,22 @@ namespace GUI {
         private const double MaxRatio = 1 / MinRatio;
         private const double MinArea = 150;
         private const double BorderCutoff = 5;
+
+        public override string Triangle() {
+            return Triangles.ToString();
+        }
+
+        public override string Square() {
+            return Squares.ToString();
+        }
+
+        public override string Line() {
+            return Lines.ToString();
+        }
+
+        public override string Circle() {
+            return Circles.ToString();
+        }
 
         public EmguSpeciesFinder(Bitmap b) {
             Bmap = b;
@@ -65,10 +81,12 @@ namespace GUI {
             Image<Bgr, byte> finalProcessed = new Image<Bgr, byte>(temp.ToBitmap());
 
             Bgr boundsColor = new Bgr(204, 0, 204);
-            MCvScalar triangleColor = new MCvScalar(0, 0, 255);
-            MCvScalar squareColor = new MCvScalar(0, 255, 0);
-            MCvScalar lineColor = new MCvScalar(255, 0, 0);
-            MCvScalar circleColor = new MCvScalar(128, 255, 0);
+            Bgr triangleColor = new Bgr(0, 0, 255);
+            Bgr squareColor = new Bgr(0, 255, 0);
+            Bgr lineColor = new Bgr(255, 0, 0);
+            Bgr circleColor = new Bgr(51, 153, 255);
+            int thickness = 5;
+            int boundsThickness = 3;
 
             for (int i = 0; i < contours.Size; i++) {
                 var contour = contours[i];
@@ -77,8 +95,8 @@ namespace GUI {
                 CvInvoke.ApproxPolyDP(contour, approx, ApproxAmount * perimeter, true);
                 Rectangle bounds = CvInvoke.BoundingRectangle(contour);
 
-                final.Draw(bounds, boundsColor);
-                finalProcessed.Draw(bounds, boundsColor);
+                final.Draw(bounds, boundsColor, boundsThickness);
+                finalProcessed.Draw(bounds, boundsColor, boundsThickness);
 
                 double area = CvInvoke.ContourArea(contour);
 
@@ -96,8 +114,8 @@ namespace GUI {
 
                 if (approx.Size == 3) {
                     Triangles += 1;
-                    CvInvoke.DrawContours(final, contour, i, triangleColor, 1);
-                    CvInvoke.DrawContours(finalProcessed, contour, i, triangleColor, 1);
+                    final.DrawPolyline(contour.ToArray(), true, triangleColor, thickness);
+                    finalProcessed.DrawPolyline(contour.ToArray(), true, triangleColor, thickness);
                 } else if (approx.Size == 4) {
                     System.Drawing.Point[] test = approx.ToArray();
 
@@ -111,17 +129,17 @@ namespace GUI {
                     double ratio = width / height;
                     if (ratio > MinRatio && ratio < MaxRatio) {
                         Squares += 1;
-                        CvInvoke.DrawContours(final, contour, i, squareColor, 1);
-                        CvInvoke.DrawContours(finalProcessed, contour, i, squareColor, 1);
+                        final.DrawPolyline(contour.ToArray(), true, squareColor, thickness);
+                        finalProcessed.DrawPolyline(contour.ToArray(), true, squareColor, thickness);
                     } else {
                         Lines += 1;
-                        CvInvoke.DrawContours(final, contour, i, lineColor, 1);
-                        CvInvoke.DrawContours(finalProcessed, contour, i, lineColor, 1);
+                        final.DrawPolyline(contour.ToArray(), true, lineColor, thickness);
+                        finalProcessed.DrawPolyline(contour.ToArray(), true, lineColor, thickness);
                     }
                 } else {
                     Circles += 1;
-                    CvInvoke.DrawContours(final, contour, i, circleColor, 1);
-                    CvInvoke.DrawContours(finalProcessed, contour, i, circleColor, 1);
+                    final.DrawPolyline(contour.ToArray(), true, circleColor, thickness);
+                    finalProcessed.DrawPolyline(contour.ToArray(), true, circleColor, thickness);
                 }
             }
 
@@ -134,10 +152,26 @@ namespace GUI {
 
     public class AForgeSpeciesFinder : SpeciesFinder {
         private Bitmap Bmap;
-        public int Triangles = 0;
-        public int Squares = 0;
-        public int Lines = 0;
-        public int Circles = 0;
+        private int Triangles = 0;
+        private int Squares = 0;
+        private int Lines = 0;
+        private int Circles = 0;
+
+        public override string Triangle() {
+            return Triangles.ToString();
+        }
+
+        public override string Square() {
+            return Squares.ToString();
+        }
+
+        public override string Line() {
+            return Lines.ToString();
+        }
+
+        public override string Circle() {
+            return Circles.ToString();
+        }
 
         public AForgeSpeciesFinder(Bitmap b) {
             Bmap = b;

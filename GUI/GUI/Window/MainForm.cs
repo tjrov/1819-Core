@@ -73,13 +73,20 @@ namespace GUI
             InitializeComponent();
 
             depthIndicator = new DepthIndicator() { Location = new System.Drawing.Point(20, 100) };
-            attitudeIndicator = new AttitudeIndicator() { Location = new System.Drawing.Point(Width - 50, Height) };
+            attitudeIndicator = new AttitudeIndicator() { Location = new System.Drawing.Point(Width - 100, Height) };
             headingIndicator = new HeadingIndicator() { Location = new System.Drawing.Point(0, Height- 100) };
             Controls.Add(depthIndicator);
             Controls.Add(attitudeIndicator);
             Controls.Add(headingIndicator);
 
+            attitudeIndicator.BringToFront();
+            headingIndicator.BringToFront();
+            depthIndicator.BringToFront();
+
             hideAllControllerButtons();
+
+            cvFinalImage.Visible = false;
+            cvFinalProcessedImage.Visible = false;
 
             //setup devices
             BetterSerialPort port = new BetterSerialPort("COM5", 115200);
@@ -155,13 +162,16 @@ namespace GUI
             } else {
                 cv = new AForgeSpeciesFinder(bitmap);
             }
-
+            
             Bitmap[] result = cv.FindSpecies();
 
-            triangleCount.Text = cv.Triangles.ToString();
-            CircleCount.Text = cv.Circles.ToString();
-            SquareCount.Text = cv.Squares.ToString();
-            RectangleCount.Text = cv.Lines.ToString();
+            triangleCount.Text = cv.Triangle();
+            CircleCount.Text = cv.Circle();
+            SquareCount.Text = cv.Square();
+            RectangleCount.Text = cv.Line();
+
+            cvFinalImage.Visible = true;
+            cvFinalProcessedImage.Visible = true;
 
             cvFinalImage.Image = result[0];
             cvFinalProcessedImage.Image = result[1];
