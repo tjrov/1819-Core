@@ -189,22 +189,22 @@
   <ItemGroup>
     <Content Include="License-LGPL.txt" />
     <Content Include="Resources\bezel.bmp" />
-    <None Include="Resources\circle.png" />
     <None Include="Resources\closed_claw.png" />
     <None Include="Resources\closed_container.png" />
     <None Include="Resources\controller.png" />
+    <None Include="Resources\circle.png" />
     <Content Include="Resources\depth-back.png" />
     <Content Include="Resources\estop.png" />
     <Content Include="Resources\heading.bmp" />
     <Content Include="Resources\horizon.bmp" />
-    <None Include="Resources\line.png" />
     <None Include="Resources\open_claw.png" />
     <None Include="Resources\open_container.png" />
+    <None Include="Resources\line.png" />
     <Content Include="Resources\rov-electronics.png" />
     <Content Include="Resources\rov-thrusters.png" />
     <Content Include="Resources\rov-tools.png" />
-    <None Include="Resources\square.png" />
     <None Include="Resources\triangle.png" />
+    <None Include="Resources\square.png" />
     <Content Include="Resources\wings.bmp" />
   </ItemGroup>
   <ItemGroup />
