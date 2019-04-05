@@ -28,23 +28,28 @@ namespace GUI
 
         public double ToolMotion;
 
-        public double VerticalMotion, ForeAftMotion, StrafeMotion, TurnMotion; //ccw positive
+        public double VerticalMotion, ForeAftMotion, StrafeMotion, TurnMotion; //ccw positive\
+
+        private double desiredHeading;
         public double DesiredHeading
         {
-            get => DesiredHeading;
+            get
+            {
+                return desiredHeading;
+            }
             set
             {
                 if (value > 360)
                 {
-                    DesiredHeading = value - 360;
+                    desiredHeading = value - 360;
                 }
                 else if (value < 0)
                 {
-                    DesiredHeading = 360 - value;
+                    desiredHeading = 360 - value;
                 }
                 else
                 {
-                    DesiredHeading = value;
+                    desiredHeading = value;
                 }
             }
         }

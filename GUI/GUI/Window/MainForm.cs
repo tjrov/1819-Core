@@ -351,7 +351,7 @@ namespace GUI
                         depthvalue = (int)(rov.DepthSensor.Data.DepthValue);
                     }
                     pilotKeysUp[(int)ControllerKeys.Y] = false; //disables use of bumper until button is let go
-                } else if (!pilot.Y_down)
+                } else if (pilot.Y_up)
                 {
                     pilotKeysUp[(int)ControllerKeys.Y] = true; //reenables button if it is let go
                 }
@@ -383,7 +383,7 @@ namespace GUI
                 if (pilot.B_down && pilotKeysUp[(int) ControllerKeys.B]) {
                     rov.EnableHeadingLock = !rov.EnableHeadingLock;
                     pilotKeysUp[(int) ControllerKeys.B] = false;
-                } else if (!pilot.B_down) {
+                } else if (pilot.B_up) {
                     pilotKeysUp[(int) ControllerKeys.B] = true;
                 }
 
@@ -415,7 +415,7 @@ namespace GUI
                         rollLockEngageLabel.Text = "Roll Lock Disengaged";
                     }
                     pilotKeysUp[(int) ControllerKeys.A] = false;
-                } else if (!pilot.A_down) {
+                } else if (pilot.A_up) {
                     pilotKeysUp[(int) ControllerKeys.A] = true;
                 }
                 #endregion
@@ -433,7 +433,7 @@ namespace GUI
                 {
                     forPrefButton_Click(null, null);
                     pilotKeysUp[(int)ControllerKeys.Up] = false;
-                } else if (!pilot.Dpad_Up_down) {
+                } else if (pilot.Dpad_Up_up) {
                     pilotKeysUp[(int)ControllerKeys.Up] = true;
                 }
 
@@ -441,7 +441,7 @@ namespace GUI
                 {
                     rightPrefButton_Click(null, null);
                     pilotKeysUp[(int)ControllerKeys.Right] = false;
-                } else if (!pilot.Dpad_Right_down) {
+                } else if (pilot.Dpad_Right_up) {
                     pilotKeysUp[(int)ControllerKeys.Right] = true;
                 }
                 
@@ -449,7 +449,7 @@ namespace GUI
                 {
                     backPrefButton_Click(null, null);
                     pilotKeysUp[(int)ControllerKeys.Down] = false;
-                } else if (!pilot.Dpad_Down_down){
+                } else if (pilot.Dpad_Down_up){
                     pilotKeysUp[(int)ControllerKeys.Down] = true;
                 }
 
@@ -457,7 +457,7 @@ namespace GUI
                 {
                     leftPrefButton_Click(null, null);
                     pilotKeysUp[(int)ControllerKeys.Left] = false;
-                } else if (!pilot.Dpad_Left_down) {
+                } else if (pilot.Dpad_Left_up) {
                     pilotKeysUp[(int)ControllerKeys.Left] = true;
                 }
 
@@ -505,7 +505,7 @@ namespace GUI
                         clawPicture.Image = Properties.Resources.open_claw;
                     }
                     copilotKeysUp[(int)ControllerKeys.Y] = false;
-                } else if (!copilot.Y_down) {
+                } else if (copilot.Y_up) {
                     copilotKeysUp[(int)ControllerKeys.Y] = true;
                 }
 
@@ -520,7 +520,7 @@ namespace GUI
                         containerPicture.Image = Properties.Resources.open_container;
                     }        
                     copilotKeysUp[(int)ControllerKeys.B] = false;
-                } else if (!copilot.B_down) {
+                } else if (copilot.B_up) {
                     copilotKeysUp[(int)ControllerKeys.B] = true;
                 }
 
@@ -528,7 +528,7 @@ namespace GUI
                 {
                     // activate MiniROV?
                     copilotKeysUp[(int)ControllerKeys.A] = false;
-                } else if (!copilot.A_down) {
+                } else if (copilot.A_up) {
                     copilotKeysUp[(int)ControllerKeys.A] = true;
                 }
                 #endregion
@@ -539,7 +539,7 @@ namespace GUI
                     // start camera
                     capButton_Click(null, null);
                     copilotKeysUp[(int)ControllerKeys.Up] = false;
-                } else if (!copilot.Dpad_Up_down) {
+                } else if (copilot.Dpad_Up_up) {
                     copilotKeysUp[(int)ControllerKeys.Up] = true;
                 }
 
@@ -548,7 +548,7 @@ namespace GUI
                     // find shapes
                     computerVisionButtonClick(null, null);
                     copilotKeysUp[(int)ControllerKeys.Right] = false;
-                } else if (!copilot.Dpad_Right_down) {
+                } else if (copilot.Dpad_Right_up) {
                     copilotKeysUp[(int)ControllerKeys.Right] = true;
                 }
                 #endregion
