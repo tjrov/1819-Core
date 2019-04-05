@@ -425,9 +425,8 @@ void writeServo() {
 	if (!(error&ESC_FAILURE)) {
 		for (int i = 0; i < NUM_SERVO; i++) {
 			uint8_t position = rxData.data[i];
-			// not sure exactly what position variable will be here
-			// in theory if it is between 0, 180 it should be mapped so
-			// pca9685.setPWM(i, position / 180 * 4096, 4096 - (position / 180 * 4096))
+			// not sure exactly what position variable will be here (it should be 0-255 i think)
+			pca9685.setPWM(i, map(position, 0, 255, 0, 4095), map(255 - position, 0, 255, 0, 4095));
 		}
 	}
 }
