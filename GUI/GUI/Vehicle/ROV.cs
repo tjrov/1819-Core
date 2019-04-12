@@ -152,13 +152,17 @@ namespace GUI
             comms.Queue.Enqueue(PropulsionActuator);
         }
 
+        public void UpdateServos()
+        {
+            comms.Queue.Enqueue(ServoActuator);
+        }
+
         //medium loop for sensors and manipulators/tools
         private void T50_Tick(object sender, EventArgs e)
         {
             comms.Queue.Enqueue(DepthSensor);
             comms.Queue.Enqueue(OrientationSensor);
             comms.Queue.Enqueue(ToolsActuator);
-            comms.Queue.Enqueue(ServoActuator);
         }
 
         //slow loop for status and error reports, arming/disarming, etc.

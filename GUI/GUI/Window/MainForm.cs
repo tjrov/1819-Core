@@ -505,6 +505,7 @@ namespace GUI
                         clawPicture.Image = Properties.Resources.open_claw;
                     }
                     copilotKeysUp[(int)ControllerKeys.Y] = false;
+                    rov.UpdateServos();
                 } else if (copilot.Y_up) {
                     copilotKeysUp[(int)ControllerKeys.Y] = true;
                 }
@@ -520,6 +521,7 @@ namespace GUI
                         containerPicture.Image = Properties.Resources.open_container;
                     }        
                     copilotKeysUp[(int)ControllerKeys.B] = false;
+                    rov.UpdateServos();
                 } else if (copilot.B_up) {
                     copilotKeysUp[(int)ControllerKeys.B] = true;
                 }
