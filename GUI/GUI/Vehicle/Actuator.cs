@@ -131,6 +131,20 @@ namespace GUI
         }
     }
 
+    public class MiniROVActuator : Actuator<MiniROVData>
+    {
+        public MiniROVActuator() : base(0x85)
+        {
+        }
+
+        protected override byte[] Convert(MiniROVData controlData)
+        {
+            // TODO: send over actual data
+            byte[] result = new byte[1];
+            result[0] = ConvertUtils.DoubleToByte(2, 0, 100);
+        }
+    }
+    
     public class StatusActuator : Actuator<StatusActuatorData>
     {
         /*private Button arm, reboot, upload, estop;

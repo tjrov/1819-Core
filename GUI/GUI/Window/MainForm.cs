@@ -614,7 +614,7 @@ namespace GUI
 
                 if (copilot.A_down && copilotKeysUp[(int) ControllerKeys.A])
                 {
-                    // activate MiniROV?
+                    rov.LaunchMiniROV();
                     copilotKeysUp[(int) ControllerKeys.A] = false;
                 }
                 else if (copilot.A_up)

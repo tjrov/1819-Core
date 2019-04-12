@@ -18,6 +18,9 @@ namespace GUI
         public ToolsActuator ToolsActuator;
 
         public ServoActuator ServoActuator;
+        public MiniROVActuator MiniROVActuator;
+
+        private bool miniROVLaunched = false;
 
         private SerialCommunication comms;
         private Timer t500, t50, t10;
@@ -87,6 +90,7 @@ namespace GUI
             PropulsionActuator = new PropulsionActuator();
             ToolsActuator = new ToolsActuator();
             ServoActuator = new ServoActuator();
+            MiniROVActuator = new MiniROVActuator();
 
             //timer setup
             t500 = new Timer() { Enabled = true, Interval = 500 };
@@ -153,6 +157,15 @@ namespace GUI
             comms.Queue.Enqueue(ServoActuator);
         }
 
+        public void LaunchMiniROV()
+        {
+            if (!miniROVLaunched)
+            {
+                comms.Queue.Enqueue(MiniROVActuator);
+                miniROVLaunched = true;
+            }
+        }
+        
         //medium loop for sensors and manipulators/tools
         private void T50_Tick(object sender, EventArgs e)
         {

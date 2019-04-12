@@ -11,6 +11,9 @@ namespace GUI
     {
         public double[] Positions = new double[2];
     }
+    public class MiniROVData
+    {
+    }
     public class DepthData
     {
         public double DepthValue;

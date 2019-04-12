@@ -80,7 +80,8 @@ enum COMMAND {
 	ESC_CMD = 0x81,
 	TOOLS_CMD = 0x82,
 	STATUS_CMD = 0x83,
-	SERVO_CMD = 0x84
+	SERVO_CMD = 0x84,
+	MINIROV_CMD = 0x85
 };
 
 /*Pin definitions*/
@@ -122,6 +123,7 @@ bool checkI2C(uint8_t address);
 void writeESCs();
 void writeTools();
 void writeServo();
+void launchMiniROV();
 void checkESCsAndTools();
 void initStatus();
 void readStatus();
@@ -213,6 +215,9 @@ void processMessage() {
 			writeStatus();
 			break;
 			//Sensor requests
+		case MINIROV_CMD:
+		    launchMiniROV();
+		    break;
 		case IMU_REQ:
 			readIMU();
 			sendMessage();
@@ -429,6 +434,10 @@ void writeServo() {
 			pca9685.setPWM(i, map(position, 0, 255, 0, 4095), map(255 - position, 0, 255, 0, 4095));
 		}
 	}
+}
+
+void launchMiniROV() {
+    // TODO: write code to launch ROV
 }
 
 /*Status*/
