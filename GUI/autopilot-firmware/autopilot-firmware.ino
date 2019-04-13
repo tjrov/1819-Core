@@ -34,7 +34,6 @@ Configuration for autopilot board
 
 #define NUM_ESCS 6
 #define ESC_ADDRESSES { 0x31, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E }
-#define ESC_INVERT {0,0,0,0,0,0}
 
 #define TOOLS_INVERT {0,0,0,0}
 #define NUM_POLES 6
@@ -97,7 +96,6 @@ Adafruit_BNO055 bno055 = Adafruit_BNO055();
 MS5803 ms5803(ADDRESS_HIGH);
 Adafruit_PWMServoDriver pca9685 = Adafruit_PWMServoDriver();
 
-const uint8_t esc_invert[6] = ESC_INVERT;
 const uint8_t tools_invert[4] = TOOLS_INVERT;
 
 struct MESSAGE {
@@ -374,9 +372,6 @@ void writeESCs() {
 
 		for (int i = 0; i < NUM_ESCS; i++) {
 			uint8_t speed = rxData.data[i];
-			if (esc_invert[i] == 1) {
-				speed = 255 - speed;
-			}
 			if (speed == 127) {
 				//stop motor
 				pca9685.setPWM(i, 0, PWM_STOP);
@@ -599,11 +594,11 @@ void controlLEDs() {
 	switch (status) {
 	case DISCONNECTED:
 		//flash every few seconds
-		digitalWrite(LED, (millis() % 2000 < 50));
+		digitalWrite(LED, (millis() % 5000 < 50));
 		break;
 	case DISARMED:
 		//LED on
-		digitalWrite(LED, HIGH);
+		digitalWrite(LED, (millis() % 1000 < 50));
 		break;
 	case ARMED:
 		//flashing

@@ -49,7 +49,7 @@ namespace GUI
         public bool EnableHeadingLock, EnableRollLock, EnableDepthLock;
 
         //change as needed
-        private readonly Dictionary<string, int> key = new Dictionary<string, int>()
+        /*private readonly Dictionary<string, int> key = new Dictionary<string, int>()
         {
             ["ForwardPort"] = 0,
             ["ForwardStarboard"] = 3,
@@ -57,6 +57,16 @@ namespace GUI
             ["AftStarboard"] = 5,
             ["VerticalPort"] = 1,
             ["VerticalStarboard"] = 4
+        };*/
+
+        public enum ThrusterLocations
+        {
+            ForwardPort=5,
+            ForwardStarboard=2,
+            AftPort=3,
+            AftStarboard=0,
+            VerticalPort=4,
+            VerticalStarboard=1
         };
 
         private readonly double headingAdj;
@@ -141,7 +151,7 @@ namespace GUI
             }*/
 
             //send the thruster speeds to the ROV
-            PropulsionActuator.Data.Speeds[0] = -100;
+            PropulsionActuator.Data.Speeds[(int)ThrusterLocations.VerticalStarboard] = 2;
             comms.Queue.Enqueue(PropulsionActuator);
         }
 
@@ -161,7 +171,7 @@ namespace GUI
         }
         public void setDirection(int direction)
         {
-            directionPref = direction;
+            /*directionPref = direction;
             switch (direction)
             {
                 case 0:
@@ -194,7 +204,7 @@ namespace GUI
                     key["AftPort"] = 3;
                     key["AftStarboard"] = 1;
                     break;
-            }
+            }*/
         }
     }
 }
