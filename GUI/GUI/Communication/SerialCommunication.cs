@@ -107,6 +107,7 @@ namespace GUI
                     catch (Exception ex)
                     {
                         //stop serial communication code by closing port
+                        MessageBox.Show(ex + "");
                         LinkActive = false;
                         //show exception dialog
                         if (CommunicationException != null)

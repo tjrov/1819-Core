@@ -49,7 +49,7 @@ namespace GUI
         public bool EnableHeadingLock, EnableRollLock, EnableDepthLock;
 
         //change as needed
-        /*private readonly Dictionary<string, int> key = new Dictionary<string, int>()
+        private readonly Dictionary<string, int> key = new Dictionary<string, int>()
         {
             ["ForwardPort"] = 0,
             ["ForwardStarboard"] = 3,
@@ -57,9 +57,9 @@ namespace GUI
             ["AftStarboard"] = 5,
             ["VerticalPort"] = 1,
             ["VerticalStarboard"] = 4
-        };*/
+        };
 
-        public enum ThrusterLocations
+       /* public enum ThrusterLocations
         {
             ForwardPort=5,
             ForwardStarboard=2,
@@ -67,7 +67,7 @@ namespace GUI
             AftStarboard=0,
             VerticalPort=4,
             VerticalStarboard=1
-        };
+        };*/
 
         private readonly double headingAdj;
         private readonly double depthAdj;
@@ -93,7 +93,7 @@ namespace GUI
             //timer setup
             t500 = new Timer() { Enabled = true, Interval = 500 };
             t50 = new Timer() { Enabled = true, Interval = 50 };
-            t10 = new Timer() { Enabled = true, Interval = 10 };
+            t10 = new Timer() { Enabled = true, Interval = 50 };
             t500.Tick += T500_Tick;
             t50.Tick += T50_Tick;
             t10.Tick += T10_Tick;
@@ -116,7 +116,7 @@ namespace GUI
         //fast loop reserved for thruster control only
         private void T10_Tick(object sender, EventArgs e)
         {
-            /*double[] speeds = PropulsionActuator.Data.Speeds; //this might make an array copy instead of a reference idk
+            double[] speeds = PropulsionActuator.Data.Speeds; //this might make an array copy instead of a reference idk
 
             //horizontal vector thrusters
             //all thruster speeds are positive for forward/upward thrust
@@ -147,20 +147,26 @@ namespace GUI
             }
             for(int i = 0; i < 6; i++)
             {
-            //    PropulsionActuator.Data.Speeds[i] = 100;
-            }*/
+                /*if(PropulsionActuator.Data.Speeds[i]> 50)
+                {
+                    PropulsionActuator.Data.Speeds[i] = 50;
+                }
+                if(PropulsionActuator.Data.Speeds[i] < -50)
+                {
+                    PropulsionActuator.Data.Speeds[i] = -50;
+                }*/
+            }
 
             //send the thruster speeds to the ROV
-            PropulsionActuator.Data.Speeds[(int)ThrusterLocations.VerticalStarboard] = 2;
             comms.Queue.Enqueue(PropulsionActuator);
         }
 
         //medium loop for sensors and manipulators/tools
         private void T50_Tick(object sender, EventArgs e)
         {
-            comms.Queue.Enqueue(DepthSensor);
-            comms.Queue.Enqueue(OrientationSensor);
-            comms.Queue.Enqueue(ToolsActuator);
+            //comms.Queue.Enqueue(DepthSensor);
+            //comms.Queue.Enqueue(OrientationSensor);
+            //comms.Queue.Enqueue(ToolsActuator);
         }
 
         //slow loop for status and error reports, arming/disarming, etc.
@@ -171,7 +177,7 @@ namespace GUI
         }
         public void setDirection(int direction)
         {
-            /*directionPref = direction;
+            directionPref = direction;
             switch (direction)
             {
                 case 0:
@@ -204,7 +210,7 @@ namespace GUI
                     key["AftPort"] = 3;
                     key["AftStarboard"] = 1;
                     break;
-            }*/
+            }
         }
     }
 }
