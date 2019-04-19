@@ -449,10 +449,10 @@ namespace GUI
                 rov.StrafeMotion = 0.0;
                 rov.TurnMotion = 0.0;
             }
-            trackBar1.Value = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, 0, 200));
-            trackBar2.Value = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, 0, 200));
-            trackBar3.Value = (int)(ConvertUtils.Map(RStickZeroY, -32768, 32767, 0, 200));
-            trackBar4.Value = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, 0, 200));
+            joyStickChart1.Series["Series1"].Points[0].XValue = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, -100, 100));
+            joyStickChart1.Series["Series1"].Points[0].YValues[0] = (double)(ConvertUtils.Map(LStickZeroY, -32768, 32767, -100, 100));
+            joyStickChart2.Series["Series1"].Points[0].XValue = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100));
+            joyStickChart2.Series["Series1"].Points[0].YValues[0] = (double)(ConvertUtils.Map(RStickZeroY, -32768, 32767, -100, 100));
         }
     
 
@@ -524,6 +524,11 @@ namespace GUI
         {
             visible = !visible;
             picture.Visible = visible;
+        }
+
+        private void joyStickChart1_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
