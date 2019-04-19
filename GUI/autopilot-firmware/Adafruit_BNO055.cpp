@@ -17,6 +17,10 @@
   MIT license, all text above must be included in any redistribution
  ***************************************************************************/
 
+ /*=========================================================================
+ LIBRARY MODIFIED TO USE DSSCIRCUITS I2C-MASTER LIBRARY!!!!
+ ==========================================================================*/
+
 #if ARDUINO >= 100
  #include "Arduino.h"
 #else
@@ -27,6 +31,7 @@
 #include <limits.h>
 
 #include "Adafruit_BNO055.h"
+#include "I2C.h"
 
 /***************************************************************************
  CONSTRUCTOR
@@ -55,11 +60,11 @@ Adafruit_BNO055::Adafruit_BNO055(int32_t sensorID, uint8_t address)
 bool Adafruit_BNO055::begin(adafruit_bno055_opmode_t mode)
 {
   /* Enable I2C */
-  Wire.begin();
+  //Wire.begin();
 
   // BNO055 clock stretches for 500us or more!
 #ifdef ESP8266
-  Wire.setClockStretchLimit(1000); // Allow for 1000us of clock stretching
+  //Wire.setClockStretchLimit(1000); // Allow for 1000us of clock stretching
 #endif
 
   /* Make sure we have the right device */
@@ -629,7 +634,9 @@ bool Adafruit_BNO055::isFullyCalibrated(void)
 /**************************************************************************/
 bool Adafruit_BNO055::write8(adafruit_bno055_reg_t reg, byte value)
 {
-  Wire.beginTransmission(_address);
+	I2c.write(_address, (uint8_t)reg, (uint8_t)value);
+
+  /*Wire.beginTransmission(_address);
   #if ARDUINO >= 100
     Wire.write((uint8_t)reg);
     Wire.write((uint8_t)value);
@@ -637,7 +644,7 @@ bool Adafruit_BNO055::write8(adafruit_bno055_reg_t reg, byte value)
     Wire.send(reg);
     Wire.send(value);
   #endif
-  Wire.endTransmission();
+  Wire.endTransmission();*/
 
   /* ToDo: Check for error! */
   return true;
@@ -650,7 +657,9 @@ bool Adafruit_BNO055::write8(adafruit_bno055_reg_t reg, byte value)
 /**************************************************************************/
 byte Adafruit_BNO055::read8(adafruit_bno055_reg_t reg )
 {
-  byte value = 0;
+	I2c.read(_address, (uint8_t)reg, (uint8_t)1); //read 1 byte from device
+	return I2c.receive();
+  /*byte value = 0;
 
   Wire.beginTransmission(_address);
   #if ARDUINO >= 100
@@ -666,7 +675,7 @@ byte Adafruit_BNO055::read8(adafruit_bno055_reg_t reg )
     value = Wire.receive();
   #endif
 
-  return value;
+  return value;*/
 }
 
 /**************************************************************************/
@@ -676,7 +685,8 @@ byte Adafruit_BNO055::read8(adafruit_bno055_reg_t reg )
 /**************************************************************************/
 bool Adafruit_BNO055::readLen(adafruit_bno055_reg_t reg, byte * buffer, uint8_t len)
 {
-  Wire.beginTransmission(_address);
+	I2c.read(_address, (uint8_t)reg, len, buffer);
+  /*Wire.beginTransmission(_address);
   #if ARDUINO >= 100
     Wire.write((uint8_t)reg);
   #else
@@ -692,7 +702,7 @@ bool Adafruit_BNO055::readLen(adafruit_bno055_reg_t reg, byte * buffer, uint8_t 
     #else
       buffer[i] = Wire.receive();
     #endif
-  }
+  }*/
 
   /* ToDo: Check for errors! */
   return true;

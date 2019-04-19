@@ -167,7 +167,7 @@
     <ClInclude Include="Adafruit_BNO055.h" />
     <ClInclude Include="Adafruit_PWMServoDriver.h" />
     <ClInclude Include="Adafruit_Sensor.h" />
-    <ClInclude Include="Arduino_I2C_ESC.h" />
+    <ClInclude Include="I2C.h" />
     <ClInclude Include="SparkFun_MS5803_I2C.h" />
     <ClInclude Include="utility\imumaths.h" />
     <ClInclude Include="utility\matrix.h" />
@@ -178,7 +178,7 @@
   <ItemGroup>
     <ClCompile Include="Adafruit_BNO055.cpp" />
     <ClCompile Include="Adafruit_PWMServoDriver.cpp" />
-    <ClCompile Include="Arduino_I2C_ESC.cpp" />
+    <ClCompile Include="I2C.cpp" />
     <ClCompile Include="SparkFun_MS5803_I2C.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

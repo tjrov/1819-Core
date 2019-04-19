@@ -24,9 +24,6 @@
     <ClInclude Include="Adafruit_Sensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Arduino_I2C_ESC.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="__vm\.autopilot-firmware.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -48,18 +45,21 @@
     <ClInclude Include="Adafruit_PWMServoDriver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="I2C.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Adafruit_BNO055.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Arduino_I2C_ESC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SparkFun_MS5803_I2C.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Adafruit_PWMServoDriver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I2C.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

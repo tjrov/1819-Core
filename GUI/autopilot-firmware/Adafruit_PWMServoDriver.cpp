@@ -15,8 +15,12 @@
   BSD license, all text above must be included in any redistribution
  ****************************************************/
 
+/*=========================================================================
+LIBRARY MODIFIED TO USE DSSCIRCUITS I2C-MASTER LIBRARY!!!!
+==========================================================================*/
+
 #include "Adafruit_PWMServoDriver.h"
-#include <Wire.h>
+#include "I2C.h"
 
  // Set to true to print some debug messages, or false to disable them.
  //#define ENABLE_DEBUG_OUTPUT
@@ -30,7 +34,6 @@
  /**************************************************************************/
 Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(uint8_t addr) {
 	_i2caddr = addr;
-
 #if defined(ARDUINO_SAM_DUE)
 	_i2c = &Wire1;
 #else
@@ -56,7 +59,7 @@ Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(TwoWire *i2c, uint8_t addr) {
 */
 /**************************************************************************/
 void Adafruit_PWMServoDriver::begin(void) {
-	_i2c->begin();
+	//Wire.begin();
 	reset();
 	// set a default frequency
 	setPWMFreq(1000);
@@ -125,14 +128,15 @@ void Adafruit_PWMServoDriver::setPWM(uint8_t num, uint16_t on, uint16_t off) {
 #ifdef ENABLE_DEBUG_OUTPUT
 	Serial.print("Setting PWM "); Serial.print(num); Serial.print(": "); Serial.print(on); Serial.print("->"); Serial.println(off);
 #endif
-
-	_i2c->beginTransmission(_i2caddr);
+	uint8_t data[] = { on, on >> 8, off, off >> 8 };
+	I2c.write(_i2caddr, LED0_ON_L + 4 * num, data, 4);
+	/*_i2c->beginTransmission(_i2caddr);
 	_i2c->write(LED0_ON_L + 4 * num);
 	_i2c->write(on);
 	_i2c->write(on >> 8);
 	_i2c->write(off);
 	_i2c->write(off >> 8);
-	_i2c->endTransmission();
+	_i2c->endTransmission();*/
 }
 
 /**************************************************************************/
@@ -178,17 +182,21 @@ void Adafruit_PWMServoDriver::setPin(uint8_t num, uint16_t val, bool invert)
 /*******************************************************************************************/
 
 uint8_t Adafruit_PWMServoDriver::read8(uint8_t addr) {
-	_i2c->beginTransmission(_i2caddr);
+	I2c.read(_i2caddr, addr, (uint8_t)1); //read 1 byte from device
+	return I2c.receive();
+
+	/*_i2c->beginTransmission(_i2caddr);
 	_i2c->write(addr);
 	_i2c->endTransmission();
 
 	_i2c->requestFrom((uint8_t)_i2caddr, (uint8_t)1);
-	return _i2c->read();
+	return _i2c->read();*/
 }
 
 void Adafruit_PWMServoDriver::write8(uint8_t addr, uint8_t d) {
-	_i2c->beginTransmission(_i2caddr);
+	I2c.write(_i2caddr, addr, d);
+	/*_i2c->beginTransmission(_i2caddr);
 	_i2c->write(addr);
 	_i2c->write(d);
-	_i2c->endTransmission();
+	_i2c->endTransmission();*/
 }

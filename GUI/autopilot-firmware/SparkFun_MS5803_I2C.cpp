@@ -27,13 +27,18 @@ local pub, and you've found our code helpful, please buy us a round!
 Distributed as-is; no warranty is given.
 ******************************************************************************/
 
-#include <Wire.h> // Wire library is used for I2C
+/*=========================================================================
+LIBRARY MODIFIED TO USE DSSCIRCUITS I2C-MASTER LIBRARY!!!!
+==========================================================================*/
+
+//#include <Wire.h> // Wire library is used for I2C
+#include "I2C.h"
 #include "SparkFun_MS5803_I2C.h"
 
 MS5803::MS5803(ms5803_addr address)
 // Base library type I2C
 {
-	Wire.begin(); // Arduino Wire library initializer
+	//Wire.begin(); // Arduino Wire library initializer
 	_address = address; //set interface used for communication
 }
 
@@ -50,10 +55,13 @@ uint8_t MS5803::begin(void)
 	uint8_t i;
 	for (i = 0; i <= 7; i++)
 	{
-		sendCommand(CMD_PROM + (i * 2));
-		Wire.requestFrom(_address, 2);
+		//sendCommand(CMD_PROM + (i * 2));
+		/*Wire.requestFrom(_address, 2);
 		uint8_t highByte = Wire.read();
-		uint8_t lowByte = Wire.read();
+		uint8_t lowByte = Wire.read();*/
+		I2c.read((uint8_t)_address, CMD_PROM + (i * 2), (uint8_t)2);
+		uint8_t highByte = I2c.receive();
+		uint8_t lowByte = I2c.receive();
 		coefficient[i] = (highByte << 8) | lowByte;
 		// Uncomment below for debugging output.
 		//	Serial.print("C");
@@ -245,7 +253,7 @@ uint32_t MS5803::getADCconversion(measurement _measurement, precision _precision
 	case ADC_4096: sensorWait(10); break;
 	}
 
-	sendCommand(CMD_ADC_READ);
+	/*sendCommand(CMD_ADC_READ);
 	Wire.requestFrom(_address, 3);
 
 	while (Wire.available())
@@ -253,7 +261,9 @@ uint32_t MS5803::getADCconversion(measurement _measurement, precision _precision
 		highByte = Wire.read();
 		midByte = Wire.read();
 		lowByte = Wire.read();
-	}
+	}*/
+	I2c.read((uint8_t)_address, (uint8_t)CMD_ADC_READ, (uint8_t)3);
+	highByte = I2c.receive(); midByte = I2c.receive(); lowByte = I2c.receive();
 
 	result = ((uint32_t)highByte << 16) + ((uint32_t)midByte << 8) + lowByte;
 
@@ -263,10 +273,10 @@ uint32_t MS5803::getADCconversion(measurement _measurement, precision _precision
 
 void MS5803::sendCommand(uint8_t command)
 {
-	Wire.beginTransmission(_address);
+	/*Wire.beginTransmission(_address);
 	Wire.write(command);
-	Wire.endTransmission();
-
+	Wire.endTransmission();*/
+	I2c.write((uint8_t)_address, command);
 }
 
 void MS5803::sensorWait(uint8_t time)

@@ -9,14 +9,15 @@ Firmware for main board
 /*Firmware version info*/
 /*From 0<->255 for each*/
 
-#define VERSION_MAJOR 0
-#define VERSION_MINOR 3
+#define VERSION_MAJOR 1
+#define VERSION_MINOR 0
 
 /*
 Import libraries
 */
 
-#include <Wire.h>
+//#include <Wire.h>
+#include "I2C.h"
 
 #include "Adafruit_BNO055.h"
 #include "SparkFun_MS5803_I2C.h"
@@ -30,12 +31,10 @@ Configuration for autopilot board
 #define MAX_PACKET_LENGTH 64 //maximum possible message is 255 bytes, increase to that if needed
 #define HEADER_BYTE 0x42
 #define SERIAL_TIMEOUT 1000
-#define I2C_CLOCK 100000
+#define I2C_TIMEOUT 1000
 
 #define NUM_ESCS 6
-#define ESC_ADDRESSES { 0x31, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E }
 
-#define TOOLS_INVERT {0,0,0,0}
 #define NUM_POLES 6
 
 #define PCA_9685_ADDRESS 0x40
@@ -93,10 +92,8 @@ enum COMMAND {
 
 /*Variable declarations*/
 Adafruit_BNO055 bno055 = Adafruit_BNO055();
-MS5803 ms5803(ADDRESS_HIGH);
+MS5803 ms5803((ms5803_addr)DEPTH_ADDRESS);
 Adafruit_PWMServoDriver pca9685 = Adafruit_PWMServoDriver();
-
-const uint8_t tools_invert[4] = TOOLS_INVERT;
 
 struct MESSAGE {
 	COMMAND command;
@@ -143,9 +140,17 @@ void setup() {
 	delay(500);
 	//pinMode(TX_EN, OUTPUT);
 	Serial.begin(SERIAL_BAUD);
+	Serial.println(F("Power up"));
+	Serial.print(F("Firmware version ")); Serial.print(VERSION_MAJOR); Serial.print("."); Serial.println(VERSION_MINOR);
 
-	Wire.begin();
-    Wire.setClock(I2C_CLOCK);
+	I2c.begin();
+	I2c.setSpeed(0); //100kHz i2c clock usually works. Use TWBR register (see datasheet) to reduce speed if needed
+	I2c.timeOut(I2C_TIMEOUT); //if i2c bus fails, code will hang for this long then be able to continue
+							  //timeout should be low enough that serial communications do not stop, but
+							  //long enough not to trigger during normal bus operation
+	
+	Serial.println("Testing I2C bus");
+	I2c.scan();
 
 	initStatus();
 
@@ -358,7 +363,7 @@ void checkESCsAndTools() {
 
 void writeESCs() {
 	if (!(error&ESC_FAILURE)) {
-		/*for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 6; i++) {
 			//convert pairs of bytes into 16-bit int
 			int16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
 			//now convert to pulse time length out of 4096
@@ -368,7 +373,7 @@ void writeESCs() {
 			speed = map(speed, -32768, 32767, PWM_MIN, PWM_MAX);
 			speed = PWM_MAX;
 			escs[i].writeMicroseconds(speed);
-		}*/
+		}
 
 		for (int i = 0; i < NUM_ESCS; i++) {
 			uint8_t speed = rxData.data[i];
@@ -514,18 +519,17 @@ void readIMU() {
 /*Depth*/
 void initDepth() {
 	//attempt to contact sensor to check if it's available
-	//if (checkI2C(DEPTH_ADDRESS)) {
+	if (checkI2C(DEPTH_ADDRESS)) {
 		ms5803.reset();
 		ms5803.begin();
-	//}
-	//else {
-		//error |= PRESSURE_SENSOR_FAILURE;
-	//}
+	}
+	else {
+		error |= PRESSURE_SENSOR_FAILURE;
+	}
 }
 
 void readDepth() {
-	
-	/*txData.command = DEPTH_REQ;
+	txData.command = DEPTH_REQ;
 	txData.length = 2;
 	if (!(error & PRESSURE_SENSOR_FAILURE)) {
 		//subtract pressure of air on surface; it doesn't factor
@@ -534,41 +538,19 @@ void readDepth() {
 		//where depth is in meters, pressure is in Pascals (N/m^2)
 		//density is in kilograms per cubic meter,
 		//and acceleration is in meters per second per second
-		double depthDouble = constrain((ms5803.getPressure(ADC_1024)*0.00678178)-62.8311, 0.0, 10.0);
+		double depthDouble = constrain((ms5803.getPressure(ADC_1024)*0.00678178) - 62.8311, 0.0, 10.0);
 		//Serial.println(depthDouble);
 		//now convert to bytes and prepare txData
 		uint16_t intDepth = (int)mapDouble(depthDouble, 0, 30, 0, 65535);
 
 		txData.data[0] = intDepth & 0xFF;
 		txData.data[1] = (intDepth >> 8) & 0xFF;
-	}*/
+	}
 }
 
 /*
 Code for controlling status LEDs
 */
-
-/*
-LED codes:
-
-Reboot
-Blue flash 2x for bootloader (upload can happen during this time)
-Red, green, blue cycle to test lamps
-ROV firmware starts
-Yellow - disconnected
-Green solid - disarmed but connected
-Green flashing - armed and connected
-Red blinks - error state
-*/
-
-void flashError() {
-	for (int i = 0; i < 5; i++) {
-		digitalWrite(LED, HIGH);
-		delay(100);
-		digitalWrite(LED, LOW);
-		delay(100);
-	}
-}
 
 void controlLEDs() {
 	switch (status) {
