@@ -106,14 +106,13 @@ namespace GUI
                     }
                     catch (Exception ex)
                     {
-                        //stop serial communication code by closing port
-                        MessageBox.Show(ex + "");
-                        LinkActive = false;
                         //show exception dialog
                         if (CommunicationException != null)
                         {
                             CommunicationException(this, ex);
-                        }
+                        }                        
+                        //stop serial communication code by closing port
+                        LinkActive = false;
                     }
                     //fire timers if necessary
                     /*if ((DateTime.Now.Ticks - prevTime) > 10 * TimeSpan.TicksPerMillisecond)

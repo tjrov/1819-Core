@@ -30,7 +30,7 @@ Configuration for autopilot board
 #define MAX_PACKET_LENGTH 64 //maximum possible message is 255 bytes, increase to that if needed
 #define HEADER_BYTE 0x42
 #define SERIAL_TIMEOUT 1000
-#define I2C_CLOCK 400000
+#define I2C_CLOCK 100000
 
 #define NUM_ESCS 6
 #define ESC_ADDRESSES { 0x31, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E }
@@ -182,10 +182,10 @@ void loop() {
 	}
 
 	if (millis() % 100 == 0) {
-		checkESCsAndTools();
+		//checkESCsAndTools();
 	}
 
-	controlLEDs();
+	//controlLEDs();
 }
 
 void processMessage() {
@@ -498,26 +498,6 @@ void readIMU() {
 		sensors_event_t imuData;
 		bno055.getEvent(&imuData);
 
-		/* Display the data */
-		/*Serial.print("Heading: ");
-		Serial.print(imuData.orientation.x, 4);
-		Serial.print("Pitch: ");
-		Serial.print(imuData.orientation.y, 4);
-		Serial.print("Roll: ");
-		Serial.print(imuData.orientation.z, 4);
-		Serial.println("");*/
-
-		/* physical axis directions:
-			+----------+
-			|         *| RST   PITCH  ROLL  HEADING
-		ADR |*        *| SCL
-		INT |*        *| SDA     ^            /->
-		PS1 |*        *| GND     |            |
-		PS0 |*        *| 3VO     Y    Z-->    \-X
-			|         *| VIN
-			+----------+
-		*/
-
 		uint16_t rollInt = (int)mapDouble(imuData.orientation.heading, 0, 360, 0, 65535);
 		uint16_t pitchInt = (int)mapDouble(imuData.orientation.pitch, 0, 360, 0, 65535);
 		uint16_t headingInt = (int)mapDouble(imuData.orientation.roll, 0, 360, 0, 65535);
@@ -545,7 +525,7 @@ void initDepth() {
 
 void readDepth() {
 	
-	txData.command = DEPTH_REQ;
+	/*txData.command = DEPTH_REQ;
 	txData.length = 2;
 	if (!(error & PRESSURE_SENSOR_FAILURE)) {
 		//subtract pressure of air on surface; it doesn't factor
@@ -561,7 +541,7 @@ void readDepth() {
 
 		txData.data[0] = intDepth & 0xFF;
 		txData.data[1] = (intDepth >> 8) & 0xFF;
-	}
+	}*/
 }
 
 /*

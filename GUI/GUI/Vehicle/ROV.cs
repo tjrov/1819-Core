@@ -93,7 +93,7 @@ namespace GUI
             //timer setup
             t500 = new Timer() { Enabled = true, Interval = 500 };
             t50 = new Timer() { Enabled = true, Interval = 50 };
-            t10 = new Timer() { Enabled = true, Interval = 50 };
+            t10 = new Timer() { Enabled = true, Interval = 10 };
             t500.Tick += T500_Tick;
             t50.Tick += T50_Tick;
             t10.Tick += T10_Tick;

@@ -64,7 +64,7 @@ namespace GUI
             Controls.Add(headingIndicator);
 
             //setup devices
-            string portName = "COM4";
+            string portName = "COM6";
             /*try
             {
                 portName = BetterSerialPort.GetPortNames()[0];
@@ -113,7 +113,7 @@ namespace GUI
 
         private void Comms_CommunicationException(object sender, Exception e)
         {
-            MessageBox.Show(e.Message, "Communication Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(e+"", "Communication Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void DepthSensor_Updated(object sender, DepthData e)

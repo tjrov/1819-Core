@@ -181,11 +181,6 @@
     <ClCompile Include="Arduino_I2C_ESC.cpp" />
     <ClCompile Include="SparkFun_MS5803_I2C.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\autopilot-setup\autopilot-setup.vcxproj">
-      <Project>{eb2e6ced-9e63-4526-b0eb-0d749f4240a0}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
