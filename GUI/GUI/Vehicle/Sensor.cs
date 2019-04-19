@@ -58,14 +58,14 @@ namespace GUI
          * [2][3] Pitch ...
          * [4][5] Roll ...
          */
-        /*private AttitudeIndicator attitudeIndicator;
-        private HeadingIndicator headingIndicator;*/
+        private AttitudeIndicator attitudeIndicator;
+        private HeadingIndicator headingIndicator;
         public OrientationSensor() : base((byte)0x01, (byte)6)
         {
-            /*attitudeIndicator = new AttitudeIndicator();
+            attitudeIndicator = new AttitudeIndicator();
             headingIndicator = new HeadingIndicator();
-            headingIndicator.Location = new Point(400, 0);
-            Controls.Add(attitudeIndicator);
+            headingIndicator.Location = new System.Drawing.Point(100, 100);
+            /*Controls.Add(attitudeIndicator);
             Controls.Add(headingIndicator);*/
         }
 

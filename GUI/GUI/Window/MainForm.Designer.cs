@@ -37,9 +37,9 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint2 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.timer500 = new System.Windows.Forms.Timer(this.components);
             this.connectButton = new System.Windows.Forms.Button();
-            this.queueLabel = new System.Windows.Forms.Label();
             this.armButton = new System.Windows.Forms.Button();
             this.portLabel = new System.Windows.Forms.Label();
             this.resetButton = new System.Windows.Forms.Button();
@@ -65,7 +65,6 @@
             this.button15 = new System.Windows.Forms.Label();
             this.ConnectionB = new System.Windows.Forms.Button();
             this.controllerUpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.topLeft = new System.Windows.Forms.Label();
             this.topRight = new System.Windows.Forms.Label();
             this.midLeft = new System.Windows.Forms.Label();
@@ -90,16 +89,29 @@
             this.rightPrefButton = new System.Windows.Forms.Button();
             this.leftPrefButton = new System.Windows.Forms.Button();
             this.capButton = new System.Windows.Forms.Button();
-            this.picture = new System.Windows.Forms.PictureBox();
             this.ass = new System.Windows.Forms.Button();
-            this.propulsionActuator1 = new GUI.PropulsionActuator();
-            this.propulsionActuator2 = new GUI.PropulsionActuator();
             this.joyStickChart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.joyStickChart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picture)).BeginInit();
+            this.queueLabel = new System.Windows.Forms.Label();
+            this.circleBox = new System.Windows.Forms.PictureBox();
+            this.squareBox = new System.Windows.Forms.PictureBox();
+            this.lineBox = new System.Windows.Forms.PictureBox();
+            this.triangleBox = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.picture = new System.Windows.Forms.PictureBox();
+            this.attitudeIndicator1 = new GUI.AttitudeIndicator();
+            this.headingIndicator1 = new GUI.HeadingIndicator();
+            this.depthIndicator1 = new GUI.DepthIndicator();
+            this.propulsionActuator1 = new GUI.PropulsionActuator();
+            this.propulsionActuator2 = new GUI.PropulsionActuator();
             ((System.ComponentModel.ISupportInitialize)(this.joyStickChart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.joyStickChart2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.circleBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.squareBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lineBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.triangleBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture)).BeginInit();
             this.SuspendLayout();
             // 
             // timer500
@@ -118,16 +130,6 @@
             this.connectButton.Text = "Comms Stopped";
             this.connectButton.UseVisualStyleBackColor = true;
             this.connectButton.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // queueLabel
-            // 
-            this.queueLabel.AutoSize = true;
-            this.queueLabel.Location = new System.Drawing.Point(446, 10);
-            this.queueLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.queueLabel.Name = "queueLabel";
-            this.queueLabel.Size = new System.Drawing.Size(77, 13);
-            this.queueLabel.TabIndex = 1;
-            this.queueLabel.Text = "Queue length: ";
             // 
             // armButton
             // 
@@ -176,7 +178,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(829, 11);
+            this.label1.Location = new System.Drawing.Point(1779, 11);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(134, 13);
@@ -187,7 +189,7 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.AutoSize = true;
-            this.button1.Location = new System.Drawing.Point(862, 37);
+            this.button1.Location = new System.Drawing.Point(1812, 37);
             this.button1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(27, 13);
@@ -198,7 +200,7 @@
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.AutoSize = true;
-            this.button2.Location = new System.Drawing.Point(862, 51);
+            this.button2.Location = new System.Drawing.Point(1812, 51);
             this.button2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(27, 13);
@@ -209,7 +211,7 @@
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.AutoSize = true;
-            this.button3.Location = new System.Drawing.Point(862, 67);
+            this.button3.Location = new System.Drawing.Point(1812, 67);
             this.button3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(27, 13);
@@ -220,7 +222,7 @@
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button4.AutoSize = true;
-            this.button4.Location = new System.Drawing.Point(862, 81);
+            this.button4.Location = new System.Drawing.Point(1812, 81);
             this.button4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(27, 13);
@@ -231,7 +233,7 @@
             // 
             this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button5.AutoSize = true;
-            this.button5.Location = new System.Drawing.Point(862, 96);
+            this.button5.Location = new System.Drawing.Point(1812, 96);
             this.button5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(27, 13);
@@ -242,7 +244,7 @@
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button6.AutoSize = true;
-            this.button6.Location = new System.Drawing.Point(862, 109);
+            this.button6.Location = new System.Drawing.Point(1812, 109);
             this.button6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(27, 13);
@@ -253,7 +255,7 @@
             // 
             this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button7.AutoSize = true;
-            this.button7.Location = new System.Drawing.Point(862, 123);
+            this.button7.Location = new System.Drawing.Point(1812, 123);
             this.button7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(27, 13);
@@ -264,7 +266,7 @@
             // 
             this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button8.AutoSize = true;
-            this.button8.Location = new System.Drawing.Point(862, 136);
+            this.button8.Location = new System.Drawing.Point(1812, 136);
             this.button8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(27, 13);
@@ -275,7 +277,7 @@
             // 
             this.button16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button16.AutoSize = true;
-            this.button16.Location = new System.Drawing.Point(862, 248);
+            this.button16.Location = new System.Drawing.Point(1812, 248);
             this.button16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(27, 13);
@@ -286,7 +288,7 @@
             // 
             this.button17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button17.AutoSize = true;
-            this.button17.Location = new System.Drawing.Point(862, 261);
+            this.button17.Location = new System.Drawing.Point(1812, 261);
             this.button17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button17.Name = "button17";
             this.button17.Size = new System.Drawing.Size(27, 13);
@@ -297,7 +299,7 @@
             // 
             this.button0.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button0.AutoSize = true;
-            this.button0.Location = new System.Drawing.Point(862, 24);
+            this.button0.Location = new System.Drawing.Point(1812, 24);
             this.button0.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button0.Name = "button0";
             this.button0.Size = new System.Drawing.Size(27, 13);
@@ -308,7 +310,7 @@
             // 
             this.button14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button14.AutoSize = true;
-            this.button14.Location = new System.Drawing.Point(862, 220);
+            this.button14.Location = new System.Drawing.Point(1812, 220);
             this.button14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button14.Name = "button14";
             this.button14.Size = new System.Drawing.Size(27, 13);
@@ -319,7 +321,7 @@
             // 
             this.button13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button13.AutoSize = true;
-            this.button13.Location = new System.Drawing.Point(862, 206);
+            this.button13.Location = new System.Drawing.Point(1812, 206);
             this.button13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(27, 13);
@@ -330,7 +332,7 @@
             // 
             this.button12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button12.AutoSize = true;
-            this.button12.Location = new System.Drawing.Point(862, 193);
+            this.button12.Location = new System.Drawing.Point(1812, 193);
             this.button12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(27, 13);
@@ -341,7 +343,7 @@
             // 
             this.button11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button11.AutoSize = true;
-            this.button11.Location = new System.Drawing.Point(862, 180);
+            this.button11.Location = new System.Drawing.Point(1812, 180);
             this.button11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(27, 13);
@@ -352,7 +354,7 @@
             // 
             this.button10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button10.AutoSize = true;
-            this.button10.Location = new System.Drawing.Point(862, 166);
+            this.button10.Location = new System.Drawing.Point(1812, 166);
             this.button10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(27, 13);
@@ -363,7 +365,7 @@
             // 
             this.button9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button9.AutoSize = true;
-            this.button9.Location = new System.Drawing.Point(862, 151);
+            this.button9.Location = new System.Drawing.Point(1812, 151);
             this.button9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(27, 13);
@@ -374,7 +376,7 @@
             // 
             this.button15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button15.AutoSize = true;
-            this.button15.Location = new System.Drawing.Point(862, 235);
+            this.button15.Location = new System.Drawing.Point(1812, 235);
             this.button15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.button15.Name = "button15";
             this.button15.Size = new System.Drawing.Size(27, 13);
@@ -398,24 +400,11 @@
             this.controllerUpdateTimer.Interval = 5;
             this.controllerUpdateTimer.Tick += new System.EventHandler(this.controllerUpdateTimer_Tick);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pictureBox1.Image = global::GUI.Properties.Resources.rov_thrusters;
-            this.pictureBox1.InitialImage = global::GUI.Properties.Resources.rov_thrusters;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 118);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(437, 454);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 29;
-            this.pictureBox1.TabStop = false;
-            // 
             // topLeft
             // 
             this.topLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.topLeft.AutoSize = true;
-            this.topLeft.Location = new System.Drawing.Point(87, 193);
+            this.topLeft.Location = new System.Drawing.Point(87, 701);
             this.topLeft.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.topLeft.Name = "topLeft";
             this.topLeft.Size = new System.Drawing.Size(27, 13);
@@ -426,7 +415,7 @@
             // 
             this.topRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.topRight.AutoSize = true;
-            this.topRight.Location = new System.Drawing.Point(334, 193);
+            this.topRight.Location = new System.Drawing.Point(334, 701);
             this.topRight.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.topRight.Name = "topRight";
             this.topRight.Size = new System.Drawing.Size(27, 13);
@@ -437,7 +426,7 @@
             // 
             this.midLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.midLeft.AutoSize = true;
-            this.midLeft.Location = new System.Drawing.Point(87, 337);
+            this.midLeft.Location = new System.Drawing.Point(87, 845);
             this.midLeft.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.midLeft.Name = "midLeft";
             this.midLeft.Size = new System.Drawing.Size(27, 13);
@@ -448,7 +437,7 @@
             // 
             this.midRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.midRight.AutoSize = true;
-            this.midRight.Location = new System.Drawing.Point(334, 337);
+            this.midRight.Location = new System.Drawing.Point(334, 845);
             this.midRight.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.midRight.Name = "midRight";
             this.midRight.Size = new System.Drawing.Size(27, 13);
@@ -459,7 +448,7 @@
             // 
             this.botLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.botLeft.AutoSize = true;
-            this.botLeft.Location = new System.Drawing.Point(87, 478);
+            this.botLeft.Location = new System.Drawing.Point(87, 986);
             this.botLeft.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.botLeft.Name = "botLeft";
             this.botLeft.Size = new System.Drawing.Size(27, 13);
@@ -470,7 +459,7 @@
             // 
             this.botRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.botRight.AutoSize = true;
-            this.botRight.Location = new System.Drawing.Point(334, 487);
+            this.botRight.Location = new System.Drawing.Point(334, 995);
             this.botRight.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.botRight.Name = "botRight";
             this.botRight.Size = new System.Drawing.Size(27, 13);
@@ -481,7 +470,7 @@
             // 
             this.depthLockButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.depthLockButton.BackColor = System.Drawing.Color.Red;
-            this.depthLockButton.Location = new System.Drawing.Point(865, 275);
+            this.depthLockButton.Location = new System.Drawing.Point(1815, 275);
             this.depthLockButton.Margin = new System.Windows.Forms.Padding(2);
             this.depthLockButton.Name = "depthLockButton";
             this.depthLockButton.Size = new System.Drawing.Size(61, 29);
@@ -492,7 +481,7 @@
             // 
             this.depthLockEngageLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.depthLockEngageLabel.AutoSize = true;
-            this.depthLockEngageLabel.Location = new System.Drawing.Point(799, 283);
+            this.depthLockEngageLabel.Location = new System.Drawing.Point(1749, 283);
             this.depthLockEngageLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.depthLockEngageLabel.Name = "depthLockEngageLabel";
             this.depthLockEngageLabel.Size = new System.Drawing.Size(66, 13);
@@ -502,7 +491,7 @@
             // LengthOfBarrel
             // 
             this.LengthOfBarrel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.LengthOfBarrel.Location = new System.Drawing.Point(581, 596);
+            this.LengthOfBarrel.Location = new System.Drawing.Point(1792, 895);
             this.LengthOfBarrel.Margin = new System.Windows.Forms.Padding(2);
             this.LengthOfBarrel.Name = "LengthOfBarrel";
             this.LengthOfBarrel.Size = new System.Drawing.Size(110, 20);
@@ -512,7 +501,7 @@
             // InnerRadius1
             // 
             this.InnerRadius1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.InnerRadius1.Location = new System.Drawing.Point(581, 616);
+            this.InnerRadius1.Location = new System.Drawing.Point(1792, 919);
             this.InnerRadius1.Margin = new System.Windows.Forms.Padding(2);
             this.InnerRadius1.Name = "InnerRadius1";
             this.InnerRadius1.Size = new System.Drawing.Size(110, 20);
@@ -522,7 +511,7 @@
             // InnerRadius3
             // 
             this.InnerRadius3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.InnerRadius3.Location = new System.Drawing.Point(581, 656);
+            this.InnerRadius3.Location = new System.Drawing.Point(1792, 968);
             this.InnerRadius3.Margin = new System.Windows.Forms.Padding(2);
             this.InnerRadius3.Name = "InnerRadius3";
             this.InnerRadius3.Size = new System.Drawing.Size(110, 20);
@@ -532,10 +521,10 @@
             // calcButton
             // 
             this.calcButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.calcButton.Location = new System.Drawing.Point(693, 635);
+            this.calcButton.Location = new System.Drawing.Point(1792, 992);
             this.calcButton.Margin = new System.Windows.Forms.Padding(2);
             this.calcButton.Name = "calcButton";
-            this.calcButton.Size = new System.Drawing.Size(68, 37);
+            this.calcButton.Size = new System.Drawing.Size(110, 37);
             this.calcButton.TabIndex = 50;
             this.calcButton.Text = "Calculate";
             this.calcButton.UseVisualStyleBackColor = true;
@@ -544,16 +533,16 @@
             // answerBox
             // 
             this.answerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.answerBox.Location = new System.Drawing.Point(769, 705);
+            this.answerBox.Location = new System.Drawing.Point(1792, 1033);
             this.answerBox.Margin = new System.Windows.Forms.Padding(2);
             this.answerBox.Name = "answerBox";
-            this.answerBox.Size = new System.Drawing.Size(52, 20);
+            this.answerBox.Size = new System.Drawing.Size(110, 20);
             this.answerBox.TabIndex = 51;
             // 
             // InnerRadius2
             // 
             this.InnerRadius2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.InnerRadius2.Location = new System.Drawing.Point(581, 636);
+            this.InnerRadius2.Location = new System.Drawing.Point(1792, 943);
             this.InnerRadius2.Margin = new System.Windows.Forms.Padding(2);
             this.InnerRadius2.Name = "InnerRadius2";
             this.InnerRadius2.Size = new System.Drawing.Size(110, 20);
@@ -564,51 +553,59 @@
             // 
             this.triangleCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.triangleCount.AutoSize = true;
-            this.triangleCount.Location = new System.Drawing.Point(446, 526);
+            this.triangleCount.Font = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.triangleCount.ForeColor = System.Drawing.Color.Red;
+            this.triangleCount.Location = new System.Drawing.Point(573, 691);
             this.triangleCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.triangleCount.Name = "triangleCount";
-            this.triangleCount.Size = new System.Drawing.Size(62, 13);
+            this.triangleCount.Size = new System.Drawing.Size(19, 21);
             this.triangleCount.TabIndex = 53;
-            this.triangleCount.Text = "Triangles: 0";
+            this.triangleCount.Text = "0";
             // 
             // RectangleCount
             // 
             this.RectangleCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.RectangleCount.AutoSize = true;
-            this.RectangleCount.Location = new System.Drawing.Point(464, 539);
+            this.RectangleCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RectangleCount.ForeColor = System.Drawing.Color.Red;
+            this.RectangleCount.Location = new System.Drawing.Point(574, 804);
             this.RectangleCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.RectangleCount.Name = "RectangleCount";
-            this.RectangleCount.Size = new System.Drawing.Size(44, 13);
+            this.RectangleCount.Size = new System.Drawing.Size(18, 20);
             this.RectangleCount.TabIndex = 56;
-            this.RectangleCount.Text = "Lines: 0";
+            this.RectangleCount.Text = "0";
             // 
             // SquareCount
             // 
             this.SquareCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.SquareCount.AutoSize = true;
-            this.SquareCount.Location = new System.Drawing.Point(450, 552);
+            this.SquareCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SquareCount.ForeColor = System.Drawing.Color.Red;
+            this.SquareCount.Location = new System.Drawing.Point(574, 919);
             this.SquareCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SquareCount.Name = "SquareCount";
-            this.SquareCount.Size = new System.Drawing.Size(58, 13);
+            this.SquareCount.Size = new System.Drawing.Size(18, 20);
             this.SquareCount.TabIndex = 57;
-            this.SquareCount.Text = "Squares: 0";
+            this.SquareCount.Text = "0";
             // 
             // CircleCount
             // 
             this.CircleCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CircleCount.AutoSize = true;
-            this.CircleCount.Location = new System.Drawing.Point(457, 565);
+            this.CircleCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CircleCount.ForeColor = System.Drawing.Color.Red;
+            this.CircleCount.Location = new System.Drawing.Point(574, 1033);
             this.CircleCount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.CircleCount.Name = "CircleCount";
-            this.CircleCount.Size = new System.Drawing.Size(50, 13);
+            this.CircleCount.Size = new System.Drawing.Size(18, 20);
             this.CircleCount.TabIndex = 58;
-            this.CircleCount.Text = "Circles: 0";
+            this.CircleCount.Text = "0";
             // 
             // benthicButton
             // 
             this.benthicButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.benthicButton.Enabled = false;
-            this.benthicButton.Location = new System.Drawing.Point(446, 580);
+            this.benthicButton.Location = new System.Drawing.Point(449, 617);
             this.benthicButton.Margin = new System.Windows.Forms.Padding(2);
             this.benthicButton.Name = "benthicButton";
             this.benthicButton.Size = new System.Drawing.Size(126, 28);
@@ -669,7 +666,7 @@
             // capButton
             // 
             this.capButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.capButton.Location = new System.Drawing.Point(446, 612);
+            this.capButton.Location = new System.Drawing.Point(449, 553);
             this.capButton.Margin = new System.Windows.Forms.Padding(2);
             this.capButton.Name = "capButton";
             this.capButton.Size = new System.Drawing.Size(126, 28);
@@ -678,22 +675,10 @@
             this.capButton.UseVisualStyleBackColor = true;
             this.capButton.Click += new System.EventHandler(this.capButton_Click);
             // 
-            // picture
-            // 
-            this.picture.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picture.Location = new System.Drawing.Point(0, 0);
-            this.picture.Margin = new System.Windows.Forms.Padding(2);
-            this.picture.Name = "picture";
-            this.picture.Size = new System.Drawing.Size(970, 572);
-            this.picture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picture.TabIndex = 63;
-            this.picture.TabStop = false;
-            this.picture.Visible = false;
-            // 
             // ass
             // 
             this.ass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ass.Location = new System.Drawing.Point(446, 644);
+            this.ass.Location = new System.Drawing.Point(449, 585);
             this.ass.Margin = new System.Windows.Forms.Padding(2);
             this.ass.Name = "ass";
             this.ass.Size = new System.Drawing.Size(126, 28);
@@ -704,7 +689,7 @@
             // 
             // joyStickChart1
             // 
-            this.joyStickChart1.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.joyStickChart1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             chartArea1.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
             chartArea1.AxisX.Maximum = 100D;
             chartArea1.AxisX.Minimum = -100D;
@@ -717,7 +702,7 @@
             legend1.Enabled = false;
             legend1.Name = "Legend1";
             this.joyStickChart1.Legends.Add(legend1);
-            this.joyStickChart1.Location = new System.Drawing.Point(802, 322);
+            this.joyStickChart1.Location = new System.Drawing.Point(1457, 11);
             this.joyStickChart1.Name = "joyStickChart1";
             this.joyStickChart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
             series1.ChartArea = "ChartArea1";
@@ -735,7 +720,7 @@
             // 
             // joyStickChart2
             // 
-            this.joyStickChart2.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.joyStickChart2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             chartArea2.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
             chartArea2.AxisX.Maximum = 100D;
             chartArea2.AxisX.Minimum = -100D;
@@ -747,7 +732,7 @@
             legend2.Enabled = false;
             legend2.Name = "Legend1";
             this.joyStickChart2.Legends.Add(legend2);
-            this.joyStickChart2.Location = new System.Drawing.Point(802, 478);
+            this.joyStickChart2.Location = new System.Drawing.Point(1613, 11);
             this.joyStickChart2.Name = "joyStickChart2";
             this.joyStickChart2.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
             series2.ChartArea = "ChartArea1";
@@ -762,12 +747,118 @@
             this.joyStickChart2.TabIndex = 66;
             this.joyStickChart2.Text = "chart2";
             // 
+            // queueLabel
+            // 
+            this.queueLabel.AutoSize = true;
+            this.queueLabel.Location = new System.Drawing.Point(446, 10);
+            this.queueLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.queueLabel.Name = "queueLabel";
+            this.queueLabel.Size = new System.Drawing.Size(77, 13);
+            this.queueLabel.TabIndex = 1;
+            this.queueLabel.Text = "Queue length: ";
+            // 
+            // circleBox
+            // 
+            this.circleBox.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.circleBox.Image = ((System.Drawing.Image)(resources.GetObject("circleBox.Image")));
+            this.circleBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("circleBox.InitialImage")));
+            this.circleBox.Location = new System.Drawing.Point(449, 980);
+            this.circleBox.Name = "circleBox";
+            this.circleBox.Size = new System.Drawing.Size(102, 104);
+            this.circleBox.TabIndex = 73;
+            this.circleBox.TabStop = false;
+            // 
+            // squareBox
+            // 
+            this.squareBox.Image = ((System.Drawing.Image)(resources.GetObject("squareBox.Image")));
+            this.squareBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("squareBox.InitialImage")));
+            this.squareBox.Location = new System.Drawing.Point(449, 870);
+            this.squareBox.Name = "squareBox";
+            this.squareBox.Size = new System.Drawing.Size(102, 104);
+            this.squareBox.TabIndex = 72;
+            this.squareBox.TabStop = false;
+            // 
+            // lineBox
+            // 
+            this.lineBox.Image = ((System.Drawing.Image)(resources.GetObject("lineBox.Image")));
+            this.lineBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("lineBox.InitialImage")));
+            this.lineBox.Location = new System.Drawing.Point(449, 760);
+            this.lineBox.Name = "lineBox";
+            this.lineBox.Size = new System.Drawing.Size(102, 104);
+            this.lineBox.TabIndex = 71;
+            this.lineBox.TabStop = false;
+            // 
+            // triangleBox
+            // 
+            this.triangleBox.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.triangleBox.Image = ((System.Drawing.Image)(resources.GetObject("triangleBox.Image")));
+            this.triangleBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("triangleBox.InitialImage")));
+            this.triangleBox.Location = new System.Drawing.Point(449, 650);
+            this.triangleBox.Name = "triangleBox";
+            this.triangleBox.Size = new System.Drawing.Size(102, 102);
+            this.triangleBox.TabIndex = 70;
+            this.triangleBox.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pictureBox1.Image = global::GUI.Properties.Resources.rov_thrusters;
+            this.pictureBox1.InitialImage = global::GUI.Properties.Resources.rov_thrusters;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 626);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(437, 454);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 29;
+            this.pictureBox1.TabStop = false;
+            // 
+            // picture
+            // 
+            this.picture.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.picture.Location = new System.Drawing.Point(765, 700);
+            this.picture.Margin = new System.Windows.Forms.Padding(2);
+            this.picture.Name = "picture";
+            this.picture.Size = new System.Drawing.Size(689, 366);
+            this.picture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picture.TabIndex = 63;
+            this.picture.TabStop = false;
+            this.picture.Visible = false;
+            // 
+            // attitudeIndicator1
+            // 
+            this.attitudeIndicator1.Location = new System.Drawing.Point(134, 136);
+            this.attitudeIndicator1.Name = "attitudeIndicator1";
+            this.attitudeIndicator1.Size = new System.Drawing.Size(400, 400);
+            this.attitudeIndicator1.TabIndex = 69;
+            // 
+            // headingIndicator1
+            // 
+            this.headingIndicator1.Heading = 0D;
+            this.headingIndicator1.Location = new System.Drawing.Point(561, 12);
+            this.headingIndicator1.Name = "headingIndicator1";
+            this.headingIndicator1.Size = new System.Drawing.Size(500, 500);
+            this.headingIndicator1.TabIndex = 68;
+            // 
+            // depthIndicator1
+            // 
+            this.depthIndicator1.Depth = 0D;
+            this.depthIndicator1.Location = new System.Drawing.Point(12, 81);
+            this.depthIndicator1.Name = "depthIndicator1";
+            this.depthIndicator1.Size = new System.Drawing.Size(75, 500);
+            this.depthIndicator1.TabIndex = 67;
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(970, 572);
+            this.ClientSize = new System.Drawing.Size(1920, 1080);
+            this.Controls.Add(this.circleBox);
+            this.Controls.Add(this.squareBox);
+            this.Controls.Add(this.lineBox);
+            this.Controls.Add(this.triangleBox);
+            this.Controls.Add(this.attitudeIndicator1);
+            this.Controls.Add(this.headingIndicator1);
+            this.Controls.Add(this.depthIndicator1);
             this.Controls.Add(this.joyStickChart2);
             this.Controls.Add(this.joyStickChart1);
             this.Controls.Add(this.ass);
@@ -828,11 +919,16 @@
             this.Name = "MainForm";
             this.Text = "TJROV - GUI";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.joyStickChart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.joyStickChart2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.circleBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.squareBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lineBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.triangleBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -842,7 +938,6 @@
 
         private System.Windows.Forms.Timer timer500;
         private System.Windows.Forms.Button connectButton;
-        private System.Windows.Forms.Label queueLabel;
         private System.Windows.Forms.Button armButton;
         private System.Windows.Forms.Label portLabel;
         private System.Windows.Forms.Button resetButton;
@@ -899,6 +994,14 @@
         private PropulsionActuator propulsionActuator2;
         private System.Windows.Forms.DataVisualization.Charting.Chart joyStickChart1;
         private System.Windows.Forms.DataVisualization.Charting.Chart joyStickChart2;
+        private System.Windows.Forms.Label queueLabel;
+        private DepthIndicator depthIndicator1;
+        private HeadingIndicator headingIndicator1;
+        private AttitudeIndicator attitudeIndicator1;
+        private System.Windows.Forms.PictureBox triangleBox;
+        private System.Windows.Forms.PictureBox lineBox;
+        private System.Windows.Forms.PictureBox squareBox;
+        private System.Windows.Forms.PictureBox circleBox;
     }
 }
 

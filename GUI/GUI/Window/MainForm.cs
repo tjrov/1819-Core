@@ -28,9 +28,6 @@ namespace GUI
     {
         private ROV rov;
         private SerialCommunication comms;
-        private AttitudeIndicator attitudeIndicator;
-        private HeadingIndicator headingIndicator;
-        private DepthIndicator depthIndicator;
         public X.Gamepad pilot, copilot;
         private bool isLockClicked = false;
         private int depthvalue = 0;
@@ -55,13 +52,6 @@ namespace GUI
             //setup window
             KeyPreview = true;
             InitializeComponent();
-
-            depthIndicator = new DepthIndicator() { Location = new System.Drawing.Point(0, 100) };
-            attitudeIndicator = new AttitudeIndicator() { Location = new System.Drawing.Point(100, 100) };
-            headingIndicator = new HeadingIndicator() { Location = new System.Drawing.Point(600, 100) };
-            Controls.Add(depthIndicator);
-            Controls.Add(attitudeIndicator);
-            Controls.Add(headingIndicator);
 
             //setup devices
             string portName = "COM6";
@@ -118,15 +108,15 @@ namespace GUI
 
         private void DepthSensor_Updated(object sender, DepthData e)
         {
-            depthIndicator.Depth = rov.DepthSensor.Data.DepthValue;
+            depthIndicator1.Depth = rov.DepthSensor.Data.DepthValue;
         }
 
         private void OrientationSensor_Updated(object sender, OrientationData e)
         {
-            attitudeIndicator.PitchAngle = rov.OrientationSensor.Data.Pitch;
-            attitudeIndicator.RollAngle = rov.OrientationSensor.Data.Roll;
-            attitudeIndicator.YawAngle = rov.OrientationSensor.Data.Yaw;
-            headingIndicator.Heading = rov.OrientationSensor.Data.Yaw;
+            attitudeIndicator1.PitchAngle = rov.OrientationSensor.Data.Pitch;
+            attitudeIndicator1.RollAngle = rov.OrientationSensor.Data.Roll;
+            attitudeIndicator1.YawAngle = rov.OrientationSensor.Data.Yaw;
+            headingIndicator1.Heading = rov.OrientationSensor.Data.Yaw;
         }
         private void ProcessImage(Bitmap bitmap)
         {
@@ -209,10 +199,10 @@ namespace GUI
             Clipboard.SetDataObject(bitmap);
             // and to picture box
             picture.Image = bitmap;
-            triangleCount.Text = "Triangles: " + numberOfTriangleShits;
-            CircleCount.Text = "Circles: " + numberOfCircleShits;
-            SquareCount.Text = "Squares: " + numberOfSquareShits;
-            RectangleCount.Text = "Lines: " + numberOfLineShits;
+            triangleCount.Text = "" + numberOfTriangleShits;
+            CircleCount.Text = "" + numberOfCircleShits;
+            SquareCount.Text = "" + numberOfSquareShits;
+            RectangleCount.Text = "" + + numberOfLineShits;
         }
         private AForge.Point[] ToPointsArray(List<IntPoint> points)
         {
@@ -527,6 +517,11 @@ namespace GUI
         }
 
         private void joyStickChart1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
         {
 
         }

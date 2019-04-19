@@ -177,14 +177,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\bezel.bmp" />
+    <None Include="Resources\circle.bmp" />
+    <None Include="Resources\circle.png" />
     <Content Include="Resources\depth-back.png" />
     <Content Include="Resources\estop.png" />
     <Content Include="Resources\heading.bmp" />
     <Content Include="Resources\horizon.bmp" />
+    <None Include="Resources\line.png" />
     <Content Include="Resources\ps4controller.jpeg" />
     <Content Include="Resources\rov-electronics.png" />
     <Content Include="Resources\rov-thrusters.png" />
     <Content Include="Resources\rov-tools.png" />
+    <None Include="Resources\triangle.png" />
+    <None Include="Resources\square.png" />
     <Content Include="Resources\wings.bmp" />
   </ItemGroup>
   <ItemGroup />
