@@ -99,7 +99,6 @@
             this.triangleBox = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.picture = new System.Windows.Forms.PictureBox();
-            this.attitudeIndicator1 = new GUI.AttitudeIndicator();
             this.headingIndicator1 = new GUI.HeadingIndicator();
             this.depthIndicator1 = new GUI.DepthIndicator();
             this.propulsionActuator1 = new GUI.PropulsionActuator();
@@ -824,19 +823,12 @@
             this.picture.TabStop = false;
             this.picture.Visible = false;
             // 
-            // attitudeIndicator1
-            // 
-            this.attitudeIndicator1.Location = new System.Drawing.Point(134, 136);
-            this.attitudeIndicator1.Name = "attitudeIndicator1";
-            this.attitudeIndicator1.Size = new System.Drawing.Size(400, 400);
-            this.attitudeIndicator1.TabIndex = 69;
-            // 
             // headingIndicator1
             // 
             this.headingIndicator1.Heading = 0D;
-            this.headingIndicator1.Location = new System.Drawing.Point(561, 12);
+            this.headingIndicator1.Location = new System.Drawing.Point(125, 109);
             this.headingIndicator1.Name = "headingIndicator1";
-            this.headingIndicator1.Size = new System.Drawing.Size(500, 500);
+            this.headingIndicator1.Size = new System.Drawing.Size(426, 430);
             this.headingIndicator1.TabIndex = 68;
             // 
             // depthIndicator1
@@ -856,7 +848,6 @@
             this.Controls.Add(this.squareBox);
             this.Controls.Add(this.lineBox);
             this.Controls.Add(this.triangleBox);
-            this.Controls.Add(this.attitudeIndicator1);
             this.Controls.Add(this.headingIndicator1);
             this.Controls.Add(this.depthIndicator1);
             this.Controls.Add(this.joyStickChart2);
@@ -997,7 +988,6 @@
         private System.Windows.Forms.Label queueLabel;
         private DepthIndicator depthIndicator1;
         private HeadingIndicator headingIndicator1;
-        private AttitudeIndicator attitudeIndicator1;
         private System.Windows.Forms.PictureBox triangleBox;
         private System.Windows.Forms.PictureBox lineBox;
         private System.Windows.Forms.PictureBox squareBox;

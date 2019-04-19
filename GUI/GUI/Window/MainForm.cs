@@ -27,7 +27,7 @@ namespace GUI
     public partial class MainForm : Form
     {
         private ROV rov;
-        private SerialCommunication comms;
+        //private SerialCommunication comms;
         public X.Gamepad pilot, copilot;
         private bool isLockClicked = false;
         private int depthvalue = 0;
@@ -66,13 +66,14 @@ namespace GUI
             }*/
             BetterSerialPort port = new BetterSerialPort(portName, 115200);
             portLabel.Text = string.Format("{0}@{1}baud", port.PortName, port.BaudRate);
-            comms = new SerialCommunication(port);
+            /*comms = new SerialCommunication(port);
             comms.Stopped += comms_Stopped;
             comms.Started += comms_Started;
             comms.CommunicationException += Comms_CommunicationException;
-            //comms.Connect();
+            //comms.Connect();*/
 
-            rov = new ROV(comms);
+            //rov = new ROV(comms);
+            rov = new ROV();
 
             //update displays when sensors polled
             rov.OrientationSensor.Updated += OrientationSensor_Updated;
@@ -113,9 +114,9 @@ namespace GUI
 
         private void OrientationSensor_Updated(object sender, OrientationData e)
         {
-            attitudeIndicator1.PitchAngle = rov.OrientationSensor.Data.Pitch;
+            /*attitudeIndicator1.PitchAngle = rov.OrientationSensor.Data.Pitch;
             attitudeIndicator1.RollAngle = rov.OrientationSensor.Data.Roll;
-            attitudeIndicator1.YawAngle = rov.OrientationSensor.Data.Yaw;
+            attitudeIndicator1.YawAngle = rov.OrientationSensor.Data.Yaw;*/
             headingIndicator1.Heading = rov.OrientationSensor.Data.Yaw;
         }
         private void ProcessImage(Bitmap bitmap)
@@ -233,13 +234,13 @@ namespace GUI
 
         private void timer500_Tick(object sender, EventArgs e)
         {
-            queueLabel.Text = "Queue length: " + comms.Queue.Count;
+            //queueLabel.Text = "Queue length: " + comms.Queue.Count;
             armButton.Text = rov.StatusSensor.Data.Status == ROVStatus.ARMED ? "Armed" : "Disarmed";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            comms.LinkActive = !comms.LinkActive;
+            //comms.LinkActive = !comms.LinkActive;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -448,7 +449,15 @@ namespace GUI
 
         private void button18_Click(object sender, EventArgs e)
         {
-            double L = Double.Parse(LengthOfBarrel.Text);
+            double L = 0;
+            if (LengthOfBarrel.Text != null)
+            {
+                L = Double.Parse(LengthOfBarrel.Text);
+            }
+            else
+            {
+
+            }
             double R1 = Double.Parse(InnerRadius1.Text);
             double R2 = Double.Parse(InnerRadius2.Text);
             double R3 = Double.Parse(InnerRadius3.Text);
