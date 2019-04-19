@@ -89,7 +89,6 @@
             this.rightPrefButton = new System.Windows.Forms.Button();
             this.leftPrefButton = new System.Windows.Forms.Button();
             this.capButton = new System.Windows.Forms.Button();
-            this.ass = new System.Windows.Forms.Button();
             this.joyStickChart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.joyStickChart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.queueLabel = new System.Windows.Forms.Label();
@@ -532,6 +531,7 @@
             // answerBox
             // 
             this.answerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.answerBox.Enabled = false;
             this.answerBox.Location = new System.Drawing.Point(1792, 1033);
             this.answerBox.Margin = new System.Windows.Forms.Padding(2);
             this.answerBox.Name = "answerBox";
@@ -665,7 +665,7 @@
             // capButton
             // 
             this.capButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.capButton.Location = new System.Drawing.Point(449, 553);
+            this.capButton.Location = new System.Drawing.Point(449, 585);
             this.capButton.Margin = new System.Windows.Forms.Padding(2);
             this.capButton.Name = "capButton";
             this.capButton.Size = new System.Drawing.Size(126, 28);
@@ -673,18 +673,6 @@
             this.capButton.Text = "Press to start capturing!";
             this.capButton.UseVisualStyleBackColor = true;
             this.capButton.Click += new System.EventHandler(this.capButton_Click);
-            // 
-            // ass
-            // 
-            this.ass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ass.Location = new System.Drawing.Point(449, 585);
-            this.ass.Margin = new System.Windows.Forms.Padding(2);
-            this.ass.Name = "ass";
-            this.ass.Size = new System.Drawing.Size(126, 28);
-            this.ass.TabIndex = 64;
-            this.ass.Text = "Display Video Feed";
-            this.ass.UseVisualStyleBackColor = true;
-            this.ass.Click += new System.EventHandler(this.ass_Click);
             // 
             // joyStickChart1
             // 
@@ -814,21 +802,21 @@
             // picture
             // 
             this.picture.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.picture.Location = new System.Drawing.Point(765, 700);
+            this.picture.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.picture.Location = new System.Drawing.Point(596, 561);
             this.picture.Margin = new System.Windows.Forms.Padding(2);
             this.picture.Name = "picture";
-            this.picture.Size = new System.Drawing.Size(689, 366);
+            this.picture.Size = new System.Drawing.Size(1039, 508);
             this.picture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picture.TabIndex = 63;
             this.picture.TabStop = false;
-            this.picture.Visible = false;
             // 
             // headingIndicator1
             // 
             this.headingIndicator1.Heading = 0D;
-            this.headingIndicator1.Location = new System.Drawing.Point(125, 109);
+            this.headingIndicator1.Location = new System.Drawing.Point(886, 12);
             this.headingIndicator1.Name = "headingIndicator1";
-            this.headingIndicator1.Size = new System.Drawing.Size(426, 430);
+            this.headingIndicator1.Size = new System.Drawing.Size(565, 518);
             this.headingIndicator1.TabIndex = 68;
             // 
             // depthIndicator1
@@ -836,12 +824,13 @@
             this.depthIndicator1.Depth = 0D;
             this.depthIndicator1.Location = new System.Drawing.Point(12, 81);
             this.depthIndicator1.Name = "depthIndicator1";
-            this.depthIndicator1.Size = new System.Drawing.Size(75, 500);
+            this.depthIndicator1.Size = new System.Drawing.Size(76, 500);
             this.depthIndicator1.TabIndex = 67;
             // 
             // MainForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1920, 1080);
             this.Controls.Add(this.circleBox);
@@ -852,7 +841,6 @@
             this.Controls.Add(this.depthIndicator1);
             this.Controls.Add(this.joyStickChart2);
             this.Controls.Add(this.joyStickChart1);
-            this.Controls.Add(this.ass);
             this.Controls.Add(this.capButton);
             this.Controls.Add(this.benthicButton);
             this.Controls.Add(this.CircleCount);
@@ -909,7 +897,6 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "TJROV - GUI";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.joyStickChart1)).EndInit();
@@ -981,7 +968,6 @@
         private System.Windows.Forms.Button leftPrefButton;
         private System.Windows.Forms.Button capButton;
         private System.Windows.Forms.PictureBox picture;
-        private System.Windows.Forms.Button ass;
         private PropulsionActuator propulsionActuator2;
         private System.Windows.Forms.DataVisualization.Charting.Chart joyStickChart1;
         private System.Windows.Forms.DataVisualization.Charting.Chart joyStickChart2;

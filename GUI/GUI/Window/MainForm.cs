@@ -5,6 +5,7 @@
 //Aneesh Boreda
 //Shreepa Parthaje
 //Suhas Nandiraju
+//Kevin Wu
 
 using System;
 using System.Drawing;
@@ -449,22 +450,21 @@ namespace GUI
 
         private void button18_Click(object sender, EventArgs e)
         {
-            double L = 0;
-            if (LengthOfBarrel.Text != null)
+            try
             {
-                L = Double.Parse(LengthOfBarrel.Text);
+                double L = Double.Parse(LengthOfBarrel.Text);
+                double R1 = Double.Parse(InnerRadius1.Text);
+                double R2 = Double.Parse(InnerRadius2.Text);
+                double R3 = Double.Parse(InnerRadius3.Text);
+                double hole = Math.PI * (Math.Pow(R2, 2)) * L;
+                double cone = Math.PI * L / 3 * (Math.Pow(R1, 2) + Math.Pow(R3, 2) + R1 * R3);
+                double result = cone - hole;
+                answerBox.Text = result.ToString();
             }
-            else
+            catch (Exception ex)
             {
-
+                MessageBox.Show("Exception:" + '\n' + ex + ""  + '\n' + '\n' + "Please input a number.", "Numerical Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            double R1 = Double.Parse(InnerRadius1.Text);
-            double R2 = Double.Parse(InnerRadius2.Text);
-            double R3 = Double.Parse(InnerRadius3.Text);
-            double hole = Math.PI * (Math.Pow(R2, 2)) * L;
-            double cone = Math.PI * L / 3 * (Math.Pow(R1, 2) + Math.Pow(R3, 2) + R1 * R3);
-            double result = cone - hole;
-            answerBox.Text = result.ToString();  
         }
 
         private void benthicButton_Click(object sender, EventArgs e)
@@ -490,7 +490,7 @@ namespace GUI
         {
             if(videoSource == null)
             {
-                DialogResult res = MessageBox.Show("There isn't a video source connected dipshit. You may no longer click the specieiieieies button.", "Sumting Wong", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DialogResult res = MessageBox.Show("There isn't a video source connected.", "Connect an OEM device", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 benthicButton.Enabled = false;
             }
             else
@@ -518,12 +518,6 @@ namespace GUI
         }
 
         private Bitmap video;
-        private Boolean visible = true;
-        private void ass_Click(object sender, EventArgs e)
-        {
-            visible = !visible;
-            picture.Visible = visible;
-        }
 
         private void joyStickChart1_Click(object sender, EventArgs e)
         {
