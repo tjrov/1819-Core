@@ -459,7 +459,7 @@ namespace GUI
                 double hole = Math.PI * (Math.Pow(R2, 2)) * L;
                 double cone = Math.PI * L / 3 * (Math.Pow(R1, 2) + Math.Pow(R3, 2) + R1 * R3);
                 double result = cone - hole;
-                answerBox.Text = result.ToString();
+                answerBox.Text = Math.Round(result, 4).ToString();
             }
             catch (Exception ex)
             {
