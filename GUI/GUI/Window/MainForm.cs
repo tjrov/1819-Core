@@ -498,13 +498,13 @@ namespace GUI
                 if (isCapturing)
                 {
                     isCapturing = false;
-                    capButton.Text = "Press to start capturing!";
+                    capButton.Text = "Enable Video";
                     videoSource.SignalToStop();
                 }
                 else
                 {
                     isCapturing = true;
-                    capButton.Text = "Capturing!";
+                    capButton.Text = "Disable Video";
                     videoSource.Start();
                 }
                 benthicButton.Enabled = true;
@@ -520,11 +520,6 @@ namespace GUI
         private Bitmap video;
 
         private void joyStickChart1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
         {
 
         }

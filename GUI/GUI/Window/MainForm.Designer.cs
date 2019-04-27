@@ -102,6 +102,10 @@
             this.depthIndicator1 = new GUI.DepthIndicator();
             this.propulsionActuator1 = new GUI.PropulsionActuator();
             this.propulsionActuator2 = new GUI.PropulsionActuator();
+            this.LoBLabel = new System.Windows.Forms.Label();
+            this.IR1Label = new System.Windows.Forms.Label();
+            this.IR2Label = new System.Windows.Forms.Label();
+            this.IR3Label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.joyStickChart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.joyStickChart2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.circleBox)).BeginInit();
@@ -494,7 +498,6 @@
             this.LengthOfBarrel.Name = "LengthOfBarrel";
             this.LengthOfBarrel.Size = new System.Drawing.Size(110, 20);
             this.LengthOfBarrel.TabIndex = 46;
-            this.LengthOfBarrel.Text = "Length of Barrel";
             // 
             // InnerRadius1
             // 
@@ -504,7 +507,6 @@
             this.InnerRadius1.Name = "InnerRadius1";
             this.InnerRadius1.Size = new System.Drawing.Size(110, 20);
             this.InnerRadius1.TabIndex = 47;
-            this.InnerRadius1.Text = "Inner Radius 1";
             // 
             // InnerRadius3
             // 
@@ -514,7 +516,6 @@
             this.InnerRadius3.Name = "InnerRadius3";
             this.InnerRadius3.Size = new System.Drawing.Size(110, 20);
             this.InnerRadius3.TabIndex = 49;
-            this.InnerRadius3.Text = "Inner Radius 3";
             // 
             // calcButton
             // 
@@ -546,7 +547,6 @@
             this.InnerRadius2.Name = "InnerRadius2";
             this.InnerRadius2.Size = new System.Drawing.Size(110, 20);
             this.InnerRadius2.TabIndex = 52;
-            this.InnerRadius2.Text = "Inner Radius 2";
             // 
             // triangleCount
             // 
@@ -670,7 +670,7 @@
             this.capButton.Name = "capButton";
             this.capButton.Size = new System.Drawing.Size(126, 28);
             this.capButton.TabIndex = 60;
-            this.capButton.Text = "Press to start capturing!";
+            this.capButton.Text = "Enable Video";
             this.capButton.UseVisualStyleBackColor = true;
             this.capButton.Click += new System.EventHandler(this.capButton_Click);
             // 
@@ -827,12 +827,52 @@
             this.depthIndicator1.Size = new System.Drawing.Size(76, 500);
             this.depthIndicator1.TabIndex = 67;
             // 
+            // LoBLabel
+            // 
+            this.LoBLabel.AutoSize = true;
+            this.LoBLabel.Location = new System.Drawing.Point(1702, 898);
+            this.LoBLabel.Name = "LoBLabel";
+            this.LoBLabel.Size = new System.Drawing.Size(85, 13);
+            this.LoBLabel.TabIndex = 74;
+            this.LoBLabel.Text = "Length of Barrel:";
+            // 
+            // IR1Label
+            // 
+            this.IR1Label.AutoSize = true;
+            this.IR1Label.Location = new System.Drawing.Point(1702, 922);
+            this.IR1Label.Name = "IR1Label";
+            this.IR1Label.Size = new System.Drawing.Size(79, 13);
+            this.IR1Label.TabIndex = 75;
+            this.IR1Label.Text = "Inner Radius 1:";
+            // 
+            // IR2Label
+            // 
+            this.IR2Label.AutoSize = true;
+            this.IR2Label.Location = new System.Drawing.Point(1702, 946);
+            this.IR2Label.Name = "IR2Label";
+            this.IR2Label.Size = new System.Drawing.Size(79, 13);
+            this.IR2Label.TabIndex = 76;
+            this.IR2Label.Text = "Inner Radius 2:";
+            // 
+            // IR3Label
+            // 
+            this.IR3Label.AutoSize = true;
+            this.IR3Label.Location = new System.Drawing.Point(1702, 971);
+            this.IR3Label.Name = "IR3Label";
+            this.IR3Label.Size = new System.Drawing.Size(79, 13);
+            this.IR3Label.TabIndex = 77;
+            this.IR3Label.Text = "Inner Radius 3:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1920, 1080);
+            this.Controls.Add(this.IR3Label);
+            this.Controls.Add(this.IR2Label);
+            this.Controls.Add(this.IR1Label);
+            this.Controls.Add(this.LoBLabel);
             this.Controls.Add(this.circleBox);
             this.Controls.Add(this.squareBox);
             this.Controls.Add(this.lineBox);
@@ -897,7 +937,6 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "TJROV - GUI";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.joyStickChart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.joyStickChart2)).EndInit();
@@ -978,6 +1017,10 @@
         private System.Windows.Forms.PictureBox lineBox;
         private System.Windows.Forms.PictureBox squareBox;
         private System.Windows.Forms.PictureBox circleBox;
+        private System.Windows.Forms.Label LoBLabel;
+        private System.Windows.Forms.Label IR1Label;
+        private System.Windows.Forms.Label IR2Label;
+        private System.Windows.Forms.Label IR3Label;
     }
 }
 
