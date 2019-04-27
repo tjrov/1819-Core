@@ -500,14 +500,15 @@ namespace GUI
                     isCapturing = false;
                     capButton.Text = "Enable Video";
                     videoSource.SignalToStop();
+                    benthicButton.Enabled = false;
                 }
                 else
                 {
                     isCapturing = true;
                     capButton.Text = "Disable Video";
                     videoSource.Start();
+                    benthicButton.Enabled = true;
                 }
-                benthicButton.Enabled = true;
             }
             
         }
