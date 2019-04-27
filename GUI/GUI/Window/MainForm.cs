@@ -137,7 +137,7 @@ namespace GUI
             videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             for (int i = 0; i < videoDevices.Count; i++)
             {
-                if (videoDevices[i].Name.Equals("OEM Device"))
+                if (videoDevices[i].Name.Equals("ezcap Video Grabber"))
                 {
                     videoSource = new VideoCaptureDevice(videoDevices[i].MonikerString);
                     videoSource.CrossbarVideoInput = videoSource.AvailableCrossbarVideoInputs[1];
