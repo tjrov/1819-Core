@@ -13,6 +13,7 @@ namespace GUI
     }
     public class MiniROVData
     {
+        public bool launched = false;
     }
     public class DepthData
     {

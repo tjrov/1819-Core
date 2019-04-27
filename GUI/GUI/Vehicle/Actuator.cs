@@ -110,9 +110,16 @@ namespace GUI
 
         protected override byte[] Convert(MiniROVData controlData)
         {
-            // TODO: send over actual data
             byte[] result = new byte[1];
-            result[0] = ConvertUtils.DoubleToByte(2, 0, 100);
+            if (controlData.launched)
+            {
+                controlData.launched = false;
+                result[0] = ConvertUtils.DoubleToByte(0, 0, 1);
+                return result;
+            }
+
+            controlData.launched = true;
+            result[0] = ConvertUtils.DoubleToByte(1, 0, 1);
             return result;
         }
     }
