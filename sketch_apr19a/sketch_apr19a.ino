@@ -27,6 +27,7 @@ void setup()
   myservo5.writeMicroseconds(1500);
   myservo6.writeMicroseconds(1500);
   myservo7.writeMicroseconds(1500);
+  Serial.println("Ready!");
 }
 
 void loop() {
