@@ -437,7 +437,14 @@ void writeServo() {
 }
 
 void launchMiniROV() {
-    // TODO: write code to launch ROV
+    uint8_t launch = rxData.data[0];
+    if (launch < 128) {
+        // retract
+       	pca9685.setPWM(i, 0, 500);
+    } else {
+        // send minirov
+		pca9685.setPWM(i, 0, 680);
+    }
 }
 
 /*Status*/
