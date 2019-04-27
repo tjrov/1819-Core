@@ -100,6 +100,11 @@ namespace GUI
             t50.Tick += T50_Tick;
             t10.Tick += T10_Tick;
 
+            VerticalMotion = 0.0;
+            ForeAftMotion = 0.0;
+            StrafeMotion = 0.0;
+            TurnMotion = 0.0;
+
             //get the ROV firmware version when connection starts
             comms.Queue.Enqueue(VersionSensor);
         }

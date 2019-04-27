@@ -113,6 +113,7 @@ namespace GUI
             // TODO: send over actual data
             byte[] result = new byte[1];
             result[0] = ConvertUtils.DoubleToByte(2, 0, 100);
+            return result;
         }
     }
     
