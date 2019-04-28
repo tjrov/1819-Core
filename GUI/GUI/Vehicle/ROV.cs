@@ -155,10 +155,10 @@ namespace GUI
             comms.Queue.Enqueue(PropulsionActuator);
         }
 
-        public void UpdateServos()
-        {
-            comms.Queue.Enqueue(ServoActuator);
-        }
+        //public void UpdateServos()
+        //{
+        //    comms.Queue.Enqueue(ServoActuator);
+        //}
 
         public void LaunchMiniROV()
         {
@@ -171,6 +171,7 @@ namespace GUI
             comms.Queue.Enqueue(DepthSensor);
             comms.Queue.Enqueue(OrientationSensor);
             comms.Queue.Enqueue(ToolsActuator);
+            comms.Queue.Enqueue(ServoActuator);
         }
 
         //slow loop for status and error reports, arming/disarming, etc.

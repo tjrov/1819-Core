@@ -587,7 +587,7 @@ namespace GUI
                     }
 
                     copilotKeysUp[(int) ControllerKeys.Y] = false;
-                    rov.UpdateServos();
+                    //rov.UpdateServos();
                 }
                 else if (copilot.Y_up)
                 {
@@ -609,7 +609,7 @@ namespace GUI
                     }
 
                     copilotKeysUp[(int) ControllerKeys.B] = false;
-                    rov.UpdateServos();
+                    //rov.UpdateServos();
                 }
                 else if (copilot.B_up)
                 {
