@@ -299,7 +299,11 @@ namespace GUI
         {
             if (e.KeyCode == Keys.Escape)
             {
-                Environment.Exit(0);
+                try {
+                    Environment.Exit(0);
+                } catch (Exception ex) {
+                    return;
+                }
             }
         }
 
