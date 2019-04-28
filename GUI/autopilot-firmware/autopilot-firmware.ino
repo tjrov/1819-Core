@@ -431,6 +431,7 @@ void writeServo() {
 		for (int i = 0; i < NUM_SERVO; i++) {
 			uint8_t position = rxData.data[i];
 			// not sure exactly what position variable will be here (it should be 0-255 i think)
+      Serial.println(position);
 			pca9685.setPWM(i, map(position, 0, 255, 0, 4095), map(255 - position, 0, 255, 0, 4095));
 		}
 	}
@@ -438,13 +439,6 @@ void writeServo() {
 
 void launchMiniROV() {
     uint8_t launch = rxData.data[0];
-    if (launch < 128) {
-        // retract
-       	pca9685.setPWM(i, 0, 500);
-    } else {
-        // send minirov
-		pca9685.setPWM(i, 0, 680);
-    }
 }
 
 /*Status*/
