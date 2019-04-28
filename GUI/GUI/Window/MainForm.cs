@@ -299,7 +299,11 @@ namespace GUI
         {
             if (e.KeyCode == Keys.Escape)
             {
-                Environment.Exit(0);
+                try {
+                    Environment.Exit(0);
+                } catch (Exception ex) {
+                    return;
+                }
             }
         }
 
@@ -543,10 +547,14 @@ namespace GUI
                 headingLockEngageLabel.Text = "Heading Lock Disengaged";
                 rollLockEngageLabel.ForeColor = Color.DarkRed;
                 rollLockEngageLabel.Text = "Roll Lock Disengaged";
-                rov.VerticalMotion = 0.0;
-                rov.ForeAftMotion = 0.0;
-                rov.StrafeMotion = 0.0;
-                rov.TurnMotion = 0.0;
+                try {
+                    rov.VerticalMotion = 0.0;
+                    rov.ForeAftMotion = 0.0;
+                    rov.StrafeMotion = 0.0;
+                    rov.TurnMotion = 0.0;
+                } catch (Exception ex) {
+                    
+                }
             }
 
             trackBar1.Value = (int) (ConvertUtils.Map(LStickZeroY, -32768, 32767, 0, 200));
@@ -583,7 +591,7 @@ namespace GUI
                     }
 
                     copilotKeysUp[(int) ControllerKeys.Y] = false;
-                    rov.UpdateServos();
+                    //rov.UpdateServos();
                 }
                 else if (copilot.Y_up)
                 {
@@ -605,7 +613,7 @@ namespace GUI
                     }
 
                     copilotKeysUp[(int) ControllerKeys.B] = false;
-                    rov.UpdateServos();
+                    //rov.UpdateServos();
                 }
                 else if (copilot.B_up)
                 {
@@ -614,7 +622,7 @@ namespace GUI
 
                 if (copilot.A_down && copilotKeysUp[(int) ControllerKeys.A])
                 {
-                    rov.LaunchMiniROV();
+                    //rov.LaunchMiniROV();
                     copilotKeysUp[(int) ControllerKeys.A] = false;
                 }
                 else if (copilot.A_up)
