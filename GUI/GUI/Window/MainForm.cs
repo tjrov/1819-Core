@@ -543,10 +543,14 @@ namespace GUI
                 headingLockEngageLabel.Text = "Heading Lock Disengaged";
                 rollLockEngageLabel.ForeColor = Color.DarkRed;
                 rollLockEngageLabel.Text = "Roll Lock Disengaged";
-                rov.VerticalMotion = 0.0;
-                rov.ForeAftMotion = 0.0;
-                rov.StrafeMotion = 0.0;
-                rov.TurnMotion = 0.0;
+                try {
+                    rov.VerticalMotion = 0.0;
+                    rov.ForeAftMotion = 0.0;
+                    rov.StrafeMotion = 0.0;
+                    rov.TurnMotion = 0.0;
+                } catch (Exception ex) {
+                    
+                }
             }
 
             trackBar1.Value = (int) (ConvertUtils.Map(LStickZeroY, -32768, 32767, 0, 200));
