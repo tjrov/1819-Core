@@ -427,6 +427,7 @@ void writeTools() {
 }
 
 void writeServo() {
+  digitalWrite(LED, HIGH);
 	if (!(error&ESC_FAILURE)) {
 		for (int i = 0; i < NUM_SERVO; i++) {
 			uint8_t position = rxData.data[i];
