@@ -160,10 +160,10 @@ namespace GUI
         //    comms.Queue.Enqueue(ServoActuator);
         //}
 
-        public void LaunchMiniROV()
-        {
-            comms.Queue.Enqueue(MiniROVActuator);
-        }
+        //public void LaunchMiniROV()
+        //{
+        //    comms.Queue.Enqueue(MiniROVActuator);
+        //}
         
         //medium loop for sensors and manipulators/tools
         private void T50_Tick(object sender, EventArgs e)
