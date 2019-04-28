@@ -91,37 +91,15 @@ namespace GUI
             ToolsActuator = new ToolsActuator();
 
             //timer setup
-            t500 = new Timer() { Enabled = true, Interval = 500 };
-            t50 = new Timer() { Enabled = true, Interval = 50 };
-            t10 = new Timer() { Enabled = true, Interval = 10 };
+            t500 = new Timer() { Enabled = false, Interval = 500 };
+            t50 = new Timer() { Enabled = false, Interval = 50 };
+            t10 = new Timer() { Enabled = false, Interval = 10 };
             t500.Tick += T500_Tick;
             t50.Tick += T50_Tick;
             t10.Tick += T10_Tick;
 
             //get the ROV firmware version when connection starts
             comms.Queue.Enqueue(VersionSensor);
-        }
-
-        public ROV()
-        {
-            //device setup
-            DepthSensor = new DepthSensor();
-            OrientationSensor = new OrientationSensor();
-            StatusSensor = new StatusSensor();
-            PropulsionSensor = new PropulsionSensor();
-            VersionSensor = new VersionSensor();
-
-            StatusActuator = new StatusActuator();
-            PropulsionActuator = new PropulsionActuator();
-            ToolsActuator = new ToolsActuator();
-
-            //timer setup
-            t500 = new Timer() { Enabled = true, Interval = 500 };
-            t50 = new Timer() { Enabled = true, Interval = 50 };
-            t10 = new Timer() { Enabled = true, Interval = 10 };
-            t500.Tick += T500_Tick;
-            t50.Tick += T50_Tick;
-            t10.Tick += T10_Tick;
         }
 
         private void Comms_Stopped(object sender, EventArgs e)
@@ -180,22 +158,22 @@ namespace GUI
             }
 
             //send the thruster speeds to the ROV
-            //comms.Queue.Enqueue(PropulsionActuator);
+            comms.Queue.Enqueue(PropulsionActuator);
         }
 
         //medium loop for sensors and manipulators/tools
         private void T50_Tick(object sender, EventArgs e)
         {
-            //comms.Queue.Enqueue(DepthSensor);
-            //comms.Queue.Enqueue(OrientationSensor);
-            //comms.Queue.Enqueue(ToolsActuator);
+            comms.Queue.Enqueue(DepthSensor);
+            comms.Queue.Enqueue(OrientationSensor);
+            comms.Queue.Enqueue(ToolsActuator);
         }
 
         //slow loop for status and error reports, arming/disarming, etc.
         private void T500_Tick(object sender, EventArgs e)
         {
-            /*comms.Queue.Enqueue(StatusSensor);
-            comms.Queue.Enqueue(StatusActuator);*/
+            comms.Queue.Enqueue(StatusSensor);
+            comms.Queue.Enqueue(StatusActuator);
         }
         public void setDirection(int direction)
         {

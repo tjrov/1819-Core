@@ -28,7 +28,7 @@ namespace GUI
     public partial class MainForm : Form
     {
         private ROV rov;
-        //private SerialCommunication comms;
+        private SerialCommunication comms;
         public X.Gamepad pilot, copilot;
         private bool isLockClicked = false;
         private int depthvalue = 0;
@@ -56,7 +56,7 @@ namespace GUI
 
             //setup devices
             string portName = "COM6";
-            /*try
+            try
             {
                 portName = BetterSerialPort.GetPortNames()[0];
             }
@@ -64,17 +64,16 @@ namespace GUI
             {
                 MessageBox.Show("No Serial ports available");
                 //Environment.Exit(0);
-            }*/
+            }
             BetterSerialPort port = new BetterSerialPort(portName, 115200);
             portLabel.Text = string.Format("{0}@{1}baud", port.PortName, port.BaudRate);
-            /*comms = new SerialCommunication(port);
+            comms = new SerialCommunication(port);
             comms.Stopped += comms_Stopped;
             comms.Started += comms_Started;
             comms.CommunicationException += Comms_CommunicationException;
             //comms.Connect();*/
 
-            //rov = new ROV(comms);
-            rov = new ROV();
+            rov = new ROV(comms);
 
             //update displays when sensors polled
             rov.OrientationSensor.Updated += OrientationSensor_Updated;
@@ -241,7 +240,7 @@ namespace GUI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //comms.LinkActive = !comms.LinkActive;
+            comms.LinkActive = !comms.LinkActive;
         }
 
         private void button2_Click(object sender, EventArgs e)

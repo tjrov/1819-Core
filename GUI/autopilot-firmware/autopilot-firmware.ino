@@ -1,7 +1,7 @@
 /*
 Name:		autopilot.ino
 Created:	7/7/2018 9:44:39 AM
-Author:	Henry (add names as necessary)
+Author:	Henry
 
 Firmware for main board
 */
@@ -148,17 +148,30 @@ void setup() {
 	I2c.timeOut(I2C_TIMEOUT); //if i2c bus fails, code will hang for this long then be able to continue
 							  //timeout should be low enough that serial communications do not stop, but
 							  //long enough not to trigger during normal bus operation
-	
-	Serial.println("Testing I2C bus");
+
+	Serial.println(F("Testing I2C bus"));
 	I2c.scan();
 
 	initStatus();
 
 	//initalize subsystems (status changes based on init errors)
+	Serial.println(F("IMU Init"));
 	initIMU();
+	Serial.println(F("Depth Init"));
 	initDepth();
+	Serial.println(F("ESC/Tools Init"));
 	initToolsAndESCs();
+	Serial.println(F("Init complete"));
 	digitalWrite(LED, LOW);
+
+	while (millis() < 10000) {
+		readIMU();
+		delay(500);
+	}
+	while (millis() < 10000) {
+		readDepth();
+		delay(500);
+	}
 }
 
 /*
@@ -313,13 +326,6 @@ void readVersion() {
 	txData.data[1] = VERSION_MINOR;
 }
 
-//returns true if device at address available
-bool checkI2C(uint8_t address) {
-	Wire.beginTransmission(address);
-	//endtransmission returns 0 only for a successful contact
-	return Wire.endTransmission() == 0;
-}
-
 /*void handleDataDirection() {
 if ((UCSR0A & _BV(TXC0)) == 0) {
 digitalWrite(TX_EN, HIGH);
@@ -335,82 +341,41 @@ void initToolsAndESCs() {
 		escs[i].attach(i + 3);
 		escs[i].writeMicroseconds(1500);
 	}*/
-	if (checkI2C(PCA_9685_ADDRESS)) {
-		pca9685.begin();
-		pca9685.setPWMFreq(PWM_FREQ);
-	}
-	else {
-		error |= TOOLS_FAILURE;
-	}
-}
-
-void checkESCsAndTools() {
-	//check for motor controller device
-	if (!checkI2C(PCA_9685_ADDRESS)) {
-		error |= TOOLS_FAILURE;
-	}
-	//reset connection to motor driver after power failures
-	if (error & TOOLS_FAILURE) {
-		pca9685.reset();
-		pca9685.setPWMFreq(PWM_FREQ);
-		//if after reset it works
-		if (checkI2C(PCA_9685_ADDRESS)) {
-			//clear error state
-			error &= ~TOOLS_FAILURE;
-		}
-	}
+	pca9685.begin();
+	pca9685.setPWMFreq(PWM_FREQ);
 }
 
 void writeESCs() {
-	if (!(error&ESC_FAILURE)) {
-		for (int i = 0; i < 6; i++) {
-			//convert pairs of bytes into 16-bit int
-			int16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
-			//now convert to pulse time length out of 4096
-			if (esc_invert[i] == 1) {
-				speed = -speed;
-			}
-			speed = map(speed, -32768, 32767, PWM_MIN, PWM_MAX);
-			speed = PWM_MAX;
-			escs[i].writeMicroseconds(speed);
+	for (int i = 0; i < NUM_ESCS; i++) {
+		uint8_t speed = rxData.data[i];
+		if (speed == 127) {
+			//stop motor
+			pca9685.setPWM(i, 0, PWM_STOP);
 		}
-
-		for (int i = 0; i < NUM_ESCS; i++) {
-			uint8_t speed = rxData.data[i];
-			if (speed == 127) {
-				//stop motor
-				pca9685.setPWM(i, 0, PWM_STOP);
-			}
-			else {
-				//run motor forward or reverse
-				pca9685.setPWM(i, 0, map(speed, 0, 255, PWM_MIN, PWM_MAX));
-			}
+		else {
+			//run motor forward or reverse
+			pca9685.setPWM(i, 0, map(speed, 0, 255, PWM_MIN, PWM_MAX));
 		}
 	}
 }
 
 void writeTools() {
-	if (!(error&ESC_FAILURE)) {
-		for (int i = 0; i < NUM_TOOLS; i++) {
-			uint8_t speed = rxData.data[i];
-			if (tools_invert[i] == 1) {
-				speed = 255 - speed;
-			}
-			if (speed == 127) {
-				//both pins high to brake when stop requested
-				pca9685.setPWM(15 - i * 2, 0, 4095);
-				pca9685.setPWM(14 - i * 2, 0, 4095);
-			}
-			else if (speed < 127) {
-				//turn one way
-				pca9685.setPWM(15 - i * 2, 0, 0);
-				pca9685.setPWM(14 - i * 2, 0, map(speed, 0, 127, 4095, 0));
-			}
-			else {
-				//turn other way
-				pca9685.setPWM(15 - i * 2, 0, map(speed, 127, 255, 0, 4095));
-				pca9685.setPWM(14 - i * 2, 0, 0);
-			}
+	for (int i = 0; i < NUM_TOOLS; i++) {
+		uint8_t speed = rxData.data[i];
+		if (speed == 127) {
+			//both pins high to brake when stop requested
+			pca9685.setPWM(15 - i * 2, 0, 4095);
+			pca9685.setPWM(14 - i * 2, 0, 4095);
+		}
+		else if (speed < 127) {
+			//turn one way
+			pca9685.setPWM(15 - i * 2, 0, 0);
+			pca9685.setPWM(14 - i * 2, 0, map(speed, 0, 127, 4095, 0));
+		}
+		else {
+			//turn other way
+			pca9685.setPWM(15 - i * 2, 0, map(speed, 127, 255, 0, 4095));
+			pca9685.setPWM(14 - i * 2, 0, 0);
 		}
 	}
 }
@@ -463,21 +428,19 @@ void writeStatus() {
 
 //call to stop all movement of actuators
 void emergencyStop() {
-	if (!(error&ESC_FAILURE)) {
-		/*for (int i = 0; i < 6; i++) {
-			escs[i].writeMicroseconds(1500);
-		}*/
-		//stop ESCs
-		//int stopped = (PWM_MIN + PWM_MAX) / 2; //stopped signal pulse length is halfway between full forward and full reverse
-		//Serial.print(PWM_MIN); Serial.print('\t'); Serial.println(PWM_MAX);
-		for (int i = 0; i < NUM_ESCS; i++) {
-			pca9685.setPWM(i, 0, PWM_STOP);
-		}
-		//stop motor outputs (coast to a stop instead of braking so that claws will let go
-		for (int i = 0; i < NUM_TOOLS; i++) {
-			pca9685.setPWM(15 - i * 2, 0, 0);
-			pca9685.setPWM(14 - i * 2, 0, 0);
-		}
+	/*for (int i = 0; i < 6; i++) {
+		escs[i].writeMicroseconds(1500);
+	}*/
+	//stop ESCs
+	//int stopped = (PWM_MIN + PWM_MAX) / 2; //stopped signal pulse length is halfway between full forward and full reverse
+	//Serial.print(PWM_MIN); Serial.print('\t'); Serial.println(PWM_MAX);
+	for (int i = 0; i < NUM_ESCS; i++) {
+		pca9685.setPWM(i, 0, PWM_STOP);
+	}
+	//stop motor outputs (coast to a stop instead of braking so that claws will let go
+	for (int i = 0; i < NUM_TOOLS; i++) {
+		pca9685.setPWM(15 - i * 2, 0, 0);
+		pca9685.setPWM(14 - i * 2, 0, 0);
 	}
 }
 
@@ -488,7 +451,6 @@ double mapDouble(double val, double minVal, double maxVal, double minResult, dou
 void initIMU() {
 	//try to setup IMU
 	if (!bno055.begin()) {
-		error |= IMU_FAILURE;
 		return;
 	}
 	bno055.setExtCrystalUse(true);
@@ -498,54 +460,45 @@ void initIMU() {
 void readIMU() {
 	txData.command = IMU_REQ;
 	txData.length = 6;
-	if (!(error&IMU_FAILURE)) {
-		//refresh data from imu
-		sensors_event_t imuData;
-		bno055.getEvent(&imuData);
+	//refresh data from imu
+	sensors_event_t imuData;
+	bno055.getEvent(&imuData);
 
-		uint16_t rollInt = (int)mapDouble(imuData.orientation.heading, 0, 360, 0, 65535);
-		uint16_t pitchInt = (int)mapDouble(imuData.orientation.pitch, 0, 360, 0, 65535);
-		uint16_t headingInt = (int)mapDouble(imuData.orientation.roll, 0, 360, 0, 65535);
+	uint16_t rollInt = (int)mapDouble(imuData.orientation.heading, 0, 360, 0, 65535);
+	uint16_t pitchInt = (int)mapDouble(imuData.orientation.pitch, 0, 360, 0, 65535);
+	uint16_t headingInt = (int)mapDouble(imuData.orientation.roll, 0, 360, 0, 65535);
 
-		//prepare txData for transmission
-		txData.data[0] = headingInt & 0xFF;
-		txData.data[1] = (headingInt >> 8) & 0xFF;
-		txData.data[2] = pitchInt & 0xFF;
-		txData.data[3] = (pitchInt >> 8) & 0xFF;
-		txData.data[4] = rollInt & 0xFF;
-		txData.data[5] = (rollInt >> 8) & 0xFF;
-	}
+	//prepare txData for transmission
+	txData.data[0] = headingInt & 0xFF;
+	txData.data[1] = (headingInt >> 8) & 0xFF;
+	txData.data[2] = pitchInt & 0xFF;
+	txData.data[3] = (pitchInt >> 8) & 0xFF;
+	txData.data[4] = rollInt & 0xFF;
+	txData.data[5] = (rollInt >> 8) & 0xFF;
 }
 /*Depth*/
 void initDepth() {
 	//attempt to contact sensor to check if it's available
-	if (checkI2C(DEPTH_ADDRESS)) {
-		ms5803.reset();
-		ms5803.begin();
-	}
-	else {
-		error |= PRESSURE_SENSOR_FAILURE;
-	}
+	ms5803.reset();
+	ms5803.begin();
 }
 
 void readDepth() {
 	txData.command = DEPTH_REQ;
 	txData.length = 2;
-	if (!(error & PRESSURE_SENSOR_FAILURE)) {
-		//subtract pressure of air on surface; it doesn't factor
-		//into the pressure caused by the water column
-		//depth = pressure / (density * acceleration)
-		//where depth is in meters, pressure is in Pascals (N/m^2)
-		//density is in kilograms per cubic meter,
-		//and acceleration is in meters per second per second
-		double depthDouble = constrain((ms5803.getPressure(ADC_1024)*0.00678178) - 62.8311, 0.0, 10.0);
-		//Serial.println(depthDouble);
-		//now convert to bytes and prepare txData
-		uint16_t intDepth = (int)mapDouble(depthDouble, 0, 30, 0, 65535);
+	//subtract pressure of air on surface; it doesn't factor
+	//into the pressure caused by the water column
+	//depth = pressure / (density * acceleration)
+	//where depth is in meters, pressure is in Pascals (N/m^2)
+	//density is in kilograms per cubic meter,
+	//and acceleration is in meters per second per second
+	double depthDouble = constrain((ms5803.getPressure(ADC_1024)*0.00678178) - 62.8311, 0.0, 10.0);
+	//Serial.println(depthDouble);
+	//now convert to bytes and prepare txData
+	uint16_t intDepth = (int)mapDouble(depthDouble, 0, 30, 0, 65535);
 
-		txData.data[0] = intDepth & 0xFF;
-		txData.data[1] = (intDepth >> 8) & 0xFF;
-	}
+	txData.data[0] = intDepth & 0xFF;
+	txData.data[1] = (intDepth >> 8) & 0xFF;
 }
 
 /*
