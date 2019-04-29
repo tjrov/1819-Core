@@ -371,17 +371,7 @@ void checkESCsAndTools() {
 
 void writeESCs() {
 	if (!(error&ESC_FAILURE)) {
-		/*for (int i = 0; i < 6; i++) {
-			//convert pairs of bytes into 16-bit int
-			int16_t speed = rxData.data[i * 2 + 1] << 8 | rxData.data[i * 2];
-			//now convert to pulse time length out of 4096
-			if (esc_invert[i] == 1) {
-				speed = -speed;
-			}
-			speed = map(speed, -32768, 32767, PWM_MIN, PWM_MAX);
-			speed = PWM_MAX;
-			escs[i].writeMicroseconds(speed);
-		}*/
+        // NOTE: ESCs AND SERVOS ARE ON SAME PIN SET (0-7)
 
 		for (int i = 0; i < NUM_ESCS; i++) {
 			uint8_t speed = rxData.data[i];
@@ -428,9 +418,9 @@ void writeTools() {
 
 void writeServo() {
 	if (!(error&ESC_FAILURE)) {
-		for (int i = 0; i < NUM_SERVO; i++) {
+	    // NOTE: ESCs AND SERVOS ARE ON SAME PIN SET (0-7)
+		for (int i = NUM_ESCS; i < NUM_SERVO; i++) {
 			uint8_t position = rxData.data[i];
-			// not sure exactly what position variable will be here (it should be 0-255 i think)
 			pca9685.setPWM(i, map(position, 0, 255, 0, 4095), map(255 - position, 0, 255, 0, 4095));
 		}
 	}
