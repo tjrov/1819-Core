@@ -205,38 +205,40 @@ namespace GUI
 
         public void setDirection(int direction)
         {
+            // parity fields haven't been changed, don't know if they have to be changed
+            // it may break? it may not break?
             directionPref = direction;
             switch (direction)
             {
                 case 0:
                     parityFL = parityFR = parityBL = parityBR = 1;
-                    key["ForwardPort"] = 0;
-                    key["ForwardStarboard"] = 1;
-                    key["AftPort"] = 2;
-                    key["AftStarboard"] = 3;
+                    key["ForwardPort"] = thruster["top-left"];
+                    key["ForwardStarboard"] = thruster["top-right"];
+                    key["AftPort"] = thruster["bottom-left"];
+                    key["AftStarboard"] = thruster["bottom-right"];
                     break;
                 case 1:
                     parityFR = parityBL = 1;
                     parityFL = parityBR = -1;
-                    key["ForwardPort"] = 1;
-                    key["ForwardStarboard"] = 3;
-                    key["AftPort"] = 0;
-                    key["AftStarboard"] = 2;
+                    key["ForwardPort"] = thruster["top-right"];
+                    key["ForwardStarboard"] = thruster["bottom-right"];
+                    key["AftPort"] = thruster["top-left"];
+                    key["AftStarboard"] = thruster["bottom-left"];
                     break;
                 case 2:
                     parityFL = parityFR = parityBL = parityBR = -1;
-                    key["ForwardPort"] = 3;
-                    key["ForwardStarboard"] = 2;
-                    key["AftPort"] = 1;
-                    key["AftStarboard"] = 0;
+                    key["ForwardPort"] = thruster["bottom-right"];
+                    key["ForwardStarboard"] = thruster["bottom-left"];
+                    key["AftPort"] = thruster["top-right"];
+                    key["AftStarboard"] = thruster["top-left"];
                     break;
                 case 3:
                     parityFR = parityBL = -1;
                     parityFL = parityBR = 1;
-                    key["ForwardPort"] = 2;
-                    key["ForwardStarboard"] = 0;
-                    key["AftPort"] = 3;
-                    key["AftStarboard"] = 1;
+                    key["ForwardPort"] = thruster["bottom-left"];
+                    key["ForwardStarboard"] = thruster["top-left"];
+                    key["AftPort"] = thruster["bottom-right"];
+                    key["AftStarboard"] = thruster["top-right"];
                     break;
             }
         }
