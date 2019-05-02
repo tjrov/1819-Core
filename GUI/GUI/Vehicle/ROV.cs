@@ -32,12 +32,10 @@ namespace GUI
         public double VerticalMotion, ForeAftMotion, StrafeMotion, TurnMotion; //ccw positive\
 
         private double desiredHeading;
+
         public double DesiredHeading
         {
-            get
-            {
-                return desiredHeading;
-            }
+            get { return desiredHeading; }
             set
             {
                 if (value > 360)
@@ -54,18 +52,21 @@ namespace GUI
                 }
             }
         }
+
         public bool EnableHeadingLock, EnableRollLock, EnableDepthLock;
 
-        //change as needed
-        private readonly Dictionary<string, int> key = new Dictionary<string, int>()
+        private readonly Dictionary<string, int> thruster = new Dictionary<string, int>()
         {
-            ["ForwardPort"] = 0,
-            ["ForwardStarboard"] = 3,
-            ["AftPort"] = 2,
-            ["AftStarboard"] = 5,
-            ["VerticalPort"] = 1,
-            ["VerticalStarboard"] = 4
+            ["top-left"] = 0,
+            ["top-right"] = 3,
+            ["bottom-left"] = 2,
+            ["bottom-right"] = 5,
+            ["vertical-1"] = 1,
+            ["vertical-2"] = 4
         };
+
+        //change as needed
+        private readonly Dictionary<string, int> key = new Dictionary<string, int>();
 
         private readonly double headingAdj;
         private readonly double depthAdj;
@@ -73,6 +74,17 @@ namespace GUI
 
         public ROV(SerialCommunication comms)
         {
+            #region Set thrusters to pins
+
+            key["ForwardPort"] = thruster["top-left"];
+            key["ForwardStarboard"] = thruster["top-right"];
+            key["AftPort"] = thruster["bottom-left"];
+            key["AftStarboard"] = thruster["bottom-right"];
+            key["VerticalPort"] = thruster["vertical-1"];
+            key["VerticalStarboard"] = thruster["vertical-2"];
+
+            #endregion
+
             this.comms = comms;
             comms.Started += Comms_Started;
             comms.Stopped += Comms_Stopped;
@@ -91,9 +103,9 @@ namespace GUI
             MiniROVActuator = new MiniROVActuator();
 
             //timer setup
-            t500 = new Timer() { Enabled = true, Interval = 500 };
-            t50 = new Timer() { Enabled = true, Interval = 50 };
-            t10 = new Timer() { Enabled = true, Interval = 10 };
+            t500 = new Timer() {Enabled = true, Interval = 500};
+            t50 = new Timer() {Enabled = true, Interval = 50};
+            t10 = new Timer() {Enabled = true, Interval = 10};
             t500.Tick += T500_Tick;
             t50.Tick += T50_Tick;
             t10.Tick += T10_Tick;
@@ -109,19 +121,22 @@ namespace GUI
 
         private void Comms_Stopped(object sender, EventArgs e)
         {
-            t500.Enabled = false; t50.Enabled = false; t10.Enabled = false;
+            t500.Enabled = false;
+            t50.Enabled = false;
+            t10.Enabled = false;
         }
 
         private void Comms_Started(object sender, EventArgs e)
         {
-            t500.Enabled = true; t50.Enabled = true; t10.Enabled = true;
+            t500.Enabled = true;
+            t50.Enabled = true;
+            t10.Enabled = true;
         }
 
         //update loops
         //fast loop reserved for thruster control only
         private void T10_Tick(object sender, EventArgs e)
         {
-
             //horizontal vector thrusters
             //all thruster speeds are positive for forward/upward thrust
             //ForeAftMotion is positive forward, StrafeMotion is positive rightward, and TurnMotion is positive CCW (think right hand rule)
@@ -130,41 +145,48 @@ namespace GUI
             {
                 localTurnMotion += headingAdj;
             }
-            PropulsionActuator.Data.Speeds[key["ForwardPort"]] = ForeAftMotion + StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion - TurnMotion, 100) : Math.Max(ForeAftMotion + StrafeMotion - TurnMotion, -100);
-            PropulsionActuator.Data.Speeds[key["ForwardStarboard"]] = ForeAftMotion - StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion + TurnMotion, 100) : Math.Max(ForeAftMotion - StrafeMotion + TurnMotion, -100);
-            PropulsionActuator.Data.Speeds[key["AftPort"]] = ForeAftMotion - StrafeMotion - TurnMotion >= 0 ? Math.Min(ForeAftMotion - StrafeMotion - TurnMotion, 100) : Math.Max(ForeAftMotion - StrafeMotion - TurnMotion, -100);
-            PropulsionActuator.Data.Speeds[key["AftStarboard"]] = ForeAftMotion + StrafeMotion + TurnMotion >= 0 ? Math.Min(ForeAftMotion + StrafeMotion + TurnMotion, 100) : Math.Max(ForeAftMotion + StrafeMotion + TurnMotion, -100);
+
+            PropulsionActuator.Data.Speeds[key["ForwardPort"]] = ForeAftMotion + StrafeMotion - TurnMotion >= 0
+                ? Math.Min(ForeAftMotion + StrafeMotion - TurnMotion, 100)
+                : Math.Max(ForeAftMotion + StrafeMotion - TurnMotion, -100);
+            PropulsionActuator.Data.Speeds[key["ForwardStarboard"]] = ForeAftMotion - StrafeMotion + TurnMotion >= 0
+                ? Math.Min(ForeAftMotion - StrafeMotion + TurnMotion, 100)
+                : Math.Max(ForeAftMotion - StrafeMotion + TurnMotion, -100);
+            PropulsionActuator.Data.Speeds[key["AftPort"]] = ForeAftMotion - StrafeMotion - TurnMotion >= 0
+                ? Math.Min(ForeAftMotion - StrafeMotion - TurnMotion, 100)
+                : Math.Max(ForeAftMotion - StrafeMotion - TurnMotion, -100);
+            PropulsionActuator.Data.Speeds[key["AftStarboard"]] = ForeAftMotion + StrafeMotion + TurnMotion >= 0
+                ? Math.Min(ForeAftMotion + StrafeMotion + TurnMotion, 100)
+                : Math.Max(ForeAftMotion + StrafeMotion + TurnMotion, -100);
 
             //vertical thrusters
             //VerticalMotion is positive upward
             PropulsionActuator.Data.Speeds[key["VerticalPort"]] = VerticalMotion;
-            PropulsionActuator.Data.Speeds[key["VerticalStarboard"]] = -VerticalMotion;
+            PropulsionActuator.Data.Speeds[key["VerticalStarboard"]] = VerticalMotion;
+            // Vertical Starboard used to equal -VerticalMotion which doesn't really make sense
+
             if (EnableDepthLock)
             {
                 PropulsionActuator.Data.Speeds[key["VerticalPort"]] += depthAdj;
                 PropulsionActuator.Data.Speeds[key["VerticalStarboard"]] += depthAdj;
             }
+
             if (EnableRollLock)
             {
                 PropulsionActuator.Data.Speeds[key["VerticalPort"]] += rollAdj;
                 PropulsionActuator.Data.Speeds[key["VerticalStarboard"]] += rollAdj;
             }
-            
-            
+
+
             //send the thruster speeds to the ROV
             comms.Queue.Enqueue(PropulsionActuator);
         }
-
-        //public void UpdateServos()
-        //{
-        //    comms.Queue.Enqueue(ServoActuator);
-        //}
 
         //public void LaunchMiniROV()
         //{
         //    comms.Queue.Enqueue(MiniROVActuator);
         //}
-        
+
         //medium loop for sensors and manipulators/tools
         private void T50_Tick(object sender, EventArgs e)
         {
@@ -180,6 +202,7 @@ namespace GUI
             comms.Queue.Enqueue(StatusSensor);
             comms.Queue.Enqueue(StatusActuator);
         }
+
         public void setDirection(int direction)
         {
             directionPref = direction;

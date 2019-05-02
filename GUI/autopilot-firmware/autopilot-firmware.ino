@@ -419,7 +419,7 @@ void writeTools() {
 void writeServo() {
 	if (!(error&ESC_FAILURE)) {
 	    // NOTE: ESCs AND SERVOS ARE ON SAME PIN SET (0-7)
-		for (int i = NUM_ESCS; i < NUM_SERVO; i++) {
+		for (int i = NUM_ESCS; i < NUM_SERVO + NUM_ESCS; i++) {
 			uint8_t position = rxData.data[i];
 			pca9685.setPWM(i, map(position, 0, 255, 0, 4095), map(255 - position, 0, 255, 0, 4095));
 		}
