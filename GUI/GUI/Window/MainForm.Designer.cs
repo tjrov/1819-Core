@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint5 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint6 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint3 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint4 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.timer500 = new System.Windows.Forms.Timer(this.components);
             this.connectButton = new System.Windows.Forms.Button();
@@ -106,6 +106,7 @@
             this.depthIndicator1 = new GUI.DepthIndicator();
             this.propulsionActuator1 = new GUI.PropulsionActuator();
             this.propulsionActuator2 = new GUI.PropulsionActuator();
+            this.attitudeIndicator1 = new GUI.AttitudeIndicator();
             ((System.ComponentModel.ISupportInitialize)(this.joyStickChart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.joyStickChart2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.circleBox)).BeginInit();
@@ -677,30 +678,30 @@
             // joyStickChart1
             // 
             this.joyStickChart1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            chartArea5.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea5.AxisX.Maximum = 100D;
-            chartArea5.AxisX.Minimum = -100D;
-            chartArea5.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea5.AxisY.Maximum = 100D;
-            chartArea5.AxisY.Minimum = -100D;
-            chartArea5.Name = "ChartArea1";
-            this.joyStickChart1.ChartAreas.Add(chartArea5);
+            chartArea3.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea3.AxisX.Maximum = 100D;
+            chartArea3.AxisX.Minimum = -100D;
+            chartArea3.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea3.AxisY.Maximum = 100D;
+            chartArea3.AxisY.Minimum = -100D;
+            chartArea3.Name = "ChartArea1";
+            this.joyStickChart1.ChartAreas.Add(chartArea3);
             this.joyStickChart1.ImeMode = System.Windows.Forms.ImeMode.Off;
-            legend5.Enabled = false;
-            legend5.Name = "Legend1";
-            this.joyStickChart1.Legends.Add(legend5);
+            legend3.Enabled = false;
+            legend3.Name = "Legend1";
+            this.joyStickChart1.Legends.Add(legend3);
             this.joyStickChart1.Location = new System.Drawing.Point(1821, 14);
-            this.joyStickChart1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.joyStickChart1.Margin = new System.Windows.Forms.Padding(4);
             this.joyStickChart1.Name = "joyStickChart1";
             this.joyStickChart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
-            series5.Legend = "Legend1";
-            series5.Name = "Series1";
-            series5.Points.Add(dataPoint5);
-            series5.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series5.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            this.joyStickChart1.Series.Add(series5);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            series3.Points.Add(dataPoint3);
+            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series3.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.joyStickChart1.Series.Add(series3);
             this.joyStickChart1.Size = new System.Drawing.Size(188, 188);
             this.joyStickChart1.TabIndex = 65;
             this.joyStickChart1.Text = "chart1";
@@ -709,29 +710,29 @@
             // joyStickChart2
             // 
             this.joyStickChart2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            chartArea6.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea6.AxisX.Maximum = 100D;
-            chartArea6.AxisX.Minimum = -100D;
-            chartArea6.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea6.AxisY.Maximum = 100D;
-            chartArea6.AxisY.Minimum = -100D;
-            chartArea6.Name = "ChartArea1";
-            this.joyStickChart2.ChartAreas.Add(chartArea6);
-            legend6.Enabled = false;
-            legend6.Name = "Legend1";
-            this.joyStickChart2.Legends.Add(legend6);
+            chartArea4.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea4.AxisX.Maximum = 100D;
+            chartArea4.AxisX.Minimum = -100D;
+            chartArea4.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea4.AxisY.Maximum = 100D;
+            chartArea4.AxisY.Minimum = -100D;
+            chartArea4.Name = "ChartArea1";
+            this.joyStickChart2.ChartAreas.Add(chartArea4);
+            legend4.Enabled = false;
+            legend4.Name = "Legend1";
+            this.joyStickChart2.Legends.Add(legend4);
             this.joyStickChart2.Location = new System.Drawing.Point(2016, 14);
-            this.joyStickChart2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.joyStickChart2.Margin = new System.Windows.Forms.Padding(4);
             this.joyStickChart2.Name = "joyStickChart2";
             this.joyStickChart2.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
-            series6.Legend = "Legend1";
-            series6.Name = "Series1";
-            series6.Points.Add(dataPoint6);
-            series6.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series6.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            this.joyStickChart2.Series.Add(series6);
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            series4.Points.Add(dataPoint4);
+            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series4.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.joyStickChart2.Series.Add(series4);
             this.joyStickChart2.Size = new System.Drawing.Size(188, 188);
             this.joyStickChart2.TabIndex = 66;
             this.joyStickChart2.Text = "chart2";
@@ -752,7 +753,7 @@
             this.circleBox.Image = ((System.Drawing.Image)(resources.GetObject("circleBox.Image")));
             this.circleBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("circleBox.InitialImage")));
             this.circleBox.Location = new System.Drawing.Point(561, 1225);
-            this.circleBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.circleBox.Margin = new System.Windows.Forms.Padding(4);
             this.circleBox.Name = "circleBox";
             this.circleBox.Size = new System.Drawing.Size(128, 130);
             this.circleBox.TabIndex = 73;
@@ -763,7 +764,7 @@
             this.squareBox.Image = ((System.Drawing.Image)(resources.GetObject("squareBox.Image")));
             this.squareBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("squareBox.InitialImage")));
             this.squareBox.Location = new System.Drawing.Point(561, 1088);
-            this.squareBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.squareBox.Margin = new System.Windows.Forms.Padding(4);
             this.squareBox.Name = "squareBox";
             this.squareBox.Size = new System.Drawing.Size(128, 130);
             this.squareBox.TabIndex = 72;
@@ -774,7 +775,7 @@
             this.lineBox.Image = ((System.Drawing.Image)(resources.GetObject("lineBox.Image")));
             this.lineBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("lineBox.InitialImage")));
             this.lineBox.Location = new System.Drawing.Point(561, 950);
-            this.lineBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lineBox.Margin = new System.Windows.Forms.Padding(4);
             this.lineBox.Name = "lineBox";
             this.lineBox.Size = new System.Drawing.Size(128, 130);
             this.lineBox.TabIndex = 71;
@@ -786,7 +787,7 @@
             this.triangleBox.Image = ((System.Drawing.Image)(resources.GetObject("triangleBox.Image")));
             this.triangleBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("triangleBox.InitialImage")));
             this.triangleBox.Location = new System.Drawing.Point(561, 812);
-            this.triangleBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.triangleBox.Margin = new System.Windows.Forms.Padding(4);
             this.triangleBox.Name = "triangleBox";
             this.triangleBox.Size = new System.Drawing.Size(128, 128);
             this.triangleBox.TabIndex = 70;
@@ -875,12 +876,20 @@
             this.depthIndicator1.Size = new System.Drawing.Size(95, 625);
             this.depthIndicator1.TabIndex = 67;
             // 
+            // attitudeIndicator1
+            // 
+            this.attitudeIndicator1.Location = new System.Drawing.Point(276, 170);
+            this.attitudeIndicator1.Name = "attitudeIndicator1";
+            this.attitudeIndicator1.Size = new System.Drawing.Size(474, 493);
+            this.attitudeIndicator1.TabIndex = 78;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(2400, 1350);
+            this.Controls.Add(this.attitudeIndicator1);
             this.Controls.Add(this.IR3Label);
             this.Controls.Add(this.IR2Label);
             this.Controls.Add(this.IR1Label);
@@ -1034,6 +1043,7 @@
         private System.Windows.Forms.Label IR1Label;
         private System.Windows.Forms.Label IR2Label;
         private System.Windows.Forms.Label IR3Label;
+        private AttitudeIndicator attitudeIndicator1;
     }
 }
 

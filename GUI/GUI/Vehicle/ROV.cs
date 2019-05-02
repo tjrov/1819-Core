@@ -145,18 +145,6 @@ namespace GUI
                 speeds[key["VerticalPort"]] += rollAdj;
                 speeds[key["VerticalStarboard"]] += rollAdj;
             }
-            for(int i = 0; i < 6; i++)
-            {
-                /*if(PropulsionActuator.Data.Speeds[i]> 50)
-                {
-                    PropulsionActuator.Data.Speeds[i] = 50;
-                }
-                if(PropulsionActuator.Data.Speeds[i] < -50)
-                {
-                    PropulsionActuator.Data.Speeds[i] = -50;
-                }*/
-            }
-
             //send the thruster speeds to the ROV
             comms.Queue.Enqueue(PropulsionActuator);
         }
