@@ -113,9 +113,9 @@ namespace GUI
 
         private void OrientationSensor_Updated(object sender, OrientationData e)
         {
-            /*attitudeIndicator1.PitchAngle = rov.OrientationSensor.Data.Pitch;
+            attitudeIndicator1.PitchAngle = rov.OrientationSensor.Data.Pitch;
             attitudeIndicator1.RollAngle = rov.OrientationSensor.Data.Roll;
-            attitudeIndicator1.YawAngle = rov.OrientationSensor.Data.Yaw;*/
+            attitudeIndicator1.YawAngle = rov.OrientationSensor.Data.Yaw;
             headingIndicator1.Heading = rov.OrientationSensor.Data.Yaw;
         }
         private void ProcessImage(Bitmap bitmap)
@@ -309,7 +309,7 @@ namespace GUI
         {
             if(isCapturing)
             {
-                ProcessImage(video);
+                //ProcessImage(video);
             }
             if (rov != null)
             {
