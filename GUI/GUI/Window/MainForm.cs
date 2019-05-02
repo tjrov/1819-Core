@@ -51,6 +51,8 @@ namespace GUI
             //setup window
             KeyPreview = true;
             InitializeComponent();
+            armButton.Enabled = false;
+            resetButton.Enabled = false;
 
             //setup devices
             string portName = "COM6";
@@ -218,6 +220,8 @@ namespace GUI
             Invoke(new Action(() =>
             {
                 connectButton.Text = "Comms Started";
+                armButton.Enabled = true;
+                resetButton.Enabled = true;
             }));
         }
 
@@ -226,6 +230,8 @@ namespace GUI
             Invoke(new Action(() =>
             {
                 connectButton.Text = "Comms Stopped";
+                armButton.Enabled = false;
+                resetButton.Enabled = false;
             }));
         }
 
