@@ -301,6 +301,10 @@ namespace GUI
 
         private void controllerUpdateTimer_Tick(object sender, EventArgs e)
         {
+            if(isCapturing)
+            {
+                ProcessImage(video);
+            }
             if (rov != null)
             {
                 pilot.Update();
@@ -468,20 +472,6 @@ namespace GUI
             ProcessImage(video);
         }
 
-        private void forTestingPurposes_Click(object sender, EventArgs e)
-        {
-            rov.ForeAftMotion = 100;
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                //if(Int32.TryParse(textBox1.Text , out int n))
-                // rov.PropulsionActuator.Data.Speeds[i] = n;
-            }
-        }
-
         private void capButton_Click(object sender, EventArgs e)
         {
             if(videoSource == null)
@@ -506,20 +496,9 @@ namespace GUI
                     benthicButton.Enabled = true;
                 }
             }
-            
-        }
-
-        private void selectVideoDevice_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private Bitmap video;
-
-        private void joyStickChart1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {

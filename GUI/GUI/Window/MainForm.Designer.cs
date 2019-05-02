@@ -705,7 +705,6 @@
             this.joyStickChart1.Size = new System.Drawing.Size(188, 188);
             this.joyStickChart1.TabIndex = 65;
             this.joyStickChart1.Text = "chart1";
-            this.joyStickChart1.Click += new System.EventHandler(this.joyStickChart1_Click);
             // 
             // joyStickChart2
             // 
