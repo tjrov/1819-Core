@@ -29,7 +29,7 @@ namespace GUI
     {
         private ROV rov;
         private SerialCommunication comms;
-        public X.Gamepad pilot, copilot;
+        public X.Gamepad pilot;
         private bool isLockClicked = false;
         private int depthvalue = 0;
         private bool RightBumperCheck = false;
@@ -47,12 +47,12 @@ namespace GUI
             pilot = X.Gamepad_1;
             pilot.Enable = true;
             pilot.Update(); //must call update right after setting enable to true in order for it to connect
-            //copilot = X.Gamepad_2;
-            //copilot.Enable = false; //change later on
 
             //setup window
             KeyPreview = true;
             InitializeComponent();
+            armButton.Enabled = false;
+            resetButton.Enabled = false;
 
             //setup devices
             string portName = "COM6";
@@ -62,10 +62,9 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No Serial ports available");
-                //Environment.Exit(0);
+                MessageBox.Show(ex.ToString(), "No Serial ports available");
             }
-            BetterSerialPort port = new BetterSerialPort(portName, 115200);
+            BetterSerialPort port = new BetterSerialPort(portName, 9600);
             portLabel.Text = string.Format("{0}@{1}baud", port.PortName, port.BaudRate);
             comms = new SerialCommunication(port);
             comms.Stopped += comms_Stopped;
@@ -114,9 +113,9 @@ namespace GUI
 
         private void OrientationSensor_Updated(object sender, OrientationData e)
         {
-            /*attitudeIndicator1.PitchAngle = rov.OrientationSensor.Data.Pitch;
+            attitudeIndicator1.PitchAngle = rov.OrientationSensor.Data.Pitch;
             attitudeIndicator1.RollAngle = rov.OrientationSensor.Data.Roll;
-            attitudeIndicator1.YawAngle = rov.OrientationSensor.Data.Yaw;*/
+            attitudeIndicator1.YawAngle = rov.OrientationSensor.Data.Yaw;
             headingIndicator1.Heading = rov.OrientationSensor.Data.Yaw;
         }
         private void ProcessImage(Bitmap bitmap)
@@ -221,6 +220,8 @@ namespace GUI
             Invoke(new Action(() =>
             {
                 connectButton.Text = "Comms Started";
+                armButton.Enabled = true;
+                resetButton.Enabled = true;
             }));
         }
 
@@ -229,6 +230,8 @@ namespace GUI
             Invoke(new Action(() =>
             {
                 connectButton.Text = "Comms Stopped";
+                armButton.Enabled = false;
+                resetButton.Enabled = false;
             }));
         }
 
@@ -280,9 +283,6 @@ namespace GUI
             rightPrefButton.BackColor = Color.Red;
             rov.setDirection(3);
         }
-
-
-
         private void rightPrefButton_Click(object sender, EventArgs e)
         {
             forPrefButton.BackColor = Color.Red;
@@ -307,143 +307,150 @@ namespace GUI
 
         private void controllerUpdateTimer_Tick(object sender, EventArgs e)
         {
-            pilot.Update();
-
-            //Zeroing Code for left joystick
-            int LStickZeroX = pilot.LStick.X;
-            if (Math.Abs(LStickZeroX) < 5000)
+            if(isCapturing)
             {
-                LStickZeroX = 0;
+                //ProcessImage(video);
             }
-
-            int LStickZeroY = pilot.LStick.Y;
-            if (Math.Abs(LStickZeroY) < 5000)
+            if (rov != null)
             {
-                LStickZeroY = 0;
-            }
+                pilot.Update();
 
-            //Zeroing Code for right joystick
-            int RStickZeroX = pilot.RStick.X;
-            if (Math.Abs(RStickZeroX) < 5000)
-            {
-                RStickZeroX = 0;
-            }
-
-            int RStickZeroY = pilot.RStick.Y;
-            if (Math.Abs(RStickZeroY) < 5000)
-            {
-                RStickZeroY = 0;
-            }
-
-            if (pilot.IsConnected)
-            {
-                ConnectionB.BackColor = Color.Green;
-                ConnectionLabel.Text = "Controller Connected : True";
-                button0.Text = "LStick.X" + LStickZeroX;
-                button1.Text = "LStick.Y" + LStickZeroY;
-                button2.Text = "LStick" + pilot.LStick_down;
-                button3.Text = "RStick.X" + RStickZeroX;
-                button4.Text = "RStick.Y" + RStickZeroY;
-                button5.Text = "DPad up" + pilot.Dpad_Up_down;
-                button6.Text = "DPad down" + pilot.Dpad_Down_down;
-                button7.Text = "DPad left" + pilot.Dpad_Left_down;
-                button8.Text = "DPad right" + pilot.Dpad_Right_down;
-                button9.Text = "A" + pilot.A_down;
-                button10.Text = "B" + pilot.B_down;
-                button11.Text = "X" + pilot.X_down;
-                button12.Text = "Y" + pilot.Y_down;
-                button13.Text = "LBumper" + pilot.LBumper_down;
-                button14.Text = "RBumper" + pilot.RBumper_down;
-                button15.Text = "LTrigger" + pilot.LTrigger;
-                button16.Text = "RTrigger" + pilot.RTrigger;
-                button17.Text = "Start" + pilot.Start_down;
-                //Code for displaying motor values
-                topLeft.Text = (rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, -100);
-                midLeft.Text = "" + rov.VerticalMotion;
-                botLeft.Text = (rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, -100);
-                topRight.Text = (rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, -100);
-                midRight.Text = "" + rov.VerticalMotion;
-                botRight.Text = (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, -100);
-
-                if (pilot.RBumper_down && !RightBumperCheck) //checks if bumper is down
+                //Zeroing Code for left joystick
+                int LStickZeroX = pilot.LStick.X;
+                if (Math.Abs(LStickZeroX) < 5000)
                 {
-                    isLockClicked = !isLockClicked; //turns on lock position
+                    LStickZeroX = 0;
+                }
+
+                int LStickZeroY = pilot.LStick.Y;
+                if (Math.Abs(LStickZeroY) < 5000)
+                {
+                    LStickZeroY = 0;
+                }
+
+                //Zeroing Code for right joystick
+                int RStickZeroX = pilot.RStick.X;
+                if (Math.Abs(RStickZeroX) < 5000)
+                {
+                    RStickZeroX = 0;
+                }
+
+                int RStickZeroY = pilot.RStick.Y;
+                if (Math.Abs(RStickZeroY) < 5000)
+                {
+                    RStickZeroY = 0;
+                }
+
+                if (pilot.IsConnected)
+                {
+                    ConnectionB.BackColor = Color.Green;
+                    ConnectionLabel.Text = "Controller Connected : True";
+                    button0.Text = "LStick.X" + LStickZeroX;
+                    button1.Text = "LStick.Y" + LStickZeroY;
+                    button2.Text = "LStick" + pilot.LStick_down;
+                    button3.Text = "RStick.X" + RStickZeroX;
+                    button4.Text = "RStick.Y" + RStickZeroY;
+                    button5.Text = "DPad up" + pilot.Dpad_Up_down;
+                    button6.Text = "DPad down" + pilot.Dpad_Down_down;
+                    button7.Text = "DPad left" + pilot.Dpad_Left_down;
+                    button8.Text = "DPad right" + pilot.Dpad_Right_down;
+                    button9.Text = "A" + pilot.A_down;
+                    button10.Text = "B" + pilot.B_down;
+                    button11.Text = "X" + pilot.X_down;
+                    button12.Text = "Y" + pilot.Y_down;
+                    button13.Text = "LBumper" + pilot.LBumper_down;
+                    button14.Text = "RBumper" + pilot.RBumper_down;
+                    button15.Text = "LTrigger" + pilot.LTrigger;
+                    button16.Text = "RTrigger" + pilot.RTrigger;
+                    button17.Text = "Start" + pilot.Start_down;
+                    //Code for displaying motor values
+                    topLeft.Text = (rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion - rov.TurnMotion, -100);
+                    midLeft.Text = "" + rov.VerticalMotion;
+                    botLeft.Text = (rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion - rov.TurnMotion, -100);
+                    topRight.Text = (rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion - rov.StrafeMotion + rov.TurnMotion, -100);
+                    midRight.Text = "" + rov.VerticalMotion;
+                    botRight.Text = (rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion) >= 0 ? "" + Math.Min(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, 100) : "" + Math.Max(rov.ForeAftMotion + rov.StrafeMotion + rov.TurnMotion, -100);
+
+                    if (pilot.RBumper_down && !RightBumperCheck) //checks if bumper is down
+                    {
+                        isLockClicked = !isLockClicked; //turns on lock position
+                        if (isLockClicked)
+                        {
+                            depthvalue = (int)(rov.DepthSensor.Data.DepthValue);
+                        }
+                        RightBumperCheck = true; //disables use of bumper until button is let go
+                    }
+
+                    if (pilot.RBumper_up && RightBumperCheck)
+                    {
+                        RightBumperCheck = false; //reenables button if it is let go
+                    }
+
                     if (isLockClicked)
                     {
-                        depthvalue = (int)(rov.DepthSensor.Data.DepthValue);
-                    }
-                    RightBumperCheck = true; //disables use of bumper until button is let go
-                }
+                        depthLockButton.BackColor = Color.Green; //edits button in design
 
-                if (pilot.RBumper_up && RightBumperCheck)
-                {
-                    RightBumperCheck = false; //reenables button if it is let go
-                }
+                        if (depthvalue < (int)(rov.DepthSensor.Data.DepthValue))
+                        {
+                            rov.VerticalMotion += 1;  //brings robot up
+                        }
+                        else
+                        {
 
-                if (isLockClicked)
-                {
-                    depthLockButton.BackColor = Color.Green; //edits button in design
-
-                    if (depthvalue < (int)(rov.DepthSensor.Data.DepthValue))
-                    {
-                        rov.VerticalMotion += 1;  //brings robot up
+                            rov.VerticalMotion -= 1;  //brings robot down
+                        }
                     }
                     else
                     {
+                        depthLockButton.BackColor = Color.DarkRed;
 
-                        rov.VerticalMotion -= 1;  //brings robot down
                     }
+                    //ACTUATOR CODE for next few lines
+                    int val0 = Convert.ToInt32(pilot.A_down) - Convert.ToInt32(pilot.B_down);
+                    int val1 = Convert.ToInt32(pilot.X_down) - Convert.ToInt32(pilot.Y_down);
+                    int val2 = Convert.ToInt32(pilot.Dpad_Down_down) - Convert.ToInt32(pilot.Dpad_Right_down);
+                    int val3 = Convert.ToInt32(pilot.Dpad_Left_down) - Convert.ToInt32(pilot.Dpad_Up_down);
+
+                    rov.ToolsActuator.Data.Speeds[0] = val0 * 100;
+                    rov.ToolsActuator.Data.Speeds[1] = val1 * 100;
+                    rov.ToolsActuator.Data.Speeds[2] = val2 * 100;
+                    rov.ToolsActuator.Data.Speeds[3] = val3 * 100;
+
+                    //end of actuator code
+
+                    //Lstick controls horizontal translations 
+                    rov.ForeAftMotion = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, -100, 100));
+                    rov.StrafeMotion = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, -100, 100));
+                    if (rov.EnableHeadingLock)
+                    {
+                        //RStick controls desired heading
+                        rov.TurnMotion = 0;
+                        rov.DesiredHeading += (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100) / 100);
+                    }
+                    else
+                    {
+                        //Rstick controls yaw (turning about vertical axis)
+                        rov.TurnMotion = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100));
+                    }
+
+                    //left bumper moves downward, right bumper moves upward
+                    rov.VerticalMotion = (int)(ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, -100) + ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, 100));
                 }
                 else
                 {
+                    ConnectionB.BackColor = Color.DarkRed;
+                    ConnectionLabel.Text = "Controller Connected : False";
                     depthLockButton.BackColor = Color.DarkRed;
-
+                    rov.VerticalMotion = 0.0;
+                    rov.ForeAftMotion = 0.0;
+                    rov.StrafeMotion = 0.0;
+                    rov.TurnMotion = 0.0;
                 }
-                //ACTUATOR CODE for next few lines
-                int val0 = Convert.ToInt32(pilot.A_down) - Convert.ToInt32(pilot.B_down);
-                int val1 = Convert.ToInt32(pilot.X_down) - Convert.ToInt32(pilot.Y_down);
-                int val2 = Convert.ToInt32(pilot.Dpad_Down_down) - Convert.ToInt32(pilot.Dpad_Right_down);
-                int val3 = Convert.ToInt32(pilot.Dpad_Left_down) - Convert.ToInt32(pilot.Dpad_Up_down);
-
-                rov.ToolsActuator.Data.Speeds[0] = val0 * 100;
-                rov.ToolsActuator.Data.Speeds[1] = val1 * 100;
-                rov.ToolsActuator.Data.Speeds[2] = val2 * 100;
-                rov.ToolsActuator.Data.Speeds[3] = val3 * 100;
-
-                //end of actuator code
-
-                //Lstick controls horizontal translations 
-                rov.ForeAftMotion = (int)(ConvertUtils.Map(LStickZeroY, -32768, 32767, -100, 100));
-                rov.StrafeMotion = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, -100, 100));
-                if (rov.EnableHeadingLock)
-                {
-                    //RStick controls desired heading
-                    rov.TurnMotion = 0;
-                    rov.DesiredHeading += (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100) / 100);
-                }
-                else
-                {
-                    //Rstick controls yaw (turning about vertical axis)
-                    rov.TurnMotion = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100));
-                }
-
-                //left bumper moves downward, right bumper moves upward
-                rov.VerticalMotion = (int)(ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, -100) + ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, 100));
+                joyStickChart1.Series["Series1"].Points[0].XValue = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, -100, 100));
+                joyStickChart1.Series["Series1"].Points[0].YValues[0] = (double)(ConvertUtils.Map(LStickZeroY, -32768, 32767, -100, 100));
+                joyStickChart2.Series["Series1"].Points[0].XValue = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100));
+                joyStickChart2.Series["Series1"].Points[0].YValues[0] = (double)(ConvertUtils.Map(RStickZeroY, -32768, 32767, -100, 100));
             }
-            else
-            {
-                ConnectionB.BackColor = Color.DarkRed;
-                ConnectionLabel.Text = "Controller Connected : False";
-                depthLockButton.BackColor = Color.DarkRed;
-                rov.VerticalMotion = 0.0;
-                rov.ForeAftMotion = 0.0;
-                rov.StrafeMotion = 0.0;
-                rov.TurnMotion = 0.0;
-            }
-            joyStickChart1.Series["Series1"].Points[0].XValue = (int)(ConvertUtils.Map(LStickZeroX, -32768, 32767, -100, 100));
-            joyStickChart1.Series["Series1"].Points[0].YValues[0] = (double)(ConvertUtils.Map(LStickZeroY, -32768, 32767, -100, 100));
-            joyStickChart2.Series["Series1"].Points[0].XValue = (int)(ConvertUtils.Map(RStickZeroX, -32768, 32767, -100, 100));
-            joyStickChart2.Series["Series1"].Points[0].YValues[0] = (double)(ConvertUtils.Map(RStickZeroY, -32768, 32767, -100, 100));
         }
     
 
@@ -471,20 +478,6 @@ namespace GUI
             ProcessImage(video);
         }
 
-        private void forTestingPurposes_Click(object sender, EventArgs e)
-        {
-            rov.ForeAftMotion = 100;
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                //if(Int32.TryParse(textBox1.Text , out int n))
-                // rov.PropulsionActuator.Data.Speeds[i] = n;
-            }
-        }
-
         private void capButton_Click(object sender, EventArgs e)
         {
             if(videoSource == null)
@@ -509,20 +502,9 @@ namespace GUI
                     benthicButton.Enabled = true;
                 }
             }
-            
-        }
-
-        private void selectVideoDevice_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private Bitmap video;
-
-        private void joyStickChart1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
