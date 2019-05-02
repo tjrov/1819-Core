@@ -43,7 +43,11 @@ namespace GUI
         private int numberOfTriangles = 0;
         private int numberOfLines = 0;
         private bool isCapturing = false;
+        
         private VideoCaptureDevice videoSource;
+        private VideoCaptureDevice[] videoSources = new VideoCaptureDevice[2];
+        private int videoIndex = 0;
+        
         private FilterInfoCollection videoDevices;
         private bool EMGU = true;
         private string portName = "COM5";
@@ -63,7 +67,7 @@ namespace GUI
             LeftJoystick,
             RightJoystick
         }
-
+        
         private bool[] pilotKeysUp = new bool[]
             {true, true, true, true, true, true, true, true, true, true, true, true};
 
@@ -142,9 +146,11 @@ namespace GUI
                     videoSource = new VideoCaptureDevice(videoDevices[i].MonikerString);
                     videoSource.CrossbarVideoInput = videoSource.AvailableCrossbarVideoInputs[1];
                     videoSource.VideoResolution = videoSource.VideoCapabilities[1];
+
+                    videoSources[videoIndex] = videoSource;
+                    videoIndex += 1;
                 }
             }
-
             // set NewFrame event handler
             try
             {
@@ -655,7 +661,18 @@ namespace GUI
                 {
                     copilotKeysUp[(int) ControllerKeys.Right] = true;
                 }
-
+                
+                if (copilot.Dpad_Left_down && copilotKeysUp[(int) ControllerKeys.Left])
+                {
+                    // switch cameras
+                    changeVidoeSource();
+                    copilotKeysUp[(int) ControllerKeys.Left] = false;
+                }
+                else if (copilot.Dpad_Left_up)
+                {
+                    copilotKeysUp[(int) ControllerKeys.Left] = true;
+                }
+                
                 #endregion
             }
             else
@@ -766,6 +783,17 @@ namespace GUI
         private void forTestingPurposes_Click(object sender, EventArgs e)
         {
             rov.ForeAftMotion = 100;
+        }
+
+        private void changeVidoeSource()
+        {
+            videoIndex += 1;
+            if (videoIndex > 1)
+            {
+                videoIndex = 0;
+            }
+
+            videoSource = videoSources[videoIndex];
         }
 
         private void capButton_Click(object sender, EventArgs e)
