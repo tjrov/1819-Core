@@ -492,13 +492,13 @@ namespace GUI
                                             ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, 100));
                 
                 // if roll lock isn't enabled
-                if (!rov.EnableRollLock)
+                if (rov.EnableRollLock)
                 {
-                    rov.TiltAdj = (int) ConvertUtils.Map(RStickZeroY, -32768, 32767, -1 * rov.TiltPower, rov.TiltPower);
+                    rov.TiltAdj = 0;
                 }
                 else
                 {
-                    rov.TiltAdj = 0;
+                    rov.TiltAdj = (int) ConvertUtils.Map(RStickZeroY, -32768, 32767, -1 * rov.TiltPower, rov.TiltPower);
                 }
                 
                 #endregion
