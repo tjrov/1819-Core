@@ -471,8 +471,6 @@ namespace GUI
                     {
                         rollLockEngageLabel.ForeColor = Color.DarkRed;
                         rollLockEngageLabel.Text = "Roll Lock Disengaged";
-
-                        rov.TiltAdj = (int) ConvertUtils.Map(RStickZeroY, -32768, 32767, -1 * rov.TiltPower, rov.TiltPower);
                     }
 
                     pilotKeysUp[(int) ControllerKeys.A] = false;
@@ -492,7 +490,17 @@ namespace GUI
                 //left bumper moves downward, right bumper moves upward
                 rov.VerticalMotion = (int) (ConvertUtils.Map(pilot.RTrigger, 0, 255, 0, -100) +
                                             ConvertUtils.Map(pilot.LTrigger, 0, 255, 0, 100));
-
+                
+                // if roll lock isn't enabled
+                if (!rov.EnableRollLock)
+                {
+                    rov.TiltAdj = (int) ConvertUtils.Map(RStickZeroY, -32768, 32767, -1 * rov.TiltPower, rov.TiltPower);
+                }
+                else
+                {
+                    rov.TiltAdj = 0;
+                }
+                
                 #endregion
 
                 #region Direction Lock
