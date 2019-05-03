@@ -30,7 +30,9 @@ namespace GUI
         public double ToolMotion;
 
         public double VerticalMotion, ForeAftMotion, StrafeMotion, TurnMotion; //ccw positive\
-
+        public int TiltAdj = 0;
+        public int TiltPower = 20;
+        
         private double desiredHeading;
 
         public double DesiredHeading
@@ -161,8 +163,20 @@ namespace GUI
 
             //vertical thrusters
             //VerticalMotion is positive upward
-            PropulsionActuator.Data.Speeds[key["VerticalPort"]] = VerticalMotion;
-            PropulsionActuator.Data.Speeds[key["VerticalStarboard"]] = VerticalMotion;
+            
+            // preventing error if vertical motion is already at either maximum
+            if (VerticalMotion + TiltAdj > 100)
+            {
+                VerticalMotion -= TiltAdj;
+            }
+
+            if (VerticalMotion - TiltAdj < -100)
+            {
+                VerticalMotion += TiltAdj;
+            }
+            
+            PropulsionActuator.Data.Speeds[key["VerticalPort"]] = VerticalMotion + TiltAdj;
+            PropulsionActuator.Data.Speeds[key["VerticalStarboard"]] = VerticalMotion - TiltAdj;
             // Vertical Starboard used to equal -VerticalMotion which doesn't really make sense
 
             if (EnableDepthLock)

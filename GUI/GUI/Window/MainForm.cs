@@ -471,6 +471,8 @@ namespace GUI
                     {
                         rollLockEngageLabel.ForeColor = Color.DarkRed;
                         rollLockEngageLabel.Text = "Roll Lock Disengaged";
+
+                        rov.TiltAdj = (int) ConvertUtils.Map(RStickZeroY, -32768, 32767, -1 * rov.TiltPower, rov.TiltPower);
                     }
 
                     pilotKeysUp[(int) ControllerKeys.A] = false;
