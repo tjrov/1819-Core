@@ -31,7 +31,7 @@ namespace GUI
 
         public double VerticalMotion, ForeAftMotion, StrafeMotion, TurnMotion; //ccw positive\
         public int TiltAdj = 0;
-        public int TiltPower = 20;
+        public int TiltPower = 50;
         
         private double desiredHeading;
 
