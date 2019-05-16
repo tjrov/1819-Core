@@ -152,15 +152,15 @@ namespace GUI
         //medium loop for sensors and manipulators/tools
         private void T50_Tick(object sender, EventArgs e)
         {
-            comms.Queue.Enqueue(DepthSensor);
-            comms.Queue.Enqueue(OrientationSensor);
+            //comms.Queue.Enqueue(DepthSensor);
+            //comms.Queue.Enqueue(OrientationSensor);
             comms.Queue.Enqueue(ToolsActuator);
         }
 
         //slow loop for status and error reports, arming/disarming, etc.
         private void T500_Tick(object sender, EventArgs e)
         {
-            comms.Queue.Enqueue(StatusSensor);
+            //comms.Queue.Enqueue(StatusSensor);
             comms.Queue.Enqueue(StatusActuator);
         }
         public void setDirection(int direction)

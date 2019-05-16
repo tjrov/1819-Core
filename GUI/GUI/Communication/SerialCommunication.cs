@@ -99,8 +99,11 @@ namespace GUI
                             {
                                 //get the reply
                                 ROVMessage msg = port.WaitReceiveData(1000);
-                                //update the device's data
-                                device.UpdateData(msg);
+                                if (msg != null) //if it worked and we got data back, otherwise just ignore
+                                {
+                                    //update the device's data
+                                    device.UpdateData(msg);
+                                }
                             }
                         }
                     }

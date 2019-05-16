@@ -64,7 +64,7 @@ namespace GUI
             {
                 MessageBox.Show(ex.ToString(), "No Serial ports available");
             }
-            BetterSerialPort port = new BetterSerialPort(portName, 9600);
+            BetterSerialPort port = new BetterSerialPort(portName, 4800);
             portLabel.Text = string.Format("{0}@{1}baud", port.PortName, port.BaudRate);
             comms = new SerialCommunication(port);
             comms.Stopped += comms_Stopped;

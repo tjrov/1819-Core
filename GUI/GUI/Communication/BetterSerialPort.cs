@@ -60,7 +60,8 @@ namespace GUI
             }
             else
             {
-                throw new Exception("Timed out receiving data after " + timeout + "ms");
+                return null;
+                //throw new Exception("Timed out receiving data after " + timeout + "ms");
             }
             //return ReceiveHelper();
         }
